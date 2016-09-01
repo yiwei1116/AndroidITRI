@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/llayout_loading"
-    tools:context=".LoadingActivity">
+    android:id="@+id/rlayout_loading"
+    tools:context=".LoadingActivity"
+    tools:background="#ababab"
+    android:orientation="vertical">
     
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_loading"/>
+        android:id="@+id/img_loading"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/img_loading">
 
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
