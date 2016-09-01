@@ -26,8 +26,9 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-//        LinearLayout llayout = (LinearLayout) findViewById(R.id.llayout_loading);
         logoLoading();
+
+        dataLoading();
 
     }
 
@@ -39,10 +40,12 @@ public class LoadingActivity extends AppCompatActivity {
 
         drawable = (ClipDrawable) imgLoading.getDrawable();
 
+
+
         final Handler handler=new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what == 0x123) {
+                if (msg.what == 0x123) {
                     drawable.setLevel(drawable.getLevel() + LOADING_LEVEL);
                 }
             }
@@ -54,12 +57,18 @@ public class LoadingActivity extends AppCompatActivity {
             public void run() {
                 Message msg = new Message();
                 msg.what = 0x123;
-                handler.sendMessage(msg);
-                if(drawable.getLevel() >= 10000) {
+                if (drawable.getLevel() <= 10000 - LOADING_LEVEL) {
+                    handler.sendMessage(msg);
+                } else if (drawable.getLevel() > 14000) {
                     timer.cancel();
                 }
             }
         }, 0, LOADING_PERIOD);
+    }
+
+    private void dataLoading() {
+        ImageView imgLoading = (ImageView) findViewById(R.id.img_loading);
+        imgLoading.setBackgroundResource(R.drawable.living_logo);
     }
 
 }

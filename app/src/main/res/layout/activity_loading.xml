@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_centerInParent="true"
         android:background="@drawable/logo_grey"
-        android:src="@drawable/logo_clip"/>
+        android:src="@drawable/clip_logo"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
