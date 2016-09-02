@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/rlayout_loading"
     android:orientation="vertical"
-    tools:context=".LoadingActivity">
+    tools:context=".LoadingActivity"
+    android:background="#ffffff">
     
     <ImageView
         android:layout_width="wrap_content"
@@ -21,8 +22,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/img_loading">
+        android:orientation="vertical"
+        android:layout_alignParentEnd="false"
+        android:layout_below="@+id/img_loading"
+        android:layout_marginTop="140dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_text_loading"
+            tools:src="@drawable/loading_text"
+            android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_bar_loading"
+            tools:src="@drawable/loading_line_base"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 

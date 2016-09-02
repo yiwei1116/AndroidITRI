@@ -1,11 +1,15 @@
 package com.uscc.ncku.androiditri;
 
+import android.content.Intent;
 import android.graphics.drawable.ClipDrawable;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 /**
@@ -49,13 +53,13 @@ public class LoadingActivity extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    dataLoading();
+                    logoAnimation();
                 }
             }
         }, LOADING_PERIOD);
     }
 
-    private void dataLoading() {
+    private void logoAnimation() {
         final ImageView imgLoading = (ImageView) findViewById(R.id.img_loading);
 
         final Animation fadeIn = AnimationUtils.loadAnimation(LoadingActivity.this, R.anim.logo_fade_in);
@@ -76,8 +80,49 @@ public class LoadingActivity extends AppCompatActivity {
 
                 imgLoading.setImageResource(R.drawable.living_logo);
                 imgLoading.startAnimation(fadeIn);
+                dataLoading();
             }
         });
+    }
+
+    private void dataLoading() {
+        ImageView imgText = (ImageView) findViewById(R.id.img_text_loading);
+        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+
+        imgText.setImageResource(R.drawable.loading_text);
+        imgBar.setBackgroundResource(R.drawable.loading_line_base);
+
+        final Animation animation = new AlphaAnimation(1, (float) 0.3);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        imgText.startAnimation(animation);
+
+        new DataLoadingAsyncTask().execute();
+    }
+
+    class DataLoadingAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Intent intent = new Intent(LoadingActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }
