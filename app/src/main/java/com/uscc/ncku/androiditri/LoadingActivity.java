@@ -9,15 +9,20 @@ import android.widget.ImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Lin on 2016/9/1.
  */
 public class LoadingActivity extends AppCompatActivity {
     /* time period(ms) while loading logo */
-    public static final int LOADING_PERIOD = 70;
+    public static final int LOADING_PERIOD = 30;
     /* loading level every time period from 0 to 10000 */
-    public static final int LOADING_LEVEL = 400;
+    public static final int LOADING_LEVEL = 200;
 
     private ClipDrawable drawable;
 
@@ -27,8 +32,6 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
 
         logoLoading();
-
-        dataLoading();
 
     }
 
@@ -40,35 +43,23 @@ public class LoadingActivity extends AppCompatActivity {
 
         drawable = (ClipDrawable) imgLoading.getDrawable();
 
-
-
-        final Handler handler=new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 0x123) {
-                    drawable.setLevel(drawable.getLevel() + LOADING_LEVEL);
-                }
-            }
-        };
-
-        final Timer timer= new Timer();
-        timer.schedule(new TimerTask() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Message msg = new Message();
-                msg.what = 0x123;
                 if (drawable.getLevel() <= 10000 - LOADING_LEVEL) {
-                    handler.sendMessage(msg);
-                } else if (drawable.getLevel() > 14000) {
-                    timer.cancel();
+                    drawable.setLevel(drawable.getLevel() + LOADING_LEVEL);
+                    handler.postDelayed(this, LOADING_PERIOD);
+                } else {
+                    dataLoading();
                 }
             }
-        }, 0, LOADING_PERIOD);
+        }, LOADING_PERIOD);
     }
 
     private void dataLoading() {
         ImageView imgLoading = (ImageView) findViewById(R.id.img_loading);
-        imgLoading.setBackgroundResource(R.drawable.living_logo);
+        imgLoading.setImageResource(R.drawable.living_logo);
     }
 
 }
