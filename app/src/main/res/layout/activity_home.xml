@@ -24,12 +24,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/home_btn_chinese"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_cht_home" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/home_btn_english"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:id="@+id/btn_eng_home" />
 
 </LinearLayout>

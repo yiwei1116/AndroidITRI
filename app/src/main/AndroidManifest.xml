@@ -27,9 +27,8 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
