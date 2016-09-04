@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -38,7 +39,9 @@ public class AboutActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.about_origin);
 
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
-        contentTxt.setText(R.string.origin_content);
+        String content = getString(R.string.origin_content);
+        contentTxt.setText(content);
+//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
@@ -65,7 +68,9 @@ public class AboutActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.about_tour);
 
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
-        contentTxt.setText(R.string.tour_content);
+        String content = getString(R.string.tour_content);
+        contentTxt.setText(content);
+//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
@@ -94,6 +99,7 @@ public class AboutActivity extends AppCompatActivity {
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.rule_content);
         contentTxt.setText(Html.fromHtml(content));
+//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_ok);
