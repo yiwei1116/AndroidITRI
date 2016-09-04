@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/tour_background"
+    tools:context="com.uscc.ncku.androiditri.TourActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_tour"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00000000" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_toolbar_tour"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/abc_text_size_title_material_toolbar" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <include layout="@layout/content_tour" />
+
+</android.support.design.widget.CoordinatorLayout>
