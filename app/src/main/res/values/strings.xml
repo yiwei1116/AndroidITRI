@@ -15,4 +15,5 @@
     <h5><font color=#303F9F>關於展場設施設備：</font></h5>1.展場中的設施、設備若有標示「可操作」者，歡迎來賓現場操作、體驗。<br><br>2.自動導覽過程中，若因個人因素而造成展場中的設施、設備嚴重損害，來賓須承擔部分修繕責任。]]>
     </string>
     <string name="title_activity_tour">TourActivity</string>
+    <string name="title_activity_survey">SurveyActivity</string>
 </resources>

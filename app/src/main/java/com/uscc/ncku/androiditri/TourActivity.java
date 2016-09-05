@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import com.uscc.ncku.androiditri.util.TourViewPager;
@@ -73,7 +74,7 @@ public class TourActivity extends AppCompatActivity {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.viewpager_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.img_vpager_item);
@@ -81,12 +82,16 @@ public class TourActivity extends AppCompatActivity {
 
             container.addView(itemView);
 
-            Button nextBtn = (Button) findViewById(R.id.btn_confirm_tour);
-            nextBtn.setBackgroundResource(R.drawable.selecter_btn_confirm);
-            nextBtn.setOnClickListener(new View.OnClickListener() {
+            Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
+            confirmBtn.setBackgroundResource(R.drawable.selecter_btn_confirm);
+            confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    tourPage();
+                    Intent intent = new Intent(TourActivity.this, SurveyActivity.class);
+                    intent.putExtra("EXTRA_SESSION_ID", position);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
             });
 

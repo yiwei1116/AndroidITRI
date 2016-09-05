@@ -35,7 +35,11 @@
         <activity
             android:name=".TourActivity"
             android:label="@string/title_activity_tour"
-            android:theme="@style/AppTheme.NoActionBar.NoFull"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoFull" />
+        <activity
+            android:name=".SurveyActivity"
+            android:label="@string/title_activity_survey"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
