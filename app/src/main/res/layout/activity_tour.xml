@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,8 @@
     android:fitsSystemWindows="true"
     android:background="@drawable/tour_background"
     tools:context="com.uscc.ncku.androiditri.TourActivity">
+
+    <include layout="@layout/content_tour" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_tour"
@@ -24,6 +27,4 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/content_tour" />
-
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
