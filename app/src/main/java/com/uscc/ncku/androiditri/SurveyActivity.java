@@ -7,8 +7,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 public class SurveyActivity extends AppCompatActivity {
+
+    private String tourSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +19,18 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_survey);
+        toolBarTxt.setText(R.string.survey_title);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String value = extras.getString("EXTRA_SESSION_ID");
+            tourSelect = extras.getString("EXTRA_SESSION_ID");
             //The key argument here must match that used in the other activity
         }
+
+
     }
 
 }

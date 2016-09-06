@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +43,27 @@ public class TourActivity extends AppCompatActivity {
 
         TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_tour);
         toolBarTxt.setText(R.string.tour_title);
+
+        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour);
+        btnUnderstand.setBackgroundResource(R.drawable.selecter_btn_understand);
+        btnUnderstand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
+                confirmBtn.setVisibility(View.VISIBLE);
+
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour);
+                frameLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+
+//        tourSelect();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         tourSelect();
     }

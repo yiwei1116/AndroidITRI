@@ -27,4 +27,24 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/flayout_tour"
+        android:layout_centerInParent="true"
+        android:clickable="true">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_understand_tour"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="30dp" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_coach_tour"
+            android:alpha="0.98"
+            android:background="@drawable/tour_coachmarks"/>
+    </FrameLayout>
+
 </RelativeLayout>

@@ -39,7 +39,7 @@
         <activity
             android:name=".SurveyActivity"
             android:label="@string/title_activity_survey"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoFull"></activity>
     </application>
 
 </manifest>
