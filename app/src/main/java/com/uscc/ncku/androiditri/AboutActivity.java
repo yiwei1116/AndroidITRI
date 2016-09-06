@@ -27,6 +27,7 @@ public class AboutActivity extends AppCompatActivity {
     private void originPage() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundResource(R.drawable.header_blank);
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,13 +36,9 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_about);
-        toolBarTxt.setText(R.string.about_origin);
-
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.origin_content);
         contentTxt.setText(content);
-//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
@@ -56,6 +53,7 @@ public class AboutActivity extends AppCompatActivity {
     private void tourPage() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundResource(R.drawable.header2);
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +62,9 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_about);
-        toolBarTxt.setText(R.string.about_tour);
-
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.tour_content);
         contentTxt.setText(content);
-//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
@@ -85,6 +79,7 @@ public class AboutActivity extends AppCompatActivity {
     private void rulePage() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundResource(R.drawable.header3);
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,13 +88,9 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_about);
-        toolBarTxt.setText(R.string.about_rule);
-
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.rule_content);
         contentTxt.setText(Html.fromHtml(content));
-//        contentTxt.setMovementMethod(new ScrollingMovementMethod());
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
         nextBtn.setBackgroundResource(R.drawable.selecter_btn_ok);
