@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class SurveyActivity extends AppCompatActivity {
 
-    private String tourSelect;
+    private int tourIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +26,13 @@ public class SurveyActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.survey_title);
 
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            tourSelect = extras.getString("EXTRA_SESSION_ID");
-        }
+        Bundle bundle = this.getIntent().getExtras();
+        tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
 
         Dialog dialog = new Dialog(SurveyActivity.this, R.style.selectorDialog);
         dialog.setContentView(R.layout.alertdialog_survey);
 
-        WindowManager.LayoutParams lp=dialog.getWindow().getAttributes();
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount=0.2f;
         dialog.getWindow().setAttributes(lp);
 
@@ -50,7 +48,9 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
-                intent.putExtra("EXTRA_SESSION_ID", tourSelect);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

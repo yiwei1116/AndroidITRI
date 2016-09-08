@@ -18,12 +18,6 @@ import android.widget.TextView;
 
 public class TourActivity extends AppCompatActivity {
 
-    private final static int[] IMG_SOURCE = {
-            R.drawable.tour_designer,
-            R.drawable.tour_robot,
-            R.drawable.tour_housekeeper
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +51,6 @@ public class TourActivity extends AppCompatActivity {
             }
         });
 
-//        tourSelect();
-
     }
 
     @Override
@@ -69,25 +61,28 @@ public class TourActivity extends AppCompatActivity {
     }
 
     private void tourSelect() {
-        TourPagerAdapter tourPagerAdapter = new TourPagerAdapter(this);
-
         TourViewPager tourViewPager = (TourViewPager) findViewById(R.id.viewpager_tour);
+
+        TourPagerAdapter tourPagerAdapter = new TourPagerAdapter(this, tourViewPager);
+
         tourViewPager.setAdapter(tourPagerAdapter);
     }
 
     class TourPagerAdapter extends PagerAdapter {
 
-        Context mContext;
-        LayoutInflater mLayoutInflater;
+        private Context mContext;
+        private LayoutInflater mLayoutInflater;
+        private TourViewPager tourViewPager;
 
-        public TourPagerAdapter(Context context) {
-            mContext = context;
-            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        public TourPagerAdapter(Context context, TourViewPager tourViewPager) {
+            this.mContext = context;
+            this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.tourViewPager = tourViewPager;
         }
 
         @Override
         public int getCount() {
-            return IMG_SOURCE.length;
+            return MainActivity.TOUR_IMG.length;
         }
 
         @Override
@@ -100,7 +95,7 @@ public class TourActivity extends AppCompatActivity {
             View itemView = mLayoutInflater.inflate(R.layout.viewpager_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.img_vpager_item);
-            imageView.setImageResource(IMG_SOURCE[position]);
+            imageView.setImageResource(MainActivity.TOUR_IMG[position]);
 
             container.addView(itemView);
 
@@ -110,10 +105,10 @@ public class TourActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(TourActivity.this, SurveyActivity.class);
-                    intent.putExtra("EXTRA_SESSION_ID", position);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(MainActivity.GET_TOUR_INDEX, tourViewPager.getCurrentItem());
+                    intent.putExtras(bundle);
                     startActivity(intent);
-//                    finish();
                 }
             });
 

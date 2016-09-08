@@ -5,8 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    public final static String GET_TOUR_INDEX = "GET_TOUR_INDEX";
+    public final static int[] TOUR_IMG = {
+            R.drawable.tour_designer,
+            R.drawable.tour_robot,
+            R.drawable.tour_housekeeper
+    };
 
-    private String tourSelect;
+    private int tourSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,11 +20,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            tourSelect = extras.getString("EXTRA_SESSION_ID");
-        }
+        Bundle bundle = this.getIntent().getExtras();
+        tourSelect = bundle.getInt(GET_TOUR_INDEX);
+
+        toolbar.setTitle(String.valueOf(tourSelect));
     }
 
 }
