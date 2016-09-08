@@ -3,20 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@drawable/survey_popupdialog"
     android:gravity="center_horizontal">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_confirm"
-        android:layout_marginTop="320dp"
-        android:id="@+id/btn_confirm_alertdialog_survey"
-        android:visibility="invisible"/>
+        android:layout_marginTop="260dp"
+        android:id="@+id/btn_confirm_alertdialog_survey" />
 
     <Button
         android:layout_width="wrap_content"
@@ -24,7 +19,6 @@
         android:background="@drawable/btn_skip"
         android:id="@+id/btn_skip_alertdialog_survey"
         android:layout_below="@+id/btn_confirm_alertdialog_survey"
-        android:layout_marginTop="10dp"
-        android:visibility="invisible"/>
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

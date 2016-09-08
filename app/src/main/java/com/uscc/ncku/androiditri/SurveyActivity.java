@@ -1,13 +1,12 @@
 package com.uscc.ncku.androiditri;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -30,14 +29,14 @@ public class SurveyActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             tourSelect = extras.getString("EXTRA_SESSION_ID");
-            //The key argument here must match that used in the other activity
         }
 
-        LayoutInflater inflater = this.getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(inflater.inflate(R.layout.alertdialog_survey, null));
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
+        Dialog dialog = new Dialog(SurveyActivity.this, R.style.selectorDialog);
+        dialog.setContentView(R.layout.alertdialog_survey);
+
+        WindowManager.LayoutParams lp=dialog.getWindow().getAttributes();
+        lp.dimAmount=0.2f;
+        dialog.getWindow().setAttributes(lp);
 
         Button confirmBtn = (Button) dialog.findViewById(R.id.btn_confirm_alertdialog_survey);
         Button skipBtn = (Button) dialog.findViewById(R.id.btn_skip_alertdialog_survey);
@@ -52,13 +51,11 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 intent.putExtra("EXTRA_SESSION_ID", tourSelect);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-//                finish();
             }
         });
-        dialog.show();
 
+        dialog.show();
 
     }
 
