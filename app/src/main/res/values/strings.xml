@@ -2,12 +2,8 @@
     <string name="app_name">AndroidITRI</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="nothing"></string>
-    <string name="about_origin">展館起源</string>
-    <string name="about_tour">導覧簡介</string>
-    <string name="about_rule">自動導覧規定</string>
     <string name="tour_title">請選擇導覧人員</string>
     <string name="survey_title">問卷</string>
-
     <string name="origin_content"><![CDATA[內政部建築研究所長期推動「智慧建築」，民國97年創建「LIVING 3.0 智慧化居住空間展示中心」，作為國內智慧建築教育訓練基地，並以「人性關懷、創新科技、前瞻生活、環保節能、智慧永續」為主題，應用情境與示範系統建置，提供國人體驗智慧化居住及辦公空間與多種情境模式，創造前瞻優質的生活環境與品質之願景。]]></string>
     <string name="tour_content"><![CDATA[本展示中心的參訪範圍有2層樓，1F展示居住空間情境，2F展示辦公空間情境。總共引進200多項的智慧型設備，合計有90多家國內廠商參與，其中95%的設備現今都已產品化發展。部分情境應用與設備，歡迎來賓實際動手體驗。\n\n導覽系統裡有3個導覽人物，來賓可依喜好自由選擇，將由他陪伴您進行自動導覽之旅，並認識、體驗智慧生活。]]></string>
     <string name="rule_content"><![CDATA[為維護所有來賓的權益及導覽品質，提醒您遵守以下規定：<br>
@@ -17,4 +13,14 @@
     </string>
     <string name="title_activity_tour">TourActivity</string>
     <string name="title_activity_survey">SurveyActivity</string>
+    <string name="one_ninth">1/9</string>
+    <string name="two_ninth">2/9</string>
+    <string name="three_ninth">3/9</string>
+    <string name="four_ninth">4/9</string>
+    <string name="five_ninth">5/9</string>
+    <string name="six_ninth">6/9</string>
+    <string name="seven_ninth">7/9</string>
+    <string name="eight_ninth">8/9</string>
+    <string name="night_ninth">9/9</string>
+    <string name="survey_1_gender">您的性別</string>
 </resources>
