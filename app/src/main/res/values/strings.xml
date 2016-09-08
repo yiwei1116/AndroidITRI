@@ -23,4 +23,5 @@
     <string name="eight_ninth">8/9</string>
     <string name="night_ninth">9/9</string>
     <string name="survey_1_gender">您的性別</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

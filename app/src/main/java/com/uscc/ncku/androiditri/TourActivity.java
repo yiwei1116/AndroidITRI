@@ -111,9 +111,9 @@ public class TourActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(TourActivity.this, SurveyActivity.class);
                     intent.putExtra("EXTRA_SESSION_ID", position);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
             });
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_confirm"
+        android:layout_marginTop="320dp"
+        android:id="@+id/btn_confirm_alertdialog_survey"
+        android:visibility="invisible"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_skip"
+        android:id="@+id/btn_skip_alertdialog_survey"
+        android:layout_below="@+id/btn_confirm_alertdialog_survey"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
