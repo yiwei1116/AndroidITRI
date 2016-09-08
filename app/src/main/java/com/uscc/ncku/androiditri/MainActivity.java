@@ -18,14 +18,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Bundle bundle = this.getIntent().getExtras();
         tourSelect = bundle.getInt(GET_TOUR_INDEX);
-
-        toolbar.setTitle(String.valueOf(tourSelect));
     }
 
 }

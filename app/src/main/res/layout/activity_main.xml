@@ -8,11 +8,17 @@
     tools:context="com.uscc.ncku.androiditri.MainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@drawable/header_empty"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:fitsSystemWindows="false"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:layout_marginTop="@dimen/toolbar_layout_marginTop"
+        android:paddingTop="@dimen/toolbar_paddingTop" />
 
     <include layout="@layout/content_main" />
 
