@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="toolbar_layout_marginTop">-25dp</dimen>
     <dimen name="toolbar_paddingTop">25dp</dimen>
-    <dimen name="toolbar_content_paddingTop">60dp</dimen>
+    <dimen name="toolbar_content_paddingTop">56dp</dimen>
     <dimen name="main_btn_outside_width">56dp</dimen>
     <dimen name="main_btn_outside_height">40dp</dimen>
     <dimen name="main_btn_inside_width">56dp</dimen>

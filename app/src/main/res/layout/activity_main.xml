@@ -7,6 +7,8 @@
     android:fitsSystemWindows="true"
     tools:context="com.uscc.ncku.androiditri.MainActivity">
 
+    <include layout="@layout/content_main" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
@@ -19,7 +21,5 @@
         app:contentInsetStart="0dp"
         android:layout_marginTop="@dimen/toolbar_layout_marginTop"
         android:paddingTop="@dimen/toolbar_paddingTop" />
-
-    <include layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>
