@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-    public final static String GET_TOUR_INDEX = "GET_TOUR_INDEX";
-    public final static int[] TOUR_IMG = {
+    public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
+    public static final int[] TOUR_IMG = {
             R.drawable.tour_designer,
             R.drawable.tour_robot,
             R.drawable.tour_housekeeper
