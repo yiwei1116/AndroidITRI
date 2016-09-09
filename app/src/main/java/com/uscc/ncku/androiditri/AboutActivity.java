@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
@@ -25,6 +26,9 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void originPage() {
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0,0);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundResource(R.drawable.header_empty);
@@ -54,6 +58,9 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void guidePage() {
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0,0);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundResource(R.drawable.header_empty);
@@ -83,6 +90,9 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void rulePage() {
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView.smoothScrollTo(0,0);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundResource(R.drawable.header_empty);
