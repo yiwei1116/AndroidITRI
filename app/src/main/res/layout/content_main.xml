@@ -37,20 +37,20 @@
         android:paddingBottom="5dp"
         android:id="@+id/llayout_button_main">
 
-        <Button
+        <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_outside_width"
             android:layout_height="@dimen/main_btn_outside_height"
             android:background="@drawable/btn_main_info_disabled"
             android:id="@+id/btn_info_main" />
 
-        <Button
+        <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_inside_width"
             android:layout_height="@dimen/main_btn_inside_height"
-            android:background="@drawable/btn_main_diary_normal"
+            android:background="@drawable/btn_main_diary_disabled"
             android:layout_marginLeft="15dp"
             android:id="@+id/btn_dairy_main" />
 
-        <Button
+        <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_circle"
             android:layout_height="@dimen/main_btn_circle"
             android:background="@drawable/btn_main_map_disabled"
@@ -59,14 +59,14 @@
             android:layout_marginRight="15dp"
             android:id="@+id/btn_map_main" />
 
-        <Button
+        <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_inside_width"
             android:layout_height="@dimen/main_btn_inside_height"
             android:background="@drawable/btn_main_sound_disabled"
             android:layout_marginRight="15dp"
             android:id="@+id/btn_sound_main" />
 
-        <Button
+        <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_outside_width"
             android:layout_height="@dimen/main_btn_outside_height"
             android:background="@drawable/btn_main_font_disabled"
