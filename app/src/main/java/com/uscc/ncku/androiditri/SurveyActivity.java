@@ -29,7 +29,7 @@ public class SurveyActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
 
-        Dialog dialog = new Dialog(SurveyActivity.this, R.style.selectorDialog);
+        final Dialog dialog = new Dialog(SurveyActivity.this, R.style.selectorDialog);
         dialog.setContentView(R.layout.alertdialog_survey);
 
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
@@ -42,6 +42,8 @@ public class SurveyActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setNavigator();
+                dialog.dismiss();
             }
         });
         skipBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +58,10 @@ public class SurveyActivity extends AppCompatActivity {
         });
 
         dialog.show();
+
+    }
+
+    private void setNavigator() {
 
     }
 

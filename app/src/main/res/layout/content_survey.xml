@@ -25,20 +25,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/one_ninth"
-            android:textColor="@color/survey_page_color"/>
+            android:textColor="@color/survey_page_color"
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/survey_1_gender"/>
+            android:text="@string/survey1_gender"/>
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_question_background"
+            android:text="@string/survey_gender_female"/>
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_question_background"
+            android:text="@string/survey_gender_male"/>
 
     </LinearLayout>
 

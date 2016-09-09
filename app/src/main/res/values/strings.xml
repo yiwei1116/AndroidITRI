@@ -6,7 +6,7 @@
     <string name="guide_introduction">導覧簡介</string>
     <string name="rules_automated_guid">自動導覧規定</string>
     <string name="tour_title">請選擇導覧人員</string>
-    <string name="survey_title">參訪者資料</string>
+    <string name="survey_title">問卷</string>
     <string name="origin_content"><![CDATA[內政部建築研究所長期推動「智慧建築」，期盼透過建築與資通訊科技技術的整合，以達成人性化空間、提昇生活環境品質之目的。
     \n\n為了讓國人瞭解與輕鬆體驗智慧化生活，建研所於民國97年創建「LIVING 3.0 智慧化居住空間展示中心」，作為國內智慧建築教育訓練基地，以推廣智慧建築概念、提供功能體驗，進而開創國內資通訊科技產業異業結合的新契機。
     \n\n本展示中心以「人性關懷、創新科技、前瞻生活、環保節能、智慧永續」為主題，整合了多元的智慧化科技、創新的資通訊主動感知及控制技術，並應用情境與示範系統的建置，提供國人體驗智慧化居住及辦公空間與多種情境模式，及創造前瞻優質的生活環境與品質之願景。]]></string>
@@ -27,9 +27,11 @@
     <string name="seven_ninth" translatable="false">7/9</string>
     <string name="eight_ninth" translatable="false">8/9</string>
     <string name="night_ninth" translatable="false">9/9</string>
-    <string name="survey_1_gender">您的性別</string>
+    <string name="survey1_gender">您的性別</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="survey_gender_female">女</string>
+    <string name="survey_gender_male">男</string>
 </resources>
