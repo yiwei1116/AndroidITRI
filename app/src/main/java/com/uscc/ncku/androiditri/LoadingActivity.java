@@ -21,8 +21,6 @@ public class LoadingActivity extends AppCompatActivity {
     /* loading level every time period from 0 to 10000 */
     public static final int LOADING_LEVEL = 200;
 
-    private ClipDrawable drawable;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +36,7 @@ public class LoadingActivity extends AppCompatActivity {
     private void logoLoading() {
         ImageView imgLoading = (ImageView) findViewById(R.id.img_loading);
 
-        drawable = (ClipDrawable) imgLoading.getDrawable();
+        final ClipDrawable drawable = (ClipDrawable) imgLoading.getDrawable();
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -87,10 +85,7 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void dataLoading() {
         ImageView imgText = (ImageView) findViewById(R.id.img_text_loading);
-        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
-
         imgText.setImageResource(R.drawable.loading_text);
-        imgBar.setBackgroundResource(R.drawable.loading_line_base);
 
         final Animation animation = new AlphaAnimation(1, (float) 0.3);
         animation.setDuration(1000);
@@ -102,16 +97,38 @@ public class LoadingActivity extends AppCompatActivity {
         new DataLoadingAsyncTask().execute();
     }
 
-    class DataLoadingAsyncTask extends AsyncTask<Void, Void, Void> {
+    class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
+        private ClipDrawable drawable;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+
+            imgBar.setBackgroundResource(R.drawable.loading_line_base);
+            imgBar.setImageResource(R.drawable.clip_loading_bar);
+
+            drawable = (ClipDrawable) imgBar.getDrawable();
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
+            for (int i = 0; i < 10000; i+=LOADING_LEVEL) {
+                publishProgress(i);
+                try {
+                    Thread.sleep(LOADING_PERIOD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             return null;
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
+            drawable.setLevel(values[0]);
         }
 
         @Override
