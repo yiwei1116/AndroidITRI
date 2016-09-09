@@ -87,8 +87,8 @@ public class LoadingActivity extends AppCompatActivity {
         ImageView imgText = (ImageView) findViewById(R.id.img_text_loading);
         imgText.setImageResource(R.drawable.loading_text);
 
-        final Animation animation = new AlphaAnimation(1, (float) 0.3);
-        animation.setDuration(1000);
+        final Animation animation = new AlphaAnimation(1, (float) 0.2);
+        animation.setDuration(800);
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.REVERSE);

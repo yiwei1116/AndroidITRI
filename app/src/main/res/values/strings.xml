@@ -2,6 +2,9 @@
     <string name="app_name">AndroidITRI</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="nothing"></string>
+    <string name="origin_exhibition">展館起源</string>
+    <string name="guide_introduction">導覧簡介</string>
+    <string name="rules_automated_guid">自動導覧規定</string>
     <string name="tour_title">請選擇導覧人員</string>
     <string name="survey_title">問卷</string>
     <string name="origin_content"><![CDATA[內政部建築研究所長期推動「智慧建築」，民國97年創建「LIVING 3.0 智慧化居住空間展示中心」，作為國內智慧建築教育訓練基地，並以「人性關懷、創新科技、前瞻生活、環保節能、智慧永續」為主題，應用情境與示範系統建置，提供國人體驗智慧化居住及辦公空間與多種情境模式，創造前瞻優質的生活環境與品質之願景。]]></string>

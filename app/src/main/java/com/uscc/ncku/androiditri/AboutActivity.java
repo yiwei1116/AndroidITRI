@@ -36,6 +36,9 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
+        TextView titleTxt = (TextView) findViewById(R.id.txt_toolbar_about);
+        titleTxt.setText(R.string.origin_exhibition);
+
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.origin_content);
         contentTxt.setText(content);
@@ -45,15 +48,15 @@ public class AboutActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tourPage();
+                guidePage();
             }
         });
     }
 
-    private void tourPage() {
+    private void guidePage() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundResource(R.drawable.header2);
+        toolbar.setBackgroundResource(R.drawable.header_empty);
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +64,9 @@ public class AboutActivity extends AppCompatActivity {
                 originPage();
             }
         });
+
+        TextView titleTxt = (TextView) findViewById(R.id.txt_toolbar_about);
+        titleTxt.setText(R.string.guide_introduction);
 
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.tour_content);
@@ -79,14 +85,17 @@ public class AboutActivity extends AppCompatActivity {
     private void rulePage() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundResource(R.drawable.header3);
+        toolbar.setBackgroundResource(R.drawable.header_empty);
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tourPage();
+                guidePage();
             }
         });
+
+        TextView titleTxt = (TextView) findViewById(R.id.txt_toolbar_about);
+        titleTxt.setText(R.string.rules_automated_guid);
 
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.rule_content);
