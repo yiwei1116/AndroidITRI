@@ -16,14 +16,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class TourActivity extends AppCompatActivity {
+public class TourSelectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tour);
+        setContentView(R.layout.activity_tour_select);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tour);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tour_select);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -35,10 +35,10 @@ public class TourActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_tour);
+        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_tour_select);
         toolBarTxt.setText(R.string.tour_title);
 
-        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour);
+        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour_select);
         btnUnderstand.setBackgroundResource(R.drawable.selecter_btn_understand);
         btnUnderstand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class TourActivity extends AppCompatActivity {
                 Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
                 confirmBtn.setVisibility(View.VISIBLE);
 
-                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour);
+                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour_select);
                 frameLayout.setVisibility(View.INVISIBLE);
             }
         });
@@ -61,7 +61,7 @@ public class TourActivity extends AppCompatActivity {
     }
 
     private void tourSelect() {
-        TourViewPager tourViewPager = (TourViewPager) findViewById(R.id.viewpager_tour);
+        TourViewPager tourViewPager = (TourViewPager) findViewById(R.id.viewpager_tour_select);
 
         TourPagerAdapter tourPagerAdapter = new TourPagerAdapter(this, tourViewPager);
 
@@ -104,7 +104,7 @@ public class TourActivity extends AppCompatActivity {
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(TourActivity.this, SurveyActivity.class);
+                    Intent intent = new Intent(TourSelectActivity.this, SurveyActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt(MainActivity.GET_TOUR_INDEX, tourViewPager.getCurrentItem());
                     intent.putExtras(bundle);

@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/tour_background"
-    tools:context="com.uscc.ncku.androiditri.TourActivity">
+    android:background="@drawable/tour_select_background"
+    tools:context=".TourSelectActivity">
 
-    <include layout="@layout/content_tour" />
+    <include layout="@layout/content_tour_select" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_tour"
+        android:id="@+id/toolbar_tour_select"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#00000000" >
@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_toolbar_tour"
+            android:id="@+id/txt_toolbar_tour_select"
             android:layout_gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/abc_text_size_title_material_toolbar" />
@@ -30,21 +30,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/flayout_tour"
+        android:id="@+id/flayout_tour_select"
         android:layout_centerInParent="true"
         android:clickable="true">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_understand_tour"
+            android:id="@+id/btn_understand_tour_select"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="30dp" />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/img_coach_tour"
+            android:id="@+id/img_coach_tour_select"
             android:alpha="0.98"
-            android:background="@drawable/tour_coachmarks"/>
+            android:background="@drawable/tour_select_coachmarks"/>
     </FrameLayout>
 
 </RelativeLayout>

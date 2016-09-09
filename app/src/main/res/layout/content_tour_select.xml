@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.uscc.ncku.androiditri.TourActivity"
-    tools:showIn="@layout/activity_tour"
+    tools:context=".TourSelectActivity"
+    tools:showIn="@layout/activity_tour_select"
     android:orientation="vertical">
 
     <com.uscc.ncku.androiditri.util.TourViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/viewpager_tour"
+        android:id="@+id/viewpager_tour_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="99">
@@ -20,7 +20,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewpager_tour"
+        android:layout_below="@+id/viewpager_tour_select"
         android:id="@+id/btn_confirm_tour"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"

@@ -33,7 +33,7 @@
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
-            android:name=".TourActivity"
+            android:name=".TourSelectActivity"
             android:label="@string/title_activity_tour"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
