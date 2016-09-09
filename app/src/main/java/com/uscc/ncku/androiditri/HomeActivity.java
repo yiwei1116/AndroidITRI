@@ -24,6 +24,13 @@ public class HomeActivity extends AppCompatActivity {
         btnCht.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Locale locale = new Locale("default");
+                Resources res = getResources();
+                DisplayMetrics dm = res.getDisplayMetrics();
+                Configuration conf = res.getConfiguration();
+                conf.locale = locale;
+                res.updateConfiguration(conf, dm);
+
                 Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
