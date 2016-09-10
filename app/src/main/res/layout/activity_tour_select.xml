@@ -15,7 +15,7 @@
         android:id="@+id/toolbar_tour_select"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#00000000" >
+        android:background="@android:color/transparent" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
             android:id="@+id/txt_toolbar_tour_select"
             android:layout_gravity="center"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/abc_text_size_title_material_toolbar" />
+            android:textSize="@dimen/title_font_size" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/img_coach_tour_select"
-            android:alpha="0.98"
             android:background="@drawable/tour_select_coachmarks"
             android:layout_gravity="center_horizontal" />
 
@@ -47,7 +46,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_understand_tour_select"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="30dp"
+            android:text="@string/ok"
+            android:textColor="@drawable/selecter_btn_black_white_txt_color"
+            android:textSize="@dimen/btn_font_size"
+            android:background="@drawable/selecter_btn_black_white"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,9 +58,8 @@
             android:text="@string/tour_select_guid"
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="320dp"
-            android:alpha="0.98"
-            android:textSize="@dimen/abc_text_size_headline_material" />
+            android:layout_marginTop="310dp"
+            android:textSize="@dimen/abc_text_size_title_material" />
 
     </FrameLayout>
 

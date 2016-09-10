@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/btn_nextpage_active" />
+        android:drawable="@drawable/btn_blue_fill" />
     <item
-        android:drawable="@drawable/btn_nextpage_inactive" />
+        android:drawable="@drawable/btn_blue_stroke" />
 </selector>

@@ -20,6 +20,6 @@
         android:layout_alignParentStart="false"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/abc_text_size_headline_material"
-        android:layout_marginBottom="90dp" />
+        android:layout_marginBottom="@dimen/vpager_item_text_merginbutton" />
 
 </RelativeLayout>

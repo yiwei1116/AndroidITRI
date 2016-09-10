@@ -28,7 +28,7 @@
             android:id="@+id/txt_toolbar_survey"
             android:layout_gravity="center"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/abc_text_size_title_material_toolbar" />
+            android:textSize="@dimen/title_font_size" />
 
     </android.support.v7.widget.Toolbar>
 

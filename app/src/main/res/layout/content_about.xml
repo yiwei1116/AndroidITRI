@@ -43,6 +43,9 @@
         android:id="@+id/btn_next_about"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/selecter_btn_blue_stroke"
+        android:textColor="@drawable/selecter_btn_blue_stroke_txt_color"
+        android:textSize="@dimen/btn_font_size"
         android:layout_marginBottom="20dp" />
 
 </LinearLayout>
