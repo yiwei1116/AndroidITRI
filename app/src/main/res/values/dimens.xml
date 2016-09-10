@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_layout_marginTop">-25dp</dimen>
+    <dimen name="toolbar_paddingTop">25dp</dimen>
+    <dimen name="toolbar_content_paddingTop">56dp</dimen>
+    <dimen name="main_btn_outside_width">56dp</dimen>
+    <dimen name="main_btn_outside_height">40dp</dimen>
+    <dimen name="main_btn_inside_width">56dp</dimen>
+    <dimen name="main_btn_inside_height">42dp</dimen>
+    <dimen name="main_btn_circle">58dp</dimen>
+</resources>

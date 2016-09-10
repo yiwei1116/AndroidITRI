@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.uscc.ncku.androiditri.MainActivity"
+    tools:showIn="@layout/activity_main"
+    android:paddingTop="@dimen/toolbar_content_paddingTop">
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/flayout_fragment_continer_main"
+        android:layout_above="@+id/llayout_button_main"
+        android:layout_marginBottom="-6dp">
+
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_bottomnavibg"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:layout_marginBottom="-8dp"
+        android:id="@+id/img_btnnavagitor_main" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp"
+        android:id="@+id/llayout_button_main">
+
+        <com.uscc.ncku.androiditri.util.MainButton
+            android:layout_width="@dimen/main_btn_outside_width"
+            android:layout_height="@dimen/main_btn_outside_height"
+            android:background="@drawable/btn_main_info_disabled"
+            android:id="@+id/btn_info_main" />
+
+        <com.uscc.ncku.androiditri.util.MainButton
+            android:layout_width="@dimen/main_btn_inside_width"
+            android:layout_height="@dimen/main_btn_inside_height"
+            android:background="@drawable/btn_main_diary_disabled"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/btn_dairy_main" />
+
+        <com.uscc.ncku.androiditri.util.MainButton
+            android:layout_width="@dimen/main_btn_circle"
+            android:layout_height="@dimen/main_btn_circle"
+            android:background="@drawable/btn_main_map_disabled"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/btn_map_main" />
+
+        <com.uscc.ncku.androiditri.util.MainButton
+            android:layout_width="@dimen/main_btn_inside_width"
+            android:layout_height="@dimen/main_btn_inside_height"
+            android:background="@drawable/btn_main_sound_disabled"
+            android:layout_marginRight="15dp"
+            android:id="@+id/btn_sound_main" />
+
+        <com.uscc.ncku.androiditri.util.MainButton
+            android:layout_width="@dimen/main_btn_outside_width"
+            android:layout_height="@dimen/main_btn_outside_height"
+            android:background="@drawable/btn_main_font_disabled"
+            android:id="@+id/btn_font_main" />
+
+    </LinearLayout>
+
+</RelativeLayout>
