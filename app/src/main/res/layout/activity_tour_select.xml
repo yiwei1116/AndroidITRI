@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_toolbar_tour_select"
             android:layout_gravity="center"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/abc_text_size_title_material_toolbar" />
 
     </android.support.v7.widget.Toolbar>
@@ -31,20 +31,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/flayout_tour_select"
-        android:layout_centerInParent="true"
-        android:clickable="true">
+        android:clickable="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_coach_tour_select"
+            android:alpha="0.98"
+            android:background="@drawable/tour_select_coachmarks"
+            android:layout_gravity="center_horizontal" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_understand_tour_select"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="30dp" />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/img_coach_tour_select"
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tour_select_guid"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="320dp"
             android:alpha="0.98"
-            android:background="@drawable/tour_select_coachmarks"/>
+            android:textSize="@dimen/abc_text_size_headline_material" />
+
     </FrameLayout>
 
 </RelativeLayout>

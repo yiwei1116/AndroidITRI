@@ -27,6 +27,9 @@
         android:layout_weight="1"
         android:layout_marginBottom="30dp"
         android:background="@android:color/transparent"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/abc_text_size_subhead_material"
         android:visibility="invisible"/>
 
 

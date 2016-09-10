@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:background="@drawable/header_empty"
+        android:background="@drawable/header_blank"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         android:fitsSystemWindows="false"
         app:contentInsetLeft="0dp"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_toolbar_survey"
             android:layout_gravity="center"
-            android:textColor="@color/colorWhite"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/abc_text_size_title_material_toolbar" />
 
     </android.support.v7.widget.Toolbar>

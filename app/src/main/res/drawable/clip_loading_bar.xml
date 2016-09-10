@@ -2,5 +2,5 @@
 <clip
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:clipOrientation="horizontal"
-    android:drawable="@drawable/loading_bar_blue"
+    android:drawable="@drawable/loadingline_blue"
     android:gravity="left"/>

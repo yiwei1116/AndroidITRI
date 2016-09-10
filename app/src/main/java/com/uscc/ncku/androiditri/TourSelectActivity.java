@@ -13,10 +13,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TourSelectActivity extends AppCompatActivity {
+
+    private static final int[] TOUR_IMG = {
+            R.drawable.tour_select_designer,
+            R.drawable.tour_select_robot,
+            R.drawable.tour_select_housekeeper
+    };
+    private static final int[] TOUR_TXT = {
+            R.string.tour_select_designer,
+            R.string.tour_select_robot,
+            R.string.tour_select_houskeeper
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +93,7 @@ public class TourSelectActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return MainActivity.TOUR_IMG.length;
+            return TOUR_IMG.length;
         }
 
         @Override
@@ -95,7 +106,10 @@ public class TourSelectActivity extends AppCompatActivity {
             View itemView = mLayoutInflater.inflate(R.layout.viewpager_item, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.img_vpager_item);
-            imageView.setImageResource(MainActivity.TOUR_IMG[position]);
+            imageView.setImageResource(TOUR_IMG[position]);
+
+            TextView textView = (TextView) itemView.findViewById(R.id.txt_vpager_item);
+            textView.setText(TOUR_TXT[position]);
 
             container.addView(itemView);
 
@@ -117,7 +131,7 @@ public class TourSelectActivity extends AppCompatActivity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+            container.removeView((RelativeLayout) object);
         }
 
         @Override

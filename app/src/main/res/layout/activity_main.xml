@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:background="@drawable/header_empty"
+        android:background="@drawable/header_blank"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         android:fitsSystemWindows="false"
         app:contentInsetLeft="0dp"

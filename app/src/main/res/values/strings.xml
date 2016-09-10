@@ -16,6 +16,11 @@
     <h5><font color=#303F9F>關於導覽平板：</font></h5>1.平板電腦僅供自動導覽使用，無開放連外網路；並請勿透過任何數位工具，上傳、下載任何數位資料。<br><br>2.平板電腦有內建定位引擎，請勿攜出展場範圍(如地圖)，且都有。如需至洗手間，請將平板電腦交給服務台保管；若不慎攜離展場，展館人員會主動與您連繫。<br><br>3.自動導覽結束時，記得回到服務台辦理歸還、取回證件，並確認平板電腦功能正常。\n
     <h5><font color=#303F9F>關於展場設施設備：</font></h5>1.展場中的設施、設備若有標示「可操作」者，歡迎來賓現場操作、體驗。<br><br>2.自動導覽過程中，若因個人因素而造成展場中的設施、設備嚴重損害，來賓須承擔部分修繕責任。]]>
     </string>
+    <string name="tour_select_guid">左右滑動即可\n變改導覧人員</string>
+    <string name="tour_select_designer">設計師</string>
+    <string name="tour_select_robot">機器人</string>
+    <string name="tour_select_houskeeper">管家</string>
+    <string name="confirm">確定</string>
     <string name="title_activity_tour" translatable="false">TourActivity</string>
     <string name="title_activity_survey" translatable="false">SurveyActivity</string>
     <string name="one_ninth" translatable="false">1/9</string>
