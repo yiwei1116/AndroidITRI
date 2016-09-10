@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -50,12 +51,6 @@ public class MainActivity extends AppCompatActivity {
         soundBtn.setOnClickListener(new ButtonListener(this));
         fontBtn.setOnClickListener(new ButtonListener(this));
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         mapBtn.setBackgroundResource(R.drawable.btn_main_map_active);
         diaryBtn.setBackgroundResource(R.drawable.btn_main_diary_normal);
 
@@ -71,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.flayout_fragment_continer_main, mapFragment);
         transaction.commit();
+
     }
 
     class ButtonListener implements View.OnClickListener {
