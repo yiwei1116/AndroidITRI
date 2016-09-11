@@ -83,13 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_info_main:
                     break;
                 case R.id.btn_diary_main:
-                    if (diaryBtn.getBackgroundId() == R.drawable.btn_main_diary_normal) {
+                    if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         changeFragment(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, diaryFragment);
                     }
                     break;
                 case R.id.btn_map_main:
-                    if (mapBtn.getBackgroundId() == R.drawable.btn_main_map_normal) {
+                    if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         changeFragment(mapBtn, R.drawable.btn_main_map_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, mapFragment);
                     }
@@ -105,15 +105,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeFragment(MainButton activeBtn, int id) {
-        if (diaryBtn.getBackgroundId() == R.drawable.btn_main_diary_active) {
-            diaryBtn.setBackgroundResource(R.drawable.btn_main_diary_normal);
+        if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
+            diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         }
 
-        if (mapBtn.getBackgroundId() == R.drawable.btn_main_map_active) {
-            mapBtn.setBackgroundResource(R.drawable.btn_main_map_normal);
+        if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_active)) {
+            mapBtn.setNormal(R.drawable.btn_main_map_normal);
         }
 
-        activeBtn.setBackgroundResource(id);
+        activeBtn.setActive(id);
 
     }
 

@@ -1,8 +1,12 @@
 package com.uscc.ncku.androiditri.util;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.Button;
+
+import com.uscc.ncku.androiditri.R;
 
 /**
  * Created by 振凱 on 9月09日.
@@ -28,7 +32,15 @@ public class MainButton extends Button{
         bgId = resId;
     }
 
-    public int getBackgroundId() {
-        return bgId;
+    public boolean isBackgroundEqual(int targetID) {
+        return bgId == targetID;
+    }
+
+    public void setActive(int bgId) {
+        setBackgroundResource(bgId);
+    }
+
+    public void setNormal(int bgId) {
+        setBackgroundResource(bgId);
     }
 }
