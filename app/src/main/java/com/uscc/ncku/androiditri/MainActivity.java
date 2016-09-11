@@ -5,8 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         tourSelect = bundle.getInt(GET_TOUR_INDEX);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
-        diaryBtn = (MainButton) findViewById(R.id.btn_dairy_main);
+        diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
         mapBtn = (MainButton) findViewById(R.id.btn_map_main);
         soundBtn = (MainButton) findViewById(R.id.btn_sound_main);
         fontBtn = (MainButton) findViewById(R.id.btn_font_main);
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btn_info_main:
                     break;
-                case R.id.btn_dairy_main:
+                case R.id.btn_diary_main:
                     if (diaryBtn.getBackgroundId() == R.drawable.btn_main_diary_normal) {
                         changeFragment(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, diaryFragment);

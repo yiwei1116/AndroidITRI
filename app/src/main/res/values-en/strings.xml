@@ -21,4 +21,9 @@
     <string name="tour_select_designer">Designer</string>
     <string name="tour_select_houskeeper">Houskeeper</string>
     <string name="tour_select_robot">Robot</string>
+    <string name="main_diary">Diary</string>
+    <string name="main_font">Font</string>
+    <string name="main_info">Info</string>
+    <string name="main_sound">Sound</string>
+    <string name="tour_select_guid">Change tour guide with\nsliding left or right</string>
 </resources>
