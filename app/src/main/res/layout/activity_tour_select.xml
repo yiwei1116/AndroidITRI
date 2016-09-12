@@ -15,7 +15,11 @@
         android:id="@+id/toolbar_tour_select"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/transparent" >
+        android:background="@android:color/transparent"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:fitsSystemWindows="false"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
 
         <TextView
             android:layout_width="wrap_content"

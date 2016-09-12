@@ -9,7 +9,7 @@
     <dimen name="main_btn_width">72dp</dimen>
     <dimen name="main_btn_height">57dp</dimen>
     <dimen name="main_btn_circle">58dp</dimen>
-    <dimen name="vpager_item_text_merginbutton">65dp</dimen>
+    <dimen name="vpager_item_text_mergintop">164dp</dimen>
     <dimen name="title_font_size">22sp</dimen>
     <dimen name="btn_font_size">18sp</dimen>
     <dimen name="main_btn_txt">12sp</dimen>
