@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="survey_page_color">#888888</color>
-    <color name="btn_font_color_inactive">#4f97c4</color>
+    <color name="btn_font_color_blue">#4a90e2</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="btn_font_color_grey">#D8D8D8</color>
 </resources>

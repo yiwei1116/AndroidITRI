@@ -49,21 +49,7 @@ public class MainActivity extends AppCompatActivity {
         soundBtn.setOnClickListener(new ButtonListener(this));
         fontBtn.setOnClickListener(new ButtonListener(this));
 
-        mapBtn.setBackgroundResource(R.drawable.btn_main_map_active);
-        diaryBtn.setBackgroundResource(R.drawable.btn_main_diary_normal);
-
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance("a", "b");
-        }
-
-        if (diaryFragment == null) {
-            diaryFragment = DiaryFragment.newInstance("a", "b");
-        }
-
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.add(R.id.flayout_fragment_continer_main, mapFragment);
-        transaction.commit();
+        initFragment();
 
     }
 
@@ -84,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_diary_main:
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
-                        changeFragment(diaryBtn, R.drawable.btn_main_diary_active);
+                        setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, diaryFragment);
                     }
                     break;
                 case R.id.btn_map_main:
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
-                        changeFragment(mapBtn, R.drawable.btn_main_map_active);
+                        setBtnActive(mapBtn, R.drawable.btn_main_map_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, mapFragment);
                     }
                     break;
@@ -104,7 +90,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void changeFragment(MainButton activeBtn, int id) {
+    private void initFragment() {
+        mapBtn.setActive(R.drawable.btn_main_map_active);
+        diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
+        infoBtn.setDisable(R.drawable.btn_main_info_disabled);
+        soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
+        fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance("a", "b");
+        }
+
+        if (diaryFragment == null) {
+            diaryFragment = DiaryFragment.newInstance("a", "b");
+        }
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.add(R.id.flayout_fragment_continer_main, mapFragment);
+        transaction.commit();
+    }
+
+    private void setBtnActive(MainButton activeBtn, int bgId) {
         if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
             diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         }
@@ -113,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
             mapBtn.setNormal(R.drawable.btn_main_map_normal);
         }
 
-        activeBtn.setActive(id);
-
+        activeBtn.setActive(bgId);
     }
 
 }

@@ -38,9 +38,19 @@ public class MainButton extends Button{
 
     public void setActive(int bgId) {
         setBackgroundResource(bgId);
+        int color = (bgId == R.drawable.btn_main_map_active) ?
+                getResources().getColor(R.color.colorWhite) :
+                getResources().getColor(R.color.btn_font_color_blue);
+        this.setTextColor(color);
     }
 
     public void setNormal(int bgId) {
         setBackgroundResource(bgId);
+        this.setTextColor(getResources().getColor(R.color.colorBlack));
+    }
+
+    public void setDisable(int bgId) {
+        setBackgroundResource(bgId);
+        this.setTextColor(getResources().getColor(R.color.btn_font_color_grey));
     }
 }

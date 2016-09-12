@@ -4,5 +4,5 @@
         android:state_pressed="true"
         android:color="@android:color/white" />
     <item
-        android:color="@color/btn_font_color_inactive" />
+        android:color="@color/btn_font_color_blue" />
 </selector>
