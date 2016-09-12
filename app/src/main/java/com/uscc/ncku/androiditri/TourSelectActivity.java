@@ -50,7 +50,7 @@ public class TourSelectActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.tour_title);
 
         Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour_select);
-        btnUnderstand.setBackgroundResource(R.drawable.selecter_btn_understand);
+        btnUnderstand.setBackgroundResource(R.drawable.selecter_btn_black_white);
         btnUnderstand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +114,6 @@ public class TourSelectActivity extends AppCompatActivity {
             container.addView(itemView);
 
             Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
-            confirmBtn.setBackgroundResource(R.drawable.selecter_btn_confirm);
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

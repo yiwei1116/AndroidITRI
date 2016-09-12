@@ -34,44 +34,67 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:id="@+id/llayout_button_main"
         android:gravity="center_horizontal"
-        android:paddingBottom="5dp"
-        android:id="@+id/llayout_button_main">
+        android:layout_marginBottom="5dp">
 
         <com.uscc.ncku.androiditri.util.MainButton
-            android:layout_width="@dimen/main_btn_outside_width"
-            android:layout_height="@dimen/main_btn_outside_height"
+            android:layout_width="@dimen/main_btn_width"
+            android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_info_disabled"
-            android:id="@+id/btn_info_main" />
+            android:id="@+id/btn_info_main"
+            android:text="@string/main_info"
+            android:textSize="@dimen/main_btn_txt"
+            android:textAlignment="gravity"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="10dp" />
 
         <com.uscc.ncku.androiditri.util.MainButton
-            android:layout_width="@dimen/main_btn_inside_width"
-            android:layout_height="@dimen/main_btn_inside_height"
+            android:layout_width="@dimen/main_btn_width"
+            android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_diary_disabled"
-            android:layout_marginLeft="15dp"
-            android:id="@+id/btn_dairy_main" />
+            android:layout_marginLeft="0dp"
+            android:id="@+id/btn_diary_main"
+            android:text="@string/main_diary"
+            android:textSize="@dimen/main_btn_txt"
+            android:textAlignment="gravity"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="10dp" />
 
         <com.uscc.ncku.androiditri.util.MainButton
             android:layout_width="@dimen/main_btn_circle"
             android:layout_height="@dimen/main_btn_circle"
             android:background="@drawable/btn_main_map_disabled"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:id="@+id/btn_map_main" />
+            android:layout_marginLeft="@dimen/main_btn_layout_margin"
+            android:layout_marginRight="@dimen/main_btn_layout_margin"
+            android:id="@+id/btn_map_main"
+            android:text="@string/main_map"
+            android:textSize="@dimen/main_btn_txt_circle"
+            android:paddingTop="35dp"
+            android:textAlignment="gravity" />
 
         <com.uscc.ncku.androiditri.util.MainButton
-            android:layout_width="@dimen/main_btn_inside_width"
-            android:layout_height="@dimen/main_btn_inside_height"
+            android:layout_width="@dimen/main_btn_width"
+            android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_sound_disabled"
-            android:layout_marginRight="15dp"
-            android:id="@+id/btn_sound_main" />
+            android:layout_marginRight="0dp"
+            android:id="@+id/btn_sound_main"
+            android:text="@string/main_sound"
+            android:textSize="@dimen/main_btn_txt"
+            android:textAlignment="gravity"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="10dp" />
 
         <com.uscc.ncku.androiditri.util.MainButton
-            android:layout_width="@dimen/main_btn_outside_width"
-            android:layout_height="@dimen/main_btn_outside_height"
+            android:layout_width="@dimen/main_btn_width"
+            android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_font_disabled"
-            android:id="@+id/btn_font_main" />
+            android:id="@+id/btn_font_main"
+            android:text="@string/main_font"
+            android:textSize="@dimen/main_btn_txt"
+            android:textAlignment="gravity"
+            android:gravity="bottom|center_horizontal"
+            android:paddingBottom="10dp" />
 
     </LinearLayout>
 

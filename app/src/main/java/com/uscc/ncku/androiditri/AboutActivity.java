@@ -48,7 +48,7 @@ public class AboutActivity extends AppCompatActivity {
         contentTxt.setText(content);
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
-        nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
+        nextBtn.setText(R.string.next_page);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class AboutActivity extends AppCompatActivity {
         contentTxt.setText(content);
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
-        nextBtn.setBackgroundResource(R.drawable.selecter_btn_next);
+        nextBtn.setText(R.string.next_page);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +112,7 @@ public class AboutActivity extends AppCompatActivity {
         contentTxt.setText(Html.fromHtml(content));
 
         Button nextBtn = (Button) findViewById(R.id.btn_next_about);
-        nextBtn.setBackgroundResource(R.drawable.selecter_btn_ok);
+        nextBtn.setText(R.string.ok);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

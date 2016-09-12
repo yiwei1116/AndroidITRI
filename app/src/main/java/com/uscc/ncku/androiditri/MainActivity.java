@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         tourSelect = bundle.getInt(GET_TOUR_INDEX);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
-        diaryBtn = (MainButton) findViewById(R.id.btn_dairy_main);
+        diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
         mapBtn = (MainButton) findViewById(R.id.btn_map_main);
         soundBtn = (MainButton) findViewById(R.id.btn_sound_main);
         fontBtn = (MainButton) findViewById(R.id.btn_font_main);
@@ -49,12 +48,6 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new ButtonListener(this));
         soundBtn.setOnClickListener(new ButtonListener(this));
         fontBtn.setOnClickListener(new ButtonListener(this));
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         mapBtn.setBackgroundResource(R.drawable.btn_main_map_active);
         diaryBtn.setBackgroundResource(R.drawable.btn_main_diary_normal);
@@ -71,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.flayout_fragment_continer_main, mapFragment);
         transaction.commit();
+
     }
 
     class ButtonListener implements View.OnClickListener {
@@ -88,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btn_info_main:
                     break;
-                case R.id.btn_dairy_main:
-                    if (diaryBtn.getBackgroundId() == R.drawable.btn_main_diary_normal) {
+                case R.id.btn_diary_main:
+                    if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         changeFragment(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, diaryFragment);
                     }
                     break;
                 case R.id.btn_map_main:
-                    if (mapBtn.getBackgroundId() == R.drawable.btn_main_map_normal) {
+                    if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         changeFragment(mapBtn, R.drawable.btn_main_map_active);
                         transaction.replace(R.id.flayout_fragment_continer_main, mapFragment);
                     }
@@ -111,15 +105,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeFragment(MainButton activeBtn, int id) {
-        if (diaryBtn.getBackgroundId() == R.drawable.btn_main_diary_active) {
-            diaryBtn.setBackgroundResource(R.drawable.btn_main_diary_normal);
+        if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
+            diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         }
 
-        if (mapBtn.getBackgroundId() == R.drawable.btn_main_map_active) {
-            mapBtn.setBackgroundResource(R.drawable.btn_main_map_normal);
+        if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_active)) {
+            mapBtn.setNormal(R.drawable.btn_main_map_normal);
         }
 
-        activeBtn.setBackgroundResource(id);
+        activeBtn.setActive(id);
 
     }
 

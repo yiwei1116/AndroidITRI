@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="vpager_item_text_merginbutton">65dp</dimen>
+</resources>
