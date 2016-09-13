@@ -42,8 +42,9 @@
     <string name="main_sound">語音導覧</string>
     <string name="main_font">字型縮放</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="survey_gender_female">女</string>
     <string name="survey_gender_male">男</string>
+    <string name="demo_text">這是範例</string>
 </resources>

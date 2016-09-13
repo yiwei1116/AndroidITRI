@@ -26,4 +26,5 @@
     <string name="main_info">Info</string>
     <string name="main_sound">Sound</string>
     <string name="tour_select_guid">Change tour guide with\nsliding left or right</string>
+    <string name="demo_text_en">This is demo text.</string>
 </resources>

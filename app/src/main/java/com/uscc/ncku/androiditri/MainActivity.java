@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.fragment.TextFragment;
 import com.uscc.ncku.androiditri.util.MainButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
+    private TextFragment textFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new ButtonListener(this));
         soundBtn.setOnClickListener(new ButtonListener(this));
         fontBtn.setOnClickListener(new ButtonListener(this));
-
         initFragment();
 
     }
@@ -83,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_sound_main:
                     break;
                 case R.id.btn_font_main:
+                    if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
+                        // present new view
+                        setBtnActive(fontBtn, R.drawable.btn_main_font_active);
+                        transaction.replace(R.id.flayout_fragment_continer_main, textFragment);
+
+                    }
                     break;
             }
 
@@ -105,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
             diaryFragment = DiaryFragment.newInstance("a", "b");
         }
 
+        if (textFragment == null) {
+            textFragment = TextFragment.newInstance("a", "b");
+        }
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.flayout_fragment_continer_main, mapFragment);
@@ -118,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_active)) {
             mapBtn.setNormal(R.drawable.btn_main_map_normal);
+        }
+
+        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
+            fontBtn.setNormal(R.drawable.btn_main_font_normal);
         }
 
         activeBtn.setActive(bgId);

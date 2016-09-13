@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.uscc.ncku.androiditri.fragment.TextFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/demo_text_en_id"
+        android:text="@string/demo_text_en" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/demo_text"
+        android:id="@+id/demo_text_id"
+        android:layout_gravity="left|center_vertical" />
+
+    <View
+        android:layout_height="64sp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layoutAnimation="@anim/logo_fade_in"
+        android:alpha="0.2"
+        android:background="@color/colorBlack">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_small_font"
+                android:layout_alignParentLeft="true"
+                />
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textBar"
+                android:layout_centerInParent="true"
+                android:progressDrawable="@drawable/btn_font_bar"
+                android:thumb="@drawable/btn_font_circle"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_big_font"
+                android:layout_alignParentRight="true"
+                />
+
+        </LinearLayout>
+
+    </View>
+
+</FrameLayout>
