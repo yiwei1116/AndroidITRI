@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         infoBtn.setDisable(R.drawable.btn_main_info_disabled);
         soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
-        fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+        fontBtn.setNormal(R.drawable.btn_main_font_normal);
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance("a", "b");

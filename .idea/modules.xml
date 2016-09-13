@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidITRI.iml" filepath="$PROJECT_DIR$/AndroidITRI.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/new.iml" filepath="$PROJECT_DIR$/new.iml" />
     </modules>
   </component>
 </project>
