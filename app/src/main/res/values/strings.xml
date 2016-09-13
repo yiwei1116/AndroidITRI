@@ -34,7 +34,7 @@
     <string name="seven_ninth" translatable="false">7/9</string>
     <string name="eight_ninth" translatable="false">8/9</string>
     <string name="night_ninth" translatable="false">9/9</string>
-    <string name="survey1_gender">您的性別</string>
+    <string name="survey1_gender">性別</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="main_info">廠商資訊</string>
     <string name="main_diary">文青日誌</string>

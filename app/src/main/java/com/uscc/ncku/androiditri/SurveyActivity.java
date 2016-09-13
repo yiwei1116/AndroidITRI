@@ -62,7 +62,16 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void setNavigator() {
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.btn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,43 +9,65 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uscc.ncku.androiditri.SurveyActivity"
     tools:showIn="@layout/activity_survey">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/one_ninth"
+        android:textColor="@color/survey_page_color"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/survey_page_txt"
+        android:layout_marginTop="74dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/survey1_gender"
+        android:textColor="@android:color/white"
+        android:textSize="26sp"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/survey_page_title"
+        android:layout_below="@+id/survey_page_txt" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="50dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_below="@+id/survey_page_title">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/one_ninth"
-            android:textColor="@color/survey_page_color"
-            android:textSize="16sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:paddingTop="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/survey1_gender"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_question_background"
+                android:text="@string/survey_gender_female"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page1_female" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_question_background"
-            android:text="@string/survey_gender_female"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_question_background"
+                android:text="@string/survey_gender_male"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="false"
+                android:id="@+id/survey_page1_male"
+                android:layout_below="@+id/survey_page1_female"
+                android:layout_marginTop="5dp" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_question_background"
-            android:text="@string/survey_gender_male"/>
+        </RelativeLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
-</FrameLayout>
+
+
+</RelativeLayout>
