@@ -62,12 +62,6 @@ public class TourSelectActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         tourSelect();
     }
 
