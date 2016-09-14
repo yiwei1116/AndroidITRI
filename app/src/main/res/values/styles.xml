@@ -37,4 +37,9 @@
         <item name="android:backgroundDimAmount">0.2</item>
     </style>
 
+    <style name="Theme.App.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/btn_font_color_blue</item>
+    </style>
+
 </resources>

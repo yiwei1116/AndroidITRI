@@ -14,7 +14,7 @@
         android:id="@+id/flayout_fragment_continer_notitle"
         android:layout_above="@+id/llayout_button_main"
         android:layout_marginBottom="-6dp"
-        android:visibility="invisible" >
+        android:visibility="gone" >
 
     </FrameLayout>
 

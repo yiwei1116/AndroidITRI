@@ -15,4 +15,9 @@
     <dimen name="main_btn_txt">12sp</dimen>
     <dimen name="main_btn_txt_circle">10sp</dimen>
     <dimen name="main_btn_layout_margin">4dp</dimen>
+    <dimen name="btn_answer_font_size">18sp</dimen>
+    <dimen name="btn_answer_padding">10dp</dimen>
+    <dimen name="btn_answer_llayout_top_margin">15dp</dimen>
+    <dimen name="btn_answer_llayout_middle_margin">5dp</dimen>
+    <dimen name="edtxt_hint_text_size">16sp</dimen>
 </resources>

@@ -16,20 +16,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/one_ninth"
+        android:text="@string/one_twelfth"
         android:textColor="@color/survey_page_color"
         android:textSize="16sp"
         android:layout_centerHorizontal="true"
         android:id="@+id/survey_page_txt"
-        android:layout_marginTop="74dp" />
+        android:layout_marginTop="70dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/survey1_gender"
+        android:text="@string/survey01_gender"
         android:textColor="@android:color/white"
-        android:textSize="26sp"
-        android:layout_marginTop="40dp"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/survey_page_title"
         android:layout_below="@+id/survey_page_txt" />
@@ -37,36 +37,913 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/flayout_survey_container"
+        android:paddingTop="20dp"
         android:layout_below="@+id/survey_page_title">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:paddingTop="20dp">
+            android:visibility="visible"
+            android:id="@+id/survey_page1">
 
-            <ImageButton
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_question_background"
+                android:background="@drawable/btn_answer_card"
                 android:text="@string/survey_gender_female"
+                android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/survey_page1_female" />
+                android:id="@+id/survey_page1_female"
+                android:textAllCaps="false"/>
 
-            <ImageButton
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_question_background"
+                android:background="@drawable/btn_answer_card"
                 android:text="@string/survey_gender_male"
+                android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="false"
                 android:id="@+id/survey_page1_male"
                 android:layout_below="@+id/survey_page1_female"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_llayout_1">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_below_20"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_below_20"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_41_50"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_41_50"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_llayout_2"
+                android:layout_below="@+id/flayout_llayout_1"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_21_25"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_20_25"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_51_60"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_51_59"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_llayout_3"
+                android:layout_below="@+id/flayout_llayout_2"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_26_30"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_26_30"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_61_65"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_61_65"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_llayout_4"
+                android:layout_below="@+id/flayout_llayout_3"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_31_40"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_31_40"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_age_over_66"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page2_over_66"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page3">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_education_high_school"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page3_high_school"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_education_college"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page3_college"
+                android:layout_below="@+id/survey_page3_high_school"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_education_university"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page3_university"
+                android:layout_below="@+id/survey_page3_college"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_education_master"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page3_master"
+                android:layout_below="@+id/survey_page3_university"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_1">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_student"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_student"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_real_estate"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_real_estate"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_2"
+                android:layout_below="@+id/flayout_4_llayout_1"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_government"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_government"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_communication"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_communication"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_3"
+                android:layout_below="@+id/flayout_4_llayout_2"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_education"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_education"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_finance_insurance"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_finance_insurance"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_4"
+                android:layout_below="@+id/flayout_4_llayout_3"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_building"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_building"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_manufacture"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_manufacture"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_5"
+                android:layout_below="@+id/flayout_4_llayout_4"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_electronic"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_electronic"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_houskeep"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_houskeep"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/flayout_4_llayout_6"
+                android:layout_below="@+id/flayout_4_llayout_5"
+                android:layout_marginTop="@dimen/btn_answer_llayout_top_margin">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_occupation_service"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_service"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginRight="@dimen/btn_answer_llayout_middle_margin" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_answer_card"
+                    android:text="@string/survey_other"
+                    android:textSize="@dimen/btn_answer_font_size"
+                    android:id="@+id/survey_page4_other"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/btn_answer_llayout_middle_margin" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page5">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:id="@+id/edtxt_survey_page5"
+                android:background="@android:color/transparent"
+                android:drawableBottom="@drawable/selecter_edtxt_underline"
+                android:theme="@style/Theme.App.Base"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_survey_page5_confirm"
+                android:text="@string/confirm"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_answer_card"
+                android:layout_above="@+id/btn_survey_page5_skip"
+                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:id="@+id/btn_survey_page5_skip"
+                android:background="@drawable/btn_answer_card"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page6">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_income_below_300k"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_below_300k"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_income_310k_500k"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_310k_500k"
+                android:layout_below="@+id/survey_page6_below_300k"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_income_510k_800k"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_510k_800k"
+                android:layout_below="@+id/survey_page6_310k_500k"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_income_810k_1500k"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_810k_1500k"
+                android:layout_below="@+id/survey_page6_510k_800k"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_income_over_1500k"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_over_1500k"
+                android:layout_below="@+id/survey_page6_810k_1500k"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_other"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page6_other"
+                android:layout_below="@+id/survey_page6_over_1500k"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page7">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_residence_north"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_north"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_residence_middle"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_middle"
+                android:layout_below="@+id/survey_page7_north"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_residence_south"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_south"
+                android:layout_below="@+id/survey_page7_middle"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_residence_east"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_east"
+                android:layout_below="@+id/survey_page7_south"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_residence_outside"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_outside"
+                android:layout_below="@+id/survey_page7_east"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_other"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page7_other"
+                android:layout_below="@+id/survey_page7_outside"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page8">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_house_apartment"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page8_apartment"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_house_revenue"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page8_revenue"
+                android:layout_below="@+id/survey_page8_apartment"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_house_mixed"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page8_mixed"
+                android:layout_below="@+id/survey_page8_revenue"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_house_townhouse"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page8_townhouse"
+                android:layout_below="@+id/survey_page8_mixed"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_other"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page8_other"
+                android:layout_below="@+id/survey_page8_townhouse"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page9">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_family_core"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_core"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_family_single"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_single"
+                android:layout_below="@+id/survey_page9_core"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_family_twice"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_twice"
+                android:layout_below="@+id/survey_page9_single"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_family_single_parent"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_single_parent"
+                android:layout_below="@+id/survey_page9_twice"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_family_three"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_three"
+                android:layout_below="@+id/survey_page9_single_parent"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer_card"
+                android:text="@string/survey_other"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/survey_page9_other"
+                android:layout_below="@+id/survey_page9_three"
+                android:layout_marginTop="@dimen/btn_answer_padding"
+                android:textAllCaps="false"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page10">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_survey_page10_confirm"
+                android:text="@string/confirm"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_answer_card"
+                android:layout_above="@+id/btn_survey_page10_skip"
+                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:id="@+id/btn_survey_page10_skip"
+                android:background="@drawable/btn_answer_card"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page11">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:id="@+id/edtxt_survey_page11"
+                android:background="@android:color/transparent"
+                android:drawableBottom="@drawable/selecter_edtxt_underline"
+                android:theme="@style/Theme.App.Base"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_survey_page11_confirm"
+                android:text="@string/confirm"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_answer_card"
+                android:layout_above="@+id/btn_survey_page11_skip"
+                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:id="@+id/btn_survey_page11_skip"
+                android:background="@drawable/btn_answer_card"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/survey_page12">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/name"
+                android:textColorHint="@color/btn_font_color_grey"
+                android:textSize="@dimen/edtxt_hint_text_size"
+                android:id="@+id/edtxt_survey_page12_name"
+                android:background="@android:color/transparent"
+                android:drawableBottom="@drawable/selecter_edtxt_underline"
+                android:theme="@style/Theme.App.Base"
+                android:layout_marginTop="60dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="@string/mail"
+                android:textColorHint="@color/btn_font_color_grey"
+                android:textSize="@dimen/edtxt_hint_text_size"
+                android:id="@+id/edtxt_survey_page12_mail"
+                android:background="@android:color/transparent"
+                android:drawableBottom="@drawable/selecter_edtxt_underline"
+                android:theme="@style/Theme.App.Base"
+                android:layout_below="@+id/edtxt_survey_page12_name"
+                android:layout_marginTop="50dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_survey_page12_confirm"
+                android:text="@string/confirm"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_answer_card"
+                android:layout_above="@+id/btn_survey_page12_skip"
+                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip"
+                android:textSize="@dimen/btn_answer_font_size"
+                android:textAllCaps="false"
+                android:id="@+id/btn_survey_page12_skip"
+                android:background="@drawable/btn_answer_card"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="60dp" />
 
         </RelativeLayout>
 
     </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_privace"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:layout_alignParentBottom="true" />
 
 
 

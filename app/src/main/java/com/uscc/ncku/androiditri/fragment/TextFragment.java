@@ -73,7 +73,6 @@ public class TextFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_text, container, false);
         demo = (TextView)root.findViewById(R.id.demo_text_id);
-        demo_en = (TextView)root.findViewById(R.id.demo_text_en_id);
         seekBar = (SeekBar)root.findViewById(R.id.textBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int trackProgress = 0;
