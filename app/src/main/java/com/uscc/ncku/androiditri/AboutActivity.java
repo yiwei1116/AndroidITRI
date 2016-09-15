@@ -105,7 +105,7 @@ public class AboutActivity extends AppCompatActivity {
         });
 
         TextView titleTxt = (TextView) findViewById(R.id.txt_toolbar_about);
-        titleTxt.setText(R.string.rules_automated_guid);
+        titleTxt.setText(R.string.rules_automated_guide);
 
         TextView contentTxt = (TextView) findViewById(R.id.txt_content_about);
         String content = getString(R.string.rule_content);

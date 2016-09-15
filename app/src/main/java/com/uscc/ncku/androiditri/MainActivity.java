@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private void setBtnActive(MainButton activeBtn, int bgId) {
         if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
             FrameLayout flayout = (FrameLayout) findViewById(R.id.flayout_fragment_continer_notitle);
-            flayout.setVisibility(View.GONE);
+            flayout.setVisibility(View.INVISIBLE);
             diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         }
 

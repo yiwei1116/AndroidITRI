@@ -26,7 +26,7 @@ public class TourSelectActivity extends AppCompatActivity {
     private static final int[] TOUR_TXT = {
             R.string.tour_select_designer,
             R.string.tour_select_robot,
-            R.string.tour_select_houskeeper
+            R.string.tour_select_housekeeper
     };
 
     @Override
