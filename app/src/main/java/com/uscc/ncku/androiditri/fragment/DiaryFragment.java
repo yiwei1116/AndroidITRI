@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -127,7 +128,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     }
     public void takePhoto(){
-        if( hasPermission(CAMERA) &&hasPermission(WRITE_EXTERNAL_STORAGE)){
+        String [] PermissionNeed = {
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
+        };
+        if( hasPermission(CAMERA) && hasPermission(WRITE_EXTERNAL_STORAGE)){
             callCamera();
         }else {
             if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
@@ -139,6 +145,30 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
         }
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int [] grantResults ){
+
+        if(requestCode == CAMERA_STROAGE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                callCamera();
+            } else {
+                Toast.makeText(getActivity(),"External write permission has not meen granted, cannot save images",Toast.LENGTH_SHORT).show();
+
+            }
+
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+    private boolean hasPermission(String permission) {
+        if (canMakeSmores()) {
+            return(ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_GRANTED);
+        }
+        return true;
+    }
+    private boolean canMakeSmores() {
+        return(Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1);
     }
     public void callCamera( ){
 
@@ -218,7 +248,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         String imageFileName = "IMAGE" + timeStamp + "_";
         //  Get a top-level shared/external storage directory for placing files of a particular type.
 
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
 
         Log.e("123", "test0");
         // Create image  ** path => where to create image
@@ -295,13 +325,5 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
         return BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
     }
-    private boolean hasPermission(String permission) {
-        if (canMakeSmores()) {
-            return(getActivity().checkSelfPermission(permission)== PackageManager.PERMISSION_GRANTED);
-        }
-        return true;
-    }
-    private boolean canMakeSmores() {
-        return(Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
+
 }
