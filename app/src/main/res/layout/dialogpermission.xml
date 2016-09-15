@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+        android:layout_alignParentEnd="true">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:background="@drawable/bg_dialog"
+
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/dialog_button_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_BlueSquare_normal"
+            android:text="確定"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/dialog_button_cancel"
+             />
+
+        <Button
+            android:id="@+id/dialog_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_GraySquare_normal"
+            android:text="取消"
+            android:textColor="@color/colorBlack"
+            android:layout_marginBottom="59dp"
+            android:layout_alignParentBottom="true"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="文青日誌"
+            android:id="@+id/textView"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="需要下列項目的存取權"
+            android:id="@+id/textView2"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="80dp"
+
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/imageView2"
+            android:background="@drawable/ic_camera"
+            android:layout_marginTop="175dp"
+            android:layout_alignStart="@+id/imageView3" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_files"
+            android:id="@+id/imageView3"
+            android:layout_toStartOf="@+id/textView"
+            android:layout_marginTop="220dp" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/imageView4"
+            android:background="@drawable/ic_wifi"
+            android:layout_alignStart="@+id/imageView3"
+
+            android:layout_marginTop="265dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="相機"
+            android:id="@+id/camera"
+
+            android:layout_alignStart="@+id/picture"
+            android:layout_marginTop="180dp"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="相片/多媒體/檔案"
+            android:id="@+id/picture"
+            android:layout_alignEnd="@+id/dialog_button_ok"
+            android:layout_marginTop="225dp"
+            android:layout_marginLeft="5dp"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Wi-Fi 連線資訊"
+            android:id="@+id/Wifi"
+            android:layout_marginLeft="2dp"
+            android:layout_alignStart="@+id/picture"
+            android:layout_marginTop="270dp"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
