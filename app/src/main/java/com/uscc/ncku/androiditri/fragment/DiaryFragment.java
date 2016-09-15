@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -128,19 +129,19 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     }
     public void takePhoto(){
-        String [] PermissionNeed = {
+        String[] permissionNeed = {
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
 
         };
-        if( hasPermission(CAMERA) && hasPermission(WRITE_EXTERNAL_STORAGE)){
+        if( hasPermission(permissionNeed)){
             callCamera();
         }else {
             if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                 Toast.makeText(getActivity(), "External storage permission require to save images", Toast.LENGTH_SHORT).show();
 
             }
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, CAMERA_STROAGE);
+            requestPermissions(permissionNeed, CAMERA_STROAGE);
 
 
         }
@@ -161,9 +162,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-    private boolean hasPermission(String permission) {
+    private boolean hasPermission(String[] permission) {
         if (canMakeSmores()) {
-            return(ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_GRANTED);
+            for (String permissions : permission) {
+                Log.e("checkPermissions","123");
+                return (ContextCompat.checkSelfPermission(getContext(), permissions) == PackageManager.PERMISSION_GRANTED);
+
+            }
         }
         return true;
     }
@@ -187,11 +192,17 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         // Ar1 The name of the Intent-extra used to indicate a content resolver Uri to be used to store the requested image or video.
         Log.e("uri", Uri.fromFile(photoFile).toString());
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        Log.e("123", "test5");
         startActivityForResult(cameraIntent, CAMERA_RESULT);
-        Log.e("123", "test6");
-    }
 
+    }
+    private void dialogAlert(){
+        Dialog dialog = new Dialog(getActivity(),R.style.MyDialog);
+
+
+
+
+
+    }
     public void callPhoto(){
 
         Intent intent = new Intent();
@@ -204,7 +215,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 
-        Log.e("123", "test7");
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_RESULT && resultCode == -1) {
 
@@ -215,11 +226,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         //藉由requestCode判斷是否為開啟相機或開啟相簿而呼叫的，且data不為null
         else if ( requestCode == PHOTO_RESULT  && resultCode == -1 && data != null)
         {
-            Log.e("123", "test2");
+
             //取得照片路徑uri
             Uri uri = data.getData();
             ContentResolver cr = getActivity().getContentResolver();
-            Log.e("123", "test3");
+
             try
             {
                 //讀取照片，型態為Bitmap
@@ -228,7 +239,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 mOptions.inSampleSize = 2;
                 // raw data to bitmap
                 Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri),null,mOptions);
-                Log.e("123", "test10");
+
 
                 //判斷照片為橫向或者為直向，並進入ScalePic判斷圖片是否要進行縮放
                 if(bitmap.getWidth()>bitmap.getHeight())
@@ -250,11 +261,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
 
-        Log.e("123", "test0");
         // Create image  ** path => where to create image
         //File image = File.createTempFile(imageFileName, ".jpg", path);
         File image = new File(path,imageFileName+".jpg");
-        Log.e("123", "test1");
+
         mImageFileLocation = image.getAbsolutePath();
         Log.e("123", mImageFileLocation);
         return image;
@@ -264,7 +274,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     {
         //縮放比例預設為1
         float mScale = 1 ;
-        Log.e("123", "test8");
+
         //如果圖片寬度大於手機寬度則進行縮放，否則直接將圖片放入ImageView內
         if(bitmap.getWidth() > phone )
         {
