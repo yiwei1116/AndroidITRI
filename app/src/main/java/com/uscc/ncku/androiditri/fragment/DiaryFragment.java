@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.uscc.ncku.androiditri.R;
@@ -154,6 +155,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 callCamera();
             } else {
+                dialogAlert();
                 Toast.makeText(getActivity(),"External write permission has not meen granted, cannot save images",Toast.LENGTH_SHORT).show();
 
             }
@@ -196,11 +198,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     }
     private void dialogAlert(){
-        Dialog dialog = new Dialog(getActivity(),R.style.MyDialog);
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialogpermission);
 
 
 
-
+        dialog.show();
 
     }
     public void callPhoto(){

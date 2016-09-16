@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
+        android:scaleType="centerInside"
         android:background="@drawable/bg_dialog"
 
 
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_BlueSquare_normal"
+            android:background="@drawable/btn_bluesquare_normal"
             android:text="確定"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="10dp"
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_GraySquare_normal"
+            android:background="@drawable/btn_graysquare_normal"
             android:text="取消"
             android:textColor="@color/colorBlack"
             android:layout_marginBottom="59dp"
@@ -126,7 +127,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Wi-Fi 連線資訊"
             android:id="@+id/Wifi"
-            android:layout_marginLeft="2dp"
+            android:layout_marginLeft="4dp"
             android:layout_alignStart="@+id/picture"
             android:layout_marginTop="270dp"/>
 
