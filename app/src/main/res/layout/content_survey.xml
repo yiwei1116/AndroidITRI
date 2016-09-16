@@ -28,11 +28,20 @@
         android:layout_height="wrap_content"
         android:text="@string/survey01_gender"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/survey_page_title"
         android:layout_below="@+id/survey_page_txt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_privacy"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:layout_alignParentBottom="true" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -51,7 +60,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_gender_female"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color"
                 android:textSize="@dimen/btn_answer_font_size"
@@ -62,7 +71,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_gender_male"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color"
                 android:textSize="@dimen/btn_answer_font_size"
@@ -90,7 +99,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_below_20"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_below_20"
@@ -102,7 +111,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_41_50"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_41_50"
@@ -124,7 +133,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_21_25"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_20_25"
@@ -136,7 +145,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_51_60"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_51_60"
@@ -158,7 +167,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_26_30"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_26_30"
@@ -170,7 +179,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_61_65"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_61_65"
@@ -192,7 +201,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_31_40"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_31_40"
@@ -204,7 +213,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_age_over_66"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page2_over_66"
@@ -227,7 +236,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_education_high_school"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -238,7 +247,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_education_college"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -251,7 +260,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_education_university"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -264,7 +273,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_education_master"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -292,7 +301,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_student"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_student"
@@ -304,7 +313,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_real_estate"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_real_estate"
@@ -326,7 +335,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_government"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_government"
@@ -338,9 +347,10 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_communication"
                     android:textSize="@dimen/btn_answer_font_size"
+                    android:singleLine="true"
                     android:id="@+id/survey_page4_communication"
                     android:textAllCaps="false"
                     android:layout_weight="1"
@@ -360,7 +370,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_education"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_education"
@@ -372,9 +382,10 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_finance_insurance"
                     android:textSize="@dimen/btn_answer_font_size"
+                    android:singleLine="true"
                     android:id="@+id/survey_page4_finance_insurance"
                     android:textAllCaps="false"
                     android:layout_weight="1"
@@ -394,7 +405,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_building"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_building"
@@ -406,7 +417,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_manufacture"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_manufacture"
@@ -428,7 +439,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_electronic"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_electronic"
@@ -440,8 +451,8 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
-                    android:text="@string/survey_occupation_houskeep"
+                    android:background="@drawable/selector_btn_survey_answer"
+                    android:text="@string/survey_occupation_housekeep"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_houskeep"
                     android:textAllCaps="false"
@@ -462,7 +473,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_occupation_service"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_service"
@@ -474,7 +485,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selecter_btn_survey_answer"
+                    android:background="@drawable/selector_btn_survey_answer"
                     android:text="@string/survey_other"
                     android:textSize="@dimen/btn_answer_font_size"
                     android:id="@+id/survey_page4_other"
@@ -510,7 +521,7 @@
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_above="@+id/btn_survey_page5_skip"
                 android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -522,7 +533,7 @@
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
                 android:id="@+id/btn_survey_page5_skip"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -539,7 +550,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_income_below_300k"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -550,7 +561,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_income_310k_500k"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -563,7 +574,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_income_510k_800k"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -576,7 +587,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_income_810k_1500k"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -589,7 +600,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_income_over_1500k"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -602,7 +613,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_other"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -624,7 +635,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_residence_north"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -635,7 +646,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_residence_middle"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -648,7 +659,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_residence_south"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -661,7 +672,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_residence_east"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -674,7 +685,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_residence_outside"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -687,7 +698,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_other"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -709,7 +720,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_house_apartment"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -720,7 +731,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_house_revenue"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -733,7 +744,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_house_mixed"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -746,7 +757,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_house_townhouse"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -759,7 +770,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_other"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -781,7 +792,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_family_core"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -792,7 +803,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_family_single"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -805,7 +816,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_family_twice"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -818,7 +829,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_family_single_parent"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -831,7 +842,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_family_three"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -844,7 +855,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:text="@string/survey_other"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:layout_centerHorizontal="true"
@@ -870,7 +881,7 @@
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_above="@+id/btn_survey_page10_skip"
                 android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -882,7 +893,7 @@
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
                 android:id="@+id/btn_survey_page10_skip"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -912,7 +923,7 @@
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_above="@+id/btn_survey_page11_skip"
                 android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -924,7 +935,7 @@
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
                 android:id="@+id/btn_survey_page11_skip"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -972,7 +983,7 @@
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_above="@+id/btn_survey_page12_skip"
                 android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -984,7 +995,7 @@
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
                 android:id="@+id/btn_survey_page12_skip"
-                android:background="@drawable/selecter_btn_survey_answer"
+                android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
                 android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
@@ -992,16 +1003,6 @@
         </RelativeLayout>
 
     </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_privace"
-        android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
-        android:textSize="12sp"
-        android:layout_alignParentBottom="true" />
-
 
 
 </RelativeLayout>

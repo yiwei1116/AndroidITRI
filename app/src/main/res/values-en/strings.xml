@@ -4,7 +4,7 @@
     <string name="guide_introduction">Guide introduction</string>
     <string name="origin_exhibition">Origins of the exhibition</string>
     <string name="tour_title">Choose guide</string>
-    <string name="rules_automated_guid">Rules for the automated guide </string>
+    <string name="rules_automated_guide">Rules for the automated guide </string>
     <string name="survey01_gender">Gender</string>
     <string name="survey_title">Questionnaire</string>
     <string name="origin_content"><![CDATA[The Architecture and Building Research Institute, Ministry of the Interior, has long promoted “smart buildings” to humanize space and improve the quality of living environments through integration of building design and information technology. \n\nTo give the public an understanding and experience smart living, the Architecture and Building Research Institute constructed the Living 3.0 Smart Home Space Exhibition Center in 2008 as a training base for Taiwan’s smart building education. The objective is to promote smart building concepts, provide functional experience, and create new opportunities for integration of domestic IT industry with other industries. \n\n
@@ -19,13 +19,13 @@
     <string name="survey_gender_female">Female</string>
     <string name="survey_gender_male">Male</string>
     <string name="tour_select_designer">Designer</string>
-    <string name="tour_select_houskeeper">Houskeeper</string>
+    <string name="tour_select_housekeeper">Housekeeper</string>
     <string name="tour_select_robot">Robot</string>
     <string name="main_diary">Diary</string>
     <string name="main_font">Font</string>
     <string name="main_info">Info</string>
     <string name="main_sound">Sound</string>
-    <string name="tour_select_guid">Change tour guide with\nsliding left or right</string>
+    <string name="tour_select_guide">Change tour guide with\nsliding left or right</string>
     <string name="demo_text">This is demo text.</string>
     <string name="mail">e-mail</string>
     <string name="name">name</string>
@@ -40,7 +40,7 @@
     <string name="survey09_family_organization">Family Organization</string>
     <string name="survey10_family">Family Member</string>
     <string name="survey11_notice">TOUR</string>
-    <string name="survey12_personal">Persional Data</string>
+    <string name="survey12_personal">Personal Data</string>
     <string name="survey_age_21_25">20~25</string>
     <string name="survey_age_26_30">26~30</string>
     <string name="survey_age_31_40">31~40</string>
@@ -74,5 +74,15 @@
     <string name="survey_residence_north">North of Taiwan</string>
     <string name="survey_residence_outside">Outside Taiwan</string>
     <string name="survey_residence_south">South of Taiwan</string>
-    <string name="txt_privace">This information is protected by Personal Information Protection Act</string>
+    <string name="txt_privacy">This information is protected by Personal Information Protection Act</string>
+    <string name="survey_occupation_building">Construction</string>
+    <string name="survey_occupation_communication">National Communications</string>
+    <string name="survey_occupation_education">Education</string>
+    <string name="survey_occupation_electronic">Electronics</string>
+    <string name="survey_occupation_finance_insurance">Finance and Insurance</string>
+    <string name="survey_occupation_government">Office</string>
+    <string name="survey_occupation_housekeep">Housekeep</string>
+    <string name="survey_occupation_manufacture">Manufacturing</string>
+    <string name="survey_occupation_real_estate">Real Estate</string>
+    <string name="survey_occupation_service">Services</string>
 </resources>

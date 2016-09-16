@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class SurveyActivity extends AppCompatActivity {
 
@@ -108,7 +112,6 @@ public class SurveyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +199,6 @@ public class SurveyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,8 +217,612 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn1 = (Button) findViewById(R.id.survey_page3_college);
         Button btn2 = (Button) findViewById(R.id.survey_page3_university);
         Button btn3 = (Button) findViewById(R.id.survey_page3_master);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageOccupation();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageOccupation();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageOccupation();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageOccupation();
+            }
+        });
     }
 
+    private void pageOccupation() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page4);
+        layout.setVisibility(View.VISIBLE);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageEducation();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.four_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey04_occupation);
+
+        Button btn0 = (Button) findViewById(R.id.survey_page4_student);
+        Button btn1 = (Button) findViewById(R.id.survey_page4_government);
+        Button btn2 = (Button) findViewById(R.id.survey_page4_education);
+        Button btn3 = (Button) findViewById(R.id.survey_page4_building);
+        Button btn4 = (Button) findViewById(R.id.survey_page4_electronic);
+        Button btn5 = (Button) findViewById(R.id.survey_page4_service);
+        Button btn6 = (Button) findViewById(R.id.survey_page4_real_estate);
+        Button btn7 = (Button) findViewById(R.id.survey_page4_communication);
+        Button btn8 = (Button) findViewById(R.id.survey_page4_finance_insurance);
+        Button btn9 = (Button) findViewById(R.id.survey_page4_manufacture);
+        Button btn10 = (Button) findViewById(R.id.survey_page4_houskeep);
+        Button btn11 = (Button) findViewById(R.id.survey_page4_other);
+
+        Locale current = getResources().getConfiguration().locale;
+        Log.e("GG", String.valueOf(current.getDefault().getDisplayLanguage()));
+
+        if (Locale.getDefault().getLanguage() == "en") {
+
+        }
+        btn8.setTextSize(12);
+        btn7.setTextSize(12);
+
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+        btn11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+    }
+
+    private void pageExperiment() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page5);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageOccupation();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.five_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey05_experience);
+
+        Button btn0 = (Button) findViewById(R.id.btn_survey_page5_confirm);
+        Button btn1 = (Button) findViewById(R.id.btn_survey_page5_skip);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = (EditText) findViewById(R.id.edtxt_survey_page5);
+                String exp = editText.getText().toString();
+
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+    }
+
+    private void pageIncome() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page6);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.six_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey06_income);
+
+        Button btn0 = (Button) findViewById(R.id.survey_page6_below_300k);
+        Button btn1 = (Button) findViewById(R.id.survey_page6_310k_500k);
+        Button btn2 = (Button) findViewById(R.id.survey_page6_510k_800k);
+        Button btn3 = (Button) findViewById(R.id.survey_page6_810k_1500k);
+        Button btn4 = (Button) findViewById(R.id.survey_page6_over_1500k);
+        Button btn5 = (Button) findViewById(R.id.survey_page6_other);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+    }
+
+    private void pageResidence() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page7);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.seven_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey07_residence);
+
+        Button btn0 = (Button) findViewById(R.id.survey_page7_north);
+        Button btn1 = (Button) findViewById(R.id.survey_page7_middle);
+        Button btn2 = (Button) findViewById(R.id.survey_page7_south);
+        Button btn3 = (Button) findViewById(R.id.survey_page7_east);
+        Button btn4 = (Button) findViewById(R.id.survey_page7_outside);
+        Button btn5 = (Button) findViewById(R.id.survey_page7_other);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+    }
+
+    private void pageHouse() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page8);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.eight_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey08_house);
+
+        Button btn0 = (Button) findViewById(R.id.survey_page8_apartment);
+        Button btn1 = (Button) findViewById(R.id.survey_page8_revenue);
+        Button btn2 = (Button) findViewById(R.id.survey_page8_mixed);
+        Button btn3 = (Button) findViewById(R.id.survey_page8_townhouse);
+        Button btn4 = (Button) findViewById(R.id.survey_page8_other);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+    }
+
+    private void pageFamilyOrganization() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page9);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.night_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey09_family_organization);
+
+        Button btn0 = (Button) findViewById(R.id.survey_page9_core);
+        Button btn1 = (Button) findViewById(R.id.survey_page9_single);
+        Button btn2 = (Button) findViewById(R.id.survey_page9_twice);
+        Button btn3 = (Button) findViewById(R.id.survey_page9_single_parent);
+        Button btn4 = (Button) findViewById(R.id.survey_page9_three);
+        Button btn5 = (Button) findViewById(R.id.survey_page9_other);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+    }
+
+    private void pageFamilyMember() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page10);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.ten_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey10_family);
+
+        Button btn0 = (Button) findViewById(R.id.btn_survey_page10_confirm);
+        Button btn1 = (Button) findViewById(R.id.btn_survey_page10_skip);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+            }
+        });
+    }
+
+    private void pageNotice() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page11);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.eleven_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey11_notice);
+
+        Button btn0 = (Button) findViewById(R.id.btn_survey_page11_confirm);
+        Button btn1 = (Button) findViewById(R.id.btn_survey_page11_skip);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = (EditText) findViewById(R.id.edtxt_survey_page11);
+                String notice = editText.getText().toString();
+
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+    }
+
+    private void pagePersonal() {
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page12);
+        layout.setVisibility(View.VISIBLE);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_survey);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+            }
+        });
+
+        TextView page = (TextView) findViewById(R.id.survey_page_txt);
+        page.setText(R.string.twelve_twelfth);
+
+        TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
+        pageTitle.setText(R.string.survey12_personal);
+
+        Button btn0 = (Button) findViewById(R.id.btn_survey_page12_confirm);
+        Button btn1 = (Button) findViewById(R.id.btn_survey_page12_skip);
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText nameEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_name);
+                EditText mailEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_mail) ;
+                String name = nameEdtxt.getText().toString();
+                String mail = mailEdtxt.getText().toString();
+
+                Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+    }
 
 }

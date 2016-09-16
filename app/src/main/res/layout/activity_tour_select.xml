@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tour_select_guid"
+            android:text="@string/tour_select_guide"
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="310dp"
