@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.Locale;
 
 public class SurveyActivity extends AppCompatActivity {
 
@@ -427,20 +424,12 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey05_experience);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page5_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page5_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText editText = (EditText) findViewById(R.id.edtxt_survey_page5);
                 String exp = editText.getText().toString();
 
-                layout.setVisibility(View.INVISIBLE);
-                pageIncome();
-            }
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -785,15 +774,7 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey10_family);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page10_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page10_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setVisibility(View.INVISIBLE);
-                pageNotice();
-            }
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
@@ -832,7 +813,6 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey11_notice);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page11_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page11_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -843,16 +823,11 @@ public class SurveyActivity extends AppCompatActivity {
                 pagePersonal();
             }
         });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setVisibility(View.INVISIBLE);
-                pagePersonal();
-            }
-        });
     }
 
     private void pagePersonal() {
+        menuHide = true;
+
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page12);
         layout.setVisibility(View.VISIBLE);
 
