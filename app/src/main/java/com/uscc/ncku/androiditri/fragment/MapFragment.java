@@ -1,11 +1,17 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -60,21 +66,31 @@ public class MapFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         WebView mapWVive = (WebView) v.findViewById(R.id.webview_map);
 
-        mapWVive.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-        });
-//        Log.e("GG", getClass().getClassLoader().getResource(".").getPath());
-        mapWVive.loadUrl("file:///android_asset/living_1f.svg");
+        mapWVive.setWebChromeClient(new WebChromeClient());
+        mapWVive.setWebViewClient(new WebViewClient());
+        mapWVive.setVerticalScrollBarEnabled(false);
+        mapWVive.setHorizontalScrollBarEnabled(false);
+
+        WebSettings settings = mapWVive.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(false);  // do not remove this
+//        settings.setAllowFileAccessFromFileURLs(true); // do not remove this
+        settings.setSupportMultipleWindows(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+
+//        mapWVive.setInitialScale(100);
+
+        mapWVive.loadUrl("file:///android_asset/living_1F.svg");
 
         return v;
     }
