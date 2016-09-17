@@ -22,7 +22,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="5"
         android:layout_marginBottom="40dp"
-        android:paddingTop="10dp">
+        android:paddingTop="14dp">
 
         <TextView
             android:layout_width="match_parent"
