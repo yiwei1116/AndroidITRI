@@ -47,11 +47,5 @@
         <item name="android:textSize">@dimen/btn_font_size</item>
     </style>
 
-    <style name="CustomProgressBarHorizontal" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/btn_font_bar</item>
-        <item name="android:minHeight">10dip</item>
-        <item name="android:maxHeight">20dip</item>
-    </style>
-
 
 </resources>

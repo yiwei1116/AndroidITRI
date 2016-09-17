@@ -9,6 +9,15 @@
     tools:showIn="@layout/activity_main">
 
     <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/flayout_fragment_continer_withtitle"
+        android:layout_above="@+id/llayout_button_main"
+        android:layout_marginBottom="-6dp"
+        android:paddingTop="@dimen/toolbar_content_paddingTop">
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/flayout_fragment_continer_notitle"
@@ -17,15 +26,6 @@
         android:visibility="invisible" >
 
     </FrameLayout>
-
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/flayout_fragment_continer_withtitle"
-        android:layout_above="@+id/llayout_button_main"
-        android:layout_marginBottom="-6dp"
-        android:paddingTop="@dimen/toolbar_content_paddingTop">
 
     </FrameLayout>
 
