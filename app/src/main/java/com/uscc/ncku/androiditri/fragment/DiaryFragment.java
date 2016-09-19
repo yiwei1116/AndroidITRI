@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -217,8 +218,15 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     }
     private void dialogAlert(){
-        Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
         dialog.setContentView(R.layout.dialogpermission);
+
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.dimAmount=0.2f;
+        dialog.getWindow().setAttributes(lp);
+
+//        Dialog dialog = new Dialog(getActivity());
+//        dialog.setContentView(R.layout.dialogpermission);
         final Button btn_confirm = (Button)dialog.findViewById(R.id.dialog_button_ok);
         final Button btn_cancel = (Button)dialog.findViewById(R.id.dialog_button_cancel);
         btn_confirm.setOnClickListener(new View.OnClickListener() {

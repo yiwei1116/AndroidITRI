@@ -6,12 +6,27 @@
     android:fitsSystemWindows="true"
     android:background="@drawable/tour_select_background"
     tools:context="com.uscc.ncku.androiditri.fragment.ChooseTemplate">
+
     <android.support.v4.view.ViewPager
         android:id="@+id/template_choose"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_above="@+id/btn_next_step">
 
-       ></android.support.v4.view.ViewPager>
+    </android.support.v4.view.ViewPager>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_next_step"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="0dp"
+        android:text="@string/nextstep"
+        android:textColor="@drawable/selecter_btn_black_white_txt_color"
+        android:textSize="@dimen/btn_font_size"
+        android:background="@drawable/btn_nextstep_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
     <android.support.v7.widget.Toolbar
@@ -33,34 +48,5 @@
             android:textSize="@dimen/title_font_size" />
 
     </android.support.v7.widget.Toolbar>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/choose_template"
-        android:clickable="true"
-        android:layout_centerHorizontal="true">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/img_coach_tour_select"
-            android:background="@drawable/card_1"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_next_step"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="0dp"
-            android:text="@string/nextstep"
-            android:textColor="@drawable/selecter_btn_black_white_txt_color"
-            android:textSize="@dimen/btn_font_size"
-            android:background="@drawable/btn_nextstep_normal"/>
-
-
-
-    </FrameLayout>
 
 </RelativeLayout>
