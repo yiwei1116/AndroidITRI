@@ -102,6 +102,8 @@
     <string name="survey_income_over_1500k">150萬以上</string>
     <string name="name">姓名</string>
     <string name="mail">電子信箱</string>
+    <string name="choose_template">選擇版型</string>
+    <string name="nextstep">下一步</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

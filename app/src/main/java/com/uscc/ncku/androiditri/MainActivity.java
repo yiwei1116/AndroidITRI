@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.fragment.TextFragment;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
     private TextFragment textFragment;
+    private ChooseTemplate chooseTemplate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

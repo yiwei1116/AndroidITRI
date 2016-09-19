@@ -2,11 +2,14 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -58,7 +61,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private final static int CAMERA_STROAGE = 2;
     private String mImageFileLocation = "";
     private ImageView mImg;
-    private Button cameraCall,photoCall;
+    private Button cameraCall,photoCall,nextStep;
+
 
 
     /**
@@ -99,11 +103,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         mPhone = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mPhone);
         mImg = (ImageView)view.findViewById(R.id.img);
-        Button cameraCall = (Button)view.findViewById(R.id.camera);
-        Button photoCall = (Button)view.findViewById(R.id.photo);
+        cameraCall = (Button)view.findViewById(R.id.camera);
+        photoCall = (Button)view.findViewById(R.id.photo);
+        nextStep =(Button)view.findViewById(R.id.next_step);
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
-
+        nextStep.setOnClickListener(this);
 
         return view;
 
@@ -121,9 +126,20 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         switch(v.getId()) {
             case R.id.camera:
                 takePhoto();
+
                 break;
             case R.id.photo:
                 callPhoto();
+
+                break;
+            case R.id.next_step:
+                FragmentManager fm = getFragmentManager();
+                ChooseTemplate chooseTemplate = new ChooseTemplate();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.choose_template,chooseTemplate );
+                transaction.addToBackStack(null);
+                transaction.commit();
+                Log.e("test","click");
                 break;
 
         }
@@ -200,7 +216,26 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private void dialogAlert(){
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialogpermission);
-
+        final Button btn_confirm = (Button)dialog.findViewById(R.id.dialog_button_ok);
+        final Button btn_cancel = (Button)dialog.findViewById(R.id.dialog_button_cancel);
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_cancel.setBackgroundResource(R.drawable.btn_graysquare_normal);
+                btn_cancel.setTextColor(Color.parseColor("#ff000000"));
+                btn_confirm.setBackgroundResource(R.drawable.btn_bluesquare_normal);
+                Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_confirm.setBackgroundResource(R.drawable.btn_graysquare_normal);
+                btn_confirm.setTextColor(Color.parseColor("#ff000000"));
+                btn_cancel.setBackgroundResource(R.drawable.btn_bluesquare_normal);
+                Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         dialog.show();
@@ -223,7 +258,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         if (requestCode == CAMERA_RESULT && resultCode == -1) {
 
             rotateImage(setReducedImageSize());
-
+            nextPage();
         }
 
         //藉由requestCode判斷是否為開啟相機或開啟相簿而呼叫的，且data不為null
@@ -252,6 +287,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
             catch (FileNotFoundException e)
             {
             }
+            nextPage();
         }
 
 
@@ -337,6 +373,20 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         bmOptions.inJustDecodeBounds = false;
 
         return BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+    }
+    public void nextPage(){
+        if(mImg.getDrawable()!=null){
+            photoCall.setVisibility(View.INVISIBLE);
+            cameraCall.setVisibility(View.INVISIBLE);
+            nextStep.setVisibility(View.VISIBLE);
+
+
+
+        }
+
+
+
+
     }
 
 }
