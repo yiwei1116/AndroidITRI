@@ -136,7 +136,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 FragmentManager fm = getFragmentManager();
                 ChooseTemplate chooseTemplate = new ChooseTemplate();
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.choose_template,chooseTemplate );
+                transaction.replace(R.id.flayout_fragment_continer, chooseTemplate );
                 transaction.addToBackStack(null);
                 transaction.commit();
                 Log.e("test","click");

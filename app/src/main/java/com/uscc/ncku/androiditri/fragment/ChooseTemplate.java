@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class ChooseTemplate extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Context mContext;
+    LayoutInflater mLayoutInflater;
     private static final int[] Template_Image = {
             R.drawable.card_1,
             R.drawable.card_2,
@@ -97,10 +100,57 @@ public class ChooseTemplate extends Fragment {
         ViewPager viewPager;
         ChooseTemp adapter;
         viewPager = (ViewPager)view.findViewById(R.id.template_choose);
-        adapter = new ChooseTemp();
+        adapter = new ChooseTemp(getActivity());
         viewPager.setAdapter(adapter);
 
         return view   ;
+    }
+    class ChooseTemp extends PagerAdapter {
+        private  final int[] Template_Image = {
+                R.drawable.card_1,
+                R.drawable.card_2,
+        };
+        private LayoutInflater mLayoutInflater;
+        public ChooseTemp(Context context){
+            mContext = context;
+            mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        }
+        @Override
+        public int getCount() {
+            return Template_Image.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return (view==(LinearLayout)object);
+        }
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            View itemView = mLayoutInflater.inflate(R.layout.template_item, container, false);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
+            imageView.setImageResource(Template_Image[position]);
+            container.addView(itemView);
+           /* Button btnNextStep = (Button)itemView.findViewById(R.id.btn_next_step);
+            btnNextStep.setBackgroundResource(R.drawable.selector_btn_nextpage);
+            btnNextStep.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });*/
+            return itemView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((RelativeLayout) object);
+        }
+
+        @Override
+        public float getPageWidth(int position) {
+            return 0.8f;
+        }
     }
 
 
