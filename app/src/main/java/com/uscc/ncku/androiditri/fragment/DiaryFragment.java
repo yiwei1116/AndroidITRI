@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -133,6 +134,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
                 break;
             case R.id.next_step:
+                LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
+                bottom_bar.setVisibility(View.GONE);
                 FragmentManager fm = getFragmentManager();
                 ChooseTemplate chooseTemplate = new ChooseTemplate();
                 FragmentTransaction transaction = fm.beginTransaction();

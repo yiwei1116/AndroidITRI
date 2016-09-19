@@ -85,6 +85,7 @@ public class ChooseTemplate extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_choose_template, container, false);
         Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar_tour_select);
+
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
