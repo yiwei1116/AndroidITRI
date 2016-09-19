@@ -123,8 +123,9 @@ public class ChooseTemplate extends Fragment {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return (view==(LinearLayout)object);
+            return view == object;
         }
+
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.template_item, container, false);
