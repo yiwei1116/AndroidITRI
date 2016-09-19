@@ -1,10 +1,12 @@
 package com.uscc.ncku.androiditri;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
@@ -81,13 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_diary_main:
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
-                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment).addToBackStack(null);
                     }
                     break;
                 case R.id.btn_map_main:
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-                        transaction.replace(R.id.flayout_fragment_continer, mapFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, mapFragment).addToBackStack(null);
                     }
                     break;
                 case R.id.btn_sound_main:
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         // present new view
                         setBtnActive(fontBtn, R.drawable.btn_main_font_active);
-                        transaction.replace(R.id.flayout_fragment_continer, textFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, textFragment).addToBackStack(null);
 
                     }
                     break;
@@ -147,4 +149,17 @@ public class MainActivity extends AppCompatActivity {
         activeBtn.setActive(bgId);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Fragment f = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        if (f instanceof MapFragment) {
+            setBtnActive(mapBtn, R.drawable.btn_main_map_active);
+        } else if (f instanceof DiaryFragment) {
+            setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
+        } else if (f instanceof TextFragment){
+            setBtnActive(fontBtn, R.drawable.btn_main_font_active);
+        }
+    }
 }

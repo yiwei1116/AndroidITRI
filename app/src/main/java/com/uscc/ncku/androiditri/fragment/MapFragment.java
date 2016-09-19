@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.JavaScriptInterface;
 
 
 /**
@@ -69,22 +70,32 @@ public class MapFragment extends Fragment {
 
         mapWVive.setWebChromeClient(new WebChromeClient());
         mapWVive.setWebViewClient(new WebViewClient());
+        JavaScriptInterface jsInterface = new JavaScriptInterface();
+        mapWVive.addJavascriptInterface(jsInterface, "Android");
+        mapWVive.setHorizontalScrollBarEnabled(false);
+        mapWVive.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mapWVive.setVerticalScrollBarEnabled(false);
         mapWVive.setHorizontalScrollBarEnabled(false);
 
         WebSettings settings = mapWVive.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(false);  // do not remove this
-//        settings.setAllowFileAccessFromFileURLs(true); // do not remove this
+        settings.setAllowFileAccessFromFileURLs(true); // do not remove this
         settings.setSupportMultipleWindows(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        settings.setLoadWithOverviewMode(true);
+        settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
 
 //        mapWVive.setInitialScale(100);
 
-        mapWVive.loadUrl("file:///android_asset/living_1F.svg");
+//        mapWVive.loadUrl("file:///android_asset/living_1f.svg");
+        String aURL = "file:///android_asset/index.html";
+        String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
+        mapWVive.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
+
+        String call = "javascript:sayHello()";
+        mapWVive.loadUrl(call);
 
         return v;
     }

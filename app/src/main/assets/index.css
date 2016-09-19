@@ -1,0 +1,48 @@
+.htmlFadeOut {
+   -webkit-animation-name: fadeout 3s linear;
+	-webkit-transform: translate3d(0,0,0);
+/*	-webkit-transform: translateZ(0); */
+	animation: fadeout 3s linear;
+}
+
+.fadeinClass {
+   -webkit-animation-name: fadein 2s linear;
+   animation: fadein 2s linear;
+}
+
+.fadeinAndBlinkClass {
+	/* for Android */
+   -webkit-animation-name: fadein, blink;
+   -webkit-animation-duration: 2s, 1.5s;
+   -webkit-animation-delay: 0s, 2s;
+   -webkit-animation-iteration-count: 1, infinite;
+   
+   /* for PC browser */
+   animation-name: fadein, blink;
+   animation-duration: 2s, 1.5s;
+   animation-delay: 0s, 2s;
+   animation-iteration-count: 1, infinite;
+}
+
+.blinkClass {
+   -webkit-animation-name: blink 1.5s infinite;
+   -webkit-animation-delay: 3s;
+   animation: blink 1.5s infinite;
+	animation-delay: 3s;
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadeout {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes blink {
+  50% { opacity: 0.0; }
+}
+
