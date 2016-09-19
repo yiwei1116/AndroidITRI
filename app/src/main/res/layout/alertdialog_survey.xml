@@ -3,22 +3,55 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/survey_popupdialog"
-    android:gravity="center_horizontal">
+    android:background="@drawable/survey_bg_dialog"
+    android:gravity="center_horizontal"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp"
+    android:paddingTop="40dp"
+    android:paddingBottom="80dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/survey_title"
+        android:id="@+id/survey_popup_title"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="false"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/survey_popup_text"
+        android:id="@+id/survey_popup_text"
+        android:layout_below="@+id/survey_popup_title"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_confirm"
-        android:layout_marginTop="260dp"
-        android:id="@+id/btn_confirm_alertdialog_survey" />
+        android:background="@drawable/btn_bluesquare_normal"
+        android:id="@+id/btn_confirm_alertdialog_survey"
+        android:layout_marginBottom="10dp"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/btn_font_size"
+        android:layout_below="@+id/survey_popup_text"
+        android:layout_marginTop="25dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_skip"
+        android:background="@drawable/btn_graysquare_normal"
         android:id="@+id/btn_skip_alertdialog_survey"
-        android:layout_below="@+id/btn_confirm_alertdialog_survey"
-        android:layout_marginTop="10dp" />
+        android:layout_alignParentBottom="false"
+        android:text="@string/skip"
+        android:textSize="@dimen/btn_font_size"
+        android:textColor="@color/survey_page_color"
+        android:layout_below="@+id/btn_confirm_alertdialog_survey" />
 
 </RelativeLayout>

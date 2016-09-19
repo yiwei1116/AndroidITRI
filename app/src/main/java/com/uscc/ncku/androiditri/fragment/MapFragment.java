@@ -97,6 +97,8 @@ public class MapFragment extends Fragment {
         String call = "javascript:sayHello()";
         mapWVive.loadUrl(call);
 
+//        FeedbackFragment.feedbackAlertDialog(getActivity());
+
         return v;
     }
 }

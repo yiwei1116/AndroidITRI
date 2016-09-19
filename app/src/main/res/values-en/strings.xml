@@ -14,7 +14,7 @@
     <h5><font color=#4a90e2>*Environmental quality: </font></h5><b>1.</b> No eating or drinking allowed in the exhibition. Please check in all food and drinks at the service desk. <br><br><b>2.</b> Please turn all mobile phones to silent and avoid speaking loudly. No shouting is allowed in the exhibition.<br>
     <h5><font color=#4a90e2>*Guide tablet: </font></h5><b>1.</b> The tablet is only for guide use and is not open for connecting to external networks. Please do not use any digital tools to upload or download any digital data. <br><br><b>2.</b> The tablet has built in positioning system, please do not take it out of the exhibition area (shown in the map). If visitors need to use the restroom, please give the tablet to the service desk personnel for safekeeping. If visitors accidentally take the tablet out of the exhibition hall, exhibition hall personnel will make contact with the person who checked out the tablet. <br><br><b>3.</b> When the automated guide ends, please remember to return the tablet to the service desk and retrieve your ID. Please make sure the table PC is operating normally.<br>
     <h5><font color=#4a90e2>*Exhibition facility equipment: </font></h5><b>1.</b> Exhibition facilities and equipment that are labeled “Operable” can be operated and experienced by on-site visitors. <br><br><b>2.</b> If individuals cause serious damage to exhibition facilities and equipment during the automated guide process, the visitor who caused the damage shall be liable for repairs.]]></string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">OK</string>
     <string name="next_page">Next</string>
     <string name="survey_gender_female">Female</string>
     <string name="survey_gender_male">Male</string>
@@ -85,4 +85,9 @@
     <string name="survey_occupation_manufacture">Manufacturing</string>
     <string name="survey_occupation_real_estate">Real Estate</string>
     <string name="survey_occupation_service">Services</string>
+    <string name="feedback_yes">Yes</string>
+    <string name="feedback_no">No</string>
+    <string name="survey_popup_text">Dear guests, thank you for taking the time to visit this exhibition center today. To make future development of equipment system and service quality of this center better, please spend a few moments to fill out this questionnaire. The information you provide will only be used for overall analysis and will not be disclosed. Thank you very much for your assistance.</string>
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_text">Congratulations! You have completed the 1st floor. Would you like to give us some feedback?</string>
 </resources>
