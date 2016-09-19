@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/toolbar_content_paddingTop"
     tools:context=".fragment.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="map fragment" />
+        android:id="@+id/webview_map">
+
+    </WebView>
 
 </FrameLayout>

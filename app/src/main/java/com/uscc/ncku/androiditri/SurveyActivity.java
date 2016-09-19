@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,11 +14,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 public class SurveyActivity extends AppCompatActivity {
 
     private int tourIndex;
+    private boolean menuHide = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,16 @@ public class SurveyActivity extends AppCompatActivity {
 
         dialog.show();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (menuHide) {
+            return false;
+        } else {
+            getMenuInflater().inflate(R.menu.survey_menu, menu);
+            return true;
+        }
     }
 
     private void pageGender() {
@@ -193,6 +203,8 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void pageEducation() {
+        menuHide = true;
+
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page3);
         layout.setVisibility(View.VISIBLE);
 
@@ -248,6 +260,8 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void pageOccupation() {
+        menuHide = false;
+
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page4);
         layout.setVisibility(View.VISIBLE);
 
@@ -259,6 +273,14 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageExperiment();
+                return true;
             }
         });
 
@@ -281,14 +303,10 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn10 = (Button) findViewById(R.id.survey_page4_houskeep);
         Button btn11 = (Button) findViewById(R.id.survey_page4_other);
 
-        Locale current = getResources().getConfiguration().locale;
-        Log.e("GG", String.valueOf(current.getDefault().getDisplayLanguage()));
-
-        if (Locale.getDefault().getLanguage() == "en") {
-
+        if (getResources().getString(R.string.survey04_occupation).equals("Occupation")) {
+            btn8.setTextSize(12);
+            btn7.setTextSize(12);
         }
-        btn8.setTextSize(12);
-        btn7.setTextSize(12);
 
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,6 +408,14 @@ public class SurveyActivity extends AppCompatActivity {
                 pageOccupation();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+                return true;
+            }
+        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.five_twelfth);
@@ -398,20 +424,12 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey05_experience);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page5_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page5_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText editText = (EditText) findViewById(R.id.edtxt_survey_page5);
                 String exp = editText.getText().toString();
 
-                layout.setVisibility(View.INVISIBLE);
-                pageIncome();
-            }
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -430,6 +448,14 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+                return true;
             }
         });
 
@@ -503,6 +529,14 @@ public class SurveyActivity extends AppCompatActivity {
                 pageIncome();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageHouse();
+                return true;
+            }
+        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.seven_twelfth);
@@ -574,6 +608,14 @@ public class SurveyActivity extends AppCompatActivity {
                 pageResidence();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyOrganization();
+                return true;
+            }
+        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.eight_twelfth);
@@ -635,6 +677,14 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageFamilyMember();
+                return true;
             }
         });
 
@@ -708,6 +758,14 @@ public class SurveyActivity extends AppCompatActivity {
                 pageFamilyOrganization();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+                return true;
+            }
+        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.ten_twelfth);
@@ -716,15 +774,7 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey10_family);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page10_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page10_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setVisibility(View.INVISIBLE);
-                pageNotice();
-            }
-        });
-        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
@@ -747,6 +797,14 @@ public class SurveyActivity extends AppCompatActivity {
                 pageFamilyMember();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+                return true;
+            }
+        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.eleven_twelfth);
@@ -755,7 +813,6 @@ public class SurveyActivity extends AppCompatActivity {
         pageTitle.setText(R.string.survey11_notice);
 
         Button btn0 = (Button) findViewById(R.id.btn_survey_page11_confirm);
-        Button btn1 = (Button) findViewById(R.id.btn_survey_page11_skip);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -766,16 +823,11 @@ public class SurveyActivity extends AppCompatActivity {
                 pagePersonal();
             }
         });
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setVisibility(View.INVISIBLE);
-                pagePersonal();
-            }
-        });
     }
 
     private void pagePersonal() {
+        menuHide = true;
+
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page12);
         layout.setVisibility(View.VISIBLE);
 
@@ -787,6 +839,18 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageNotice();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                return true;
             }
         });
 

@@ -1,15 +1,18 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.uscc.ncku.androiditri.R;
-
-import org.w3c.dom.Text;
 
 
 /**
@@ -57,10 +60,32 @@ public class MapFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        View v = inflater.inflate(R.layout.fragment_map, container, false);
+        WebView mapWVive = (WebView) v.findViewById(R.id.webview_map);
+
+        mapWVive.setWebChromeClient(new WebChromeClient());
+        mapWVive.setWebViewClient(new WebViewClient());
+        mapWVive.setVerticalScrollBarEnabled(false);
+        mapWVive.setHorizontalScrollBarEnabled(false);
+
+        WebSettings settings = mapWVive.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(false);  // do not remove this
+//        settings.setAllowFileAccessFromFileURLs(true); // do not remove this
+        settings.setSupportMultipleWindows(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+
+//        mapWVive.setInitialScale(100);
+
+        mapWVive.loadUrl("file:///android_asset/living_1F.svg");
+
+        return v;
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -39,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.btn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         Bundle bundle = this.getIntent().getExtras();
         tourSelect = bundle.getInt(GET_TOUR_INDEX);
@@ -75,15 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_diary_main:
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
-                        FrameLayout flayout = (FrameLayout) findViewById(R.id.flayout_fragment_continer_notitle);
-                        flayout.setVisibility(View.VISIBLE);
-                        transaction.replace(R.id.flayout_fragment_continer_notitle, diaryFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment);
                     }
                     break;
                 case R.id.btn_map_main:
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-                        transaction.replace(R.id.flayout_fragment_continer_withtitle, mapFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, mapFragment);
                     }
                     break;
                 case R.id.btn_sound_main:
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         // present new view
                         setBtnActive(fontBtn, R.drawable.btn_main_font_active);
-                        transaction.replace(R.id.flayout_fragment_continer_withtitle, textFragment);
+                        transaction.replace(R.id.flayout_fragment_continer, textFragment);
 
                     }
                     break;
@@ -123,14 +127,12 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.add(R.id.flayout_fragment_continer_withtitle, mapFragment);
+        transaction.add(R.id.flayout_fragment_continer, mapFragment);
         transaction.commit();
     }
 
     private void setBtnActive(MainButton activeBtn, int bgId) {
         if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
-            FrameLayout flayout = (FrameLayout) findViewById(R.id.flayout_fragment_continer_notitle);
-            flayout.setVisibility(View.INVISIBLE);
             diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
         }
 

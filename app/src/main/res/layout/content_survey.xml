@@ -517,22 +517,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_survey_page5_confirm"
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selector_btn_survey_answer"
-                android:layout_above="@+id/btn_survey_page5_skip"
-                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
-                android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/skip"
-                android:textSize="@dimen/btn_answer_font_size"
-                android:textAllCaps="false"
-                android:id="@+id/btn_survey_page5_skip"
+                android:id="@+id/btn_survey_page5_confirm"
                 android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
@@ -877,22 +865,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_survey_page10_confirm"
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selector_btn_survey_answer"
-                android:layout_above="@+id/btn_survey_page10_skip"
-                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
-                android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/skip"
-                android:textSize="@dimen/btn_answer_font_size"
-                android:textAllCaps="false"
-                android:id="@+id/btn_survey_page10_skip"
+                android:id="@+id/btn_survey_page10_confirm"
                 android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"
@@ -919,22 +895,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_survey_page11_confirm"
                 android:text="@string/confirm"
                 android:textSize="@dimen/btn_answer_font_size"
                 android:textAllCaps="false"
-                android:background="@drawable/selector_btn_survey_answer"
-                android:layout_above="@+id/btn_survey_page11_skip"
-                android:layout_marginBottom="@dimen/btn_answer_llayout_top_margin"
-                android:textColor="@drawable/selecter_btn_survey_answer_txt_color" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/skip"
-                android:textSize="@dimen/btn_answer_font_size"
-                android:textAllCaps="false"
-                android:id="@+id/btn_survey_page11_skip"
+                android:id="@+id/btn_survey_page11_confirm"
                 android:background="@drawable/selector_btn_survey_answer"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="60dp"

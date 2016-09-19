@@ -42,4 +42,10 @@
         <item name="colorControlActivated">@color/btn_font_color_blue</item>
     </style>
 
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/btn_font_size</item>
+    </style>
+
+
 </resources>
