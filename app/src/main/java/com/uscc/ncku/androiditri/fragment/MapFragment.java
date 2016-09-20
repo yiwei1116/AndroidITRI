@@ -66,8 +66,9 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        WebView mapWVive = (WebView) v.findViewById(R.id.webview_map);
 
+        /* testing webview
+        WebView mapWVive = (WebView) v.findViewById(R.id.webview_map);
         mapWVive.setWebChromeClient(new WebChromeClient());
         mapWVive.setWebViewClient(new WebViewClient());
         JavaScriptInterface jsInterface = new JavaScriptInterface();
@@ -96,6 +97,7 @@ public class MapFragment extends Fragment {
 
         String call = "javascript:sayHello()";
         mapWVive.loadUrl(call);
+        */
 
 //        FeedbackFragment.feedbackAlertDialog(getActivity());
 

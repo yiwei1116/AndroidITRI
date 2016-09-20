@@ -29,7 +29,8 @@
         android:layout_below="@+id/survey_popup_title"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -41,17 +42,18 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/btn_font_size"
         android:layout_below="@+id/survey_popup_text"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_graysquare_normal"
         android:id="@+id/btn_skip_alertdialog_survey"
-        android:layout_alignParentBottom="false"
         android:text="@string/skip"
         android:textSize="@dimen/btn_font_size"
         android:textColor="@color/survey_page_color"
-        android:layout_below="@+id/btn_confirm_alertdialog_survey" />
+        android:layout_below="@+id/btn_confirm_alertdialog_survey"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

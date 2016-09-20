@@ -111,13 +111,9 @@ public class FeedbackFragment extends Fragment {
     }
 
     public static void feedbackAlertDialog(Context context) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context, R.style.selectorDialogTitle);
         dialog.setContentView(R.layout.alertdialog_feedback);
         dialog.setTitle(R.string.feedback_title);
-
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.dimAmount=0.2f;
-        dialog.getWindow().setAttributes(lp);
 
         dialog.show();
     }

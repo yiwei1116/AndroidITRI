@@ -39,9 +39,16 @@
     <style name="selectorDialogTitle" parent="@android:style/Theme.Dialog">
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@drawable/selector_dialog_bg_survey</item>
+        <item name="android:windowBackground">@drawable/selector_dialog_bg_feedback</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.2</item>
+        <item name="android:windowTitleStyle">@style/feedback_dialog_title_style</item>
+    </style>
+
+    <style name="feedback_dialog_title_style" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/selector_dialog_bg_feedback</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Theme.App.Base" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -4,36 +4,40 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/feedback_popup_bg"
-    android:gravity="center_horizontal"
-    android:padding="5dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/alertdialog_feedback_text"
         android:text="@string/feedback_text"
-        android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:layout_marginTop="140dp"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_bluesquare_normal"
-        android:layout_marginTop="260dp"
         android:id="@+id/btn_confirm_alertdialog_feedback"
         android:text="@string/feedback_yes"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/alertdialog_feedback_text"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_graysquare_normal"
         android:id="@+id/btn_skip_alertdialog_feedback"
-        android:layout_below="@+id/btn_confirm_alertdialog_feedback"
         android:layout_marginTop="10dp"
         android:text="@string/feedback_no"
-        android:textColor="@color/survey_page_color"/>
+        android:textColor="@color/survey_page_color"
+        android:layout_below="@+id/btn_confirm_alertdialog_feedback"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
