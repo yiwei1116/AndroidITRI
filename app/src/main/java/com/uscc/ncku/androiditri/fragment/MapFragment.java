@@ -99,7 +99,8 @@ public class MapFragment extends Fragment {
         mapWVive.loadUrl(call);
         */
 
-//        FeedbackFragment.feedbackAlertDialog(getActivity());
+//        FeedbackFragment feedback = new FeedbackFragment();
+//        feedback.feedbackAlertDialog(getActivity(), feedback);
 
         return v;
     }
