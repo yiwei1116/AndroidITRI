@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -161,5 +164,23 @@ public class MainActivity extends AppCompatActivity {
         } else if (f instanceof TextFragment){
             setBtnActive(fontBtn, R.drawable.btn_main_font_active);
         }
+    }
+
+    public void hideMainBtn() {
+        ImageView img = (ImageView) findViewById(R.id.img_btnnavagitor_main);
+        LinearLayout llayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+
+        img.getLayoutParams().height = 0;
+
+        llayout.setVisibility(View.GONE);
+    }
+
+    public void showMainBtn() {
+        ImageView img = (ImageView) findViewById(R.id.img_btnnavagitor_main);
+        LinearLayout llayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+
+        img.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
+
+        llayout.setVisibility(View.VISIBLE);
     }
 }
