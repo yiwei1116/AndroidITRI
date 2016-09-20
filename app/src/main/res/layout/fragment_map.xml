@@ -12,4 +12,49 @@
 
     </WebView>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/map_area_bg_notice"
+        android:id="@+id/rlayout_map_area"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="26dp"
+        android:visibility="gone">
+
+        <Button
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@drawable/ic_cancel"
+            android:id="@+id/btn_cancel_map_area"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_map_area"
+            android:layout_toRightOf="@+id/btn_cancel_map_area"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btn_enter_map_area" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_enter"
+            android:background="@android:color/transparent"
+            android:id="@+id/btn_enter_map_area"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/map_area_enter"
+            android:textColor="@color/btn_font_color_yellow"
+            android:textSize="14sp"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="18dp"
+            android:textAllCaps="false"/>
+
+    </RelativeLayout>
+
 </FrameLayout>

@@ -59,6 +59,8 @@ public class SurveyActivity extends AppCompatActivity {
                 bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
+                dialog.dismiss();
             }
         });
 

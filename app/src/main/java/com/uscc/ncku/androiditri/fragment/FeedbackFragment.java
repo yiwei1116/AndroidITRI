@@ -4,19 +4,22 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.uscc.ncku.androiditri.R;
 
+/**
+ * use this to call feedback popup dialog
+ *
+ * FeedbackFragment feedback = new FeedbackFragment();
+ * feedback.feedbackAlertDialog(getActivity(), feedback);
+ */
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +73,8 @@ public class FeedbackFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_feedback, container, false);
     }
+
+
 
     public void feedbackAlertDialog(final Activity activity, final FeedbackFragment f) {
         final Dialog dialog = new Dialog(activity, R.style.selectorDialogTitle);

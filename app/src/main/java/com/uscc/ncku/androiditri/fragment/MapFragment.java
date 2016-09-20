@@ -1,19 +1,18 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.uscc.ncku.androiditri.R;
-import com.uscc.ncku.androiditri.util.JavaScriptInterface;
 
 
 /**
@@ -67,8 +66,28 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
-        FeedbackFragment feedback = new FeedbackFragment();
-        feedback.feedbackAlertDialog(getActivity(), feedback);
+        final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
+        notice.setVisibility(View.VISIBLE);
+        Button cancel = (Button) v.findViewById(R.id.btn_cancel_map_area);
+        Button enter = (Button) v.findViewById(R.id.btn_enter_map_area);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notice.setVisibility(View.GONE);
+            }
+        });
+        enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notice.setVisibility(View.GONE);
+
+                AreaFragment areaFragment = AreaFragment.newInstance("a", "b");
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, areaFragment).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return v;
     }
