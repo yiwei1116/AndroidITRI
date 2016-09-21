@@ -106,6 +106,7 @@
     <string name="nextstep">下一步</string>
     <string name="feedback_title">問卷填寫</string>
     <string name="feedback_text">恭喜完成1樓導覧\n願意提供給我們寶貴的意見嗎？</string>
+    <string name="map_area_enter">進入導覧</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

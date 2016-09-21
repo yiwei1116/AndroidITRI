@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_understand_tour_select"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="@dimen/btn_layout_marginbutton"
             android:text="@string/ok"
             android:textColor="@drawable/selecter_btn_black_white_txt_color"
             android:textSize="@dimen/btn_font_size"

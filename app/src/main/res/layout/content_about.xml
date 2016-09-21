@@ -21,7 +21,7 @@
         android:id="@+id/scrollView"
         android:layout_gravity="center_horizontal"
         android:layout_weight="5"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:paddingTop="14dp">
 
         <TextView
@@ -46,6 +46,6 @@
         android:background="@drawable/selecter_btn_blue_stroke"
         android:textColor="@drawable/selecter_btn_blue_stroke_txt_color"
         android:textSize="@dimen/btn_font_size"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="@dimen/btn_layout_marginbutton" />
 
 </LinearLayout>

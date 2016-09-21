@@ -90,4 +90,5 @@
     <string name="survey_popup_text">Dear guests, thank you for taking the time to visit this exhibition center today. To make future development of equipment system and service quality of this center better, please spend a few moments to fill out this questionnaire. The information you provide will only be used for overall analysis and will not be disclosed. Thank you very much for your assistance.</string>
     <string name="feedback_title">Feedback</string>
     <string name="feedback_text">Congratulations! You have completed the 1st floor. Would you like to give us some feedback?</string>
+    <string name="map_area_enter">Enter</string>
 </resources>

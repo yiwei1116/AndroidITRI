@@ -6,8 +6,10 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -20,13 +22,16 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
-    private int tourSelect;
+    private int tourIndex;
 
     private MainButton infoBtn;
     private MainButton diaryBtn;
     private MainButton mapBtn;
     private MainButton soundBtn;
     private MainButton fontBtn;
+
+    private static ImageView mainBtnNavBg;
+    private static LinearLayout mainBtnLayout;
 
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
@@ -49,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Bundle bundle = this.getIntent().getExtras();
-        tourSelect = bundle.getInt(GET_TOUR_INDEX);
+        tourIndex = bundle.getInt(GET_TOUR_INDEX);
+
+        mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
+        mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -116,15 +124,15 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setNormal(R.drawable.btn_main_font_normal);
 
         if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance("a", "b");
+            mapFragment = MapFragment.newInstance(tourIndex);
         }
 
         if (diaryFragment == null) {
-            diaryFragment = DiaryFragment.newInstance("a", "b");
+            diaryFragment = DiaryFragment.newInstance();
         }
 
         if (textFragment == null) {
-            textFragment = TextFragment.newInstance("a", "b");
+            textFragment = TextFragment.newInstance();
         }
 
         FragmentManager fm = getFragmentManager();
@@ -161,5 +169,17 @@ public class MainActivity extends AppCompatActivity {
         } else if (f instanceof TextFragment){
             setBtnActive(fontBtn, R.drawable.btn_main_font_active);
         }
+    }
+
+    public static void hideMainBtn() {
+        mainBtnNavBg.getLayoutParams().height = 0;
+
+        mainBtnLayout.setVisibility(View.GONE);
+    }
+
+    public static void showMainBtn() {
+        mainBtnNavBg.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
+
+        mainBtnLayout.setVisibility(View.VISIBLE);
     }
 }

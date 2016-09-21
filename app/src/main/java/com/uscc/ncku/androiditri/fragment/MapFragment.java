@@ -1,19 +1,18 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.uscc.ncku.androiditri.R;
-import com.uscc.ncku.androiditri.util.JavaScriptInterface;
 
 
 /**
@@ -22,13 +21,9 @@ import com.uscc.ncku.androiditri.util.JavaScriptInterface;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TOUR_INDEX = "TOUR_INDEX";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int tourIndex;
 
     public MapFragment() {
         // Required empty public constructor
@@ -39,15 +34,12 @@ public class MapFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment MapFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    public static MapFragment newInstance(int param1) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(TOUR_INDEX, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,8 +48,7 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            tourIndex = getArguments().getInt(TOUR_INDEX);
         }
     }
 
@@ -67,39 +58,28 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
-        /* testing webview
-        WebView mapWVive = (WebView) v.findViewById(R.id.webview_map);
-        mapWVive.setWebChromeClient(new WebChromeClient());
-        mapWVive.setWebViewClient(new WebViewClient());
-        JavaScriptInterface jsInterface = new JavaScriptInterface();
-        mapWVive.addJavascriptInterface(jsInterface, "Android");
-        mapWVive.setHorizontalScrollBarEnabled(false);
-        mapWVive.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        mapWVive.setVerticalScrollBarEnabled(false);
-        mapWVive.setHorizontalScrollBarEnabled(false);
+        final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
+        notice.setVisibility(View.VISIBLE);
+        Button cancel = (Button) v.findViewById(R.id.btn_cancel_map_area);
+        Button enter = (Button) v.findViewById(R.id.btn_enter_map_area);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notice.setVisibility(View.GONE);
+            }
+        });
+        enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notice.setVisibility(View.GONE);
 
-        WebSettings settings = mapWVive.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setSupportZoom(false);  // do not remove this
-        settings.setAllowFileAccessFromFileURLs(true); // do not remove this
-        settings.setSupportMultipleWindows(false);
-        settings.setJavaScriptCanOpenWindowsAutomatically(false);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true);
-
-//        mapWVive.setInitialScale(100);
-
-//        mapWVive.loadUrl("file:///android_asset/living_1f.svg");
-        String aURL = "file:///android_asset/index.html";
-        String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
-        mapWVive.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
-
-        String call = "javascript:sayHello()";
-        mapWVive.loadUrl(call);
-        */
-
-//        FeedbackFragment.feedbackAlertDialog(getActivity());
+                AreaFragment areaFragment = AreaFragment.newInstance(tourIndex);
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, areaFragment).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return v;
     }

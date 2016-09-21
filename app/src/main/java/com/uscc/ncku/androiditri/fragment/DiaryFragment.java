@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.io.File;
@@ -50,13 +51,6 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  * create an instance of this fragment.
  */
 public class DiaryFragment extends Fragment implements View.OnClickListener{
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private DisplayMetrics mPhone;
     private final static int CAMERA_RESULT = 0;
     private final static int PHOTO_RESULT = 1;
@@ -71,17 +65,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment DiaryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DiaryFragment newInstance(String param1, String param2) {
+    public static DiaryFragment newInstance() {
         DiaryFragment fragment = new DiaryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
 
         return fragment;
     }
@@ -89,12 +77,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
@@ -135,6 +117,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
                 break;
             case R.id.next_step:
+                MainActivity.hideMainBtn();
+
                 LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
                 bottom_bar.setVisibility(View.GONE);
                 FragmentManager fm = getFragmentManager();
