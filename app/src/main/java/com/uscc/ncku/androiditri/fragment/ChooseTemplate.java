@@ -153,6 +153,7 @@ public class ChooseTemplate extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        MainActivity.showMainBtn();
     }
 
     /**

@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private MainButton soundBtn;
     private MainButton fontBtn;
 
+    private static ImageView mainBtnNavBg;
+    private static LinearLayout mainBtnLayout;
+
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
     private TextFragment textFragment;
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(GET_TOUR_INDEX);
+
+        mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
+        mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -165,21 +171,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void hideMainBtn() {
-        ImageView img = (ImageView) findViewById(R.id.img_btnnavagitor_main);
-        LinearLayout llayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+    public static void hideMainBtn() {
+        mainBtnNavBg.getLayoutParams().height = 0;
 
-        img.getLayoutParams().height = 0;
-
-        llayout.setVisibility(View.GONE);
+        mainBtnLayout.setVisibility(View.GONE);
     }
 
-    public void showMainBtn() {
-        ImageView img = (ImageView) findViewById(R.id.img_btnnavagitor_main);
-        LinearLayout llayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+    public static void showMainBtn() {
+        mainBtnNavBg.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
 
-        img.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
-
-        llayout.setVisibility(View.VISIBLE);
+        mainBtnLayout.setVisibility(View.VISIBLE);
     }
 }
