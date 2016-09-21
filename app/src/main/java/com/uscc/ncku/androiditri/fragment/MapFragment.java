@@ -21,13 +21,9 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TOUR_INDEX = "TOUR_INDEX";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int tourIndex;
 
     public MapFragment() {
         // Required empty public constructor
@@ -38,15 +34,12 @@ public class MapFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment MapFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MapFragment newInstance(String param1, String param2) {
+    public static MapFragment newInstance(int param1) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(TOUR_INDEX, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,8 +48,7 @@ public class MapFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            tourIndex = getArguments().getInt(TOUR_INDEX);
         }
     }
 
@@ -81,7 +73,7 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 notice.setVisibility(View.GONE);
 
-                AreaFragment areaFragment = AreaFragment.newInstance("a", "b");
+                AreaFragment areaFragment = AreaFragment.newInstance(tourIndex);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(R.id.flayout_fragment_continer, areaFragment).addToBackStack(null);

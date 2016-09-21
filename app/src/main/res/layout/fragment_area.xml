@@ -11,28 +11,49 @@
         android:layout_height="wrap_content"
         android:id="@+id/page_area_fragment"
         android:background="@drawable/rm_page1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title_area_fragment"
         android:layout_below="@+id/page_area_fragment"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        tools:text="大廳區"
+        android:textColor="@android:color/white"
+        android:textSize="38sp"
+        android:layout_marginTop="15dp" />
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/content_area_fragment"
+        android:id="@+id/scrollview_cotent_area"
         android:layout_below="@+id/title_area_fragment"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/content_area_fragment"
+            tools:text="這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp" />
+
+    </ScrollView>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/rlayout_tour_speech"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp">
+        android:layout_marginLeft="-20dp"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:layout_marginBottom="-41dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tour_guide_area"
-            android:background="@drawable/designer_talking"
+            tools:background="@drawable/designer_talking"
             android:layout_below="@+id/tour_speech_area" />
 
     </RelativeLayout>
@@ -55,7 +76,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/next_area_fragment"
+        android:id="@+id/btn_next_area_fragment"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/btn_layout_marginbutton"
         android:background="@drawable/selecter_btn_confirm"

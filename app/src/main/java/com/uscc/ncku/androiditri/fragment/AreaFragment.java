@@ -3,14 +3,17 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.R;
 
@@ -21,15 +24,14 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class AreaFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TOUR_INDEX = "TOUR_INDEX";
+    private static final int[] TOUR_GUIDE = {
+            R.drawable.designer_talking,
+            R.drawable.robot_talking,
+            R.drawable.housekeeper_talking
+    };
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private int tourIndex;
     private View view;
 
 
@@ -42,15 +44,12 @@ public class AreaFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AreaFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static AreaFragment newInstance(String param1, String param2) {
+    public static AreaFragment newInstance(int param1) {
         AreaFragment fragment = new AreaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(TOUR_INDEX, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +58,7 @@ public class AreaFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            tourIndex = getArguments().getInt(TOUR_INDEX);
         }
         Log.e("GG", "onCreat");
     }
@@ -81,10 +79,27 @@ public class AreaFragment extends Fragment {
         super.onStart();
         Log.e("GG", "onStart");
 
+        TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
+
+        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
+
+        ImageView tourGuide = (ImageView) view.findViewById(R.id.tour_guide_area);
+        tourGuide.setBackgroundResource(TOUR_GUIDE[tourIndex]);
+
+        TextView tourSpeech = (TextView) view.findViewById(R.id.tour_speech_area);
+
         RelativeLayout tour = (RelativeLayout) view.findViewById(R.id.rlayout_tour_speech);
 
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.tour_guide_translate);
         tour.startAnimation(animation);
+
+        Button next = (Button) view.findViewById(R.id.btn_next_area_fragment);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

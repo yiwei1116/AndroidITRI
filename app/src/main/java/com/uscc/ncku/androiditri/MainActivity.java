@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
-    private int tourSelect;
+    private int tourIndex;
 
     private MainButton infoBtn;
     private MainButton diaryBtn;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Bundle bundle = this.getIntent().getExtras();
-        tourSelect = bundle.getInt(GET_TOUR_INDEX);
+        tourIndex = bundle.getInt(GET_TOUR_INDEX);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -119,15 +118,15 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setNormal(R.drawable.btn_main_font_normal);
 
         if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance("a", "b");
+            mapFragment = MapFragment.newInstance(tourIndex);
         }
 
         if (diaryFragment == null) {
-            diaryFragment = DiaryFragment.newInstance("a", "b");
+            diaryFragment = DiaryFragment.newInstance();
         }
 
         if (textFragment == null) {
-            textFragment = TextFragment.newInstance("a", "b");
+            textFragment = TextFragment.newInstance();
         }
 
         FragmentManager fm = getFragmentManager();
