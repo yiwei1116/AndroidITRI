@@ -88,6 +88,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mPhone);
         mImg = (ImageView)view.findViewById(R.id.img);
         cameraCall = (Button)view.findViewById(R.id.camera);
+
         photoCall = (Button)view.findViewById(R.id.photo);
         nextStep =(Button)view.findViewById(R.id.next_step);
         cameraCall.setOnClickListener(this);
