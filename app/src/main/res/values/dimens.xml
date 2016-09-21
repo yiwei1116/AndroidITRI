@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="toolbar_layout_marginTop">-20dp</dimen>
     <dimen name="toolbar_paddingTop">25dp</dimen>
-    <dimen name="toolbar_content_paddingTop">62dp</dimen>
+    <dimen name="toolbar_content_paddingTop">60dp</dimen>
     <dimen name="main_btn_width">72dp</dimen>
     <dimen name="main_btn_height">57dp</dimen>
     <dimen name="main_btn_circle">58dp</dimen>
@@ -18,6 +18,7 @@
     <dimen name="btn_answer_padding">10dp</dimen>
     <dimen name="btn_answer_llayout_top_margin">15dp</dimen>
     <dimen name="btn_answer_llayout_middle_margin">5dp</dimen>
-    <dimen name="edtxt_hint_text_size">16sp</dimen>
+    <dimen name="edtxt_hint_font_size">16sp</dimen>
+    <dimen name="big_title_font_size">38sp</dimen>
     <dimen name="btn_layout_marginbutton">30dp</dimen>
 </resources>

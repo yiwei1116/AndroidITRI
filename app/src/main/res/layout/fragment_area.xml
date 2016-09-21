@@ -20,9 +20,8 @@
         android:id="@+id/title_area_fragment"
         android:layout_below="@+id/page_area_fragment"
         android:layout_centerHorizontal="true"
-        tools:text="大廳區"
         android:textColor="@android:color/white"
-        android:textSize="38sp"
+        android:textSize="@dimen/big_title_font_size"
         android:layout_marginTop="15dp" />
 
     <ScrollView
@@ -39,9 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/content_area_fragment"
-            tools:text="這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字"
             android:textColor="@color/colorWhite"
-            android:textSize="22sp" />
+            android:textSize="@dimen/title_font_size" />
 
     </ScrollView>
 

@@ -1,6 +1,8 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
@@ -97,7 +99,11 @@ public class AreaFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(4);
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, modeSelectFragment).addToBackStack(null);
+                transaction.commit();
             }
         });
 
