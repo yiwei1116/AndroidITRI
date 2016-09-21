@@ -197,10 +197,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private boolean canMakeSmores() {
         return(Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+
     public void callCamera( ){
 
-
-        Intent cameraIntent = new Intent();
+       Intent myIntent = new Intent(getActivity(), CustomCamera.class);
+        getActivity().startActivity(myIntent);
+    /*   Intent cameraIntent = new Intent();
         // sent to have the camera application capture an image and return it.
         cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
@@ -214,9 +216,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         // Ar1 The name of the Intent-extra used to indicate a content resolver Uri to be used to store the requested image or video.
         Log.e("uri", Uri.fromFile(photoFile).toString());
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        startActivityForResult(cameraIntent, CAMERA_RESULT);
+        startActivityForResult(cameraIntent, CAMERA_RESULT);*/
 
     }
+    //将图片文件添加至相册（便于浏览）
+    /*private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(photoFile);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }*/
     private void dialogAlert(){
         final Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
         dialog.setContentView(R.layout.dialogpermission);
@@ -353,9 +362,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+       // int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
         Matrix matrix = new Matrix();
-        switch (orientation) {
+       /* switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
                 matrix.setRotate(90);
                 break;
@@ -363,7 +372,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 matrix.setRotate(180);
                 break;
             default:
-        }
+        }*/
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         mImg.setImageBitmap(rotatedBitmap);
     }
