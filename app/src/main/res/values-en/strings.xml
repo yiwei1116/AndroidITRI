@@ -91,4 +91,6 @@
     <string name="feedback_title">Feedback</string>
     <string name="feedback_text">Congratulations! You have completed the 1st floor. Would you like to give us some feedback?</string>
     <string name="map_area_enter">Enter</string>
+    <string name="read">read</string>
+    <string name="mode_select_title"> mode</string>
 </resources>

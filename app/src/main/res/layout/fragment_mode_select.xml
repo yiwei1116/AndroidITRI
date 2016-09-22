@@ -15,16 +15,19 @@
         android:gravity="center_horizontal"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="3dp" />
 
-    <ScrollView
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollview_mode_select"
+        android:id="@+id/gridview_mode_select"
         android:layout_below="@+id/txt_mode_select"
-        android:layout_centerHorizontal="true">
-
-    </ScrollView>
+        android:layout_centerHorizontal="true"
+        android:numColumns="2"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
+        android:padding="5dp"
+        android:stretchMode="columnWidth"/>
 
 
 </RelativeLayout>

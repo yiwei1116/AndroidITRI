@@ -1,13 +1,21 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.R;
+
+import java.util.ArrayList;
 
 
 /**
@@ -16,9 +24,24 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class ModeSelectFragment extends Fragment {
+    private static final String TAG = "MODE_SELECT_DEBUG";
     private static final String MODE_NUMBER = "modeNumber";
+    private static final int[] RM_GRID_BG = {
+        R.drawable.rm_grid1_a1m1,
+        R.drawable.rm_grid1_a1m2,
+        R.drawable.rm_grid1_a1m3,
+        R.drawable.rm_grid1_a1m4
+    };
+    private static final String[] RM_GRID_TITLE = {
+            "迎賓模式",
+            "浮空投影模式",
+            "大氣環境監測模式",
+            "植生牆自動澆灌系統"
+    };
 
     private int modeNumber;
+
+    private View view;
 
 
     public ModeSelectFragment() {
@@ -52,7 +75,92 @@ public class ModeSelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mode_select, container, false);
+        view = inflater.inflate(R.layout.fragment_mode_select, container, false);
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        TextView modeTitle = (TextView) view.findViewById(R.id.txt_mode_select);
+        String title = String.valueOf(modeNumber) + getResources().getString(R.string.mode_select_title);
+        modeTitle.setText(title);
+
+        GridView modeGrid = (GridView) view.findViewById(R.id.gridview_mode_select);
+        ArrayList<Item> modeItem = new ArrayList<Item>();
+        addModeItem(modeItem);
+        Adapter adapter = new Adapter(this.getActivity(), modeItem, modeGrid);
+
+        modeGrid.setAdapter(adapter);
+    }
+
+    private void addModeItem(ArrayList<Item> modeItem) {
+        for (int i = 0; i < modeNumber; i++) {
+            Item item = new Item();
+            item.imgID = RM_GRID_BG[i];
+            item.title = RM_GRID_TITLE[i];
+            item.isRead = false;
+            modeItem.add(item);
+        }
+    }
+
+    class Item {
+        int imgID;
+        String title;
+        boolean isRead;
+    }
+
+    class Adapter extends BaseAdapter {
+        Context context;
+        ArrayList<Item> modeItem;
+        GridView modeGrid;
+
+        public Adapter(Context context, ArrayList<Item> modeItem, GridView modeGrid) {
+            this.context = context;
+            this.modeItem = modeItem;
+            this.modeGrid = modeGrid;
+        }
+
+        @Override
+        public int getCount() {
+            return modeNumber;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            modeItem.get(position).isRead = true;
+            this.notifyDataSetInvalidated();
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                LayoutInflater inflate = LayoutInflater.from(context);
+                convertView = inflate.inflate(R.layout.mode_select_grid_item, null);
+            }
+
+            ImageView gridBg = (ImageView) convertView.findViewById(R.id.grid_item_bg);
+            gridBg.setBackgroundResource(modeItem.get(position).imgID);
+
+            TextView gridTitle = (TextView) convertView.findViewById(R.id.grid_item_title);
+            gridTitle.setText(modeItem.get(position).title);
+
+            TextView read = (TextView) convertView.findViewById(R.id.grid_item_read);
+            if (modeItem.get(position).isRead) {
+                read.setVisibility(View.VISIBLE);
+            } else {
+                read.setVisibility(View.INVISIBLE);
+            }
+
+            return convertView;
+        }
     }
 
 }
