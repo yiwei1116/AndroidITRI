@@ -6,4 +6,5 @@
         app:showAsAction="always"
         android:title="@string/skip"
         android:id="@+id/survey_menu_edit" />
+
 </menu>
