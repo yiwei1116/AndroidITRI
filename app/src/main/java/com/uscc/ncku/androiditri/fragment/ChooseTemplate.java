@@ -64,7 +64,7 @@ public class ChooseTemplate extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_choose_template, container, false);
-        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar_template_select);
+        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar_camera);
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
@@ -86,6 +86,8 @@ public class ChooseTemplate extends Fragment {
 
         return view   ;
     }
+
+
     class ChooseTemp extends PagerAdapter {
         private  final int[] Template_Image = {
                 R.drawable.card_1,
@@ -153,7 +155,6 @@ public class ChooseTemplate extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        MainActivity.showMainBtn();
     }
 
     /**

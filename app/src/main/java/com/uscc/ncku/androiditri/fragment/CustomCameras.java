@@ -4,6 +4,9 @@ package com.uscc.ncku.androiditri.fragment;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -111,6 +114,17 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         capture = (Button)view.findViewById(R.id.btn_capture);
         switchCamera.setOnClickListener(this);
         capture.setOnClickListener(this);
+        /*AppCompatActivity activity = (AppCompatActivity) getActivity();
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)view.findViewById(R.id.toolbar_template_select);
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.btn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });*/
         initViews();
         return view;
     }
@@ -146,6 +160,23 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             }
         }
     };
+ /*   @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.camera_menu, menu);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.ic_swith_camera:
+                switchCamera();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
     private void initViews() {
 
@@ -228,8 +259,6 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
         if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             mCamera.takePicture(null, null, mPictureCallback);
-
-
 
         }
         mCamera.autoFocus(new Camera.AutoFocusCallback() {

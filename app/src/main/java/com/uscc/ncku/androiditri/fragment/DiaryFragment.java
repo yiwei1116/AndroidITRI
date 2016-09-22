@@ -99,6 +99,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.showMainBtn();
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -184,6 +191,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void callCamera( ){
+        MainActivity.hideMainBtn();
         FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
         FragmentTransaction transaction = fm.beginTransaction();

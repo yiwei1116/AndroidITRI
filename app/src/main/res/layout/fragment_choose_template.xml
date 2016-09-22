@@ -6,7 +6,17 @@
     android:fitsSystemWindows="true"
     android:background="@drawable/tour_select_background"
     tools:context="com.uscc.ncku.androiditri.fragment.ChooseTemplate">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_camera"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/background_dark"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:fitsSystemWindows="false"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
 
+    </android.support.v7.widget.Toolbar>
     <android.support.v4.view.ViewPager
         android:id="@+id/template_choose"
         android:layout_height="match_parent"
