@@ -1,5 +1,13 @@
 package com.uscc.ncku.androiditri.fragment;
 
+
+import android.os.Bundle;
+import android.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -35,8 +43,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import com.uscc.ncku.androiditri.R;
 
-public class CustomCamera extends Activity implements SurfaceHolder.Callback {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link CustomCameras#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener  {
     private ImageView imageView;
     private  String picPath;
     private int targetImageViewWidth;
@@ -47,24 +61,64 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     private Camera mCamera;
     private boolean isBackCameraOn;
     private String mImageFileLocation = "";
+    private Button switchCamera,capture;
     Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CustomCameras.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static CustomCameras newInstance(String param1, String param2) {
+        CustomCameras fragment = new CustomCameras();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public CustomCameras() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        setContentView(R.layout.camera_preview);
-
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.camera_preview, container, false);
+        mCameraPreview = (SurfaceView) view.findViewById(R.id.sv_camera);
+        switchCamera = (Button)view.findViewById(R.id.btn_switch_camera);
+        capture = (Button)view.findViewById(R.id.btn_capture);
+        switchCamera.setOnClickListener(this);
+        capture.setOnClickListener(this);
         initViews();
+        return view;
     }
     Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             pictureFile = getOutputMediaFile();
-           // picPath =pictureFile.getAbsolutePath();
+            // picPath =pictureFile.getAbsolutePath();
             if (pictureFile == null) {
 
                 return;
@@ -86,7 +140,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
                 transaction.replace(R.id.custom_camera_container, CP );
                 transaction.addToBackStack(null);
                 transaction.commit();
-                //CustomCamera.this.finish();
+                //CustomCameras.this.finish();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -94,7 +148,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     };
 
     private void initViews() {
-        mCameraPreview = (SurfaceView) findViewById(R.id.sv_camera);
+
         mSurfaceHolder = mCameraPreview.getHolder();
         mSurfaceHolder.addCallback(this);
         mCameraPreview.setOnClickListener(new View.OnClickListener() {
@@ -104,9 +158,23 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
             }
         });
     }
+    @Override
+    public void onClick(View v) {
 
+        switch(v.getId()) {
+            case R.id.btn_switch_camera:
+                switchCamera();
 
-    public void switchCamera(View view) {
+                break;
+            case R.id.btn_capture:
+                capture();
+
+                break;
+        }
+
+    }
+
+    public void switchCamera() {
         int cameraCount;
 
 
@@ -135,7 +203,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     }
 
 
-    public void capture(View view) {
+    public void capture() {
 
         Camera.Parameters params = mCamera.getParameters();
 
@@ -223,9 +291,9 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (this.checkCameraHardware(this) && (mCamera == null)) {
+        if (this.checkCameraHardware(getActivity()) && (mCamera == null)) {
             mCamera = getCamera();
             if (mSurfaceHolder != null) {
                 setStartPreview(mCamera, mSurfaceHolder);
@@ -262,8 +330,9 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         releaseCamera();
     }
+
 }

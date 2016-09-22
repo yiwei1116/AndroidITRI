@@ -184,10 +184,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void callCamera( ){
-
-       Intent myIntent = new Intent(getActivity(), CustomCamera.class);
-        getActivity().startActivity(myIntent);
-    /*   Intent cameraIntent = new Intent();
+        FragmentManager fm = getFragmentManager();
+        CustomCameras CC = new CustomCameras();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CC );
+        transaction.addToBackStack(null);
+        transaction.commit();
+      /*
+       Intent cameraIntent = new Intent();
         // sent to have the camera application capture an image and return it.
         cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
