@@ -76,8 +76,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
 
 
                 fos.close();
-               // Intent intent = new Intent(CustomCamera.this, ConfirmPic.class);
-               // intent.putExtra("picPath", pictureFile.getAbsolutePath());
+
                 ConfirmPic CP = new ConfirmPic();
                 Bundle bundle = new Bundle();
                 bundle.putString("picPath",pictureFile.getAbsolutePath());
@@ -158,7 +157,6 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
 
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(params);
-        // 使用自动对焦功能
 
         if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             mCamera.takePicture(null, null, mPictureCallback);
