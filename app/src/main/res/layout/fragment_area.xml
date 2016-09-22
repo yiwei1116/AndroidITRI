@@ -30,8 +30,8 @@
         android:id="@+id/scrollview_cotent_area"
         android:layout_below="@+id/title_area_fragment"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingLeft="@dimen/content_padding_rl"
+        android:paddingRight="@dimen/content_padding_rl"
         android:layout_marginTop="30dp">
 
         <TextView

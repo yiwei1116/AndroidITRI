@@ -1,0 +1,81 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/toolbar_content_paddingTop"
+    tools:context="com.uscc.ncku.androiditri.fragment.ModeHighlightFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rm_a1m1_bg">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rm_a1m1_highlight"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mode_highlight_bg_mark"
+            android:layout_gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_next_mode_highlight"
+            android:layout_marginBottom="@dimen/btn_layout_marginbutton"
+            android:background="@drawable/selecter_btn_confirm"
+            android:text="@string/next_page"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/btn_font_size"
+            android:layout_gravity="bottom|center_horizontal" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlayout_mode_intro"
+        android:visibility="invisible"
+        android:background="@drawable/rm_a1m1_darkbg"
+        android:paddingLeft="@dimen/content_padding_rl"
+        android:paddingRight="@dimen/content_padding_rl">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_title_mode_intro"
+            android:text="迎賓模式"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:textSize="32sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_content_mode_intro"
+            android:text="這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字"
+            android:textColor="@android:color/white"
+            android:layout_below="@+id/txt_title_mode_intro"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_next_mode_intro"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/btn_layout_marginbutton"
+            android:background="@drawable/selecter_btn_confirm"
+            android:text="@string/next_page"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/btn_font_size"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+</FrameLayout>

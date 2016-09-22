@@ -1,6 +1,8 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -42,6 +44,7 @@ public class ModeSelectFragment extends Fragment {
     private int modeNumber;
 
     private View view;
+    private ArrayList<Item> modeItem;
 
 
     public ModeSelectFragment() {
@@ -69,6 +72,8 @@ public class ModeSelectFragment extends Fragment {
         if (getArguments() != null) {
             modeNumber = getArguments().getInt(MODE_NUMBER);
         }
+        modeItem = new ArrayList<Item>();
+        addModeItem();
     }
 
     @Override
@@ -76,26 +81,25 @@ public class ModeSelectFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_mode_select, container, false);
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
+        Log.e(TAG, "onstart");
         TextView modeTitle = (TextView) view.findViewById(R.id.txt_mode_select);
         String title = String.valueOf(modeNumber) + getResources().getString(R.string.mode_select_title);
         modeTitle.setText(title);
 
         GridView modeGrid = (GridView) view.findViewById(R.id.gridview_mode_select);
-        ArrayList<Item> modeItem = new ArrayList<Item>();
-        addModeItem(modeItem);
-        Adapter adapter = new Adapter(this.getActivity(), modeItem, modeGrid);
+        Adapter adapter = new Adapter(this.getActivity());
 
         modeGrid.setAdapter(adapter);
     }
 
-    private void addModeItem(ArrayList<Item> modeItem) {
+    private void addModeItem() {
         for (int i = 0; i < modeNumber; i++) {
             Item item = new Item();
             item.imgID = RM_GRID_BG[i];
@@ -113,13 +117,9 @@ public class ModeSelectFragment extends Fragment {
 
     class Adapter extends BaseAdapter {
         Context context;
-        ArrayList<Item> modeItem;
-        GridView modeGrid;
 
-        public Adapter(Context context, ArrayList<Item> modeItem, GridView modeGrid) {
+        public Adapter(Context context) {
             this.context = context;
-            this.modeItem = modeItem;
-            this.modeGrid = modeGrid;
         }
 
         @Override
@@ -136,6 +136,12 @@ public class ModeSelectFragment extends Fragment {
         public long getItemId(int position) {
             modeItem.get(position).isRead = true;
             this.notifyDataSetInvalidated();
+
+            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance("a", "b");
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.flayout_fragment_continer, modeHighlight).addToBackStack(null);
+            transaction.commit();
             return position;
         }
 
