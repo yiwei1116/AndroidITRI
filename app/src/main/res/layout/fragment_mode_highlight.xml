@@ -5,26 +5,35 @@
     android:layout_marginTop="@dimen/toolbar_content_paddingTop"
     tools:context="com.uscc.ncku.androiditri.fragment.ModeHighlightFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rm_a1m1_bg"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/img_equipment_highlight"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rm_a1m1_highlight"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rm_a1m1_bg">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/rm_a1m1_highlight"/>
+        android:id="@+id/flayout_mode_highlight"
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mode_highlight_bg_mark"
-            android:layout_gravity="center" />
+            android:id="@+id/txt_equipment_highlight"
+            android:background="@drawable/mode_highlight_bg_mark" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_next_mode_highlight"
+            android:id="@+id/btn_next_equipment_highlight"
             android:layout_marginBottom="@dimen/btn_layout_marginbutton"
             android:background="@drawable/selecter_btn_confirm"
             android:text="@string/next_page"
@@ -38,10 +47,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rlayout_mode_intro"
-        android:visibility="invisible"
-        android:background="@drawable/rm_a1m1_darkbg"
-        android:paddingLeft="@dimen/content_padding_rl"
-        android:paddingRight="@dimen/content_padding_rl">
+        android:visibility="visible" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rm_a1m1_darkbg"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +74,9 @@
             android:textColor="@android:color/white"
             android:layout_below="@+id/txt_title_mode_intro"
             android:layout_centerHorizontal="true"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:paddingLeft="@dimen/content_padding_rl"
+            android:paddingRight="@dimen/content_padding_rl"/>
 
         <Button
             android:layout_width="wrap_content"

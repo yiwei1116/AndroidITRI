@@ -62,14 +62,14 @@ public class AreaFragment extends Fragment {
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
         }
-        Log.e("GG", "onCreat");
+        Log.i("GG", "onCreat");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.e("GG", "onCreatView");
+        Log.i("GG", "onCreatView");
 
         view = inflater.inflate(R.layout.fragment_area, container, false);
 
@@ -79,7 +79,7 @@ public class AreaFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.e("GG", "onStart");
+        Log.i("GG", "onStart");
 
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
 
@@ -112,36 +112,36 @@ public class AreaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("GG", "onResume");
+        Log.i("GG", "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("GG", "onPause");
+        Log.i("GG", "onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e("GG", "onStop");
+        Log.i("GG", "onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.e("GG", "onDestoryView");
+        Log.i("GG", "onDestoryView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("GG", "onDestory");
+        Log.i("GG", "onDestory");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.e("GG", "onDetach");
+        Log.i("GG", "onDetach");
     }
 }
