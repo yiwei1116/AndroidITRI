@@ -1,6 +1,20 @@
 package com.uscc.ncku.androiditri.fragment;
 
+
+import android.os.Bundle;
+import android.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,12 +28,14 @@ import android.media.ExifInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import com.uscc.ncku.androiditri.R;
 
@@ -30,8 +46,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import com.uscc.ncku.androiditri.R;
 
-public class CustomCamera extends Activity implements SurfaceHolder.Callback {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link CustomCameras#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener  {
     private ImageView imageView;
     private  String picPath;
     private int targetImageViewWidth;
@@ -40,16 +62,77 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     private SurfaceView mCameraPreview;
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
-    private boolean isBackCameraOn = true;
+    private boolean isBackCameraOn;
     private String mImageFileLocation = "";
+    private Button switchCamera,capture;
+    Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+
     /**
-     * Camera回调，通过data[]保持图片数据信息
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CustomCameras.
      */
+    // TODO: Rename and change types and number of parameters
+    public static CustomCameras newInstance(String param1, String param2) {
+        CustomCameras fragment = new CustomCameras();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public CustomCameras() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.camera_preview, container, false);
+        mCameraPreview = (SurfaceView) view.findViewById(R.id.sv_camera);
+        switchCamera = (Button)view.findViewById(R.id.btn_switch_camera);
+        capture = (Button)view.findViewById(R.id.btn_capture);
+        switchCamera.setOnClickListener(this);
+        capture.setOnClickListener(this);
+        /*AppCompatActivity activity = (AppCompatActivity) getActivity();
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)view.findViewById(R.id.toolbar_template_select);
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.btn_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });*/
+        initViews();
+        return view;
+    }
     Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             pictureFile = getOutputMediaFile();
-            picPath =pictureFile.getAbsolutePath();
+            // picPath =pictureFile.getAbsolutePath();
             if (pictureFile == null) {
 
                 return;
@@ -58,26 +141,45 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
 
-                imageView = (ImageView) findViewById(R.id.Imageview);
-                mCameraPreview.setVisibility(View.INVISIBLE);
-                rotateImage(setReducedImageSize());
+
+
                 fos.close();
+
+                ConfirmPic CP = new ConfirmPic();
+                Bundle bundle = new Bundle();
+                bundle.putString("picPath",pictureFile.getAbsolutePath());
+                CP.setArguments(bundle);
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.custom_camera_container, CP );
+                transaction.addToBackStack(null);
+                transaction.commit();
+                //CustomCameras.this.finish();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     };
+ /*   @Override
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.camera_menu, menu);
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_preview);
-        initViews();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.ic_swith_camera:
+                switchCamera();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
     private void initViews() {
-        mCameraPreview = (SurfaceView) findViewById(R.id.sv_camera);
+
         mSurfaceHolder = mCameraPreview.getHolder();
         mSurfaceHolder.addCallback(this);
         mCameraPreview.setOnClickListener(new View.OnClickListener() {
@@ -87,63 +189,28 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
             }
         });
     }
-    private void rotateImage(Bitmap bitmap) {
-        ExifInterface exifInterface = null;
-        try {
-            exifInterface = new ExifInterface(picPath);
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+            case R.id.btn_switch_camera:
+                switchCamera();
+
+                break;
+            case R.id.btn_capture:
+                capture();
+
+                break;
         }
-        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-        Matrix matrix = new Matrix();
-        matrix.setRotate(90);
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                matrix.setRotate(90);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                matrix.setRotate(180);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                matrix.setRotate(270);
-                break;
-            default:
-        }
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-        imageView.setImageBitmap(rotatedBitmap);
-    }
-    public Bitmap setReducedImageSize() {
-
-        targetImageViewWidth = imageView.getMeasuredWidth();
-        targetImageViewHeight = imageView.getMeasuredHeight();
-
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true; // no bitmap
-
-        BitmapFactory.decodeFile(picPath, bmOptions); // Decode a file path into a bitmap
-        int cameraImageWidth = bmOptions.outWidth;
-        int cameraImageHeight = bmOptions.outHeight;
-
-        int scaleFactor = Math.min(cameraImageWidth /targetImageViewWidth, cameraImageHeight / targetImageViewHeight);
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(picPath, bmOptions);
     }
 
-    /**
-     * 切换前后摄像头
-     *
-     * @param view view
-     */
-    public void switchCamera(View view) {
+    public void switchCamera() {
         int cameraCount;
 
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+
         cameraCount = Camera.getNumberOfCameras();
-        // 遍历可用摄像头
+
         for (int i = 0; i < cameraCount; i++) {
             Camera.getCameraInfo(i, cameraInfo);
             if (isBackCameraOn) {
@@ -166,12 +233,8 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
         }
     }
 
-    /**
-     * 拍照
-     *
-     * @param view view
-     */
-    public void capture(View view) {
+
+    public void capture() {
 
         Camera.Parameters params = mCamera.getParameters();
 
@@ -193,12 +256,15 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
 
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         mCamera.setParameters(params);
-        // 使用自动对焦功能
 
+        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            mCamera.takePicture(null, null, mPictureCallback);
+
+        }
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
-                if (success) {
+                if (success ) {
                     mCamera.takePicture(null, null, mPictureCallback);
 
                 }
@@ -206,11 +272,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
         });
     }
 
-    /**
-     * 获取图片保持路径
-     *
-     * @return pic Path
-     */
+
     private File getOutputMediaFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.TAIWAN).format(new Date());
         String imageFileName = "IMAGE" + timeStamp + "_";
@@ -248,9 +310,6 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
         releaseCamera();
     }
 
-    /**
-     * 释放相机资源
-     */
     private void releaseCamera() {
         if (mCamera != null) {
             mCamera.setPreviewCallback(null);
@@ -261,9 +320,9 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (this.checkCameraHardware(this) && (mCamera == null)) {
+        if (this.checkCameraHardware(getActivity()) && (mCamera == null)) {
             mCamera = getCamera();
             if (mSurfaceHolder != null) {
                 setStartPreview(mCamera, mSurfaceHolder);
@@ -271,11 +330,7 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
         }
     }
 
-    /**
-     * 初始化相机
-     *
-     * @return camera
-     */
+
     private Camera getCamera() {
         Camera camera;
         try {
@@ -286,23 +341,13 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
         return camera;
     }
 
-    /**
-     * 检查是否具有相机功能
-     *
-     * @param context context
-     * @return 是否具有相机功能
-     */
+
     private boolean checkCameraHardware(Context context) {
         return context.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA);
     }
 
-    /**
-     * 在SurfaceView中预览相机内容
-     *
-     * @param camera camera
-     * @param holder SurfaceHolder
-     */
+
     private void setStartPreview(Camera camera, SurfaceHolder holder) {
         try {
             camera.setPreviewDisplay(holder);
@@ -314,8 +359,9 @@ public class CustomCamera extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         releaseCamera();
     }
+
 }
