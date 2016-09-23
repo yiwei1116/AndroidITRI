@@ -18,30 +18,27 @@
         android:scaleType="centerCrop"
         android:src="@drawable/rm_a1m1_highlight"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/flayout_mode_highlight"
-        android:visibility="invisible">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_equipment_highlight"
+        android:visibility="invisible"
+        android:background="@drawable/mode_highlight_bg_mark"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:gravity="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_equipment_highlight"
-            android:background="@drawable/mode_highlight_bg_mark" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_next_equipment_highlight"
-            android:layout_marginBottom="@dimen/btn_layout_marginbutton"
-            android:background="@drawable/selecter_btn_confirm"
-            android:text="@string/next_page"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/btn_font_size"
-            android:layout_gravity="bottom|center_horizontal" />
-
-    </FrameLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_next_equipment_highlight"
+        android:layout_marginBottom="@dimen/btn_layout_marginbutton"
+        android:background="@drawable/selecter_btn_confirm"
+        android:text="@string/next_page"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/btn_font_size"
+        android:layout_gravity="bottom|center_horizontal"
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

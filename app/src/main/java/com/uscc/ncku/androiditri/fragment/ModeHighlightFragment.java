@@ -1,12 +1,15 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +46,8 @@ public class ModeHighlightFragment extends Fragment {
     private String mParam2;
 
     private View view;
-
+    private float left = 0;
+    private float top = 0;
 
     public ModeHighlightFragment() {
         // Required empty public constructor
@@ -74,6 +78,7 @@ public class ModeHighlightFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        new CalcPosition().execute();
     }
 
     @Override
@@ -97,8 +102,9 @@ public class ModeHighlightFragment extends Fragment {
                 RelativeLayout intro = (RelativeLayout) view.findViewById(R.id.rlayout_mode_intro);
                 intro.setVisibility(View.INVISIBLE);
 
-                FrameLayout highlight = (FrameLayout) view.findViewById(R.id.flayout_mode_highlight);
-                highlight.setVisibility(View.VISIBLE);
+                Button highlightBtn = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
+                highlightBtn.setVisibility(View.VISIBLE);
+
                 modeHighlight();
             }
         });
@@ -115,59 +121,80 @@ public class ModeHighlightFragment extends Fragment {
         animation.setRepeatMode(Animation.REVERSE);
         equipHighlight.startAnimation(animation);
 
-//        equipHighlight.getDrawingCache();
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rm_a1m1_highlight);
-//        Bitmap bitmap = equipHighlight.getDrawingCache();
-        HashMap cor = cropBitmapTransparency(bitmap);
-
-        TextView equip = (TextView) view.findViewById(R.id.txt_equipment_highlight);
-        equip.setX(540);
-        equip.setY(960);
     }
 
-    private HashMap cropBitmapTransparency(Bitmap sourceBitmap) {
-        int minX = sourceBitmap.getWidth();
-        int minY = sourceBitmap.getHeight();
-        int maxX = -1;
-        int maxY = -1;
-        for(int y = 0; y < sourceBitmap.getHeight(); y++) {
-            for(int x = 0; x < sourceBitmap.getWidth(); x++) {
-                int alpha = sourceBitmap.getPixel(x, y);
-                if(alpha > 0) {
-                    if(x < minX)
-                        minX = x;
-                    if(x > maxX)
-                        maxX = x;
-                    if(y < minY)
-                        minY = y;
-                    if(y > maxY)
-                        maxY = y;
+    private void setTitlePosition(HashMap cor) {
+        Resources resources = view.getContext().getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+
+        // convert pixel position to dp positon
+        float dpX = (float) cor.get("leftMargin") / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float dpY = (float) cor.get("topMargin") / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+
+        TextView equip = (TextView) view.findViewById(R.id.txt_equipment_highlight);
+        equip.setVisibility(View.VISIBLE);
+        equip.setText("互動資訊牆");
+        equip.setX(dpX);
+        equip.setY(dpY);
+    }
+
+    class CalcPosition extends AsyncTask<Void, Void, HashMap> {
+
+        @Override
+        protected HashMap doInBackground(Void... params) {
+            /*
+                            Important!!!
+                            this drawable must put in drawable-nodpi, or there might be a wrong calculation.
+                        */
+            Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rm_a1m1_highlight);
+
+            int minX = sourceBitmap.getWidth();
+            int minY = sourceBitmap.getHeight();
+            int maxX = -1;
+            int maxY = -1;
+            int stopScalning = sourceBitmap.getHeight();
+            for(int y = 0; y < stopScalning; y++) {
+                for(int x = 0; x < sourceBitmap.getWidth(); x++) {
+                    int alpha = (sourceBitmap.getPixel(x, y) >> 24) & 255;
+                    if(alpha > 0) {
+//                        stopScalning = y;
+                        if(x < minX)
+                            minX = x;
+                        if(x > maxX)
+                            maxX = x;
+                        if(y < minY)
+                            minY = y;
+                        if(y > maxY)
+                            maxY = y;
+                    }
                 }
             }
+
+            Log.i(TAG, String.format("minX: %d, minY: %d, maxX: %d, maxY %d", minX, minY, maxX, maxY));
+
+            float leftMargin;
+            float topMargin;
+
+            if((maxX < minX) || (maxY < minY)) {
+                leftMargin = sourceBitmap.getWidth() / 2;
+                topMargin = sourceBitmap.getHeight() / 2;
+            } else {
+                leftMargin = (maxX + minX) / 2;
+//                leftMargin = minX;
+                topMargin = ((maxY + minY) / 2);
+            }
+
+            HashMap coordinate = new HashMap();
+            coordinate.put("leftMargin", leftMargin);
+            coordinate.put("topMargin", topMargin);
+
+            return coordinate;
         }
 
-        Log.i(TAG, String.valueOf(sourceBitmap.getPixel(99, 1039)));
-        Log.i(TAG, String.format("minX: %d, minY: %d, maxX: %d, maxY %d", minX, minY, maxX, maxY));
-
-        float leftMargin;
-        float topMargin;
-
-//        if((maxX < minX) || (maxY < minY)) {
-            leftMargin = sourceBitmap.getWidth() / 2;
-            topMargin = sourceBitmap.getHeight() / 2;
-//        } else {
-//            leftMargin = (maxX + minX) / 4;
-//            topMargin = ((maxY + minY) / 4);
-//        }
-
-        Log.i(TAG, String.format("left: %f, top: %f", leftMargin, topMargin));
-
-        HashMap coordinate = new HashMap();
-        coordinate.put("leftMargin", leftMargin);
-        coordinate.put("topMargin", topMargin);
-
-        return coordinate;
+        @Override
+        protected void onPostExecute(HashMap hashMap) {
+            super.onPostExecute(hashMap);
+            setTitlePosition(hashMap);
+        }
     }
 }
