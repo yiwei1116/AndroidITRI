@@ -71,6 +71,7 @@ public class TourSelectActivity extends AppCompatActivity {
         TourPagerAdapter tourPagerAdapter = new TourPagerAdapter(this, tourViewPager);
 
         tourViewPager.setAdapter(tourPagerAdapter);
+        tourViewPager.setCurrentItem(1);
     }
 
     class TourPagerAdapter extends PagerAdapter {

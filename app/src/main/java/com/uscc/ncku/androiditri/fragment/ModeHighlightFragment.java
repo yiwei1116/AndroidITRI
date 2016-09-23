@@ -1,6 +1,8 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -75,7 +77,7 @@ public class ModeHighlightFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        new CalcPosition().execute();
+//        new CalcPosition().execute();
     }
 
     @Override
@@ -117,6 +119,18 @@ public class ModeHighlightFragment extends Fragment {
         animation.setRepeatCount(HIGHLIGHT_FLIP_TIMES);
         animation.setRepeatMode(Animation.REVERSE);
         equipHighlight.startAnimation(animation);
+
+        Button next = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance("a", "b");
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, equipTabFragment).addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
     }
 
