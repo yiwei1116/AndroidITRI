@@ -26,7 +26,6 @@ public class MapFragment extends Fragment {
     private int tourIndex;
 
     public MapFragment() {
-        // Required empty public constructor
     }
 
     /**

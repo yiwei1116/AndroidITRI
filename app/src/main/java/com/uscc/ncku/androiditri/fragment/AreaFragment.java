@@ -38,7 +38,6 @@ public class AreaFragment extends Fragment {
 
 
     public AreaFragment() {
-        // Required empty public constructor
     }
 
     /**
