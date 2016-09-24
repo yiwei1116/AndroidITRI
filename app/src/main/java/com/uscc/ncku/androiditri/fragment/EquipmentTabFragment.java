@@ -6,10 +6,14 @@ import android.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.uscc.ncku.androiditri.R;
 
@@ -71,12 +75,15 @@ public class EquipmentTabFragment extends Fragment {
         mTabs = (android.support.design.widget.TabLayout) view.findViewById(R.id.tabs_equipments);
         for (int i = 0; i < equipNumber; i++) {
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(i + 1);
+            Log.i("GG", equipTitle);
             mTabs.addTab(mTabs.newTab().setText(equipTitle));
         }
 
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
         mViewPager.setAdapter(new SamplePagerAdapter());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
+
+        mTabs.setupWithViewPager(mViewPager);
     }
 
     private class SamplePagerAdapter extends PagerAdapter {
@@ -93,16 +100,24 @@ public class EquipmentTabFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Item " + (position + 1);
+            String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
+            return equipTitle;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View v = LayoutInflater.from(view.getContext()).inflate(R.layout.pager_item,
+            View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
             container.addView(v);
-            TextView title = (TextView) v.findViewById(R.id.item_title);
-            title.setText(String.valueOf(position + 1));
+
+            ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
+            ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
+            video.setOnCheckedChangeListener(new ChangeChecker(v));
+            photo.setOnCheckedChangeListener(new ChangeChecker(v));
+
+            TextView content = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            content.setMovementMethod(new ScrollingMovementMethod());
+
             return v;
         }
 
@@ -113,4 +128,24 @@ public class EquipmentTabFragment extends Fragment {
 
     }
 
+    class ChangeChecker implements CompoundButton.OnCheckedChangeListener {
+        private View v;
+
+        public ChangeChecker(View v) {
+            this.v = v;
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked){
+                if (buttonView.getId() == R.id.btn_equip_video) {
+                    ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
+                    photo.setChecked(false);
+                } else if (buttonView.getId() == R.id.btn_equip_photo) {
+                    ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
+                    video.setChecked(false);
+                }
+            }
+        }
+    }
 }
