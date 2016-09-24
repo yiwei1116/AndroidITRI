@@ -18,6 +18,59 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/flayout_sound_font_container"
+        android:layout_above="@+id/llayout_button_main"
+        android:clickable="true"
+        android:layout_marginBottom="-6dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rlayout_font_size_zoom"
+            android:background="@color/colorBlack"
+            android:alpha="0.9"
+            android:layout_gravity="center|bottom"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_small_font"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/small_font_img"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textBar"
+                android:maxHeight="2dp"
+                android:progress="15"
+                android:progressDrawable="@drawable/btn_font_bar"
+                android:thumb="@drawable/btn_font_circle"
+                android:layout_toRightOf="@+id/small_font_img"
+                android:layout_toLeftOf="@+id/big_font_img"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:id="@+id/big_font_img"
+                android:background="@drawable/btn_big_font"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

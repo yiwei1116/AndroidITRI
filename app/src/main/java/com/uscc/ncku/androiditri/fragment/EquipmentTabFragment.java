@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+
+import java.util.ArrayList;
 
 
 /**
@@ -32,6 +34,7 @@ public class EquipmentTabFragment extends Fragment {
 
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
+    private ArrayList<EquipmentTab> equipTabs;
 
 
     public EquipmentTabFragment() {
@@ -59,12 +62,15 @@ public class EquipmentTabFragment extends Fragment {
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
         }
+        equipTabs = new ArrayList<EquipmentTab>();
+        addTabs();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
+        MainActivity.setFontNormal();
         return view;
     }
 
@@ -75,7 +81,6 @@ public class EquipmentTabFragment extends Fragment {
         mTabs = (android.support.design.widget.TabLayout) view.findViewById(R.id.tabs_equipments);
         for (int i = 0; i < equipNumber; i++) {
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(i + 1);
-            Log.i("GG", equipTitle);
             mTabs.addTab(mTabs.newTab().setText(equipTitle));
         }
 
@@ -84,6 +89,12 @@ public class EquipmentTabFragment extends Fragment {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
 
         mTabs.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        MainActivity.setFontDisabled();
     }
 
     private class SamplePagerAdapter extends PagerAdapter {
@@ -110,13 +121,25 @@ public class EquipmentTabFragment extends Fragment {
                     container, false);
             container.addView(v);
 
+            TextView title = (TextView) v.findViewById(R.id.equipment_title);
+            title.setText(equipTabs.get(position).title);
+
             ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
             ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
+            video.setChecked(true);
             video.setOnCheckedChangeListener(new ChangeChecker(v));
             photo.setOnCheckedChangeListener(new ChangeChecker(v));
 
-            TextView content = (TextView) v.findViewById(R.id.txt_equip_intro_content);
-            content.setMovementMethod(new ScrollingMovementMethod());
+            if (!equipTabs.get(position).isVideo) {
+                video.setVisibility(View.GONE);
+            } else if (!equipTabs.get(position).isPhoto) {
+                photo.setVisibility(View.GONE);
+            }
+
+            TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            txtContent.setText(equipTabs.get(position).textContent);
+            txtContent.setTextSize(equipTabs.get(position).fontSize);
+            txtContent.setMovementMethod(new ScrollingMovementMethod());
 
             return v;
         }
@@ -124,6 +147,15 @@ public class EquipmentTabFragment extends Fragment {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        public void renew() {
+            this.notifyDataSetChanged();
         }
 
     }
@@ -147,5 +179,31 @@ public class EquipmentTabFragment extends Fragment {
                 }
             }
         }
+    }
+
+    class EquipmentTab {
+        String title;
+        boolean isVideo;
+        boolean isPhoto;
+        String textContent;
+        int fontSize;
+    }
+
+    private void addTabs() {
+        for (int i = 0; i < equipNumber; i++) {
+            EquipmentTab tab = new EquipmentTab();
+            tab.title = "互動資訊牆";
+            tab.isVideo = true;
+            tab.isPhoto = true;
+            tab.textContent = getResources().getString(R.string.rm_test);
+            tab.fontSize = 18;
+            equipTabs.add(tab);
+        }
+    }
+
+    public void setFontSize(int size) {
+        equipTabs.get(mViewPager.getCurrentItem()).fontSize = size;
+        SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
+        samplePagerAdapter.renew();
     }
 }

@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp">
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/equipment_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="互動資訊牆"
         android:textSize="@dimen/title_font_size"
         android:textColor="@color/btn_font_color_blue"
         android:layout_centerHorizontal="true" />
@@ -24,7 +23,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/rm_a1m1e1_photo"/>
 
         <LinearLayout
@@ -67,7 +66,6 @@
         android:id="@+id/txt_equip_intro_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字這是測試文字"
         android:textColor="@android:color/black"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/flayout_equip_intro"

@@ -3,9 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="toolbar_layout_marginTop">-20dp</dimen>
-    <dimen name="toolbar_paddingTop">25dp</dimen>
-    <dimen name="toolbar_content_paddingTop">60dp</dimen>
+    <dimen name="toolbar_layout_marginTop">-30dp</dimen>
+    <dimen name="toolbar_paddingTop">30dp</dimen>
+    <dimen name="toolbar_content_paddingTop">56dp</dimen>
     <dimen name="main_btn_width">72dp</dimen>
     <dimen name="main_btn_height">57dp</dimen>
     <dimen name="main_btn_circle">58dp</dimen>

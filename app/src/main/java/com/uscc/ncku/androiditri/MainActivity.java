@@ -8,13 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
+import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
-import com.uscc.ncku.androiditri.fragment.TextFragment;
 import com.uscc.ncku.androiditri.util.MainButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,18 +29,19 @@ public class MainActivity extends AppCompatActivity {
 
     private int tourIndex;
 
-    private MainButton infoBtn;
-    private MainButton diaryBtn;
-    private MainButton mapBtn;
-    private MainButton soundBtn;
-    private MainButton fontBtn;
+    private static MainButton infoBtn;
+    private static MainButton diaryBtn;
+    private static MainButton mapBtn;
+    private static MainButton soundBtn;
+    private static MainButton fontBtn;
 
     private static ImageView mainBtnNavBg;
     private static LinearLayout mainBtnLayout;
 
+    private static RelativeLayout containerSL;
+
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
-    private TextFragment textFragment;
     private ChooseTemplate chooseTemplate;
 
     @Override
@@ -69,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new ButtonListener(this));
         soundBtn.setOnClickListener(new ButtonListener(this));
         fontBtn.setOnClickListener(new ButtonListener(this));
+
+        containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
+
         initFragment();
 
     }
@@ -87,14 +96,17 @@ public class MainActivity extends AppCompatActivity {
 
             switch (v.getId()) {
                 case R.id.btn_info_main:
+                    disableSoundFont();
                     break;
                 case R.id.btn_diary_main:
+                    disableSoundFont();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer, diaryFragment).addToBackStack(null);
                     }
                     break;
                 case R.id.btn_map_main:
+                    disableSoundFont();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         setBtnActive(mapBtn, R.drawable.btn_main_map_active);
                         transaction.replace(R.id.flayout_fragment_continer, mapFragment).addToBackStack(null);
@@ -104,10 +116,41 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_font_main:
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
-                        // present new view
-                        setBtnActive(fontBtn, R.drawable.btn_main_font_active);
-                        transaction.replace(R.id.flayout_fragment_continer, textFragment).addToBackStack(null);
+                        setFontActive();
 
+                        Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.sound_font_in);
+                        containerSL.startAnimation(animation);
+
+                        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        EquipmentTabFragment ef = null;
+                        if (currentFragment instanceof EquipmentTabFragment) {
+                            ef = (EquipmentTabFragment) currentFragment;
+                        }
+
+                        SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
+                        final EquipmentTabFragment finalEf = ef;
+                        assert seekBar != null;
+                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                if (fromUser) {
+                                    int level = progress / 5;
+                                    finalEf.setFontSize(level + 15);
+                                }
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        });
+                    } else if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
+                        setFontNormal();
                     }
                     break;
             }
@@ -116,12 +159,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void disableSoundFont() {
+        if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
+            setSoundNormal();
+        }
+
+        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
+            setFontNormal();
+        }
+    }
+
     private void initFragment() {
-        mapBtn.setActive(R.drawable.btn_main_map_active);
-        diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
-        infoBtn.setDisable(R.drawable.btn_main_info_disabled);
-        soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
-        fontBtn.setNormal(R.drawable.btn_main_font_normal);
+        setMapActive();
+        setDiaryNormal();
+        setInfoDisabled();
+        setSoundDisabled();
+        setFontDisabled();
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance(tourIndex);
@@ -129,10 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (diaryFragment == null) {
             diaryFragment = DiaryFragment.newInstance();
-        }
-
-        if (textFragment == null) {
-            textFragment = TextFragment.newInstance();
         }
 
         FragmentManager fm = getFragmentManager();
@@ -143,15 +192,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBtnActive(MainButton activeBtn, int bgId) {
         if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
-            diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
+            setDiaryNormal();
         }
 
         if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_active)) {
-            mapBtn.setNormal(R.drawable.btn_main_map_normal);
-        }
-
-        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
-            fontBtn.setNormal(R.drawable.btn_main_font_normal);
+            setMapNormal();
         }
 
         activeBtn.setActive(bgId);
@@ -166,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
             setBtnActive(mapBtn, R.drawable.btn_main_map_active);
         } else if (f instanceof DiaryFragment) {
             setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
-        } else if (f instanceof TextFragment){
-            setBtnActive(fontBtn, R.drawable.btn_main_font_active);
         }
     }
 
@@ -182,4 +225,67 @@ public class MainActivity extends AppCompatActivity {
 
         mainBtnLayout.setVisibility(View.VISIBLE);
     }
+
+    public static void setInfoActive() {
+        infoBtn.setActive(R.drawable.btn_main_info_active);
+    }
+
+    public static void setInfoNormal() {
+        infoBtn.setNormal(R.drawable.btn_main_info_normal);
+    }
+
+    public static void setInfoDisabled() {
+        infoBtn.setDisable(R.drawable.btn_main_info_disabled);
+    }
+
+    public static void setDiaryActive() {
+        diaryBtn.setActive(R.drawable.btn_main_diary_active);
+    }
+
+    public static void setDiaryNormal() {
+        diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
+    }
+
+    public static void setDiaryDisabled() {
+        diaryBtn.setDisable(R.drawable.btn_main_diary_disabled);
+    }
+
+    public static void setMapActive() {
+        mapBtn.setActive(R.drawable.btn_main_map_active);
+    }
+
+    public static void setMapNormal() {
+        mapBtn.setNormal(R.drawable.btn_main_map_normal);
+    }
+
+    public static void setMapDisabled() {
+        mapBtn.setDisable(R.drawable.btn_main_map_disabled);
+    }
+
+    public static void setSoundActive() {
+        soundBtn.setActive(R.drawable.btn_main_sound_active);
+    }
+
+    public static void setSoundNormal() {
+        soundBtn.setNormal(R.drawable.btn_main_sound_normal);
+    }
+
+    public static void setSoundDisabled() {
+        soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
+    }
+
+    public static void setFontActive() {
+        fontBtn.setActive(R.drawable.btn_main_font_active);
+        containerSL.setVisibility(View.VISIBLE);
+    }
+
+    public static void setFontNormal() {
+        fontBtn.setNormal(R.drawable.btn_main_font_normal);
+        containerSL.setVisibility(View.GONE);
+    }
+
+    public static void setFontDisabled() {
+        fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+    }
+
 }
