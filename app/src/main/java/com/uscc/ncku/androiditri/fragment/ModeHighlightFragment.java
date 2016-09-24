@@ -124,7 +124,7 @@ public class ModeHighlightFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance("a", "b");
+                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(8);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(R.id.flayout_fragment_continer, equipTabFragment).addToBackStack(null);

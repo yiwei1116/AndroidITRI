@@ -109,6 +109,7 @@
     <string name="map_area_enter">進入導覧</string>
     <string name="read">已讀</string>
     <string name="mode_select_title">種模式</string>
+    <string name="equip">設備</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
