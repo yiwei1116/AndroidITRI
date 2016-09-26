@@ -111,6 +111,9 @@
     <string name="read">已讀</string>
     <string name="mode_select_title">種模式</string>
     <string name="equip">設備</string>
+    <string name="photo" translatable="false">PHOTO</string>
+    <string name="video" translatable="false">VIDEO</string>
+    <string name="rm_test">測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>

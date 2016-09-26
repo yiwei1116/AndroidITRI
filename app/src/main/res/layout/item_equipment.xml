@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/equipment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/title_font_size"
+        android:textColor="@color/btn_font_color_blue"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/flayout_equip_intro"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/equipment_title">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rm_a1m1e1_photo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
+
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_equip_video"
+                android:layout_weight="1"
+                android:textOn="@string/video"
+                android:textOff="@string/video"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:background="@drawable/selecter_btn_equip_intro_bg"
+                android:alpha="0.94"
+                android:visibility="visible"/>
+
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_equip_photo"
+                android:layout_weight="1"
+                android:textOn="@string/photo"
+                android:textOff="@string/photo"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:background="@drawable/selecter_btn_equip_intro_bg"
+                android:alpha="0.94"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txt_equip_intro_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/flayout_equip_intro"
+        android:textSize="18sp"
+        android:maxLines="7"
+        android:scrollbars="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" />
+
+</RelativeLayout>

@@ -98,7 +98,7 @@ public class TourSelectActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            View itemView = mLayoutInflater.inflate(R.layout.viewpager_item, container, false);
+            View itemView = mLayoutInflater.inflate(R.layout.item_viewpager, container, false);
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.img_vpager_item);
             imageView.setImageResource(TOUR_IMG[position]);

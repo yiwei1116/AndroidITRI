@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,8 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs_equipments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        app:tabIndicatorColor="@color/btn_font_color_blue"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         app:tabMaxWidth="160dp"
         app:tabMinWidth="100dp"
@@ -18,8 +19,8 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_equipment_content"
-        android:layout_below="@id/tabs_equipments"
+        android:layout_below="@+id/tabs_equipments"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+</RelativeLayout>

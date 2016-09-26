@@ -91,7 +91,9 @@ public class ModeHighlightFragment extends Fragment {
     public void onStart() {
         super.onStart();
         TextView modeIntroTitle = (TextView) view.findViewById(R.id.txt_title_mode_intro);
+        modeIntroTitle.setText("迎賓模式");
         TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
+        modeIntroContent.setText(R.string.rm_test);
 
         Button nextIntro = (Button) view.findViewById(R.id.btn_next_mode_intro);
         nextIntro.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +126,7 @@ public class ModeHighlightFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(8);
+                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(4);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(R.id.flayout_fragment_continer, equipTabFragment).addToBackStack(null);

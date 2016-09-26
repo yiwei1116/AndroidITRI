@@ -34,6 +34,13 @@ public class SurveyActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // show survey popup dialog
         final Dialog dialog = new Dialog(SurveyActivity.this, R.style.selectorDialog);
         dialog.setContentView(R.layout.alertdialog_survey);
 
@@ -65,7 +72,6 @@ public class SurveyActivity extends AppCompatActivity {
         });
 
         dialog.show();
-
     }
 
     @Override

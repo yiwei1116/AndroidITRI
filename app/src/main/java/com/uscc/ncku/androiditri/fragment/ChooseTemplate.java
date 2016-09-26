@@ -1,7 +1,10 @@
 package com.uscc.ncku.androiditri.fragment;
 
+<<<<<<< HEAD
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+=======
+>>>>>>> 1b283c1ef4300f5f36c7e94e11bd509d04a41034
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -120,7 +122,7 @@ public class ChooseTemplate extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            View itemView = mLayoutInflater.inflate(R.layout.template_item, container, false);
+            View itemView = mLayoutInflater.inflate(R.layout.item_template, container, false);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
             imageView.setImageResource(Template_Image[position]);
             container.addView(itemView);
