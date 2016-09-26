@@ -1,10 +1,11 @@
 package com.uscc.ncku.androiditri.fragment;
 
-<<<<<<< HEAD
+import android.support.v7.app.AppCompatActivity;
+
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-=======
->>>>>>> 1b283c1ef4300f5f36c7e94e11bd509d04a41034
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,7 +85,7 @@ public class ChooseTemplate extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 TemplateContext TC = new TemplateContext();
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, TC );
+                transaction.replace(R.id.flayout_fragment_continer, TC);
                 transaction.addToBackStack(null);
                 transaction.commit();
 

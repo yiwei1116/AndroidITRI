@@ -88,6 +88,8 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         editText = (EditText)view.findViewById(R.id.edit);
         writeContext.setOnClickListener(this);
         buildContext.setOnClickListener(this);
+
+        writeText();
         return view;
     }
     public void writeText(){
@@ -97,7 +99,8 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
                 editText.setHint(null);
             }
         });
-
+        writeContext.setBackgroundResource(R.drawable.btn_left_active);
+        buildContext.setBackgroundResource(R.drawable.btn_right_normal);
 
 
     }
