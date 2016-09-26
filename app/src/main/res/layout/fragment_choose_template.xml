@@ -39,6 +39,8 @@
         android:layout_centerHorizontal="true" />
 
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_template_select"
         android:layout_width="match_parent"
@@ -58,5 +60,7 @@
             android:textSize="@dimen/title_font_size" />
 
     </android.support.v7.widget.Toolbar>
+
+
 
 </RelativeLayout>

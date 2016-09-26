@@ -1,0 +1,75 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.uscc.ncku.androiditri.fragment.TemplateContext">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@drawable/header_blank"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:fitsSystemWindows="false"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        android:layout_marginTop="@dimen/toolbar_layout_marginTop"
+        android:paddingTop="@dimen/toolbar_paddingTop"
+
+        android:theme="@style/AppTheme.ActionBar">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/context"
+        android:layout_gravity="center"
+        android:text="文字創作"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/title_font_size" />
+    </android.support.v7.widget.Toolbar>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    >
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="寫文字"
+        android:id="@+id/writeContext"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginStart="102dp"
+        android:layout_marginTop="72dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="內建文字"
+        android:id="@+id/buildContext"
+        android:layout_toRightOf="@+id/writeContext"
+        android:layout_alignTop="@+id/writeContext"
+
+        />
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:gravity="center"
+        android:layout_below="@+id/writeContext"
+        android:layout_centerHorizontal="true"
+        android:hint="內文(30字已內)"
+
+        />
+
+
+</RelativeLayout>
+</FrameLayout>

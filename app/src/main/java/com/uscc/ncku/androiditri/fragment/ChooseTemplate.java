@@ -1,13 +1,11 @@
 package com.uscc.ncku.androiditri.fragment;
 
-import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
-import com.uscc.ncku.androiditri.SurveyActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,6 +73,20 @@ public class ChooseTemplate extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
+        btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
+        btnNextStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                TemplateContext TC = new TemplateContext();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, TC );
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
         ViewPager viewPager;
         ChooseTemp adapter;
         viewPager = (ViewPager)view.findViewById(R.id.template_choose);
@@ -115,14 +124,7 @@ public class ChooseTemplate extends Fragment {
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
             imageView.setImageResource(Template_Image[position]);
             container.addView(itemView);
-           /* Button btnNextStep = (Button)itemView.findViewById(R.id.btn_next_step);
-            btnNextStep.setBackgroundResource(R.drawable.selector_btn_nextpage);
-            btnNextStep.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });*/
             return itemView;
         }
 
