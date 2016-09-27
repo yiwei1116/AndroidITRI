@@ -1,5 +1,11 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.support.v7.app.AppCompatActivity;
+
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,14 +14,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.TourViewPager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +37,10 @@ import com.uscc.ncku.androiditri.R;
 public class ChooseTemplate extends Fragment {
     Context mContext;
     LayoutInflater mLayoutInflater;
+    ViewPager viewPager;
+    ChooseTemp adapter;
+    TemplateContext TC;
+    private int viewPageIndex;
     private static final int[] Template_Image = {
             R.drawable.card_1,
             R.drawable.card_2,
@@ -51,6 +64,13 @@ public class ChooseTemplate extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -70,12 +90,44 @@ public class ChooseTemplate extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-        ViewPager viewPager;
-        ChooseTemp adapter;
+        Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
+        btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
+        btnNextStep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                TC = new TemplateContext();
+                Bundle bundle = new Bundle();
+                bundle.putString("Template", String.valueOf(viewPageIndex));
+                TC.setArguments(bundle);
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.flayout_fragment_continer, TC);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+            }
+        });
+
         viewPager = (ViewPager)view.findViewById(R.id.template_choose);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPageIndex = position;
+                Log.e("position",String.valueOf(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         adapter = new ChooseTemp(getActivity());
         viewPager.setAdapter(adapter);
-
         return view   ;
     }
 
@@ -107,14 +159,7 @@ public class ChooseTemplate extends Fragment {
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
             imageView.setImageResource(Template_Image[position]);
             container.addView(itemView);
-           /* Button btnNextStep = (Button)itemView.findViewById(R.id.btn_next_step);
-            btnNextStep.setBackgroundResource(R.drawable.selector_btn_nextpage);
-            btnNextStep.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });*/
             return itemView;
         }
 

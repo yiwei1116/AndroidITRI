@@ -1,5 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.FileInputStream;
@@ -34,7 +37,7 @@ import com.uscc.ncku.androiditri.R;
  * Use the {@link ConfirmPic#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfirmPic extends Fragment {
+public class ConfirmPic extends Fragment implements View.OnClickListener {
     private ImageView imageView;
     private  String picPath;
     private DisplayMetrics mPhone;
@@ -48,7 +51,7 @@ public class ConfirmPic extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private Button nextStep,reTake;
     private OnFragmentInteractionListener mListener;
 
 
@@ -88,7 +91,12 @@ public class ConfirmPic extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_confirm_pic, container, false);
         picPath = (String)getArguments().get("picPath");
         imageView = (ImageView)view.findViewById(R.id.iv_camera_result);
-
+        nextStep = (Button)view.findViewById(R.id.next_step);
+        nextStep.setOnClickListener(this);
+        nextStep.setBackgroundResource(R.drawable.camera_btn_nextstep);
+        reTake = (Button)view.findViewById(R.id.retake);
+        reTake.setOnClickListener(this);
+        reTake.setBackgroundResource(R.drawable.camera_btn_retake);
         imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -151,6 +159,27 @@ public class ConfirmPic extends Fragment {
 
         return BitmapFactory.decodeFile(picPath, bmOptions);
     }
+    public void nextStep(){
+        FragmentManager fm = getFragmentManager();
+        ChooseTemplate CT = new ChooseTemplate();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CT );
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+    public void ReTake(){
+        FragmentManager fm = getFragmentManager();
+        CustomCameras CC = new CustomCameras();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CC );
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+
+
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -175,6 +204,20 @@ public class ConfirmPic extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.next_step:
+                nextStep();
+
+                break;
+            case R.id.retake:
+                ReTake();
+
+                break;
+        }
     }
 
     /**

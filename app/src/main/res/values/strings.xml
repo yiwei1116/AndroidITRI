@@ -103,6 +103,7 @@
     <string name="name">姓名</string>
     <string name="mail">電子信箱</string>
     <string name="choose_template">選擇版型</string>
+    <string name="context">文字創作</string>
     <string name="nextstep">下一步</string>
     <string name="feedback_title">問卷填寫</string>
     <string name="feedback_text">恭喜完成1樓導覧\n願意提供給我們寶貴的意見嗎？</string>
@@ -122,6 +123,15 @@
     <string name="feedback_yes">我要給意見</string>
     <string name="feedback_no">不用，我要繼續導覧</string>
     <string name="survey_popup_text">貴賓您好，感謝您撥冗參觀展示中心，為使本中心未來設備系統開發與服務品質的提升，請您利用簡短時間填寫本表，您所提供的資料受個資法保護，僅供問卷統計、整體分析使用，感謝您的協助。</string>
+<<<<<<< HEAD
     <string name="title_activity_counter">CounterActivity</string>
     <string name="title_activity_connection">ConnectionActivity</string>
+=======
+
+
+    <string name="buildContext1">張開雙眼，敞開心胸，你就不會失去任何事物</string>
+    <string name="buildContext2">就繼續往前走吧 !</string>
+    <string name="buildContext3">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>
+
+>>>>>>> 4894528843b6ff5586576a3e5486be0c3824d70f
 </resources>

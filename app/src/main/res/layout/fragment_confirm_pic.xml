@@ -6,9 +6,47 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/iv_camera_result"
+
+        />
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/btn_back"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:stateListAnimator="@null"
+
+        />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:text="重拍"
+        android:id="@+id/retake"
+        android:onClick="ReTake"
+
+        android:layout_gravity="left|bottom"
+        android:background="@drawable/btn_retake_normal"
+        android:textColor="@color/btn_font_color_blue"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:text="下一步"
+        android:id="@+id/next_step"
+        android:layout_gravity="right|bottom"
+        android:onClick="nextStep"
+        android:background="@drawable/btn_nextstep_normal_1"
+        android:textColor="@color/colorWhite"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
 
         />
 
