@@ -13,6 +13,8 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlNormal">#808080</item>
+        <item name="colorControlActivated">#1e83c0</item>
     </style>
 
     <style name="AppTheme.NoActionBar.NoFull">

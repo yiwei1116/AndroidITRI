@@ -3,10 +3,13 @@ package com.uscc.ncku.androiditri.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.R;
 
@@ -27,9 +30,14 @@ public class MergeTemplatePic extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private String templateIndex;
+    private String writeContext;
+    private ImageView mergeImage;
     private OnFragmentInteractionListener mListener;
-
+    private static final int[] Template_Image = {
+            R.drawable.template_1,
+            R.drawable.template_2,
+    };
     public MergeTemplatePic() {
         // Required empty public constructor
     }
@@ -65,7 +73,20 @@ public class MergeTemplatePic extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
+        View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
+        FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
+        //mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
+        Bundle bundle1 = getArguments();
+
+        if (bundle1 != null) {
+            templateIndex = (String)getArguments().get("TemplateNum");
+            writeContext = (String)getArguments().get("WriteContext");
+            frameLayout.setBackgroundResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
+            //mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
+            Log.e("templateIndex", templateIndex);
+            Log.e("writeContext", writeContext);
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
