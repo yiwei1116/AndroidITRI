@@ -122,4 +122,6 @@
     <string name="feedback_yes">我要給意見</string>
     <string name="feedback_no">不用，我要繼續導覧</string>
     <string name="survey_popup_text">貴賓您好，感謝您撥冗參觀展示中心，為使本中心未來設備系統開發與服務品質的提升，請您利用簡短時間填寫本表，您所提供的資料受個資法保護，僅供問卷統計、整體分析使用，感謝您的協助。</string>
+    <string name="title_activity_counter">CounterActivity</string>
+    <string name="title_activity_connection">ConnectionActivity</string>
 </resources>
