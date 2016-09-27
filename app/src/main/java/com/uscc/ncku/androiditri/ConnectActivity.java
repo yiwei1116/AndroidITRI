@@ -115,19 +115,9 @@ public class ConnectActivity extends Activity {
         download data from the server then returns a JSONArray
      */
     public void uploadData(String jsonArray) {
+        // call async method to execute upload task
          new SendData().execute(jsonArray);
-//        HttpClient httpClient = new DefaultHttpClient();
-//        HttpPost httpPost = new HttpPost(serverURL);
-//        String
-//
-//        try {
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
     }
-
 
     private class SendData extends AsyncTask<String, Void, Void> {
 
@@ -160,4 +150,17 @@ public class ConnectActivity extends Activity {
             super.onPostExecute(aVoid);
         }
     }
+
+    // try convert string to json object
+    public JSONObject str2JSONObject(String id) {
+        JSONObject output = null;
+        try {
+            output = new JSONObject(id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+
 }
