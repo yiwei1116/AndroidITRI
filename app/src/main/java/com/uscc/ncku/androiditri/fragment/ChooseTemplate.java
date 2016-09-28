@@ -1,10 +1,11 @@
 package com.uscc.ncku.androiditri.fragment;
 
-<<<<<<< HEAD
+import android.support.v7.app.AppCompatActivity;
+
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-=======
->>>>>>> 1b283c1ef4300f5f36c7e94e11bd509d04a41034
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,14 +14,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.TourViewPager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +37,10 @@ import com.uscc.ncku.androiditri.R;
 public class ChooseTemplate extends Fragment {
     Context mContext;
     LayoutInflater mLayoutInflater;
+    ViewPager viewPager;
+    ChooseTemp adapter;
+    TemplateContext TC;
+    private int viewPageIndex;
     private static final int[] Template_Image = {
             R.drawable.card_1,
             R.drawable.card_2,
@@ -54,6 +62,13 @@ public class ChooseTemplate extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,20 +96,38 @@ public class ChooseTemplate extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                TemplateContext TC = new TemplateContext();
+                TC = new TemplateContext();
+                Bundle bundle = new Bundle();
+                bundle.putString("Template", String.valueOf(viewPageIndex));
+                TC.setArguments(bundle);
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, TC );
+                transaction.replace(R.id.flayout_fragment_continer, TC);
                 transaction.addToBackStack(null);
                 transaction.commit();
 
             }
         });
-        ViewPager viewPager;
-        ChooseTemp adapter;
+
         viewPager = (ViewPager)view.findViewById(R.id.template_choose);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPageIndex = position;
+                Log.e("position",String.valueOf(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         adapter = new ChooseTemp(getActivity());
         viewPager.setAdapter(adapter);
-
         return view   ;
     }
 

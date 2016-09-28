@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.uscc.ncku.androiditri">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -48,7 +51,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar.NoFull"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoFull" />
+        <activity
+            android:name=".CounterActivity"
+            android:label="@string/title_activity_counter"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ConnectActivity"></activity>
     </application>
 
 </manifest>

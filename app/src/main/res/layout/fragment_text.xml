@@ -1,0 +1,59 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.uscc.ncku.androiditri.fragment.TextFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/demo_text"
+        android:id="@+id/demo_text_id"
+        android:layout_gravity="left|center_vertical" />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:alpha="0.6"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center|bottom"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_small_font"
+                android:layout_marginLeft="5sp"
+                android:id="@+id/small_font_img"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textBar"
+                android:maxHeight="2dp"
+                android:progressDrawable="@drawable/btn_font_bar"
+                android:thumb="@drawable/btn_font_circle"
+                android:layout_toRightOf="@+id/small_font_img"
+                android:layout_toLeftOf="@+id/big_font_img"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5sp"
+                android:id="@+id/big_font_img"
+                android:background="@drawable/btn_big_font"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+
+</FrameLayout>

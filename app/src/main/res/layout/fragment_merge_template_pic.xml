@@ -2,12 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mergeFramelayout"
     tools:context="com.uscc.ncku.androiditri.fragment.MergeTemplatePic">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/mergeImage"
+        android:background="@drawable/template_1"
+
+        />
+    <TextView
+        android:id="@+id/context"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="20dp"
+        android:textColor="@color/survey_page_color"
+        android:visibility="invisible"
+        android:elevation="20dp"
+        android:text="我可以去看星星"
+        />
 
 </FrameLayout>
