@@ -18,12 +18,13 @@
         android:layout_height="wrap_content"
         android:gravity="center|left"
         android:layout_marginTop="350dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="60dp"
         android:textSize="20dp"
         android:textColor="@color/survey_page_color"
         android:visibility="invisible"
         android:elevation="20dp"
-        android:text="我可以去看星星"
+        android:text=""
         />
+
 
 </FrameLayout>
