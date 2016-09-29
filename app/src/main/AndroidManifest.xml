@@ -52,7 +52,11 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
-        <activity android:name=".ConnectActivity"></activity>
+        <activity android:name=".ConnectActivity" />
+
+        <service
+            android:name=".FeedbackIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

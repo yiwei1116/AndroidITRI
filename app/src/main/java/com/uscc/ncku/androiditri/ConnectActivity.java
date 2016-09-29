@@ -192,34 +192,34 @@ public class ConnectActivity extends Activity {
         **** Download function
         download data from the server that returns a JSONArray
      */
-    public void downloadAll(int project_id) {
-        new DownloadProjectData(project_id).execute();
-    }
-
-    // inner class to download THE project data
-    public class DownloadProjectData extends AsyncTask<String, Void, Void> {
-        private int device_id;
-
-        public DownloadProjectData(int device_id) {
-            this.device_id = device_id;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            Log.i("HTTP - ", "POST pre-execute download.");
-        }
-
-        @Override
-        protected Void doInBackground(String... strings) {
-            // do all things here
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
+//    public void downloadAll(int project_id) {
+//        new DownloadProjectData(project_id).execute();
+//    }
+//
+//    // inner class to download THE project data
+//    public class DownloadProjectData extends AsyncTask<String, Void, Void> {
+//        private int device_id;
+//
+//        public DownloadProjectData(int device_id) {
+//            this.device_id = device_id;
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            Log.i("HTTP - ", "POST pre-execute download.");
+//        }
+//
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//            // do all things here
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//        }
+//    }
 
 }
