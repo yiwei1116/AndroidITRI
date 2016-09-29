@@ -56,7 +56,11 @@
 
         <service
             android:name=".FeedbackIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+        <service
+            android:name=".MyFeedbackService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
