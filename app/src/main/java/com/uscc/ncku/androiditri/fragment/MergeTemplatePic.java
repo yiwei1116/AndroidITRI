@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.R;
 
@@ -33,7 +34,8 @@ public class MergeTemplatePic extends Fragment {
     private String templateIndex;
     private String writeContext;
     private ImageView mergeImage;
-    private OnFragmentInteractionListener mListener;
+    private TextView textView;
+
     private static final int[] Template_Image = {
             R.drawable.template_1,
             R.drawable.template_2,
@@ -75,43 +77,25 @@ public class MergeTemplatePic extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
         FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
-        //mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
+        textView = (TextView)view.findViewById(R.id.context);
+        mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
         Bundle bundle1 = getArguments();
 
         if (bundle1 != null) {
             templateIndex = (String)getArguments().get("TemplateNum");
             writeContext = (String)getArguments().get("WriteContext");
-            frameLayout.setBackgroundResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
-            //mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
+           // frameLayout.setBackgroundResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
+            mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
             Log.e("templateIndex", templateIndex);
             Log.e("writeContext", writeContext);
+            textView.setText(writeContext);
+            textView.setVisibility(View.VISIBLE);
+
         }
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -123,8 +107,5 @@ public class MergeTemplatePic extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }
