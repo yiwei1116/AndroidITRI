@@ -2,35 +2,21 @@ package com.uscc.ncku.androiditri;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonToken;
 import android.util.Log;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.Attributes;
+import java.util.HashMap;
 
 public class ConnectActivity extends Activity {
     private String serverURL = "http://140.116.82.48/interface/deviceadd.php";
@@ -39,8 +25,6 @@ public class ConnectActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        // call to execute
-        // new SendData().execute(serverURL);
     }
 
     // for downloading
@@ -78,7 +62,7 @@ public class ConnectActivity extends Activity {
 
     /*
         **** Download function
-        download data from the server then returns a JSONArray
+        * ----> incorrect one
      */
     public JSONArray downloadData(int id) throws JSONException {
 
@@ -96,7 +80,7 @@ public class ConnectActivity extends Activity {
             // use buffer to store data
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 16);
             StringBuilder builder = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line + "\n");
             }
@@ -112,34 +96,48 @@ public class ConnectActivity extends Activity {
 
     /*
         **** Upload function
-        download data from the server then returns a JSONArray
+        upload JSONArray to server
      */
-    public void uploadData(String jsonArray) {
+    public void uploadData(JSONArray jsonArray) {
         // call async method to execute upload task
-         new SendData().execute(jsonArray);
+        new SendData(jsonArray).execute();
     }
 
-    private class SendData extends AsyncTask<String, Void, Void> {
+    // inner class to upload data to server
+    public class SendData extends AsyncTask<String, Void, Void> {
+
+        private int project_id;
+        // data to send
+        private JSONArray jsonArray;
+
+        public SendData(int project_id) {
+            this.project_id = project_id;
+        }
+
+        public SendData(JSONArray jsonArray) {
+            this.jsonArray = jsonArray;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("HTTP - ", "POST pre-execute upload.");
+        }
 
         @Override
         protected Void doInBackground(String... strings) {
 
-            BufferedReader reader = null;
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost post = new HttpPost(serverURL);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-            String data = strings[0];
-            pairs.add(new BasicNameValuePair("data", data));
+            String response = "";
+            // do all things here
             try {
-                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
-                post.setEntity(formEntity);
-                // post data
-                httpClient.execute(post);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                response = performUploadPost(serverURL, new HashMap<String, String>() {
+                    {
+                        put("Accept", "application/json");
+                        put("Content-Type", "application/json");
+                    }
+                });
+                // log http response code
+                Log.i("HTTP result", response);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -149,18 +147,79 @@ public class ConnectActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
-    }
 
-    // try convert string to json object
-    public JSONObject str2JSONObject(String id) {
-        JSONObject output = null;
-        try {
-            output = new JSONObject(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        private String performUploadPost(String serverUrl, HashMap<String, String> hashMap) {
+            String response = "";
+            URL url;
+            try {
+                url = new URL(serverUrl);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+
+                String jsonString = jsonArray.toString();
+                byte[] outputBytes = jsonString.getBytes("UTF-8");
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                // write to server
+                outputStream.write(outputBytes);
+
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.e("http response", "HTTP - OK");
+                    String line;
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+                } else {
+                    Log.e("http response", "Failed.");
+                    response = "";
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
         }
-        return output;
+
     }
 
+
+    /*
+        **** Download function
+        download data from the server that returns a JSONArray
+     */
+    public void downloadAll(int project_id) {
+        new DownloadProjectData(project_id).execute();
+    }
+
+    // inner class to download THE project data
+    public class DownloadProjectData extends AsyncTask<String, Void, Void> {
+        private int device_id;
+
+        public DownloadProjectData(int device_id) {
+            this.device_id = device_id;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("HTTP - ", "POST pre-execute download.");
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            // do all things here
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
 
 }
