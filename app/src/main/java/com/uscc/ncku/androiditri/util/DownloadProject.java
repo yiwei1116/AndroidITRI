@@ -8,9 +8,11 @@ import android.os.AsyncTask;
 public class DownloadProject extends AsyncTask<Void, Void, Boolean> {
 
     private int project_id;
+    private String downloadPath;
 
     public DownloadProject(int project_id) {
         this.project_id = project_id;
+        downloadPath = getDownloadPath();
     }
 
     @Override
@@ -24,8 +26,20 @@ public class DownloadProject extends AsyncTask<Void, Void, Boolean> {
         return null;
     }
 
+    public String getDownloadPath() {
+        String path = null;
+        
+
+        return path;
+    }
+
+
     // do all downloading
     private void DownloadProjectWithId(int project_id) throws Exception{
+
+    }
+
+    private void DownloadAllField() {
 
     }
 
