@@ -124,13 +124,29 @@
     <string name="feedback_no">不用，我要繼續導覧</string>
     <string name="survey_popup_text">貴賓您好，感謝您撥冗參觀展示中心，為使本中心未來設備系統開發與服務品質的提升，請您利用簡短時間填寫本表，您所提供的資料受個資法保護，僅供問卷統計、整體分析使用，感謝您的協助。</string>
 
-    <string name="title_activity_counter">CounterActivity</string>
-    <string name="title_activity_connection">ConnectionActivity</string>
+    <string name="title_activity_counter" translatable="false">CounterActivity</string>
+    <string name="title_activity_connection" translatable="false">ConnectionActivity</string>
 
 
     <string name="buildContext1">張開雙眼，敞開心胸，你就不會失去任何事物</string>
     <string name="buildContext2">就繼續往前走吧 !</string>
     <string name="buildContext3">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>
+    <string name="feedback_title_1" translatable="false">Question 1</string>
+    <string name="feedback_title_2" translatable="false">Question 2</string>
+    <string name="feedback_title_3" translatable="false">Question 3</string>
+    <string name="feedback_title_4" translatable="false">Question 4</string>
+    <string name="feedback_title_5" translatable="false">Question 5</string>
+    <string name="feedback_title_6" translatable="false">Question 6</string>
+    <string name="feedback_title_7" translatable="false">Question 7</string>
+    <string name="feedback_title_8" translatable="false">Question 8</string>
+    <string name="feedback_question_1" translatable="false">您對智慧化科技產品的態度傾向</string>
+    <string name="feedback_question_2" translatable="false">您對智慧化科技產品購買與使用態度傾向，其重要程度看法如何？</string>
+    <string name="feedback_question_3" translatable="false">依您目前生活條件或機能需求狀況，針對展示中心系統及設備中您最想購買的前２項產品為哪些？其原因為何？</string>
+    <string name="feedback_question_4" translatable="false">您是否需要這些系統或設備廠商提供您產品相關資訊？</string>
+    <string name="feedback_question_5" translatable="false">如果現在廠商可以免費在家裡幫您安裝５項系統或設備，您會選哪５項？</string>
+    <string name="feedback_question_6" translatable="false">跳過</string>
+    <string name="feedback_question_7" translatable="false">跳過</string>
+    <string name="feedback_question_8" translatable="false">您認為單項智慧化系統或設備的平均合理價格為多少？</string>
 
 
 </resources>

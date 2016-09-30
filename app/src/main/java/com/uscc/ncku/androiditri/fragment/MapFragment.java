@@ -57,6 +57,9 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
+        FeedbackFragment feedback = new FeedbackFragment();
+        feedback.feedbackAlertDialog(getActivity(), feedback);
+
         final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
         notice.setVisibility(View.VISIBLE);
         Button cancel = (Button) v.findViewById(R.id.btn_cancel_map_area);
