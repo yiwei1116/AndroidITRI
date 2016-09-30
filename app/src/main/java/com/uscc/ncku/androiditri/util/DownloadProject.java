@@ -6,7 +6,6 @@ import android.os.AsyncTask;
  * Created by Oslo on 9/30/16.
  */
 public class DownloadProject extends AsyncTask<Void, Void, Boolean> {
-
     private int project_id;
     private String downloadPath;
 
@@ -28,11 +27,10 @@ public class DownloadProject extends AsyncTask<Void, Void, Boolean> {
 
     public String getDownloadPath() {
         String path = null;
-        
+
 
         return path;
     }
-
 
     // do all downloading
     private void DownloadProjectWithId(int project_id) throws Exception{

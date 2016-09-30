@@ -9,11 +9,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,30 +42,11 @@ public class ConnectActivity extends Activity {
 
     /*
         need:
-            1. function to parse json object
-            2. function to upload to server
-            3. function to download from server
-     */
-
-
-    /*
-        ****   Get SVG files   ****
-        --> field_map -> map_svg
-        --> generally use
-     */
-
-
-    /*
-        ****   Get device data   ****
-        -->  basically by mode
-        --> use device_id to query and
-     */
-
-
-    /*
-        ****   Get 文青資料   ****
-
-     */
+            function to download from server
+                --> get SVG files
+                --> get device data
+                --> get hipster data
+    */
 
 
     /*
@@ -104,9 +87,10 @@ public class ConnectActivity extends Activity {
         **** Upload function
         upload JSONArray to server
      */
-    public void uploadData(JSONArray jsonArray) {
+
+    public void uploadJsonData(JSONObject uploadObject) {
         // call async method to execute upload task
-        new SendData(jsonArray).execute();
+        new SendData(uploadObject).execute();
     }
 
     // inner class to upload data to server
@@ -115,9 +99,10 @@ public class ConnectActivity extends Activity {
         private int project_id;
         // data to send
         private JSONArray jsonArray;
-        private JSONObject counter1;
-        private JSONObject counter2;
-        private JSONObject counter3;
+        private JSONObject json_string;
+//        private JSONObject counter1;
+//        private JSONObject counter2;
+//        private JSONObject counter3;
 
         public SendData(int project_id) {
             this.project_id = project_id;
@@ -127,6 +112,8 @@ public class ConnectActivity extends Activity {
             this.jsonArray = jsonArray;
         }
 
+        public SendData(JSONObject json_string) { this.json_string = json_string; }
+
         @Override
         protected void onPreExecute() {
             Log.i("HTTP - ", "POST pre-execute upload.");
@@ -134,7 +121,6 @@ public class ConnectActivity extends Activity {
 
         @Override
         protected Void doInBackground(String... strings) {
-
             String response = "";
             // do all things here
             try {
@@ -155,70 +141,75 @@ public class ConnectActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Log.i("postExecute", "info");
         }
 
         private String performUploadPost(String serverUrl, HashMap<String, String> hashMap) {
-
             String response = "";
             URL url;
             try {
-                // configure json object & json array
-                counter1 = new JSONObject();
-                counter1.put(mode_id, "1");
-                counter1.put(device_id, "");
-                counter1.put(add_count, "");
+                // configure json object & json array  --> example code
+//                counter1 = new JSONObject();
+//                counter1.put(mode_id, 1);
+//                counter1.put(device_id, 1);
+//                counter1.put(add_count, 25);
+//
+//                counter2 = new JSONObject();
+//                counter2.put(mode_id, 1);
+//                counter2.put(device_id, 2);
+//                counter2.put(add_count, 100);
+//
+//                counter3 = new JSONObject();
+//                counter3.put(mode_id, 1);
+//                counter3.put(device_id, 23);
+//                counter3.put(add_count, 50);
+//
+//                jsonArray = new JSONArray();
+//                jsonArray.put(counter1);
+//                jsonArray.put(counter2);
+//                jsonArray.put(counter3);
+//
+//                JSONObject json_string = new JSONObject();
+//                json_string.put(request_type, 1);
+//                json_string.put(request_data, jsonArray);
 
-                counter2 = new JSONObject();
-                counter2.put(mode_id, "1");
-                counter2.put(device_id, "");
-                counter2.put(add_count, "");
-
-                counter3 = new JSONObject();
-                counter3.put(mode_id, "1");
-                counter3.put(device_id, "");
-                counter3.put(add_count, "");
-
-                jsonArray = new JSONArray();
-                jsonArray.put(counter1);
-                jsonArray.put(counter2);
-                jsonArray.put(counter3);
-
-                JSONObject jsonType = new JSONObject();
-                jsonType.put(request_type, 1);
-                JSONObject uploadJSON = new JSONObject();
-                uploadJSON.put(request_type, 1);
-                uploadJSON.put(request_data, jsonArray);
-
+                if (json_string == null) {
+                    return "JSON data is null";
+                }
+                // send URL request
                 url = new URL(serverUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setUseCaches(false);
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
-                httpURLConnection.setRequestProperty("Content-Type", "text/html");
 
-                String jsonString = uploadJSON.toString();
-                byte[] outputBytes = jsonString.getBytes("UTF-8");
-                OutputStream outputStream = httpURLConnection.getOutputStream();
+                String jsonString = "json_string=" + json_string.toString();
+                Log.i("json", jsonString);
+
                 // write to server
-                outputStream.write(outputBytes);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
+                outputStreamWriter.write(jsonString);
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
 
                 int responseCode = httpURLConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Log.e("http response", "HTTP - OK");
                     String line;
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
                     while ((line = bufferedReader.readLine()) != null) {
                         response += line;
                     }
+                    Log.i("resp. code", response);
+                    bufferedReader.close();
                 } else {
-                    Log.e("http response", "Failed.");
+                    Log.e("http response", String.valueOf(responseCode));
                     response = "";
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return response;
