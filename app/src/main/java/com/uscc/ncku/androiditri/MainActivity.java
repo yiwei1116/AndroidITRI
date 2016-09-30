@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static MainButton soundBtn;
     private static MainButton fontBtn;
 
+    private static Toolbar toolbar;
     private static ImageView mainBtnNavBg;
     private static LinearLayout mainBtnLayout;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(R.drawable.btn_back);
@@ -286,6 +287,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+    }
+
+    public static Toolbar getToolbar() {
+        return toolbar;
     }
 
 }

@@ -147,6 +147,40 @@
     <string name="feedback_question_6" translatable="false">跳過</string>
     <string name="feedback_question_7" translatable="false">跳過</string>
     <string name="feedback_question_8" translatable="false">您認為單項智慧化系統或設備的平均合理價格為多少？</string>
+    <string name="feedback_very_support">&#160;&#160;&#160;非常支持</string>
+    <string name="feedback_support">&#160;&#160;&#160;支持</string>
+    <string name="feedback_soso">&#160;&#160;&#160;尚可</string>
+    <string name="feedback_unsupport">&#160;&#160;&#160;不支持</string>
+    <string name="feedback_very_unsupport">&#160;&#160;&#160;非常不支持</string>
+    <string name="feedback_very_important">&#160;&#160;&#160;非常重要</string>
+    <string name="feedback_important">&#160;&#160;&#160; 重要</string>
+    <string name="feedback_sosososo">&#160;&#160;&#160;普通</string>
+    <string name="feedback_unimportant">&#160;&#160;&#160;不重要</string>
+    <string name="feedback_very_unimportant">&#160;&#160;&#160;非常不重要</string>
+    <string name="feedback_next">下一題</string>
+    <string name="feedback_function">功能性</string>
+    <string name="feedback_beauty">視覺美觀性</string>
+    <string name="feedback_first_order">第一優先購買的商品為</string>
+    <string name="feedback_first_order_reason">因為商品具有：(可複選)</string>
+    <string name="feedback_feature_function">&#160;&#160;&#160;功能良好</string>
+    <string name="feedback_feature_beauty">&#160;&#160;&#160;視覺美觀佳</string>
+    <string name="feedback_feature_operation">&#160;&#160;&#160;實用操作性佳</string>
+    <string name="feedback_feature_humility">&#160;&#160;&#160;人性化設計</string>
+    <string name="feedback_feature_maintainence">&#160;&#160;&#160;易維護管理</string>
+    <string name="feedback_feature_safe">&#160;&#160;&#160;安全特性</string>
+    <string name="feedback_ja">&#160;&#160;&#160;是</string>
+    <string name="feedback_nicht">&#160;&#160;&#160;否</string>
+    <string name="feedback_equip_info">我需要得到下列產品之相關資訊</string>
+    <string name="feedback_free_1">第一項</string>
+    <string name="feedback_free_2">第二項</string>
+    <string name="feedback_free_3">第三項</string>
+    <string name="feedback_free_4">第四項</string>
+    <string name="feedback_free_5">第五項</string>
+    <string name="feedback_price_10k">&#160;&#160;&#160;1萬以下</string>
+    <string name="feedback_price_50k">&#160;&#160;&#160;1-5萬</string>
+    <string name="feedback_price_100k">&#160;&#160;&#160;5-10萬</string>
+    <string name="feedback_price_200k">&#160;&#160;&#160;10-20萬</string>
+    <string name="feedback_price_over_200k">&#160;&#160;&#160;20萬以上</string>
 
 
 </resources>
