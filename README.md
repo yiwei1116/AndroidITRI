@@ -1,3 +1,5 @@
 # AndroidITRI
 
-Android project featured Kaizsv, Yiwei, Boopslo, and Jiaying, from ITRI
+Android project featured Kaizsv, Yiwei, Boopslo, and Jiaying. 
+
+# ITRI Project
