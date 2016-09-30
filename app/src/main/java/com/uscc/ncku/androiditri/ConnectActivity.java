@@ -7,6 +7,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,12 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class ConnectActivity extends Activity {
-    private String serverURL = "http://140.116.82.48/interface/deviceadd.php";
+    private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
+    private final String mode_id = "mode_id";
+    private final String device_id = "device_id";
+    private final String add_count = "add_count";
+    private final String request_type = "type";
+    private final String request_data = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +115,9 @@ public class ConnectActivity extends Activity {
         private int project_id;
         // data to send
         private JSONArray jsonArray;
+        private JSONObject counter1;
+        private JSONObject counter2;
+        private JSONObject counter3;
 
         public SendData(int project_id) {
             this.project_id = project_id;
@@ -149,17 +158,45 @@ public class ConnectActivity extends Activity {
         }
 
         private String performUploadPost(String serverUrl, HashMap<String, String> hashMap) {
+
             String response = "";
             URL url;
             try {
+                // configure json object & json array
+                counter1 = new JSONObject();
+                counter1.put(mode_id, "1");
+                counter1.put(device_id, "");
+                counter1.put(add_count, "");
+
+                counter2 = new JSONObject();
+                counter2.put(mode_id, "1");
+                counter2.put(device_id, "");
+                counter2.put(add_count, "");
+
+                counter3 = new JSONObject();
+                counter3.put(mode_id, "1");
+                counter3.put(device_id, "");
+                counter3.put(add_count, "");
+
+                jsonArray = new JSONArray();
+                jsonArray.put(counter1);
+                jsonArray.put(counter2);
+                jsonArray.put(counter3);
+
+                JSONObject jsonType = new JSONObject();
+                jsonType.put(request_type, 1);
+                JSONObject uploadJSON = new JSONObject();
+                uploadJSON.put(request_type, 1);
+                uploadJSON.put(request_data, jsonArray);
+
                 url = new URL(serverUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
-                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+                httpURLConnection.setRequestProperty("Content-Type", "text/html");
 
-                String jsonString = jsonArray.toString();
+                String jsonString = uploadJSON.toString();
                 byte[] outputBytes = jsonString.getBytes("UTF-8");
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 // write to server
@@ -181,12 +218,13 @@ public class ConnectActivity extends Activity {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
             return response;
         }
 
     }
-
 
     /*
         **** Download function
