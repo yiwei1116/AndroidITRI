@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ConnectActivity extends Activity {
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
@@ -221,34 +223,76 @@ public class ConnectActivity extends Activity {
         **** Download function
         download data from the server that returns a JSONArray
      */
-//    public void downloadAll(int project_id) {
-//        new DownloadProjectData(project_id).execute();
-//    }
-//
-//    // inner class to download THE project data
-//    public class DownloadProjectData extends AsyncTask<String, Void, Void> {
-//        private int device_id;
-//
-//        public DownloadProjectData(int device_id) {
-//            this.device_id = device_id;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            Log.i("HTTP - ", "POST pre-execute download.");
-//        }
-//
-//        @Override
-//        protected Void doInBackground(String... strings) {
-//            // do all things here
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            super.onPostExecute(aVoid);
-//        }
-//    }
+    public void downloadFieldData(int projectId) {
+        new DownloadTask(projectId).execute();
+    }
+
+    public class DownloadTask extends AsyncTask<Void, Void, Boolean> {
+
+        private int projectId;
+
+        public DownloadTask(int projectId) {
+            this.projectId = projectId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                DownloadAll(projectId);
+            } catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                // set visibility of frames
+                Toast.makeText(getApplicationContext(), "導覽開始", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "資料更新中，請稍候...", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private void DownloadAll(int projectId) throws Exception{
+            Map<String, String> httpPosts = new HashMap<>();
+            httpPosts.put("project", String.valueOf(projectId));
+            String transRep = null;
+            if (transRep.length() == 0) {
+                throw new Exception("download network error");
+            }
+            JSONObject json_data = new JSONObject(transRep);
+            JSONArray json_array = new JSONArray(json_data.getString("fields"));
+            for (int i = 0; i < json_array.length(); i++) {
+                JSONObject obj = json_array.getJSONObject(i);
+                DownloadFields();
+            }
+        }
+
+        private void DownloadFields() throws Exception{
+
+        }
+
+        private void getZone() {
+
+        }
+
+        private void getMode() {
+
+        }
+
+        private void getDevice() {
+
+        }
+
+        private void getSVG() {
+
+        }
+
+    }
+
+
 
 }
