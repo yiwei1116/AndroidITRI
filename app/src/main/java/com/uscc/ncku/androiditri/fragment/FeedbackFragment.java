@@ -43,7 +43,6 @@ public class FeedbackFragment extends Fragment {
      *
      * @return A new instance of fragment FeedbackFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static FeedbackFragment newInstance() {
         FeedbackFragment fragment = new FeedbackFragment();
         return fragment;
@@ -59,7 +58,7 @@ public class FeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         MainActivity.hideMainBtn();
-//        MainActivity.setTBTransprate(true);
+        MainActivity.showFeedbackToolbar();
         view = inflater.inflate(R.layout.fragment_feedback, container, false);
         return view;
     }
@@ -67,15 +66,13 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Toolbar toolbar = MainActivity.getToolbar();
-        toolbar.setNavigationIcon(R.drawable.grey_back);
-        toolbar.setBackgroundResource(R.color.trans);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         MainActivity.showMainBtn();
+        MainActivity.showDefaultToolbar();
     }
 
     public void feedbackAlertDialog(final Activity activity, final FeedbackFragment f) {

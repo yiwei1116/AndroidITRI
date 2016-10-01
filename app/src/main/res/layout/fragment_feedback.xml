@@ -3,19 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.FeedbackFragment"
-    android:background="@android:color/white"
-    >
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_feedback_close"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_close"
-        android:paddingTop="15dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:layout_alignParentRight="true" />
+    android:layout_marginTop="@dimen/toolbar_content_paddingTop"
+    android:background="@android:color/white">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +13,6 @@
         android:text="@string/feedback_title_1"
         android:textSize="20sp"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/btn_feedback_close"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingBottom="4dp" />

@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -215,15 +216,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static void hideToolbar() {
+//        toolbar.setVisibility(View.GONE);
+//
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+//        layoutParams.setMargins(0, 0, 0, -6);
+//        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void showDefaultToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.drawable.header_blank);
+        toolbar.setNavigationIcon(R.drawable.btn_back);
+        toolbar.inflateMenu(R.menu.main_no_menu);
+
+//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+//        layoutParams.setMargins(0, container_margin_top, 0, -6);
+//        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void showFeedbackToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.color.colorWhite);
+        toolbar.setNavigationIcon(R.drawable.grey_back);
+        toolbar.inflateMenu(R.menu.main_close);
+    }
+
     public static void hideMainBtn() {
         mainBtnNavBg.getLayoutParams().height = 0;
-
         mainBtnLayout.setVisibility(View.GONE);
     }
 
     public static void showMainBtn() {
         mainBtnNavBg.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
-
         mainBtnLayout.setVisibility(View.VISIBLE);
     }
 
