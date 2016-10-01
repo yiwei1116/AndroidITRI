@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.FeedbackFragment"
-    android:layout_marginTop="@dimen/toolbar_content_paddingTop"
     android:background="@android:color/white">
 
     <TextView

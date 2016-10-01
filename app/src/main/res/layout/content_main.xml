@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/flayout_fragment_continer"
+        android:layout_marginTop="@dimen/toolbar_content_paddingTop"
         android:layout_above="@+id/llayout_button_main"
         android:layout_marginBottom="-6dp">
 

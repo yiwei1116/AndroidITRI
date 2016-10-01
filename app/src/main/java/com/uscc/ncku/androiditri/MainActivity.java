@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -37,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private static MainButton fontBtn;
 
     private static Toolbar toolbar;
+    private static TextView toolbarTitle;
     private static ImageView mainBtnNavBg;
     private static LinearLayout mainBtnLayout;
+    private static FrameLayout mainContainer;
+    private static int container_margin_top;
 
     private static RelativeLayout containerSL;
 
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbarTitle = (TextView) findViewById(R.id.txt_toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(R.drawable.btn_back);
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
         mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
         mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+
+        mainContainer = (FrameLayout) findViewById(R.id.flayout_fragment_continer);
+        container_margin_top = (int) getResources().getDimension(R.dimen.toolbar_content_paddingTop);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -217,29 +224,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void hideToolbar() {
-//        toolbar.setVisibility(View.GONE);
-//
-//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-//        layoutParams.setMargins(0, 0, 0, -6);
-//        mainContainer.setLayoutParams(layoutParams);
+        toolbar.setVisibility(View.GONE);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, 0, 0, -6);
+        mainContainer.setLayoutParams(layoutParams);
     }
 
     public static void showDefaultToolbar() {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setBackgroundResource(R.drawable.header_blank);
-        toolbar.setNavigationIcon(R.drawable.btn_back);
-        toolbar.inflateMenu(R.menu.main_no_menu);
 
-//        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-//        layoutParams.setMargins(0, container_margin_top, 0, -6);
-//        mainContainer.setLayoutParams(layoutParams);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, container_margin_top, 0, -6);
+        mainContainer.setLayoutParams(layoutParams);
     }
 
     public static void showFeedbackToolbar() {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setBackgroundResource(R.color.colorWhite);
-        toolbar.setNavigationIcon(R.drawable.grey_back);
-        toolbar.inflateMenu(R.menu.main_close);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, container_margin_top, 0, -6);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void transparateToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.color.trans);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, 0, 0, -6);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public static void setToolbarTitle(int stringID) {
+        toolbarTitle.setText(stringID);
     }
 
     public static void hideMainBtn() {
@@ -312,10 +336,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
-    }
-
-    public static Toolbar getToolbar() {
-        return toolbar;
     }
 
 }

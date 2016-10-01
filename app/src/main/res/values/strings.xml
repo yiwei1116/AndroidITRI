@@ -127,7 +127,7 @@
     <string name="title_activity_counter" translatable="false">CounterActivity</string>
     <string name="title_activity_connection" translatable="false">ConnectionActivity</string>
 
-
+    <string name="text_master">文字創作</string>
     <string name="buildContext1">張開雙眼，敞開心胸，你就不會失去任何事物</string>
     <string name="buildContext2">就繼續往前走吧 !</string>
     <string name="buildContext3">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>

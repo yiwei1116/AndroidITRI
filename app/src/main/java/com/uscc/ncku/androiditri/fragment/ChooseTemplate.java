@@ -1,8 +1,5 @@
 package com.uscc.ncku.androiditri.fragment;
 
-import android.support.v7.app.AppCompatActivity;
-
-
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
@@ -12,7 +9,6 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,14 +19,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.TourViewPager;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ChooseTemplate.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link ChooseTemplate#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -41,11 +38,6 @@ public class ChooseTemplate extends Fragment {
     ChooseTemp adapter;
     TemplateContext TC;
     private int viewPageIndex;
-    private static final int[] Template_Image = {
-            R.drawable.card_1,
-            R.drawable.card_2,
-    };
-    private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -76,13 +68,11 @@ public class ChooseTemplate extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_choose_template, container, false);
-        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar_camera);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolBarTxt = (TextView)view.findViewById(R.id.txt_toolbar_tour_select);
-        toolBarTxt.setText(R.string.choose_template);
+        MainActivity.transparateToolbar();
+        MainActivity.setToolbarTitle(R.string.choose_template);
+
+        Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +80,7 @@ public class ChooseTemplate extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+
         Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
@@ -174,14 +165,6 @@ public class ChooseTemplate extends Fragment {
         }
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -191,21 +174,5 @@ public class ChooseTemplate extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

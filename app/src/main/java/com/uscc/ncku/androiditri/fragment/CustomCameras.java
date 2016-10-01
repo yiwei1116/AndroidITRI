@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toolbar;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.io.File;
@@ -66,43 +67,25 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     private String mImageFileLocation = "";
     private Button switchCamera,capture;
     Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CustomCameras.
      */
-    // TODO: Rename and change types and number of parameters
-    public static CustomCameras newInstance(String param1, String param2) {
+    public static CustomCameras newInstance() {
         CustomCameras fragment = new CustomCameras();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     public CustomCameras() {
-        // Required empty public constructor
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -114,17 +97,10 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         capture = (Button)view.findViewById(R.id.btn_capture);
         switchCamera.setOnClickListener(this);
         capture.setOnClickListener(this);
-        /*AppCompatActivity activity = (AppCompatActivity) getActivity();
-        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)view.findViewById(R.id.toolbar_template_select);
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.btn_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });*/
+
+        MainActivity.hideMainBtn();
+        MainActivity.hideToolbar();
+
         initViews();
         return view;
     }
@@ -330,6 +306,11 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.showDefaultToolbar();
+    }
 
     private Camera getCamera() {
         Camera camera;

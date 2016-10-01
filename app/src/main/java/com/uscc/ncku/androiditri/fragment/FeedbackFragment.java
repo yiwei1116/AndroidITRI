@@ -6,11 +6,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -59,6 +58,20 @@ public class FeedbackFragment extends Fragment {
         // Inflate the layout for this fragment
         MainActivity.hideMainBtn();
         MainActivity.showFeedbackToolbar();
+        Toolbar toolbar = MainActivity.getToolbar();
+
+        toolbar.setNavigationIcon(R.drawable.grey_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        if (toolbar.getMenu() != null) {
+            toolbar.getMenu().clear();
+        }
+        toolbar.inflateMenu(R.menu.main_close);
+
         view = inflater.inflate(R.layout.fragment_feedback, container, false);
         return view;
     }
@@ -73,6 +86,9 @@ public class FeedbackFragment extends Fragment {
         super.onDestroyView();
         MainActivity.showMainBtn();
         MainActivity.showDefaultToolbar();
+        Toolbar toolbar = MainActivity.getToolbar();
+        toolbar.getMenu().clear();
+        toolbar.setNavigationIcon(R.drawable.btn_back);
     }
 
     public void feedbackAlertDialog(final Activity activity, final FeedbackFragment f) {

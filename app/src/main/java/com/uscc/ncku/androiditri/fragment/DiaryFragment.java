@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -95,6 +96,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         photoCall.setOnClickListener(this);
         nextStep.setOnClickListener(this);
 
+        MainActivity.hideToolbar();
+
         return view;
 
     }
@@ -107,11 +110,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.showDefaultToolbar();
     }
+
     @Override
     public void onClick(View v) {
 
@@ -141,6 +144,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         }
 
     }
+    @TargetApi(Build.VERSION_CODES.M)
     public void takePhoto(){
         String[] permissionNeed = {
                 Manifest.permission.CAMERA,
@@ -191,7 +195,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void callCamera( ){
-        MainActivity.hideMainBtn();
         FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
         FragmentTransaction transaction = fm.beginTransaction();
