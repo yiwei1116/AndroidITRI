@@ -70,6 +70,7 @@ public class ChooseTemplate extends Fragment {
         View view = inflater.inflate(R.layout.fragment_choose_template, container, false);
 
         MainActivity.transparateToolbar();
+        MainActivity.hideMainBtn();
         MainActivity.setToolbarTitle(R.string.choose_template);
 
         Toolbar toolbar = MainActivity.getToolbar();
@@ -169,6 +170,12 @@ public class ChooseTemplate extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.showDefaultToolbar();
     }
 
     @Override

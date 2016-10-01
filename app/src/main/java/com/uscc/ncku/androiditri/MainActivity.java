@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setVisibility(View.GONE);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-        layoutParams.setMargins(0, 0, 0, -6);
+        layoutParams.setMargins(0, 0, 0, -13);
         mainContainer.setLayoutParams(layoutParams);
     }
 
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setBackgroundResource(R.drawable.header_blank);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-        layoutParams.setMargins(0, container_margin_top, 0, -6);
+        layoutParams.setMargins(0, container_margin_top, 0, -13);
         mainContainer.setLayoutParams(layoutParams);
     }
 
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setBackgroundResource(R.color.colorWhite);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-        layoutParams.setMargins(0, container_margin_top, 0, -6);
+        layoutParams.setMargins(0, container_margin_top, 0, -13);
         mainContainer.setLayoutParams(layoutParams);
     }
 
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setBackgroundResource(R.color.trans);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
-        layoutParams.setMargins(0, 0, 0, -6);
+        layoutParams.setMargins(0, 0, 0, -13);
         mainContainer.setLayoutParams(layoutParams);
     }
 

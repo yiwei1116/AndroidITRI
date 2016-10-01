@@ -21,7 +21,7 @@
         android:layout_height="0.8dp"
         android:id="@+id/horizontal_line"
         android:background="@color/btn_font_color_grey"
-        android:scaleX="0.96"
+        android:scaleX="0.95"
         android:layout_below="@+id/txt_feedback_title" />
 
     <TextView
@@ -113,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_2"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -255,7 +255,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_3"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -269,6 +269,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:id="@+id/feedback_spinner_first_order"
                     android:layout_below="@+id/feedback_first_order">
                 </Spinner>
@@ -354,7 +356,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_4"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -389,6 +391,7 @@
                     android:id="@+id/feedback_equip_info"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingTop="@dimen/feedback_rbtn_margin"
                     android:paddingBottom="@dimen/feedback_rbtn_margin"
                     android:text="@string/feedback_equip_info"
                     android:layout_below="@+id/radiogroup_feedback_4" />
@@ -396,6 +399,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:id="@+id/feedback_spinner_equip_1"
                     android:layout_below="@+id/feedback_equip_info">
                 </Spinner>
@@ -403,6 +408,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:id="@+id/feedback_spinner_equip_2"
                     android:layout_below="@+id/feedback_spinner_equip_1">
                 </Spinner>
@@ -410,6 +417,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:id="@+id/feedback_spinner_equip_3"
                     android:layout_below="@+id/feedback_spinner_equip_2">
                 </Spinner>
@@ -420,7 +429,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_5"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -434,6 +443,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/feedback_spinner_free_1"
                     android:layout_below="@+id/feedback_free_1">
                 </Spinner>
@@ -451,6 +462,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/feedback_spinner_free_2"
                     android:layout_below="@+id/feedback_free_2">
                 </Spinner>
@@ -468,6 +481,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/feedback_spinner_free_3"
                     android:layout_below="@+id/feedback_free_3">
                 </Spinner>
@@ -485,6 +500,8 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/feedback_spinner_free_4"
                     android:layout_below="@+id/feedback_free_4">
                 </Spinner>
@@ -502,37 +519,39 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
                     android:id="@+id/feedback_spinner_free_5"
                     android:layout_below="@+id/feedback_free_5">
                 </Spinner>
 
             </RelativeLayout>
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_6"
-                android:visibility="gone">
+                android:visibility="invisible">
 
 
 
-            </FrameLayout>
+            </RelativeLayout>
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/flayout_feedback_7"
-                android:visibility="gone">
+                android:visibility="invisible">
 
 
 
-            </FrameLayout>
+            </RelativeLayout>
 
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radiogroup_feedback_8"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <RadioButton
                     android:layout_width="wrap_content"

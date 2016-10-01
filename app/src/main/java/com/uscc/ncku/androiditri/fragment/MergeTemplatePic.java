@@ -42,7 +42,6 @@ public class MergeTemplatePic extends Fragment {
      *
      * @return A new instance of fragment MergeTemplatePic.
      */
-    // TODO: Rename and change types and number of parameters
     public static MergeTemplatePic newInstance() {
         MergeTemplatePic fragment = new MergeTemplatePic();
         return fragment;
@@ -87,5 +86,11 @@ public class MergeTemplatePic extends Fragment {
 
         }
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.showDefaultToolbar();
     }
 }

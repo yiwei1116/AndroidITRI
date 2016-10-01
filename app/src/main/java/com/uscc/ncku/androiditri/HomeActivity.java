@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.Locale;
 
@@ -18,8 +18,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Button btnCht = (Button) findViewById(R.id.btn_cht_home);
-        Button btnEng = (Button) findViewById(R.id.btn_eng_home);
+        ImageButton btnCht = (ImageButton) findViewById(R.id.btn_cht_home);
+        ImageButton btnEng = (ImageButton) findViewById(R.id.btn_eng_home);
 
         btnCht.setOnClickListener(new View.OnClickListener() {
             @Override

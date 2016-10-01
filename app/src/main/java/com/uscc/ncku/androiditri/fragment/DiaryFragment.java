@@ -128,8 +128,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
                 break;
             case R.id.next_step:
-                MainActivity.hideMainBtn();
-
                 LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
                 bottom_bar.setVisibility(View.GONE);
                 FragmentManager fm = getFragmentManager();

@@ -20,17 +20,19 @@
         android:background="@drawable/home_text"
         android:layout_marginTop="160dp" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/home_btn_chinese"
+        android:src="@drawable/home_btn_chinese"
+        android:background="@null"
         android:layout_marginTop="20dp"
         android:id="@+id/btn_cht_home" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/home_btn_english"
+        android:src="@drawable/home_btn_english"
+        android:background="@null"
         android:layout_marginTop="10dp"
         android:id="@+id/btn_eng_home" />
 
