@@ -8,6 +8,12 @@
     tools:context="com.uscc.ncku.androiditri.HomeActivity"
     android:gravity="center_horizontal">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/skip"
+        android:id="@+id/rm_skip" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

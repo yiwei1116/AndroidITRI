@@ -181,6 +181,12 @@
     <string name="feedback_price_100k">&#160;&#160;&#160;5-10萬</string>
     <string name="feedback_price_200k">&#160;&#160;&#160;10-20萬</string>
     <string name="feedback_price_over_200k">&#160;&#160;&#160;20萬以上</string>
+    <string name="mapguide_title">地圖指引</string>
+    <string name="mapguide_now">現在位置</string>
+    <string name="mapguide_tour">參觀動線</string>
+    <string name="mapguide_visited">已參觀點位</string>
+    <string name="mapguide_unvisited">未參觀點位</string>
+    <string name="mapguide_next_visited">下一個參觀點位</string>
 
 
 </resources>

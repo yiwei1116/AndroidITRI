@@ -10,6 +10,8 @@ import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +70,7 @@ public class FeedbackFragment extends Fragment {
         MainActivity.hideMainBtn();
         MainActivity.showFeedbackToolbar();
         Toolbar toolbar = MainActivity.getToolbar();
+        setHasOptionsMenu(true);
 
         toolbar.setNavigationIcon(R.drawable.grey_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -79,7 +82,6 @@ public class FeedbackFragment extends Fragment {
         if (toolbar.getMenu() != null) {
             toolbar.getMenu().clear();
         }
-        toolbar.inflateMenu(R.menu.main_close);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -90,6 +92,13 @@ public class FeedbackFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_feedback, container, false);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.main_close, menu);
     }
 
     @Override
