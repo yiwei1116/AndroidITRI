@@ -1,61 +1,53 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <SurfaceView
+        android:id="@+id/sv_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/ic_flip_camera"
+        android:onClick="switchCamera"
+        android:stateListAnimator="@null" />
+
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/btn_camera_back"
+        android:background="@drawable/btn_back"
+        android:stateListAnimator="@null" />
 
 
-
+    <Button
+        android:id="@+id/btn_capture"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/ic_takephoto"
+        android:gravity="center"
+        android:onClick="capture"
+        android:stateListAnimator="@null" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/custom_camera_container"
-        >
-
-        <SurfaceView
-            android:id="@+id/sv_camera"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            />
-        <Button
-            android:id="@+id/btn_switch_camera"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_gravity="top|center_horizontal"
-            android:onClick="switchCamera"
-            android:background="@drawable/ic_flip_camera"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:stateListAnimator="@null"
-
-            />
-        <Button
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/btn_back"
-            android:layout_gravity="top|left"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:stateListAnimator="@null"
-
-            />
-
-
-        <Button
-            android:id="@+id/btn_capture"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:onClick="capture"
-            android:background="@drawable/ic_takephoto"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20dp"
-            android:stateListAnimator="@null"
-            />
+        android:id="@+id/custom_camera_container" >
     </FrameLayout>
 
-</RelativeLayout>  
+
+</FrameLayout>

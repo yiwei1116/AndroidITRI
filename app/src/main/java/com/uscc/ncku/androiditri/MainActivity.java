@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -35,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private static MainButton soundBtn;
     private static MainButton fontBtn;
 
+    private static Toolbar toolbar;
+    private static TextView toolbarTitle;
     private static ImageView mainBtnNavBg;
     private static LinearLayout mainBtnLayout;
+    private static FrameLayout mainContainer;
+    private static int container_margin_top;
 
     private static RelativeLayout containerSL;
 
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbarTitle = (TextView) findViewById(R.id.txt_toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(R.drawable.btn_back);
@@ -64,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
         mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
         mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
+
+        mainContainer = (FrameLayout) findViewById(R.id.flayout_fragment_continer);
+        container_margin_top = (int) getResources().getDimension(R.dimen.toolbar_content_paddingTop);
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -214,15 +223,56 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static void hideToolbar() {
+        toolbar.setVisibility(View.GONE);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, 0, 0, -13);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void showDefaultToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.drawable.header_blank);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, container_margin_top, 0, -13);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void showFeedbackToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.color.colorWhite);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, container_margin_top, 0, -13);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static void transparateToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackgroundResource(R.color.trans);
+
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
+        layoutParams.setMargins(0, 0, 0, -13);
+        mainContainer.setLayoutParams(layoutParams);
+    }
+
+    public static Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public static void setToolbarTitle(int stringID) {
+        toolbarTitle.setText(stringID);
+    }
+
     public static void hideMainBtn() {
         mainBtnNavBg.getLayoutParams().height = 0;
-
         mainBtnLayout.setVisibility(View.GONE);
     }
 
     public static void showMainBtn() {
         mainBtnNavBg.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
-
         mainBtnLayout.setVisibility(View.VISIBLE);
     }
 

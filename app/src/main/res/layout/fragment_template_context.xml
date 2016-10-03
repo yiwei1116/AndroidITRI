@@ -1,69 +1,46 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
     tools:context="com.uscc.ncku.androiditri.fragment.TemplateContext">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_context"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@drawable/header_blank"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        android:fitsSystemWindows="false"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        android:layout_marginTop="@dimen/toolbar_layout_marginTop"
-        android:paddingTop="@dimen/toolbar_paddingTop"
+        android:layout_height="match_parent">
 
-        android:theme="@style/AppTheme.ActionBar">
+        <Button
+            android:id="@+id/writeContext"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
 
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="82dp"
+            android:layout_marginTop="12dp"
+            android:text="寫文字"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/context"
-        android:layout_gravity="center"
-        android:text="文字創作"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/title_font_size" />
-    </android.support.v7.widget.Toolbar>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <Button
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:text="寫文字"
-        android:id="@+id/writeContext"
+            />
 
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="82dp"
-        android:layout_marginTop="72dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
+        <Button
+            android:id="@+id/buildContext"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/writeContext"
+            android:layout_toRightOf="@+id/writeContext"
+            android:text="內建文字"
 
-        />
+            />
 
-    <Button
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:text="內建文字"
-        android:id="@+id/buildContext"
-        android:layout_toRightOf="@+id/writeContext"
-        android:layout_alignTop="@+id/writeContext"
+    </RelativeLayout>
 
-        />
-
-</RelativeLayout>
     <FrameLayout
+        android:id="@+id/write"
         android:layout_width="match_parent"
         android:layout_height="239dp"
-        android:layout_gravity="center"
-        android:id="@+id/write"
+        android:layout_gravity="top"
 
 
         >
@@ -72,70 +49,73 @@
             android:id="@+id/edit"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-100dp"
-            android:gravity="center"
-            android:hint="內文(30字已內)"
-            android:textColorHint="@color/btn_font_color_grey"
-
             android:layout_below="@+id/writeContext"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+
+            android:gravity="top"
+            android:hint="內文(30字已內)"
+            android:textColorHint="@color/btn_font_color_grey" />
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/build"
         android:layout_width="match_parent"
         android:layout_height="239dp"
         android:layout_gravity="center"
-        android:id="@+id/build"
         android:visibility="invisible"
 
         >
+
         <RadioGroup
             android:id="@+id/rGroup"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
             <RadioButton
                 android:id="@+id/radio0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:text="@string/buildContext1"
                 android:textSize="20dp"
 
                 />
+
             <RadioButton
                 android:id="@+id/radio1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/buildContext2"
-                android:textSize="20dp"
                 android:layout_marginTop="30dp"
-                />
+                android:text="@string/buildContext2"
+                android:textSize="20dp" />
+
             <RadioButton
                 android:id="@+id/radio2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/buildContext3"
-                android:textSize="20dp"
                 android:layout_marginTop="30dp"
-                />
+                android:text="@string/buildContext3"
+                android:textSize="20dp" />
 
         </RadioGroup>
 
 
     </FrameLayout>
+
     <Button
+        android:id="@+id/btn_next_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_next_step"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="0dp"
+        android:background="@drawable/btn_nextstep_normal"
         android:text="@string/nextstep"
         android:textColor="@drawable/selecter_btn_black_white_txt_color"
-        android:textSize="@dimen/btn_font_size"
-        android:background="@drawable/btn_nextstep_normal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:textSize="@dimen/btn_font_size" />
 
 </FrameLayout>

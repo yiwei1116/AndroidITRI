@@ -47,7 +47,6 @@ public class EquipmentTabFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment EquipmentTabFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static EquipmentTabFragment newInstance(int param1) {
         EquipmentTabFragment fragment = new EquipmentTabFragment();
         Bundle args = new Bundle();
@@ -92,8 +91,8 @@ public class EquipmentTabFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         MainActivity.setFontDisabled();
     }
 

@@ -23,7 +23,10 @@
         android:icon="@mipmap/living3_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        android:hardwareAccelerated="true"
+        >
         <activity
             android:name=".LoadingActivity"
             android:theme="@style/AppTheme.NoActionBar">
