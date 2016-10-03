@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,38 +53,7 @@ public class CustomPhoto extends Fragment {
     public static List<String> imagePaths ;  //存放圖片的路徑
     private ImageAdapter imageAdapter;  //用來顯示縮圖
     private Toolbar toolbar;
-    public void CustomPhoto() {
-        MainActivity.hideMainBtn();
 
-        ContentResolver cr = getActivity().getContentResolver();
-        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
-
-        //查詢SD卡的圖片
-        Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection, null, null, null);
-
-        thumbs = new ArrayList<String>();
-        imagePaths = new ArrayList<String>();
-
-        for (int i = cursor.getCount()-1 ; i >= 0 ; i--) {
-
-            cursor.moveToPosition(i);
-            int id = cursor.getInt(cursor
-                    .getColumnIndex(MediaStore.Images.Media._ID));// ID
-            thumbs.add(id + "");
-
-            String filepath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));//抓路徑
-
-            imagePaths.add(filepath);
-            //Log.e("filepath",filepath);
-        }
-
-        cursor.close();
-
-        imageAdapter = new ImageAdapter(getActivity(), thumbs);
-        gridView.setAdapter(imageAdapter);
-        imageAdapter.notifyDataSetChanged();
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -119,7 +89,7 @@ public class CustomPhoto extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_custom_photo, container, false);
         setHasOptionsMenu(true);
         gridView = (GridView) view.findViewById(R.id.gridView1);
-        imageView = (ImageView)view.findViewById(R.id.imageView1);
+
 
         MainActivity.setToolbarTitle(R.string.choose_photo);
 
@@ -152,7 +122,38 @@ public class CustomPhoto extends Fragment {
         inflater.inflate(R.menu.choosephoto_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+    public void CustomPhoto() {
+        MainActivity.hideMainBtn();
 
+        ContentResolver cr = getActivity().getContentResolver();
+        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
+
+        //查詢SD卡的圖片
+        Cursor cursor = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection, null, null, null);
+
+        thumbs = new ArrayList<String>();
+        imagePaths = new ArrayList<String>();
+
+        for (int i = cursor.getCount()-1 ; i >= 0 ; i--) {
+
+            cursor.moveToPosition(i);
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.Images.Media._ID));// ID
+            thumbs.add(id + "");
+
+            String filepath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));//抓路徑
+
+            imagePaths.add(filepath);
+            Log.e("filepath", filepath);
+        }
+
+        cursor.close();
+
+        imageAdapter = new ImageAdapter(getActivity(), thumbs);
+        gridView.setAdapter(imageAdapter);
+        imageAdapter.notifyDataSetChanged();
+    }
     public void nextStep(){
         FragmentManager fm = getFragmentManager();
         ChooseTemplate CT = new ChooseTemplate();

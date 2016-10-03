@@ -56,6 +56,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private final static int CAMERA_RESULT = 0;
     private final static int PHOTO_RESULT = 1;
     private final static int CAMERA_STROAGE = 2;
+    private final static int STROAGE_READ = 3 ;
     private String mImageFileLocation = "";
     private ImageView mImg;
     private Button cameraCall,photoCall,nextStep;
@@ -89,13 +90,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mPhone);
         mImg = (ImageView)view.findViewById(R.id.img);
         cameraCall = (Button)view.findViewById(R.id.camera);
-
         photoCall = (Button)view.findViewById(R.id.photo);
-        /*nextStep =(Button)view.findViewById(R.id.next_step);
-        nextStep.setOnClickListener(this);*/
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
-
 
         MainActivity.hideToolbar();
 
@@ -122,23 +119,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         switch(v.getId()) {
             case R.id.camera:
                 takePhoto();
-
                 break;
             case R.id.photo:
-                callPhoto();
-
+                choosePhoto();
                 break;
-            /*case R.id.next_step:
-                LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
-                bottom_bar.setVisibility(View.GONE);
-                FragmentManager fm = getFragmentManager();
-                ChooseTemplate chooseTemplate = new ChooseTemplate();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, chooseTemplate );
-                transaction.addToBackStack(null);
-                transaction.commit();
-                Log.e("test","click");
-                break;*/
+
 
         }
 
@@ -163,22 +148,50 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         }
 
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int [] grantResults ){
-
-        if(requestCode == CAMERA_STROAGE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                callCamera();
-            } else {
-                dialogAlert();
-                Toast.makeText(getActivity(),"External write permission has not meen granted, cannot save images",Toast.LENGTH_SHORT).show();
+    @TargetApi(Build.VERSION_CODES.M)
+    public void choosePhoto(){
+        String[] permissionNeed = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+        };
+        if( hasPermission(permissionNeed)){
+            callPhoto();
+        }else {
+            if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                Toast.makeText(getActivity(), "External storage permission require to read images", Toast.LENGTH_SHORT).show();
 
             }
+            requestPermissions(permissionNeed, STROAGE_READ);
 
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         }
+
+
+
+
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int [] grantResults ){
+        switch (requestCode){
+            case CAMERA_STROAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    callCamera();
+                } else {
+
+                    Toast.makeText(getActivity(),"External write permission has not meen granted, cannot save images",Toast.LENGTH_SHORT).show();
+                }
+            break;
+            case STROAGE_READ:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    callPhoto();
+                } else {
+
+                    Toast.makeText(getActivity(),"External write permission has not meen granted, cannot read images",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }}
     private boolean hasPermission(String[] permission) {
         if (canMakeSmores()) {
             for (String permissions : permission) {
@@ -194,6 +207,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void callCamera( ){
+
         FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -273,7 +287,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         transaction.addToBackStack(null);
         transaction.commit();
     }
-    @Override
+ /*   @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
 
@@ -368,7 +382,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         }
        // int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
         Matrix matrix = new Matrix();
-       /* switch (orientation) {
+        switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
                 matrix.setRotate(90);
                 break;
@@ -376,7 +390,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 matrix.setRotate(180);
                 break;
             default:
-        }*/
+        }
         Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         mImg.setImageBitmap(rotatedBitmap);
     }
@@ -412,5 +426,5 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
 
     }
-
+*/
 }

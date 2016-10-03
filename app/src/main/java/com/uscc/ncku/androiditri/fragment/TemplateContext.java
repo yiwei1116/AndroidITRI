@@ -34,9 +34,10 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
     private String templateIndex;
-    private String textBulid;
+    private String textBulid ;
     MergeTemplatePic MTP;
     private String StringContext;
+
     public TemplateContext() {
 
     }
@@ -104,7 +105,9 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
             Log.e("templateContext",templateIndex);
 
         }
+        textBulid= null;
         writeText();
+
         Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +141,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         build.setVisibility(View.GONE);
         writeContext.setBackgroundResource(R.drawable.btn_left_active);
         buildContext.setBackgroundResource(R.drawable.btn_right_normal);
-        textBulid = null;
+        textBulid= null;
 
     }
     public void buildText(){
@@ -149,21 +152,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         StringContext = null;
     }
 
-   /* public void onCheckedChanged(RadioGroup group, int checkedId) {
-        RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
-        switch(checkedId){
-            case R.id.radio0:
 
-                break;
-            case R.id.radio1:
-
-                break;
-            case R.id.radio2:
-
-                break;
-        }
-
-    }*/
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
