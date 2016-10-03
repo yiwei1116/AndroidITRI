@@ -60,7 +60,9 @@
         <service
             android:name=".MyFeedbackService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".CounterActivity"></activity>
     </application>
 
 </manifest>
