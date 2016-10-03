@@ -12,6 +12,7 @@
         android:scaleType="fitCenter" />
 
     <Button
+        android:id="@+id/back_Btn"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:background="@drawable/btn_back"

@@ -34,8 +34,9 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
     private String templateIndex;
+    private String textBulid;
     MergeTemplatePic MTP;
-    String StringContext;
+    private String StringContext;
     public TemplateContext() {
 
     }
@@ -62,7 +63,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_template_context, container, false);
 
-        MainActivity.showDefaultToolbar();
+
         MainActivity.setToolbarTitle(R.string.text_master);
 
         Toolbar toolbar = MainActivity.getToolbar();
@@ -82,7 +83,18 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         writeContext.setOnClickListener(this);
         buildContext.setOnClickListener(this);
         radiogroup1 = (RadioGroup)view.findViewById(R.id.rGroup);
-        radiogroup1.setOnClickListener(this);
+        radiogroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+                for(int i=0; i< rg.getChildCount(); i++) {
+                    RadioButton btn = (RadioButton) rg.getChildAt(i);
+                    if(btn.getId() == checkedId) {
+                        textBulid = (String) btn.getText();
+                       Log.e("String",textBulid);
+                        return;
+                    }
+                }
+            }
+        });
         write = (FrameLayout)view.findViewById(R.id.write);
         build = (FrameLayout)view.findViewById(R.id.build);
         Bundle bundle = getArguments();
@@ -105,6 +117,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
                 Log.e("StringContext",StringContext);
                 bundle1.putString("TemplateNum", templateIndex);
                 bundle1.putString("WriteContext", StringContext);
+                bundle1.putString("BuildContext",textBulid);
                 MTP.setArguments(bundle1);
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(R.id.flayout_fragment_continer, MTP);
@@ -125,7 +138,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         build.setVisibility(View.GONE);
         writeContext.setBackgroundResource(R.drawable.btn_left_active);
         buildContext.setBackgroundResource(R.drawable.btn_right_normal);
-
+        textBulid = null;
 
     }
     public void buildText(){
@@ -133,8 +146,10 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         build.setVisibility(View.VISIBLE);
         writeContext.setBackgroundResource(R.drawable.btn_left_normal);
         buildContext.setBackgroundResource(R.drawable.btn_right_active);
+        StringContext = null;
     }
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+   /* public void onCheckedChanged(RadioGroup group, int checkedId) {
         RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
         switch(checkedId){
             case R.id.radio0:
@@ -148,7 +163,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
                 break;
         }
 
-    }
+    }*/
     @Override
     public void onClick(View v) {
         switch(v.getId()) {

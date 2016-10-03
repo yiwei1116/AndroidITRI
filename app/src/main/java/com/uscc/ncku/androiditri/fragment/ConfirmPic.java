@@ -43,7 +43,7 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
     private DisplayMetrics mPhone;
     private int targetImageViewWidth;
     private int targetImageViewHeight;
-    private Button nextStep,reTake;
+    private Button nextStep,reTake,backTo;
 
     /**
      * Use this factory method to create a new instance of
@@ -70,10 +70,12 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
         picPath = (String)getArguments().get("picPath");
         imageView = (ImageView)view.findViewById(R.id.iv_camera_result);
         nextStep = (Button)view.findViewById(R.id.next_step);
-        nextStep.setOnClickListener(this);
-        nextStep.setBackgroundResource(R.drawable.camera_btn_nextstep);
         reTake = (Button)view.findViewById(R.id.retake);
+        backTo = (Button)view.findViewById(R.id.back_Btn);
+        nextStep.setOnClickListener(this);
         reTake.setOnClickListener(this);
+        backTo.setOnClickListener(this);
+        nextStep.setBackgroundResource(R.drawable.camera_btn_nextstep);
         reTake.setBackgroundResource(R.drawable.camera_btn_retake);
         imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -157,6 +159,7 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -166,7 +169,8 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
                 break;
             case R.id.retake:
                 ReTake();
-
+            case R.id.back_Btn:
+                getActivity().onBackPressed();
                 break;
         }
     }

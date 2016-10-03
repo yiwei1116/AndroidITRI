@@ -91,10 +91,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         cameraCall = (Button)view.findViewById(R.id.camera);
 
         photoCall = (Button)view.findViewById(R.id.photo);
-        nextStep =(Button)view.findViewById(R.id.next_step);
+        /*nextStep =(Button)view.findViewById(R.id.next_step);
+        nextStep.setOnClickListener(this);*/
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
-        nextStep.setOnClickListener(this);
+
 
         MainActivity.hideToolbar();
 
@@ -127,7 +128,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 callPhoto();
 
                 break;
-            case R.id.next_step:
+            /*case R.id.next_step:
                 LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
                 bottom_bar.setVisibility(View.GONE);
                 FragmentManager fm = getFragmentManager();
@@ -137,7 +138,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 transaction.addToBackStack(null);
                 transaction.commit();
                 Log.e("test","click");
-                break;
+                break;*/
 
         }
 
@@ -261,11 +262,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
     public void callPhoto(){
 
-        Intent intent = new Intent();
-        intent.setType("image/*");
+        /*Intent intent = new Intent();
+        intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PHOTO_RESULT);
-
+        startActivityForResult(intent, PHOTO_RESULT);*/
+        FragmentManager fm = getFragmentManager();
+        CustomPhoto CsP = new CustomPhoto();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CsP );
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

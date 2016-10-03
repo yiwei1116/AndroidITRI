@@ -24,7 +24,7 @@ import com.uscc.ncku.androiditri.R;
  */
 public class MergeTemplatePic extends Fragment {
     private String templateIndex;
-    private String writeContext;
+    private String Context;
     private ImageView mergeImage;
     private TextView textView;
 
@@ -67,24 +67,34 @@ public class MergeTemplatePic extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-
+        /**
+         * 下面OOM
+         */
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
         FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
         textView = (TextView)view.findViewById(R.id.context);
         mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
         Bundle bundle1 = getArguments();
-
+        Bundle bundle2 = getArguments();
         if (bundle1 != null) {
             templateIndex = (String)getArguments().get("TemplateNum");
-            writeContext = (String)getArguments().get("WriteContext");
+            Context = (String)getArguments().get("WriteContext");
            // frameLayout.setBackgroundResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
             mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
             Log.e("templateIndex", templateIndex);
-            Log.e("writeContext", writeContext);
-            textView.setText(writeContext);
+            Log.e("writeContext", Context);
+
+        }
+        if (bundle2 != null) {
+
+            Context = (String)getArguments().get("BuildContext");
+            Log.e("Context", Context);
+            textView.setText(Context);
             textView.setVisibility(View.VISIBLE);
 
         }
+        textView.setText(Context);
+        textView.setVisibility(View.VISIBLE);
         return view;
     }
 
