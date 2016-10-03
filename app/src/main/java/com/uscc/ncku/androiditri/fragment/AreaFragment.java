@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 
@@ -67,9 +68,9 @@ public class AreaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         Log.i("GG", "onCreatView");
 
+        MainActivity.hideToolbar();
         view = inflater.inflate(R.layout.fragment_area, container, false);
 
         return view;
@@ -129,6 +130,7 @@ public class AreaFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        MainActivity.showDefaultToolbar();
         Log.i("GG", "onDestoryView");
     }
 

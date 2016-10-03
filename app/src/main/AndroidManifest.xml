@@ -52,11 +52,15 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
-        <activity
-            android:name=".CounterActivity"
-            android:label="@string/title_activity_counter"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ConnectActivity"></activity>
+        <activity android:name=".ConnectActivity" />
+
+        <service
+            android:name=".FeedbackIntentService"
+            android:exported="false" />
+        <service
+            android:name=".MyFeedbackService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -30,4 +30,7 @@ public class DatabaseUtilizer {
     public static String dbVipPi = "vip_pi";
     public static String dbSurvey = "survey";
 
+    //public static int
+
+
 }

@@ -92,8 +92,8 @@ public class EquipmentTabFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         MainActivity.setFontDisabled();
     }
 

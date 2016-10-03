@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -90,10 +91,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         cameraCall = (Button)view.findViewById(R.id.camera);
 
         photoCall = (Button)view.findViewById(R.id.photo);
-        nextStep =(Button)view.findViewById(R.id.next_step);
+        /*nextStep =(Button)view.findViewById(R.id.next_step);
+        nextStep.setOnClickListener(this);*/
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
-        nextStep.setOnClickListener(this);
+
+
+        MainActivity.hideToolbar();
 
         return view;
 
@@ -107,11 +111,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.showDefaultToolbar();
     }
+
     @Override
     public void onClick(View v) {
 
@@ -124,9 +128,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 callPhoto();
 
                 break;
-            case R.id.next_step:
-                MainActivity.hideMainBtn();
-
+            /*case R.id.next_step:
                 LinearLayout bottom_bar = (LinearLayout)getActivity().findViewById(R.id.llayout_button_main);
                 bottom_bar.setVisibility(View.GONE);
                 FragmentManager fm = getFragmentManager();
@@ -136,11 +138,12 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 transaction.addToBackStack(null);
                 transaction.commit();
                 Log.e("test","click");
-                break;
+                break;*/
 
         }
 
     }
+    @TargetApi(Build.VERSION_CODES.M)
     public void takePhoto(){
         String[] permissionNeed = {
                 Manifest.permission.CAMERA,
@@ -191,7 +194,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void callCamera( ){
-        MainActivity.hideMainBtn();
         FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -260,11 +262,16 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     }
     public void callPhoto(){
 
-        Intent intent = new Intent();
-        intent.setType("image/*");
+        /*Intent intent = new Intent();
+        intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PHOTO_RESULT);
-
+        startActivityForResult(intent, PHOTO_RESULT);*/
+        FragmentManager fm = getFragmentManager();
+        CustomPhoto CsP = new CustomPhoto();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CsP );
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

@@ -22,4 +22,7 @@
     <dimen name="big_title_font_size">38sp</dimen>
     <dimen name="btn_layout_marginbutton">30dp</dimen>
     <dimen name="content_padding_rl">30dp</dimen>
+    <dimen name="feedback_rbtn_font_size">16sp</dimen>
+    <dimen name="feedback_rbtn_margin">8dp</dimen>
+    <dimen name="feedback_subtitle_font_size">18sp</dimen>
 </resources>

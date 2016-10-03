@@ -60,7 +60,6 @@ public class ModeHighlightFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ModeHighlightFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ModeHighlightFragment newInstance(String param1, String param2) {
         ModeHighlightFragment fragment = new ModeHighlightFragment();
         Bundle args = new Bundle();
@@ -77,13 +76,13 @@ public class ModeHighlightFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-//        new CalcPosition().execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_highlight, container, false);
+        new CalcPosition().execute();
         return view;
     }
 
@@ -195,7 +194,7 @@ public class ModeHighlightFragment extends Fragment {
                 topMargin = sourceBitmap.getHeight() >> 1;
             } else {
                 leftMargin = (maxX + minX) >> 1;
-                topMargin = ((maxY + minY) >> 1) - ((maxY - minY) >> 1);
+                topMargin = ((maxY + minY) >> 1) - ((maxY - minY));
             }
 
             HashMap coordinate = new HashMap();

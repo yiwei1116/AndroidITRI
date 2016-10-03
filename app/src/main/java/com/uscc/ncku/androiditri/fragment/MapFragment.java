@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 
@@ -56,6 +57,9 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
+
+        FeedbackFragment feedback = new FeedbackFragment();
+        feedback.feedbackAlertDialog(getActivity(), feedback);
 
         final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
         notice.setVisibility(View.VISIBLE);

@@ -124,13 +124,63 @@
     <string name="feedback_no">不用，我要繼續導覧</string>
     <string name="survey_popup_text">貴賓您好，感謝您撥冗參觀展示中心，為使本中心未來設備系統開發與服務品質的提升，請您利用簡短時間填寫本表，您所提供的資料受個資法保護，僅供問卷統計、整體分析使用，感謝您的協助。</string>
 
-    <string name="title_activity_counter">CounterActivity</string>
-    <string name="title_activity_connection">ConnectionActivity</string>
-
-
+    <string name="title_activity_counter" translatable="false">CounterActivity</string>
+    <string name="title_activity_connection" translatable="false">ConnectionActivity</string>
+    <string name="choose_photo">選取照片</string>
+    <string name="text_master">文字創作</string>
     <string name="buildContext1">張開雙眼，敞開心胸，你就不會失去任何事物</string>
     <string name="buildContext2">就繼續往前走吧 !</string>
     <string name="buildContext3">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>
+    <string name="feedback_title_1" translatable="false">Question 1</string>
+    <string name="feedback_title_2" translatable="false">Question 2</string>
+    <string name="feedback_title_3" translatable="false">Question 3</string>
+    <string name="feedback_title_4" translatable="false">Question 4</string>
+    <string name="feedback_title_5" translatable="false">Question 5</string>
+    <string name="feedback_title_6" translatable="false">Question 6</string>
+    <string name="feedback_title_7" translatable="false">Question 7</string>
+    <string name="feedback_title_8" translatable="false">Question 8</string>
+    <string name="feedback_question_1" translatable="false">您對智慧化科技產品的態度傾向</string>
+    <string name="feedback_question_2" translatable="false">您對智慧化科技產品購買與使用態度傾向，其重要程度看法如何？</string>
+    <string name="feedback_question_3" translatable="false">依您目前生活條件或機能需求狀況，針對展示中心系統及設備中您最想購買的前２項產品為哪些？其原因為何？</string>
+    <string name="feedback_question_4" translatable="false">您是否需要這些系統或設備廠商提供您產品相關資訊？</string>
+    <string name="feedback_question_5" translatable="false">如果現在廠商可以免費在家裡幫您安裝５項系統或設備，您會選哪５項？</string>
+    <string name="feedback_question_6" translatable="false">跳過</string>
+    <string name="feedback_question_7" translatable="false">跳過</string>
+    <string name="feedback_question_8" translatable="false">您認為單項智慧化系統或設備的平均合理價格為多少？</string>
+    <string name="feedback_very_support">&#160;&#160;&#160;非常支持</string>
+    <string name="feedback_support">&#160;&#160;&#160;支持</string>
+    <string name="feedback_soso">&#160;&#160;&#160;尚可</string>
+    <string name="feedback_unsupport">&#160;&#160;&#160;不支持</string>
+    <string name="feedback_very_unsupport">&#160;&#160;&#160;非常不支持</string>
+    <string name="feedback_very_important">&#160;&#160;&#160;非常重要</string>
+    <string name="feedback_important">&#160;&#160;&#160; 重要</string>
+    <string name="feedback_sosososo">&#160;&#160;&#160;普通</string>
+    <string name="feedback_unimportant">&#160;&#160;&#160;不重要</string>
+    <string name="feedback_very_unimportant">&#160;&#160;&#160;非常不重要</string>
+    <string name="feedback_next">下一題</string>
+    <string name="feedback_function">功能性</string>
+    <string name="feedback_beauty">視覺美觀性</string>
+    <string name="feedback_first_order">第一優先購買的商品為</string>
+    <string name="feedback_first_order_reason">因為商品具有：(可複選)</string>
+    <string name="feedback_feature_function">&#160;&#160;&#160;功能良好</string>
+    <string name="feedback_feature_beauty">&#160;&#160;&#160;視覺美觀佳</string>
+    <string name="feedback_feature_operation">&#160;&#160;&#160;實用操作性佳</string>
+    <string name="feedback_feature_humility">&#160;&#160;&#160;人性化設計</string>
+    <string name="feedback_feature_maintainence">&#160;&#160;&#160;易維護管理</string>
+    <string name="feedback_feature_safe">&#160;&#160;&#160;安全特性</string>
+    <string name="feedback_ja">&#160;&#160;&#160;是</string>
+    <string name="feedback_nicht">&#160;&#160;&#160;否</string>
+    <string name="feedback_equip_info">我需要得到下列產品之相關資訊</string>
+    <string name="feedback_free_1">第一項</string>
+    <string name="feedback_free_2">第二項</string>
+    <string name="feedback_free_3">第三項</string>
+    <string name="feedback_free_4">第四項</string>
+    <string name="feedback_free_5">第五項</string>
+    <string name="feedback_price_10k">&#160;&#160;&#160;1萬以下</string>
+    <string name="feedback_price_50k">&#160;&#160;&#160;1-5萬</string>
+    <string name="feedback_price_100k">&#160;&#160;&#160;5-10萬</string>
+    <string name="feedback_price_200k">&#160;&#160;&#160;10-20萬</string>
+    <string name="feedback_price_over_200k">&#160;&#160;&#160;20萬以上</string>
 
 
 </resources>

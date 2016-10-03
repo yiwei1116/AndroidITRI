@@ -2,45 +2,39 @@ package com.uscc.ncku.androiditri;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonToken;
 import android.util.Log;
+import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.Attributes;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConnectActivity extends Activity {
-    private String serverURL = "http://140.116.82.48/interface/deviceadd.php";
+    private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
+    private final String mode_id = "mode_id";
+    private final String device_id = "device_id";
+    private final String add_count = "add_count";
+    private final String request_type = "type";
+    private final String request_data = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        // call to execute
-        // new SendData().execute(serverURL);
     }
 
     // for downloading
@@ -50,35 +44,16 @@ public class ConnectActivity extends Activity {
 
     /*
         need:
-            1. function to parse json object
-            2. function to upload to server
-            3. function to download from server
-     */
-
-
-    /*
-        ****   Get SVG files   ****
-        --> field_map -> map_svg
-        --> generally use
-     */
-
-
-    /*
-        ****   Get device data   ****
-        -->  basically by mode
-        --> use device_id to query and
-     */
-
-
-    /*
-        ****   Get 文青資料   ****
-
-     */
+            function to download from server
+                --> get SVG files
+                --> get device data
+                --> get hipster data
+    */
 
 
     /*
         **** Download function
-        download data from the server then returns a JSONArray
+        * ----> incorrect one
      */
     public JSONArray downloadData(int id) throws JSONException {
 
@@ -96,7 +71,7 @@ public class ConnectActivity extends Activity {
             // use buffer to store data
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 16);
             StringBuilder builder = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line + "\n");
             }
@@ -112,34 +87,54 @@ public class ConnectActivity extends Activity {
 
     /*
         **** Upload function
-        download data from the server then returns a JSONArray
+        upload JSONArray to server
      */
-    public void uploadData(String jsonArray) {
+
+    public void uploadJsonData(JSONObject uploadObject) {
         // call async method to execute upload task
-         new SendData().execute(jsonArray);
+        new SendData(uploadObject).execute();
     }
 
-    private class SendData extends AsyncTask<String, Void, Void> {
+    // inner class to upload data to server
+    public class SendData extends AsyncTask<String, Void, Void> {
+
+        private int project_id;
+        // data to send
+        private JSONArray jsonArray;
+        private JSONObject json_string;
+//        private JSONObject counter1;
+//        private JSONObject counter2;
+//        private JSONObject counter3;
+
+        public SendData(int project_id) {
+            this.project_id = project_id;
+        }
+
+        public SendData(JSONArray jsonArray) {
+            this.jsonArray = jsonArray;
+        }
+
+        public SendData(JSONObject json_string) { this.json_string = json_string; }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("HTTP - ", "POST pre-execute upload.");
+        }
 
         @Override
         protected Void doInBackground(String... strings) {
-
-            BufferedReader reader = null;
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost post = new HttpPost(serverURL);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-            String data = strings[0];
-            pairs.add(new BasicNameValuePair("data", data));
+            String response = "";
+            // do all things here
             try {
-                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
-                post.setEntity(formEntity);
-                // post data
-                httpClient.execute(post);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                response = performUploadPost(serverURL, new HashMap<String, String>() {
+                    {
+                        put("Accept", "application/json");
+                        put("Content-Type", "application/json");
+                    }
+                });
+                // log http response code
+                Log.i("HTTP result", response);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -148,19 +143,156 @@ public class ConnectActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Log.i("postExecute", "info");
         }
+
+        private String performUploadPost(String serverUrl, HashMap<String, String> hashMap) {
+            String response = "";
+            URL url;
+            try {
+                // configure json object & json array  --> example code
+//                counter1 = new JSONObject();
+//                counter1.put(mode_id, 1);
+//                counter1.put(device_id, 1);
+//                counter1.put(add_count, 25);
+//
+//                counter2 = new JSONObject();
+//                counter2.put(mode_id, 1);
+//                counter2.put(device_id, 2);
+//                counter2.put(add_count, 100);
+//
+//                counter3 = new JSONObject();
+//                counter3.put(mode_id, 1);
+//                counter3.put(device_id, 23);
+//                counter3.put(add_count, 50);
+//
+//                jsonArray = new JSONArray();
+//                jsonArray.put(counter1);
+//                jsonArray.put(counter2);
+//                jsonArray.put(counter3);
+//
+//                JSONObject json_string = new JSONObject();
+//                json_string.put(request_type, 1);
+//                json_string.put(request_data, jsonArray);
+
+                if (json_string == null) {
+                    return "JSON data is null";
+                }
+                // send URL request
+                url = new URL(serverUrl);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setUseCaches(false);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+
+                String jsonString = "json_string=" + json_string.toString();
+                Log.i("json", jsonString);
+
+                // write to server
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
+                outputStreamWriter.write(jsonString);
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
+
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.e("http response", "HTTP - OK");
+                    String line;
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+                    Log.i("resp. code", response);
+                    bufferedReader.close();
+                } else {
+                    Log.e("http response", String.valueOf(responseCode));
+                    response = "";
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
     }
 
-    // try convert string to json object
-    public JSONObject str2JSONObject(String id) {
-        JSONObject output = null;
-        try {
-            output = new JSONObject(id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return output;
+    /*
+        **** Download function
+        download data from the server that returns a JSONArray
+     */
+    public void downloadFieldData(int projectId) {
+        new DownloadTask(projectId).execute();
     }
+
+    public class DownloadTask extends AsyncTask<Void, Void, Boolean> {
+
+        private int projectId;
+
+        public DownloadTask(int projectId) {
+            this.projectId = projectId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                DownloadAll(projectId);
+            } catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                // set visibility of frames
+                Toast.makeText(getApplicationContext(), "導覽開始", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "資料更新中，請稍候...", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private void DownloadAll(int projectId) throws Exception{
+            Map<String, String> httpPosts = new HashMap<>();
+            httpPosts.put("project", String.valueOf(projectId));
+            String transRep = null;
+            if (transRep.length() == 0) {
+                throw new Exception("download network error");
+            }
+            JSONObject json_data = new JSONObject(transRep);
+            JSONArray json_array = new JSONArray(json_data.getString("fields"));
+            for (int i = 0; i < json_array.length(); i++) {
+                JSONObject obj = json_array.getJSONObject(i);
+                DownloadFields();
+            }
+        }
+
+        private void DownloadFields() throws Exception{
+
+        }
+
+        private void getZone() {
+
+        }
+
+        private void getMode() {
+
+        }
+
+        private void getDevice() {
+
+        }
+
+        private void getSVG() {
+
+        }
+
+    }
+
 
 
 }
