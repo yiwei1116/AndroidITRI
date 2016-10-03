@@ -26,6 +26,7 @@
         android:layout_gravity="top|left"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:id="@+id/btn_camera_back"
         android:background="@drawable/btn_back"
         android:stateListAnimator="@null" />
 

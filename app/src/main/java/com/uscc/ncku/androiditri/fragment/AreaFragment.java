@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +71,13 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onCreatView");
 
         MainActivity.hideToolbar();
+        Toolbar toolbar = MainActivity.getToolbar();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         view = inflater.inflate(R.layout.fragment_area, container, false);
 
         return view;

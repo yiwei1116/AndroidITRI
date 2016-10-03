@@ -100,6 +100,14 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
         MainActivity.hideMainBtn();
         MainActivity.hideToolbar();
+        Button back = (Button) view.findViewById(R.id.btn_camera_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
 
         initViews();
         return view;

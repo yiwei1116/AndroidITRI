@@ -3,6 +3,7 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.util.ArrayList;
@@ -79,6 +81,13 @@ public class ModeSelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_select, container, false);
+        Toolbar toolbar = MainActivity.getToolbar();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         return view;
     }
