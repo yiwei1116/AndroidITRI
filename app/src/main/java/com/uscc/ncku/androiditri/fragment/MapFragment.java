@@ -1,12 +1,17 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,8 +63,26 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
 
-        FeedbackFragment feedback = new FeedbackFragment();
-        feedback.feedbackAlertDialog(getActivity(), feedback);
+        Toolbar toolbar = MainActivity.getToolbar();
+        setHasOptionsMenu(true);
+        toolbar.setNavigationIcon(R.drawable.icon_info);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
+                dialog.setContentView(R.layout.alertdialog_map_info);
+
+                dialog.show();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                FeedbackFragment feedback = new FeedbackFragment();
+                feedback.feedbackAlertDialog(getActivity(), feedback);
+                return true;
+            }
+        });
 
         final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
         notice.setVisibility(View.VISIBLE);
@@ -85,5 +108,19 @@ public class MapFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.main_questionnaire, menu);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Toolbar toolbar = MainActivity.getToolbar();
+        toolbar.setNavigationIcon(R.drawable.btn_back);
     }
 }

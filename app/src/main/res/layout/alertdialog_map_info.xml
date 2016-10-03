@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_mapguide"
+    android:paddingLeft="65dp"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_title"
+        android:text="@string/mapguide_title"
+        android:textColor="@android:color/black"
+        android:textSize="24dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_now"
+        android:text="@string/mapguide_now"
+        android:layout_below="@+id/txt_mapguide_title"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_tour"
+        android:text="@string/mapguide_tour"
+        android:layout_below="@+id/txt_mapguide_now"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_visited"
+        android:text="@string/mapguide_visited"
+        android:layout_below="@+id/txt_mapguide_tour"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_unvisit"
+        android:text="@string/mapguide_unvisited"
+        android:layout_below="@+id/txt_mapguide_visited"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_mapguide_next_visit"
+        android:text="@string/mapguide_next_visited"
+        android:layout_below="@+id/txt_mapguide_unvisit"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:layout_marginTop="29dp" />
+
+</RelativeLayout>
