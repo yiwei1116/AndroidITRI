@@ -4,27 +4,24 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 
 public class ConnectActivity extends Activity {
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
+    private String downloadURL = "http://140.116.82.48/interface/download.php";
     private final String mode_id = "mode_id";
     private final String device_id = "device_id";
     private final String add_count = "add_count";
@@ -52,40 +49,6 @@ public class ConnectActivity extends Activity {
 
 
     /*
-        **** Download function
-        * ----> incorrect one
-     */
-    public JSONArray downloadData(int id) throws JSONException {
-
-        HttpURLConnection urlConnection = null;
-        InputStream inputStream = null;
-        String jsonData = null;
-
-        try {
-            URL url = new URL(serverURL);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.connect(); // conenct to url
-            inputStream = urlConnection.getInputStream();
-
-            // use buffer to store data
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 16);
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                builder.append(line + "\n");
-            }
-            inputStream.close();
-            jsonData = builder.toString();
-        } catch (Exception e) {
-            Log.e("error", e.toString());
-        }
-
-        JSONArray resultArray = new JSONArray(jsonData);
-        return resultArray;
-    }
-
-    /*
         **** Upload function
         upload JSONArray to server
      */
@@ -102,9 +65,6 @@ public class ConnectActivity extends Activity {
         // data to send
         private JSONArray jsonArray;
         private JSONObject json_string;
-//        private JSONObject counter1;
-//        private JSONObject counter2;
-//        private JSONObject counter3;
 
         public SendData(int project_id) {
             this.project_id = project_id;
@@ -118,7 +78,7 @@ public class ConnectActivity extends Activity {
 
         @Override
         protected void onPreExecute() {
-            Log.i("HTTP - ", "POST pre-execute upload.");
+            Log.i("upload", "pre execute success.");
         }
 
         @Override
@@ -143,7 +103,7 @@ public class ConnectActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.i("postExecute", "info");
+            Log.i("upload", "post execute success.");
         }
 
         private String performUploadPost(String serverUrl, HashMap<String, String> hashMap) {
@@ -221,78 +181,91 @@ public class ConnectActivity extends Activity {
 
     /*
         **** Download function
-        download data from the server that returns a JSONArray
+        ** REAL ** download function: send a project_id to server and get back all info and path about download contents
      */
-    public void downloadFieldData(int projectId) {
-        new DownloadTask(projectId).execute();
+    public void downloadProjectData(String projectId) {
+        new ReceiveData(projectId).execute();
     }
 
-    public class DownloadTask extends AsyncTask<Void, Void, Boolean> {
+    public class ReceiveData extends AsyncTask<String, Void, Void> {
 
-        private int projectId;
+        private String myProjectId;
 
-        public DownloadTask(int projectId) {
-            this.projectId = projectId;
+        @Override
+        protected void onPreExecute() {
+            Log.i("download", "Pre Execute success.");
+        }
+
+        public ReceiveData(String projectId) {
+            myProjectId = projectId;
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Void doInBackground(String... strings) {
+            String downloadResponse = "";
+            // do all things here
             try {
-                DownloadAll(projectId);
-            } catch (Exception e){
+                downloadResponse = performDownloadPost(new HashMap<String, String>() {
+                    {
+                        put("Accept", "application/json");
+                        put("Content-Type", "application/json");
+                    }
+                });
+                // log http response code
+                Log.i("HTTP result", downloadResponse);
+            } catch (Exception e) {
                 e.printStackTrace();
-                return false;
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
-                // set visibility of frames
-                Toast.makeText(getApplicationContext(), "導覽開始", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "資料更新中，請稍候...", Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.i("download", "PostExecute success.");
+        }
+
+        private String performDownloadPost(HashMap<String, String> hashMap) {
+            String response = "";
+            URL url;
+            try {
+                // send URL request
+                url = new URL(downloadURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setUseCaches(false);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
+
+                // write to server
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
+                // server requires only a project id POSTed
+                outputStreamWriter.write(myProjectId);
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
+
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.e("download", "HTTP Response: HTTP - OK");
+                    String line;
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+                    Log.i("response code", response);
+                    bufferedReader.close();
+                } else {
+                    Log.e("HTTP response", String.valueOf(responseCode));
+                    response = "";
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-
-        private void DownloadAll(int projectId) throws Exception{
-            Map<String, String> httpPosts = new HashMap<>();
-            httpPosts.put("project", String.valueOf(projectId));
-            String transRep = null;
-            if (transRep.length() == 0) {
-                throw new Exception("download network error");
-            }
-            JSONObject json_data = new JSONObject(transRep);
-            JSONArray json_array = new JSONArray(json_data.getString("fields"));
-            for (int i = 0; i < json_array.length(); i++) {
-                JSONObject obj = json_array.getJSONObject(i);
-                DownloadFields();
-            }
-        }
-
-        private void DownloadFields() throws Exception{
-
-        }
-
-        private void getZone() {
-
-        }
-
-        private void getMode() {
-
-        }
-
-        private void getDevice() {
-
-        }
-
-        private void getSVG() {
-
+            return response;
         }
 
     }
-
-
 
 }

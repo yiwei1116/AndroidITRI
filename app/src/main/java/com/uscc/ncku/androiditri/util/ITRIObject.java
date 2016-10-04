@@ -1,5 +1,9 @@
 package com.uscc.ncku.androiditri.util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Oslo on 10/3/16.
  */
@@ -43,6 +47,12 @@ public class ITRIObject {
 
     public ITRIObject() {
 
+    }
+
+    public JSONObject makeJSONObjectWithIdAndJSONArray(int id, JSONArray array) throws JSONException {
+        JSONObject newObj = new JSONObject();
+        newObj.put(String.valueOf(id), array);
+        return newObj;
     }
 
 
