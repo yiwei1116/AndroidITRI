@@ -21,6 +21,7 @@ import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private DiaryFragment diaryFragment;
     private ChooseTemplate chooseTemplate;
 
+    public ITRIObject myObject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(GET_TOUR_INDEX);
+
+        // call function to get current projectId
+        myObject = new ITRIObject();
 
         mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
         mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
@@ -88,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
 
         initFragment();
-
     }
 
     class ButtonListener implements View.OnClickListener {
@@ -130,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.sound_font_in);
                         containerSL.startAnimation(animation);
 
+                        /////////// ****** method to get which fragment is it
                         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
                         EquipmentTabFragment ef = null;
                         if (currentFragment instanceof EquipmentTabFragment) {
