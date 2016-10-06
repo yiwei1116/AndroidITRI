@@ -45,6 +45,7 @@ public class DatabaseUtilizer {
     public static final String LASTUPDATE_DATE = "lastupdate_date";
     public static final String X = "x";
     public static final String Y = "y";
+    public static final String EMAIL = "email";
 
     // project table
     public static final String PROJECT_TABLE = "project";
@@ -68,6 +69,10 @@ public class DatabaseUtilizer {
     public static final String MODE_SPLASH_BG = "splash_bg_vertical";
     public static final String MODE_SPLASH_FG = "splash_fg_vertical";
     public static final String MODE_SPLASH_BLUR = "splash_spur_vertical";
+
+    // zone table
+    public static final String ZONE_TABLE = "zone";
+    public static final String ZONE_ID = "zone_id";
 
     // path table
     public static final String PATH_TABLE = "path";
@@ -96,5 +101,70 @@ public class DatabaseUtilizer {
 
     // hipster content table
     public static final String HIPSTER_CONTENT_TABLE = "hipster_content";
+    public static final String HIPSTER_CONTENT_ID = "hipster_content_id";
+    public static final String PICTURE = "picture";
+    public static final String COMBINE_PICTURE = "combine_picture";
+
+    // hipster template table
+    public static final String HIPSTER_TEMPLATE_TABLE = "hipster_template";
+    public static final String HIPSTER_TEMPLATE_ID = "hipster_template_id";
+    public static final String TEMPLATE = "template";
+
+    // hipster text table
+    public static final String HIPSTER_TEXT_TABLE = "hipster_text";
+    public static final String HIPSTER_TEXT_ID = "hipster_text_id";
+    public static final String CONTENT = "content";
+
+    // lease table
+    public static final String LEASE_TABLE = "lease";
+    public static final String LEASE_ID = "id";
+    public static final String BORROWER = "borrower";
+    public static final String BORROWER_TEL = "borrower_tel";
+    public static final String LEASE_DATE = "lease_date";
+    public static final String RETURN_DATE = "return_date";
+
+    // survey table
+    public static final String SURBEY_TABLE = "survey_table";
+    public static final String SURVEY_ID = "survey_id";
+    public static final String GENDER = "gender";
+    public static final String AGE = "age";
+    public static final String EDUCATION = "education";
+    public static final String CAREER = "career";
+    public static final String LOCATION = "location";
+    public static final String HOUSE_TYPE = "house_type";
+    public static final String FAMILY_TYPE = "family_type";
+
+    // survey result
+    public static final String SURVEY_RESULT_TABLE = "survey_result";
+    public static final String SURVEY_RESULT_ID = "id";
+    public static final String SURVEY_QUESTION = "question";
+    public static final String SURVEY_ANSWER = "answer";
+    // maybe don't need total
+    public static final String TOTAL = "total";
+
+    // users table
+    public static final String USERS_TABLE = "users";
+    public static final String USER_ID = "user_id";
+    public static final String PASSWORD = "password";
+    public static final String LAST_LOGIN = "last_login";
+
+    // vip device table
+    public static final String VIP_DEVICE_TABLE = "vip_device";
+    public static final String VIP_DEVICE_ID = "vip_device_id";
+    public static final String MAC_ADDR = "mac_addr";
+    public static final String POWER = "power";
+
+    // vip pi
+    public static final String VIP_PI_TABLE = "vip_pi";
+    public static final String VIP_PI_ID = "vip_pi_id";
+    public static final String IPADDRESS = "IPaddress";
+    public static final String VIP_VISIBLE = "visible";
+
+    // vip voice
+    public static final String VIP_VOICE_TABLE = "vip_voice";
+    public static final String VOICE_ID = "voice_id";
+    public static final String VOICE = "voice";
+    public static final String VIP_DEVICE = "vip_device";
+
 
 }
