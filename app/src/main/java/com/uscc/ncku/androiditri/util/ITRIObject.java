@@ -8,7 +8,6 @@ import org.json.JSONObject;
  * Created by Oslo on 10/3/16.
  */
 public class ITRIObject {
-
     // fragments:
     public static String areaFragment = "AreaFragment";
     public static String choosePhoto = "ChoosePhoto";
@@ -45,8 +44,11 @@ public class ITRIObject {
     public static String surveyActivity = "SurveyActivity";
     public static String tourSelectActivity = "TourSelectActivity";
 
-    public ITRIObject() {
+    // "GLOBAL" JSON Object
+    public static JSONObject counterJSON;
 
+    public ITRIObject() {
+        counterJSON = new JSONObject();
     }
 
     public JSONObject makeJSONObjectWithIdAndJSONArray(int id, JSONArray array) throws JSONException {
@@ -54,6 +56,14 @@ public class ITRIObject {
         newObj.put(String.valueOf(id), array);
         return newObj;
     }
+
+    /////////// ****** method to get which fragment is it
+//    Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+//    EquipmentTabFragment ef = null;
+//    if (currentFragment instanceof EquipmentTabFragment) {
+//        ef = (EquipmentTabFragment) currentFragment;
+//    }
+
 
 
 

@@ -32,5 +32,19 @@ public class DatabaseUtilizer {
 
     //public static int
 
+    // device table
+    public static final String DEVICE_TABLE = "device";
+    public static final String DEVICE_ID = "device_id";
+    public static final String DEVICE_NAME = "name";
+    public static final String DEVICE_NAME_EN = "name_en";
+    public static final String DEVICE_INTRODUCTION = "introduction";
+    public static final String DEVICE_GUIDE_VOICE = "guide_voice";
+    public static final String DEVICE_PHOTO = "photo";
+    public static final String DEVICE_PHOTO_VER = "photo_vertical";
+    public static final String DEVICE_HINT = "hint";
+    public static final String DEVICE_MODE_ID = "mode_id";
+    public static final String DEVICE_COMPANY_ID = "company_id";
+    public static final String DEVICE_READ_COUNT = "read_count";
 
+    // mode table
 }

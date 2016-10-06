@@ -25,6 +25,12 @@ import java.util.ArrayList;
  * Use the {@link EquipmentTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+/*
+    設備欄位 的 layout
+ */
+
+
 public class EquipmentTabFragment extends Fragment {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
 
