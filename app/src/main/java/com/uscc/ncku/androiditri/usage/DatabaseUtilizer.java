@@ -32,19 +32,69 @@ public class DatabaseUtilizer {
 
     //public static int
 
+    // general usage
+    public static final String NAME = "name";
+    public static final String NAME_EN = "name_en";
+    public static final String INTRODUCTION = "introduction";
+    public static final String GUIDE_VOICE = "guide_voice";
+    public static final String VIDEO = "video";
+    public static final String READ_COUNT = "read_count";
+    public static final String LIKE_COUNT = "like_count";
+    public static final String TIME_TOTAL = "time_total";
+    public static final String CREATE_DATE = "create_date";
+    public static final String LASTUPDATE_DATE = "lastupdate_date";
+    public static final String X = "x";
+    public static final String Y = "y";
+
+    // project table
+    public static final String PROJECT_TABLE = "project";
+    public static final String PROJECT_ID = "project_id";
+    public static final String VERSION = "version";
+    public static final String ACTIVE = "active";
+
     // device table
     public static final String DEVICE_TABLE = "device";
     public static final String DEVICE_ID = "device_id";
-    public static final String DEVICE_NAME = "name";
-    public static final String DEVICE_NAME_EN = "name_en";
-    public static final String DEVICE_INTRODUCTION = "introduction";
-    public static final String DEVICE_GUIDE_VOICE = "guide_voice";
     public static final String DEVICE_PHOTO = "photo";
     public static final String DEVICE_PHOTO_VER = "photo_vertical";
     public static final String DEVICE_HINT = "hint";
     public static final String DEVICE_MODE_ID = "mode_id";
     public static final String DEVICE_COMPANY_ID = "company_id";
-    public static final String DEVICE_READ_COUNT = "read_count";
 
     // mode table
+    public static final String MODE_TABLE = "mode";
+    public static final String MODE_ID = "mode_id";
+    public static final String MODE_NAME = "name";
+    public static final String MODE_SPLASH_BG = "splash_bg_vertical";
+    public static final String MODE_SPLASH_FG = "splash_fg_vertical";
+    public static final String MODE_SPLASH_BLUR = "splash_spur_vertical";
+
+    // path table
+    public static final String PATH_TABLE = "path";
+    public static final String PATH_ID = "path_id";
+    public static final String PATH_ORDER = "order";
+
+    // beacon table
+    public static final String BEACON_TABLE = "beacon";
+    public static final String BEACON_ID = "beacon_id";
+    public static final String BEACON_POWER = "power";
+    public static final String BEACON_STATUS = "status";
+    public static final String BEACON_ZONE = "zone";
+
+    // compnay
+    public static final String COMPANY_TABLE = "company";
+    public static final String COMPANY_ID = "company_id";
+    public static final String COMPANY_TEL = "tel";
+    public static final String COMPANY_FAX = "fax";
+    public static final String COMPANY_ADDR = "addr";
+    public static final String COMPANY_WEB = "web";
+    public static final String QRCODE = "qrcode";
+
+    // field map table
+    public static final String FIELD_MAP_TABLE = "field_map";
+    public static final String FIELD_MAP_ID = "field_map_id";
+
+    // hipster content table
+    public static final String HIPSTER_CONTENT_TABLE = "hipster_content";
+
 }
