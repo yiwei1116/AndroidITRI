@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class FeedbackFragment extends Fragment {
     private static final String[] SPINNER_LIEST = {"PPAP", "PPAP", "PAPP", "PPAP", "PPAP"};
 
     private View view;
+    private ScrollView scrollView;
 
     public FeedbackFragment() {
     }
@@ -91,6 +93,9 @@ public class FeedbackFragment extends Fragment {
         });
 
         view = inflater.inflate(R.layout.fragment_feedback, container, false);
+
+        scrollView = (ScrollView) view.findViewById(R.id.scrollview_feedback);
+
         return view;
     }
 
@@ -118,6 +123,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q1() {
+        scrollView.smoothScrollTo(0, 0);
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_1);
         radioGroup.setVisibility(View.VISIBLE);
 
@@ -159,6 +165,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q2() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_2);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -215,6 +222,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q3() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_3);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -282,6 +290,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q4() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_4);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -367,6 +376,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q5() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_5);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -477,6 +487,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q6() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_6);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -507,6 +518,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q7() {
+        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_7);
         relativeLayout.setVisibility(View.VISIBLE);
 
@@ -537,6 +549,7 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q8() {
+        scrollView.smoothScrollTo(0, 0);
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_8);
         radioGroup.setVisibility(View.VISIBLE);
 
