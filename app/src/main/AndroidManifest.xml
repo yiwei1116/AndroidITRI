@@ -28,6 +28,7 @@
         android:hardwareAccelerated="true"
         >
         <activity
+            android:screenOrientation="portrait"
             android:name=".LoadingActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -37,21 +38,26 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".TourSelectActivity"
             android:label="@string/title_activity_tour"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".SurveyActivity"
             android:label="@string/title_activity_survey"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
