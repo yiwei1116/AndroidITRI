@@ -10,6 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ToggleButton
+            android:id="@+id/writeContext"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="82dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/write_text"
+            android:checked="true"
+            android:textOn="@string/write_text"
+            android:textOff="@string/write_text"
+            />
+
+        <ToggleButton
+            android:id="@+id/buildContext"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/writeContext"
+            android:layout_toRightOf="@+id/writeContext"
+            android:text="@string/build_text"
+            android:textOn="@string/build_text"
+            android:textOff="@string/build_text"
+            />
+<!--
         <Button
             android:id="@+id/writeContext"
             android:layout_width="120dp"
@@ -32,8 +58,7 @@
             android:layout_toRightOf="@+id/writeContext"
             android:text="內建文字"
 
-            />
-
+            />-->
     </RelativeLayout>
 
     <FrameLayout

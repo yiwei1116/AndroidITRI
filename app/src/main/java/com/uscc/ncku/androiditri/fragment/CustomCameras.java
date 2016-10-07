@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.app.Activity;
 import android.app.Fragment;
@@ -65,7 +66,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     private Camera mCamera;
     private boolean isBackCameraOn;
     private String mImageFileLocation = "";
-    private Button switchCamera,capture;
+    private Button switchCamera,capture,nextStep,reTake;
+    private FrameLayout frameLayout;
     Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
 
     /**
@@ -92,12 +94,15 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_preview, container, false);
+        nextStep = (Button)view.findViewById(R.id.next_step);
+        reTake = (Button)view.findViewById(R.id.retake);
         mCameraPreview = (SurfaceView) view.findViewById(R.id.sv_camera);
         switchCamera = (Button)view.findViewById(R.id.btn_switch_camera);
         capture = (Button)view.findViewById(R.id.btn_capture);
         switchCamera.setOnClickListener(this);
         capture.setOnClickListener(this);
-
+        nextStep.setOnClickListener(this);
+        reTake.setOnClickListener(this);
         MainActivity.hideMainBtn();
         MainActivity.hideToolbar();
         Button back = (Button) view.findViewById(R.id.btn_camera_back);
@@ -124,21 +129,15 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
-
-
-
+                picPath = pictureFile.getAbsolutePath();
+                switchCamera.setVisibility(View.GONE);
+                capture.setVisibility(View.GONE);
+                reTake.setVisibility(View.VISIBLE);
+                nextStep.setVisibility(View.VISIBLE);
+                //rotateImage(setReducedImageSize());
                 fos.close();
 
-                ConfirmPic CP = new ConfirmPic();
-                Bundle bundle = new Bundle();
-                bundle.putString("picPath",pictureFile.getAbsolutePath());
-                CP.setArguments(bundle);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.custom_camera_container, CP );
-                transaction.addToBackStack(null);
-                transaction.commit();
-                //CustomCameras.this.finish();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -162,6 +161,55 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         }
     }*/
 
+
+
+/*
+ private void rotateImage(Bitmap bitmap) {
+     ExifInterface exifInterface = null;
+     try {
+         exifInterface = new ExifInterface(picPath);
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+     int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+     Matrix matrix = new Matrix();
+     matrix.setRotate(90);
+     switch (orientation) {
+         case ExifInterface.ORIENTATION_ROTATE_90:
+             matrix.setRotate(90);
+             break;
+         case ExifInterface.ORIENTATION_ROTATE_180:
+             matrix.setRotate(180);
+             break;
+         case ExifInterface.ORIENTATION_ROTATE_270:
+             matrix.setRotate(270);
+             break;
+         default:
+     }
+     Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+     imageView.setImageBitmap(rotatedBitmap);
+ }
+    public Bitmap setReducedImageSize() {
+    targetImageViewWidth = imageView.getMeasuredWidth();
+                targetImageViewHeight = imageView.getMeasuredHeight();
+
+
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true; // no bitmap
+
+        BitmapFactory.decodeFile(picPath, bmOptions); // Decode a file path into a bitmap
+        int cameraImageWidth = bmOptions.outWidth;
+        int cameraImageHeight = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(cameraImageWidth / targetImageViewWidth, cameraImageHeight / targetImageViewHeight);
+        //inSampleSize == 4 returns an image that is 1/4 the width/height of the original
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(picPath, bmOptions);
+    }*/
     private void initViews() {
 
         mSurfaceHolder = mCameraPreview.getHolder();
@@ -185,6 +233,13 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                 capture();
 
                 break;
+            case R.id.next_step:
+                nextStep();
+
+                break;
+            case R.id.retake:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(this).attach(this).commit();
         }
 
     }
@@ -248,12 +303,13 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         mCamera.autoFocus(new Camera.AutoFocusCallback() {
             @Override
             public void onAutoFocus(boolean success, Camera camera) {
-                if (success ) {
+                if (success) {
                     mCamera.takePicture(null, null, mPictureCallback);
 
                 }
             }
         });
+
     }
 
 
@@ -286,6 +342,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         } catch (Exception e) {
             e.printStackTrace();
         }
+        targetImageViewWidth = width;
+        targetImageViewHeight = height;
         setStartPreview(mCamera, mSurfaceHolder);
     }
 
@@ -351,6 +409,15 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     public void onPause() {
         super.onPause();
         releaseCamera();
+    }
+    public void nextStep(){
+        FragmentManager fm = getFragmentManager();
+        ChooseTemplate CT = new ChooseTemplate();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CT );
+        transaction.addToBackStack(null);
+        transaction.commit();
+
     }
 
 }

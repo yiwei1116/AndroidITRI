@@ -84,10 +84,11 @@ public class MergeTemplatePic extends Fragment {
            if (WriteContext != null) {
                textView.setText(WriteContext);
            }
+           Log.e("textview1",textView.getText().toString());
            if (BuildContext != null) {
                textView.setText(BuildContext);
            }
-
+           Log.e("textview2",textView.getText().toString());
        }
         textView.setVisibility(View.VISIBLE);
         return view;
