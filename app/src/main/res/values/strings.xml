@@ -65,7 +65,7 @@
     <string name="survey_age_41_50">41歲~50歲</string>
     <string name="survey_age_51_60">51歲~60歲</string>
     <string name="survey_age_61_65">61歲~65歲</string>
-    <string name="survey_age_over_66">66歲以上</string>
+    <string name="survey_age_over_66">61歲以上</string>
     <string name="survey_education_high_school">高中以下</string>
     <string name="survey_education_college">專科</string>
     <string name="survey_education_university">大學</string>
@@ -104,10 +104,18 @@
     <string name="survey_income_over_60k">6萬元以上</string>
     <string name="survey_exp_none">無</string>
     <string name="survey_exp_1y">1年以下</string>
-    <string name="survey_exp_3y">1-3年</string>
-    <string name="survey_exp_5y">3-5年</string>
-    <string name="survey_exp_10y">5-10年</string>
+    <string name="survey_exp_3y">1–3年</string>
+    <string name="survey_exp_5y">3–5年</string>
+    <string name="survey_exp_10y">5–10年</string>
     <string name="survey_exp_over_10y">10年以上</string>
+    <string name="survey_member_none">無</string>
+    <string name="survey_member_handicap">有行動不便者</string>
+    <string name="survey_member_over_65">有65歲以上老人</string>
+    <string name="survey_notice_newspaper">報章媒體</string>
+    <string name="survey_notice_news">新聞媒體</string>
+    <string name="survey_notice_net">網際網路</string>
+    <string name="survey_notice_other_people">親友、同事推薦</string>
+    <string name="survey_notice_school">學校、機關團體</string>
     <string name="name">姓名</string>
     <string name="mail">電子信箱</string>
     <string name="choose_template">選擇版型</string>
@@ -149,27 +157,32 @@
     <string name="feedback_title_6" translatable="false">Question 6</string>
     <string name="feedback_title_7" translatable="false">Question 7</string>
     <string name="feedback_title_8" translatable="false">Question 8</string>
-    <string name="feedback_question_1" translatable="false">您對智慧化科技產品的態度傾向</string>
-    <string name="feedback_question_2" translatable="false">您對智慧化科技產品購買與使用態度傾向，其重要程度看法如何？</string>
-    <string name="feedback_question_3" translatable="false">依您目前生活條件或機能需求狀況，針對展示中心系統及設備中您最想購買的前２項產品為哪些？其原因為何？</string>
-    <string name="feedback_question_4" translatable="false">您是否需要這些系統或設備廠商提供您產品相關資訊？</string>
-    <string name="feedback_question_5" translatable="false">如果現在廠商可以免費在家裡幫您安裝５項系統或設備，您會選哪５項？</string>
-    <string name="feedback_question_6" translatable="false">跳過</string>
-    <string name="feedback_question_7" translatable="false">跳過</string>
-    <string name="feedback_question_8" translatable="false">您認為單項智慧化系統或設備的平均合理價格為多少？</string>
+    <string name="feedback_question_1">您對智慧化科技產品的態度傾向</string>
+    <string name="feedback_question_2">您對智慧化科技產品購買與使用態度傾向，其重要程度看法如何？</string>
+    <string name="feedback_question_3">依您目前生活條件或機能需求狀況，針對展示中心系統及設備中您最想購買的前２項產品為哪些？其原因為何？</string>
+    <string name="feedback_question_4">您是否需要這些系統或設備廠商提供您產品相關資訊？</string>
+    <string name="feedback_question_5">如果現在廠商可以免費在家裡幫您安裝５項系統或設備，您會選哪５項？</string>
+    <string name="feedback_question_6">展示中心系統或設備介紹過程中，您認為印象良好的系統或設備有哪些?</string>
+    <string name="feedback_question_8">您認為單項智慧化系統或設備的平均合理價格為多少？</string>
     <string name="feedback_very_support">&#160;&#160;&#160;非常支持</string>
     <string name="feedback_support">&#160;&#160;&#160;支持</string>
     <string name="feedback_soso">&#160;&#160;&#160;尚可</string>
     <string name="feedback_unsupport">&#160;&#160;&#160;不支持</string>
     <string name="feedback_very_unsupport">&#160;&#160;&#160;非常不支持</string>
     <string name="feedback_very_important">&#160;&#160;&#160;非常重要</string>
-    <string name="feedback_important">&#160;&#160;&#160; 重要</string>
+    <string name="feedback_important">&#160;&#160;&#160;重要</string>
     <string name="feedback_sosososo">&#160;&#160;&#160;普通</string>
     <string name="feedback_unimportant">&#160;&#160;&#160;不重要</string>
     <string name="feedback_very_unimportant">&#160;&#160;&#160;非常不重要</string>
     <string name="feedback_next">下一題</string>
     <string name="feedback_function">功能性</string>
     <string name="feedback_beauty">視覺美觀性</string>
+    <string name="feedback_operability">實用操作性</string>
+    <string name="feedback_humility">人性化設計性</string>
+    <string name="feedback_price">價格性</string>
+    <string name="feedback_maintenance">維護與管理性</string>
+    <string name="feedback_safetly">安全性</string>
+    <string name="feedback_energy">節能性</string>
     <string name="feedback_first_order">第一優先購買的商品為</string>
     <string name="feedback_first_order_reason">因為商品具有：(可複選)</string>
     <string name="feedback_feature_function">&#160;&#160;&#160;功能良好</string>
@@ -197,6 +210,7 @@
     <string name="mapguide_visited">已參觀點位</string>
     <string name="mapguide_unvisited">未參觀點位</string>
     <string name="mapguide_next_visited">下一個參觀點位</string>
+    <string name="feedback_question_7">未來您是否會購買相關智慧化系統或設備?</string>
 
 
 </resources>

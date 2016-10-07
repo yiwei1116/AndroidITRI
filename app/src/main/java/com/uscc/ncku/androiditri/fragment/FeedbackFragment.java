@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -158,7 +157,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q2();
-                radioGroup.setVisibility(View.INVISIBLE);
+                radioGroup.setVisibility(View.GONE);
             }
         });
 
@@ -174,7 +173,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q1();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -185,28 +184,106 @@ public class FeedbackFragment extends Fragment {
         question.setText(R.string.feedback_question_2);
 
         RadioGroup rGFunction = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_function);
-        if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_support) {
+        if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_important) {
 
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_support) {
+        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_important) {
 
         } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_soso) {
 
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_unsupport) {
+        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_unimportant) {
 
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_unsupport) {
+        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_unimportant) {
 
         }
 
         RadioGroup rGBeauty = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_beauty);
-        if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_support) {
+        if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_important) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_support) {
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_important) {
 
         } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_soso) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_unsupport) {
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_unimportant) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_unsupport) {
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_unimportant) {
+
+        }
+
+        RadioGroup rGOperation = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_operability);
+        if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_very_important) {
+
+        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_important) {
+
+        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_soso) {
+
+        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_unimportant) {
+
+        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_very_unimportant) {
+
+        }
+
+        RadioGroup rGHumility = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_humility);
+        if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_very_important) {
+
+        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_important) {
+
+        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_soso) {
+
+        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_unimportant) {
+
+        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_very_unimportant) {
+
+        }
+
+        RadioGroup rGPrice = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_price);
+        if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_very_important) {
+
+        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_important) {
+
+        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_soso) {
+
+        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_unimportant) {
+
+        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_very_unimportant) {
+
+        }
+
+        RadioGroup rGMaintenance = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_maintenance);
+        if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_very_important) {
+
+        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_important) {
+
+        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_soso) {
+
+        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_unimportant) {
+
+        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_very_unimportant) {
+
+        }
+
+        RadioGroup rGSafe = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_safetly);
+        if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_very_important) {
+
+        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_important) {
+
+        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_soso) {
+
+        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_unimportant) {
+
+        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_very_unimportant) {
+
+        }
+
+        RadioGroup rGEnergy = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_energy);
+        if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_important) {
+
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_important) {
+
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_soso) {
+
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_unimportant) {
+
+        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_unimportant) {
 
         }
 
@@ -215,7 +292,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q3();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -231,7 +308,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q2();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -283,7 +360,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q4();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -299,7 +376,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q3();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -369,7 +446,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q5();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -385,7 +462,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q4();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -480,7 +557,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q6();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -496,7 +573,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q5();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -511,7 +588,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q7();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -527,7 +604,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q6();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -542,7 +619,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q8();
-                relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setVisibility(View.GONE);
             }
         });
 
@@ -558,7 +635,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 q7();
-                radioGroup.setVisibility(View.INVISIBLE);
+                radioGroup.setVisibility(View.GONE);
             }
         });
 

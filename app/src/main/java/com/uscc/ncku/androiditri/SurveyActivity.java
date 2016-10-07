@@ -151,8 +151,7 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn3 = (Button) findViewById(R.id.survey_page2_31_40);
         Button btn4 = (Button) findViewById(R.id.survey_page2_41_50);
         Button btn5 = (Button) findViewById(R.id.survey_page2_51_60);
-        Button btn6 = (Button) findViewById(R.id.survey_page2_61_65);
-        Button btn7 = (Button) findViewById(R.id.survey_page2_over_66);
+        Button btn6 = (Button) findViewById(R.id.survey_page2_over_66);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,13 +195,6 @@ public class SurveyActivity extends AppCompatActivity {
             }
         });
         btn6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setVisibility(View.INVISIBLE);
-                pageEducation();
-            }
-        });
-        btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
@@ -312,7 +304,8 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn10 = (Button) findViewById(R.id.survey_page4_houskeep);
         Button btn11 = (Button) findViewById(R.id.survey_page4_other);
 
-        if (getResources().getString(R.string.survey04_occupation).equals("Occupation")) {
+        // smaller font size with English
+        if (getResources().getString(R.string.survey04_occupation).equals("Current occupation")) {
             btn8.setTextSize(12);
             btn7.setTextSize(12);
         }
@@ -682,6 +675,12 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn2 = (Button) findViewById(R.id.survey_page8_mixed);
         Button btn3 = (Button) findViewById(R.id.survey_page8_townhouse);
         Button btn4 = (Button) findViewById(R.id.survey_page8_other);
+
+        // smaller font size with English
+        if (getResources().getString(R.string.survey08_house).equals("Housing type of residence")) {
+            btn2.setTextSize(16);
+        }
+
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -827,8 +826,24 @@ public class SurveyActivity extends AppCompatActivity {
         TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
         pageTitle.setText(R.string.survey10_family);
 
-        Button btn0 = (Button) findViewById(R.id.btn_survey_page10_confirm);
+        Button btn0 = (Button) findViewById(R.id.survey_page10_none);
+        Button btn1 = (Button) findViewById(R.id.survey_page10_handicap);
+        Button btn2 = (Button) findViewById(R.id.survey_page10_over_65);
         btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageNotice();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
@@ -838,6 +853,7 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private void pageNotice() {
+        menuHide = false;
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.survey_page11);
         layout.setVisibility(View.VISIBLE);
 
@@ -866,17 +882,62 @@ public class SurveyActivity extends AppCompatActivity {
         TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
         pageTitle.setText(R.string.survey11_notice);
 
-        Button btn0 = (Button) findViewById(R.id.btn_survey_page11_confirm);
+        Button btn0 = (Button) findViewById(R.id.survey_page11_newspaper);
+        Button btn1 = (Button) findViewById(R.id.survey_page11_news);
+        Button btn2 = (Button) findViewById(R.id.survey_page11_net);
+        Button btn3 = (Button) findViewById(R.id.survey_page11_other_people);
+        Button btn4 = (Button) findViewById(R.id.survey_page11_school);
+        Button btn5 = (Button) findViewById(R.id.survey_page11_other);
+
+        // smaller font size with English
+        if (getResources().getString(R.string.survey11_notice).equals(
+                "How did you come to know about this exhibition center's guide service")) {
+            btn3.setTextSize(16);
+        }
+
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editText = (EditText) findViewById(R.id.edtxt_survey_page11);
-                String notice = editText.getText().toString();
-
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
         });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pagePersonal();
+            }
+        });
+
     }
 
     private void pagePersonal() {
