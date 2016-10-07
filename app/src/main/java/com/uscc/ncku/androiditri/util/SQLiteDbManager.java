@@ -42,19 +42,20 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL,"
                 + DatabaseUtilizer.DEVICE_MODE_ID + " INT NOT NULL,"
                 + DatabaseUtilizer.DEVICE_COMPANY_ID + " INT DEFAULT NULL,"
-                + DatabaseUtilizer.READ_COUNT + " INT DEFAULT '0'"
+                + DatabaseUtilizer.READ_COUNT + " INT DEFAULT 0,"
                 + " PRIMARY KEY (" + DatabaseUtilizer.DEVICE_ID + "),"
                 + " KEY mode (" + DatabaseUtilizer.MODE_ID + "," + DatabaseUtilizer.COMPANY_ID + "),"
                 + " KEY " + DatabaseUtilizer.COMPANY_ID + " (" + DatabaseUtilizer.COMPANY_ID + ")"
                 + ")";
         // project
         String DB_CREATE_TABLE_PROJECT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PROJECT_TABLE + " ("
-                + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + DatabaseUtilizer.PROJECT_ID + " INT,"
-                + DatabaseUtilizer.VERSION + " TEXT,"
-                + DatabaseUtilizer.NAME + " TEXT,"
+                + DatabaseUtilizer.PROJECT_ID + " INT NOT NULL AUTOINCREMENT,"
+                + DatabaseUtilizer.VERSION + " TEXT DEFAULT NULL,"
+                + DatabaseUtilizer.NAME + " TEXT NOT NULL,"
                 + DatabaseUtilizer.INTRODUCTION + " TEXT,"
-                + DatabaseUtilizer.ACTIVE + " INT"
+                + DatabaseUtilizer.ACTIVE + " INT NOT NULL DEFAULT 1,"
+                + " PRIMARY KEY (" + DatabaseUtilizer.PROJECT_ID + "),"
+                + " KEY project_id (" + DatabaseUtilizer.PROJECT_ID + ")"
                 + ")";
         // beacon
         String DB_CREATE_TABLE_BEACON = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.BEACON_TABLE + " ("
@@ -146,38 +147,44 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 + DatabaseUtilizer.MODE_SPLASH_BG + " TEXT DEFAULT NULL,"
                 + DatabaseUtilizer.MODE_SPLASH_FG + " TEXT DEFAULT NULL,"
                 + DatabaseUtilizer.MODE_SPLASH_BLUR + " TEXT DEFAULT NULL,"
-                + DatabaseUtilizer.LIKE_COUNT + " INT,"
-                + DatabaseUtilizer.READ_COUNT + " INT,"
-                + DatabaseUtilizer.TIME_TOTAL + " INT,"
-                + DatabaseUtilizer.ZONE_ID + " INT"
+                + DatabaseUtilizer.LIKE_COUNT + " INT NOT NULL DEFAULT 0,"
+                + DatabaseUtilizer.READ_COUNT + " INT NOT NULL DEFAULT 0,"
+                + DatabaseUtilizer.TIME_TOTAL + " INT DEFAULT NULL,"
+                + DatabaseUtilizer.ZONE_ID + " INT NOT NULL,"
+                + " PRIMARY KEY (" + DatabaseUtilizer.MODE_ID + "),"
+                + " KEY zone (" + DatabaseUtilizer.ZONE_ID + ")"
                 + ")";
         // path
         String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
-                + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + DatabaseUtilizer.PATH_ID + " INT,"
-                + DatabaseUtilizer.ZONE_ID + " INT,"
-                + DatabaseUtilizer.PATH_ORDER + " INT"
+                + DatabaseUtilizer.PATH_ID + " INT NOT NULL,"
+                + DatabaseUtilizer.ZONE_ID + " INT NOT NULL,"
+                + DatabaseUtilizer.PATH_ORDER + " INT NOT NULL,"
+                + " PRIMARY KEY (" + DatabaseUtilizer.PATH_ID + "," + DatabaseUtilizer.ZONE_ID + "),"
+                + " KEY field_id (" + DatabaseUtilizer.ZONE_ID + ")"
                 + ")";
+        // survey
         String DB_CREATE_TABLE_SURVEY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_TABLE + " ("
-                + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + DatabaseUtilizer.SURVEY_ID + " INT,"
-                + DatabaseUtilizer.NAME + " TEXT,"
-                + DatabaseUtilizer.EMAIL + " TEXT,"
-                + DatabaseUtilizer.GENDER + " INT,"
-                + DatabaseUtilizer.AGE + " INT,"
-                + DatabaseUtilizer.EDUCATION + " INT,"
-                + DatabaseUtilizer.CAREER + " INT,"
-                + DatabaseUtilizer.LOCATION + " INT,"
-                + DatabaseUtilizer.HOUSE_TYPE + " INT,"
-                + DatabaseUtilizer.FAMILY_TYPE + " INT"
+                + DatabaseUtilizer.SURVEY_ID + " INT NOT NULL AUTOINCREMENT,"
+                + DatabaseUtilizer.NAME + " TEXT DEFAULT NULL,"
+                + DatabaseUtilizer.EMAIL + " TEXT DEFAULT NULL,"
+                + DatabaseUtilizer.GENDER + " INT NOT NULL,"
+                + DatabaseUtilizer.AGE + " INT NOT NULL,"
+                + DatabaseUtilizer.EDUCATION + " INT NOT NULL,"
+                + DatabaseUtilizer.CAREER + " INT NOT NULL,"
+                + DatabaseUtilizer.LOCATION + " INT NOT NULL,"
+                + DatabaseUtilizer.HOUSE_TYPE + " INT NOT NULL,"
+                + DatabaseUtilizer.FAMILY_TYPE + " INT NOT NULL,"
+                + " PRIMARY KEY (" + DatabaseUtilizer.SURVEY_ID + ")"
                 + ")";
+        // survey result
         String DB_CREATE_TABLE_SURVEY_RESULT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_RESULT_TABLE + " ("
-                + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + DatabaseUtilizer.SURVEY_RESULT_ID + " INT,"
-                + DatabaseUtilizer.SURVEY_QUESTION + " INT,"
-                + DatabaseUtilizer.SURVEY_ANSWER + " INT,"
-                + DatabaseUtilizer.TOTAL + " INT"
+                + DatabaseUtilizer.SURVEY_RESULT_ID + " INT NOT NULL AUTOINCREMENT,"
+                + DatabaseUtilizer.SURVEY_QUESTION + " INT NOT NULL,"
+                + DatabaseUtilizer.SURVEY_ANSWER + " INT NOT NULL,"
+                + DatabaseUtilizer.TOTAL + " INT NOT NULL,"
+                + " PRIMARY KEY (" + DatabaseUtilizer.SURVEY_RESULT_ID + ")"
                 + ")";
+        // users
         String DB_CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.USERS_TABLE + " ("
                 + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + DatabaseUtilizer.USER_ID + " INT,"
@@ -186,6 +193,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 + DatabaseUtilizer.COMPETENCE + " INT,"
                 + DatabaseUtilizer.LAST_LOGIN + " TEXT"
                 + ")";
+        // vip device
         String DB_CREATE_TABLE_VIP_DEVICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_DEVICE_TABLE + " ("
                 + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + DatabaseUtilizer.VIP_DEVICE_ID + " INT,"
@@ -193,6 +201,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 + DatabaseUtilizer.NAME + " TEXT,"
                 + DatabaseUtilizer.POWER + " INT"
                 + ")";
+        // vip pi
         String DB_CREATE_TABLE_VIP_PI = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_PI_TABLE + " ("
                 + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + DatabaseUtilizer.VIP_PI_ID + " INT,"
@@ -200,12 +209,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 + DatabaseUtilizer.INTRODUCTION + " TEXT,"
                 + DatabaseUtilizer.VIP_VISIBLE + " INT"
                 + ")";
+        // vip voice
         String DB_CREATE_TABLE_VIP_VOICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_VOICE_TABLE + " ("
                 + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + DatabaseUtilizer.VOICE_ID + " INT,"
                 + DatabaseUtilizer.VOICE + " TEXT,"
                 + DatabaseUtilizer.VIP_DEVICE + " INT"
                 + ")";
+        // zone
         String DB_CREATE_TABLE_ZONE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.ZONE_TABLE + " ("
                 + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                 + DatabaseUtilizer.ZONE_ID + " INT,"
