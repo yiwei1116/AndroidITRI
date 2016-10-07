@@ -236,8 +236,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onBackPressed();
-        Log.w(TAG, "back");
-
     }
 
     public static void hideToolbar() {

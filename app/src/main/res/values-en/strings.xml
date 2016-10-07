@@ -62,11 +62,11 @@
     <string name="survey_house_mixed">Mixed-Use</string>
     <string name="survey_house_revenue">Revenue House</string>
     <string name="survey_house_townhouse">Townhouse</string>
-    <string name="survey_income_310k_500k">310k~500k</string>
-    <string name="survey_income_510k_800k">510k~800k</string>
-    <string name="survey_income_810k_1500k">810k~150k</string>
-    <string name="survey_income_below_300k">Below 300K</string>
-    <string name="survey_income_over_1500k">1500K</string>
+    <string name="survey_income_11k_20k">310k~500k</string>
+    <string name="survey_income_21k_30k">510k~800k</string>
+    <string name="survey_income_31k_40k">810k~150k</string>
+    <string name="survey_income_5k_10k">Below 300K</string>
+    <string name="survey_income_41k_50k">1500K</string>
     <string name="survey_occupation_student">Student</string>
     <string name="survey_other">Others</string>
     <string name="survey_residence_east">East of Taiwan</string>
