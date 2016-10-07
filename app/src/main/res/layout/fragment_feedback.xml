@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txt_feedback_question"
+        android:background="@android:color/white"
         android:text="@string/feedback_question_1"
         android:textColor="@android:color/black"
         android:layout_below="@+id/horizontal_line"
@@ -49,8 +50,8 @@
         android:layout_below="@+id/txt_feedback_question">
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -110,8 +111,8 @@
             </RadioGroup>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_2"
                 android:visibility="invisible">
 
@@ -252,8 +253,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_3"
                 android:visibility="invisible">
 
@@ -267,7 +268,7 @@
                     android:text="@string/feedback_first_order"/>
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
@@ -353,8 +354,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_4"
                 android:visibility="invisible">
 
@@ -397,7 +398,7 @@
                     android:layout_below="@+id/radiogroup_feedback_4" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
@@ -406,7 +407,7 @@
                 </Spinner>
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
@@ -415,7 +416,7 @@
                 </Spinner>
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
@@ -426,8 +427,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_5"
                 android:visibility="invisible">
 
@@ -441,7 +442,7 @@
                     android:text="@string/feedback_free_1" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
@@ -460,7 +461,7 @@
                     android:layout_below="@+id/feedback_spinner_free_1" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
@@ -479,7 +480,7 @@
                     android:layout_below="@+id/feedback_spinner_free_2" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
@@ -498,7 +499,7 @@
                     android:layout_below="@+id/feedback_spinner_free_3" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
@@ -517,7 +518,7 @@
                     android:layout_below="@+id/feedback_spinner_free_4" />
 
                 <Spinner
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
@@ -528,8 +529,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_6"
                 android:visibility="invisible">
 
@@ -538,8 +539,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_7"
                 android:visibility="invisible">
 

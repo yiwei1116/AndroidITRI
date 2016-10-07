@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TourSelectActivity extends AppCompatActivity {
+    public static TourSelectActivity instance = null;
 
     private static final int[] TOUR_IMG = {
             R.drawable.tour_select_designer,
@@ -33,6 +34,7 @@ public class TourSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour_select);
+        instance = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tour_select);
         setSupportActionBar(toolbar);
@@ -132,6 +134,12 @@ public class TourSelectActivity extends AppCompatActivity {
         public float getPageWidth(int position) {
             return 0.8f;
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        instance = null;
     }
 
 }

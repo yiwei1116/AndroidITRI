@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setOnClickListener(new ButtonListener(this));
 
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
+
+        finishOtherActivity();
 
         initFragment();
     }
@@ -219,14 +222,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         Fragment f = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
         if (f instanceof MapFragment) {
             setBtnActive(mapBtn, R.drawable.btn_main_map_active);
+            return;
         } else if (f instanceof DiaryFragment) {
-            setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            setBtnActive(mapBtn, R.drawable.btn_main_map_active);
+            transaction.replace(R.id.flayout_fragment_continer, mapFragment).addToBackStack(null);
+            transaction.commit();
+            return;
         }
+
+        super.onBackPressed();
     }
 
     public static void hideToolbar() {
@@ -342,6 +351,29 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+    }
+
+    private void finishOtherActivity() {
+        if(AboutActivity.instance != null) {
+            try {
+                AboutActivity.instance.finish();
+            } catch (Exception e) {}
+        }
+        if(HomeActivity.instance != null) {
+            try {
+                HomeActivity.instance.finish();
+            } catch (Exception e) {}
+        }
+        if(SurveyActivity.instance != null) {
+            try {
+                SurveyActivity.instance.finish();
+            } catch (Exception e) {}
+        }
+        if(TourSelectActivity.instance != null) {
+            try {
+                TourSelectActivity.instance.finish();
+            } catch (Exception e) {}
+        }
     }
 
 }
