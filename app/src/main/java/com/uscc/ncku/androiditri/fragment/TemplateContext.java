@@ -14,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
@@ -28,8 +30,8 @@ import com.uscc.ncku.androiditri.R;
  * Use the {@link TemplateContext#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TemplateContext extends Fragment implements View.OnClickListener{
-    private Button writeContext,buildContext;
+public class TemplateContext extends Fragment {
+    private ToggleButton writeContext,buildContext;
     private EditText editText;
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
@@ -37,7 +39,9 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
     private String textBulid ;
     MergeTemplatePic MTP;
     private String StringContext;
-
+    private  Bundle bundle1;
+    private RadioButton radioSexButton;
+    private int selectedId;
     public TemplateContext() {
 
     }
@@ -58,6 +62,13 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,21 +87,66 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
             }
         });
 
-        writeContext = (Button)view.findViewById(R.id.writeContext) ;
+
+        writeContext = (ToggleButton)view.findViewById(R.id.writeContext) ;
+        buildContext = (ToggleButton)view.findViewById(R.id.buildContext) ;
+       /* writeContext = (Button)view.findViewById(R.id.writeContext) ;
         buildContext = (Button)view.findViewById(R.id.buildContext) ;
         writeContext.setBackgroundResource(R.drawable.context_btn_write);
-        buildContext.setBackgroundResource(R.drawable.context_btn_write_1);
+        buildContext.setBackgroundResource(R.drawable.context_btn_write_1);*/
+        writeContext.setBackgroundResource(R.drawable.btn_left_active);
+        buildContext.setBackgroundResource(R.drawable.btn_right_normal);
         editText = (EditText)view.findViewById(R.id.edit);
-        writeContext.setOnClickListener(this);
-        buildContext.setOnClickListener(this);
+    /*        writeContext.setOnClickListener(this);
+            buildContext.setOnClickListener(this);*/
         radiogroup1 = (RadioGroup)view.findViewById(R.id.rGroup);
+        writeContext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (writeContext.isChecked()) {
+                    buildContext.setChecked(false);
+                    editText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            editText.setHint(null);
+                        }
+                    });
+                    write.setVisibility(View.VISIBLE);
+                    build.setVisibility(View.GONE);
+                    writeContext.setBackgroundResource(R.drawable.btn_left_active);
+                    buildContext.setBackgroundResource(R.drawable.btn_right_normal);
+                    textBulid = null;
+                    Log.e("textBulid", String.valueOf(isChecked));
+
+
+                }
+            }
+        });
+        buildContext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (buildContext.isChecked()) {
+                    writeContext.setChecked(false);
+                    write.setVisibility(View.GONE);
+                    build.setVisibility(View.VISIBLE);
+                    writeContext.setBackgroundResource(R.drawable.btn_left_normal);
+                    buildContext.setBackgroundResource(R.drawable.btn_right_active);
+                    StringContext = null;
+                    Log.e("buildtext", String.valueOf(isChecked));
+
+
+                }
+            }
+        });
+
         radiogroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
-                for(int i=0; i< rg.getChildCount(); i++) {
+                for (int i = 0; i < rg.getChildCount(); i++) {
                     RadioButton btn = (RadioButton) rg.getChildAt(i);
-                    if(btn.getId() == checkedId) {
+                    if (btn.getId() == checkedId) {
                         textBulid = (String) btn.getText();
-                       Log.e("String",textBulid);
+                        Log.e("String", textBulid);
                         return;
                     }
                 }
@@ -105,22 +161,25 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
             Log.e("templateContext",templateIndex);
 
         }
-        textBulid= null;
-        writeText();
+
+        //writeText();
 
         Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 FragmentManager fm = getFragmentManager();
                 MTP = new MergeTemplatePic();
-                Bundle bundle1 = new Bundle();
+                bundle1 = new Bundle();
                 StringContext = editText.getText().toString().trim();
-                Log.e("StringContext",StringContext);
+
+
+                Log.e("StringContext", StringContext);
                 bundle1.putString("TemplateNum", templateIndex);
                 bundle1.putString("WriteContext", StringContext);
-                bundle1.putString("BuildContext",textBulid);
+                bundle1.putString("BuildContext", textBulid);
                 MTP.setArguments(bundle1);
                 FragmentTransaction transaction = fm.beginTransaction();
                 transaction.replace(R.id.flayout_fragment_continer, MTP);
@@ -130,7 +189,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         });
         return view;
     }
-    public void writeText() {
+ /*   public void writeText() {
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +200,7 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         build.setVisibility(View.GONE);
         writeContext.setBackgroundResource(R.drawable.btn_left_active);
         buildContext.setBackgroundResource(R.drawable.btn_right_normal);
-        textBulid= null;
+
 
     }
     public void buildText(){
@@ -149,11 +208,19 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
         build.setVisibility(View.VISIBLE);
         writeContext.setBackgroundResource(R.drawable.btn_left_normal);
         buildContext.setBackgroundResource(R.drawable.btn_right_active);
-        StringContext = null;
+
+    }*/
+    public void clearText(){
+
+
+
+
+
+
     }
 
 
-    @Override
+ /*   @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.writeContext:
@@ -165,5 +232,5 @@ public class TemplateContext extends Fragment implements View.OnClickListener{
 
                 break;
         }
-    }
+    }*/
 }
