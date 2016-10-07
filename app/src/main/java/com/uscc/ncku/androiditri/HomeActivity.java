@@ -13,11 +13,13 @@ import android.widget.ImageButton;
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
+    public static HomeActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        instance = this;
 
         ImageButton btnCht = (ImageButton) findViewById(R.id.btn_cht_home);
         ImageButton btnEng = (ImageButton) findViewById(R.id.btn_eng_home);
@@ -64,5 +66,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        instance = null;
     }
 }

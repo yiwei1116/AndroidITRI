@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SurveyActivity extends AppCompatActivity {
+    public static SurveyActivity instance = null;
 
     private int tourIndex;
     private boolean menuHide = true;
@@ -33,7 +34,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
-
+        instance = this;
     }
 
     @Override
@@ -431,13 +432,50 @@ public class SurveyActivity extends AppCompatActivity {
         TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
         pageTitle.setText(R.string.survey05_experience);
 
-        Button btn0 = (Button) findViewById(R.id.btn_survey_page5_confirm);
+        Button btn0 = (Button) findViewById(R.id.survey_page5_none);
+        Button btn1 = (Button) findViewById(R.id.survey_page5_1y);
+        Button btn2 = (Button) findViewById(R.id.survey_page5_3y);
+        Button btn3 = (Button) findViewById(R.id.survey_page5_5y);
+        Button btn4 = (Button) findViewById(R.id.survey_page5_10y);
+        Button btn5 = (Button) findViewById(R.id.survey_page5_over_10y);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editText = (EditText) findViewById(R.id.edtxt_survey_page5);
-                String exp = editText.getText().toString();
-
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageIncome();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -473,12 +511,13 @@ public class SurveyActivity extends AppCompatActivity {
         TextView pageTitle = (TextView) findViewById(R.id.survey_page_title);
         pageTitle.setText(R.string.survey06_income);
 
-        Button btn0 = (Button) findViewById(R.id.survey_page6_below_300k);
-        Button btn1 = (Button) findViewById(R.id.survey_page6_310k_500k);
-        Button btn2 = (Button) findViewById(R.id.survey_page6_510k_800k);
-        Button btn3 = (Button) findViewById(R.id.survey_page6_810k_1500k);
-        Button btn4 = (Button) findViewById(R.id.survey_page6_over_1500k);
-        Button btn5 = (Button) findViewById(R.id.survey_page6_other);
+        Button btn0 = (Button) findViewById(R.id.survey_page6_5k_10k);
+        Button btn1 = (Button) findViewById(R.id.survey_page6_11k_20k);
+        Button btn2 = (Button) findViewById(R.id.survey_page6_21k_30k);
+        Button btn3 = (Button) findViewById(R.id.survey_page6_31k_40k);
+        Button btn4 = (Button) findViewById(R.id.survey_page6_41k_50k);
+        Button btn5 = (Button) findViewById(R.id.survey_page6_51k_60k);
+        Button btn6 = (Button) findViewById(R.id.survey_page6_over_60k);
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -515,6 +554,13 @@ public class SurveyActivity extends AppCompatActivity {
             }
         });
         btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout.setVisibility(View.INVISIBLE);
+                pageResidence();
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout.setVisibility(View.INVISIBLE);
@@ -895,6 +941,12 @@ public class SurveyActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        instance = null;
     }
 
 }

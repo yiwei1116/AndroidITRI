@@ -73,6 +73,7 @@ public class DatabaseUtilizer {
     // zone table
     public static final String ZONE_TABLE = "zone";
     public static final String ZONE_ID = "zone_id";
+    public static final String FIELD_ID = "field_id";
 
     // path table
     public static final String PATH_TABLE = "path";
@@ -98,6 +99,7 @@ public class DatabaseUtilizer {
     // field map table
     public static final String FIELD_MAP_TABLE = "field_map";
     public static final String FIELD_MAP_ID = "field_map_id";
+    public static final String MAP_SVG = "map_svg";
 
     // hipster content table
     public static final String HIPSTER_CONTENT_TABLE = "hipster_content";
@@ -118,13 +120,14 @@ public class DatabaseUtilizer {
     // lease table
     public static final String LEASE_TABLE = "lease";
     public static final String LEASE_ID = "id";
+    public static final String PAD_ID = "pad_id";
     public static final String BORROWER = "borrower";
     public static final String BORROWER_TEL = "borrower_tel";
     public static final String LEASE_DATE = "lease_date";
     public static final String RETURN_DATE = "return_date";
 
     // survey table
-    public static final String SURBEY_TABLE = "survey_table";
+    public static final String SURVEY_TABLE = "survey_table";
     public static final String SURVEY_ID = "survey_id";
     public static final String GENDER = "gender";
     public static final String AGE = "age";
@@ -146,6 +149,7 @@ public class DatabaseUtilizer {
     public static final String USERS_TABLE = "users";
     public static final String USER_ID = "user_id";
     public static final String PASSWORD = "password";
+    public static final String COMPETENCE = "competence";
     public static final String LAST_LOGIN = "last_login";
 
     // vip device table

@@ -12,6 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
 /**
  * Created by Lin on 2016/9/1.
  */
@@ -20,6 +22,8 @@ public class LoadingActivity extends AppCompatActivity {
     public static final int LOADING_PERIOD = 40;
     /* loading level every time period from 0 to 10000 */
     public static final int LOADING_LEVEL = 200;
+
+    public SQLiteDbManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
