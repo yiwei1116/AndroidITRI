@@ -11,11 +11,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
+    public static AboutActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        instance = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
@@ -119,6 +121,12 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        instance = null;
     }
 
 }

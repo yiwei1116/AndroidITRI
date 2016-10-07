@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SurveyActivity extends AppCompatActivity {
+    public static SurveyActivity instance = null;
 
     private int tourIndex;
     private boolean menuHide = true;
@@ -33,7 +34,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
-
+        instance = this;
     }
 
     @Override
@@ -895,6 +896,12 @@ public class SurveyActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        instance = null;
     }
 
 }
