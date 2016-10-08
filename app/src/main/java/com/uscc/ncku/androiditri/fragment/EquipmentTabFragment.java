@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -140,6 +141,15 @@ public class EquipmentTabFragment extends Fragment {
             } else if (!equipTabs.get(position).isPhoto) {
                 photo.setVisibility(View.GONE);
             }
+
+            ImageButton zoom = (ImageButton) view.findViewById(R.id.btn_equip_photo_zoom);
+
+            zoom.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
             txtContent.setText(equipTabs.get(position).textContent);
