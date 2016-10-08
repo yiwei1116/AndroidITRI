@@ -40,8 +40,20 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class FeedbackFragment extends Fragment {
-    private static final String[] SPINNER_LIEST = {"PPAP", "PPAP", "PAPP", "PPAP", "PPAP"};
+    private static final String[] SPINNER_LIEST_2F = {
+            "1.健康綠建材", "2.無線感知及人員定位系統", "22.IP數位影像電話",
+            "25.電動窗簾", "27.辦公室視訊會議系統", "28.智慧圖書室",
+            "29.辦公室休憩區情境模擬系統", "30.CO2及溫濕度環境監測系統"
+    };
+    private static final String[] SPINNER_LIEST_2F_EN = {
+            "1.Healthy green building material", "2.Wireless sensing and personnel location system",
+            "22.IP digital imaging", "25.Electronic curtains",
+            "27.Office video conference meeting system", "28.Smart library",
+            "29.Office resting area scenario simulation system",
+            "30.CO2 and temperature/humidity environmental monitoring system"
+    };
 
+    private String[] SPINNER_LIEST;
     private View view;
     private ScrollView scrollView;
 
@@ -95,6 +107,12 @@ public class FeedbackFragment extends Fragment {
 
         scrollView = (ScrollView) view.findViewById(R.id.scrollview_feedback);
 
+        if (getResources().getString(R.string.feedback_title).equals("Feedback")) {
+            SPINNER_LIEST = SPINNER_LIEST_2F_EN;
+        } else {
+            SPINNER_LIEST = SPINNER_LIEST_2F;
+        }
+
         return view;
     }
 
@@ -122,9 +140,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q1() {
-        scrollView.smoothScrollTo(0, 0);
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_1);
         radioGroup.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -164,9 +187,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q2() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_2);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -299,9 +327,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q3() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_3);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -318,11 +351,11 @@ public class FeedbackFragment extends Fragment {
         TextView question = (TextView) view.findViewById(R.id.txt_feedback_question);
         question.setText(R.string.feedback_question_3);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.feedback_spinner_first_order);
+        Spinner spinner_1 = (Spinner) view.findViewById(R.id.feedback_spinner_first_order);
         ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, SPINNER_LIEST);
-        spinner.setAdapter(lunchList);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_1.setAdapter(lunchList);
+        spinner_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -334,24 +367,172 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        CheckBox function = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_function);
-        CheckBox beauty = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_beauty);
-        CheckBox operation = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_operation);
-        CheckBox humility = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_humility);
-        CheckBox maintainence = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_maintainence);
-        if (function.isChecked()) {
+        CheckBox function_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_function);
+        CheckBox beauty_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_beauty);
+        CheckBox operation_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_operation);
+        CheckBox humility_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_humility);
+        CheckBox maintainence_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_maintainence);
+        if (function_1.isChecked()) {
 
         }
-        if (beauty.isChecked()) {
+        if (beauty_1.isChecked()) {
 
         }
-        if (operation.isChecked()) {
+        if (operation_1.isChecked()) {
 
         }
-        if (humility.isChecked()) {
+        if (humility_1.isChecked()) {
 
         }
-        if (maintainence.isChecked()) {
+        if (maintainence_1.isChecked()) {
+
+        }
+
+
+
+        Spinner spinner_2 = (Spinner) view.findViewById(R.id.feedback_spinner_second_order);
+        spinner_2.setAdapter(lunchList);
+        spinner_2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        CheckBox function_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_function);
+        CheckBox beauty_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_beauty);
+        CheckBox operation_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_operation);
+        CheckBox humility_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_humility);
+        CheckBox maintainence_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_maintainence);
+        if (function_2.isChecked()) {
+
+        }
+        if (beauty_2.isChecked()) {
+
+        }
+        if (operation_2.isChecked()) {
+
+        }
+        if (humility_2.isChecked()) {
+
+        }
+        if (maintainence_2.isChecked()) {
+
+        }
+
+
+
+        Spinner spinner_3 = (Spinner) view.findViewById(R.id.feedback_spinner_third_order);
+        spinner_3.setAdapter(lunchList);
+        spinner_3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        CheckBox function_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_function);
+        CheckBox beauty_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_beauty);
+        CheckBox operation_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_operation);
+        CheckBox humility_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_humility);
+        CheckBox maintainence_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_maintainence);
+        if (function_3.isChecked()) {
+
+        }
+        if (beauty_3.isChecked()) {
+
+        }
+        if (operation_3.isChecked()) {
+
+        }
+        if (humility_3.isChecked()) {
+
+        }
+        if (maintainence_3.isChecked()) {
+
+        }
+
+
+
+        Spinner spinner_4 = (Spinner) view.findViewById(R.id.feedback_spinner_fourth_order);
+        spinner_4.setAdapter(lunchList);
+        spinner_4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        CheckBox function_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_function);
+        CheckBox beauty_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_beauty);
+        CheckBox operation_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_operation);
+        CheckBox humility_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_humility);
+        CheckBox maintainence_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_maintainence);
+        if (function_4.isChecked()) {
+
+        }
+        if (beauty_4.isChecked()) {
+
+        }
+        if (operation_4.isChecked()) {
+
+        }
+        if (humility_4.isChecked()) {
+
+        }
+        if (maintainence_4.isChecked()) {
+
+        }
+
+
+
+        Spinner spinner_5 = (Spinner) view.findViewById(R.id.feedback_spinner_fifth_order);
+        spinner_5.setAdapter(lunchList);
+        spinner_5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        CheckBox function_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_function);
+        CheckBox beauty_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_beauty);
+        CheckBox operation_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_operation);
+        CheckBox humility_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_humility);
+        CheckBox maintainence_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_maintainence);
+        if (function_5.isChecked()) {
+
+        }
+        if (beauty_5.isChecked()) {
+
+        }
+        if (operation_5.isChecked()) {
+
+        }
+        if (humility_5.isChecked()) {
+
+        }
+        if (maintainence_5.isChecked()) {
 
         }
 
@@ -367,9 +548,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q4() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_4);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -410,8 +596,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner2 = (Spinner) view.findViewById(R.id.feedback_spinner_equip_2);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner2.setAdapter(lunchList);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -426,8 +610,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner3 = (Spinner) view.findViewById(R.id.feedback_spinner_equip_3);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner3.setAdapter(lunchList);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -453,9 +635,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q5() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_5);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -489,8 +676,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner2 = (Spinner) view.findViewById(R.id.feedback_spinner_free_2);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner2.setAdapter(lunchList);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -505,8 +690,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner3 = (Spinner) view.findViewById(R.id.feedback_spinner_free_3);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner3.setAdapter(lunchList);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -521,8 +704,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner4 = (Spinner) view.findViewById(R.id.feedback_spinner_free_4);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner4.setAdapter(lunchList);
         spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -537,8 +718,6 @@ public class FeedbackFragment extends Fragment {
         });
 
         Spinner spinner5 = (Spinner) view.findViewById(R.id.feedback_spinner_free_5);
-//        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_spinner_item, SPINNER_LIEST);
         spinner5.setAdapter(lunchList);
         spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -564,9 +743,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q6() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_6);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -583,6 +767,78 @@ public class FeedbackFragment extends Fragment {
         TextView question = (TextView) view.findViewById(R.id.txt_feedback_question);
         question.setText(R.string.feedback_question_6);
 
+        Spinner spinner1 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_1);
+        ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, SPINNER_LIEST);
+        spinner1.setAdapter(lunchList);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner spinner2 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_2);
+        spinner2.setAdapter(lunchList);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner spinner3 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_3);
+        spinner3.setAdapter(lunchList);
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner spinner4 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_4);
+        spinner4.setAdapter(lunchList);
+        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Spinner spinner5 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_5);
+        spinner5.setAdapter(lunchList);
+        spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -595,9 +851,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q7() {
-        scrollView.smoothScrollTo(0, 0);
         final RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_7);
         relativeLayout.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -614,6 +875,13 @@ public class FeedbackFragment extends Fragment {
         TextView question = (TextView) view.findViewById(R.id.txt_feedback_question);
         question.setText(R.string.feedback_question_7);
 
+        RadioGroup rGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_7);
+        if (rGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_7_no) {
+
+        } else if (rGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_7_yes) {
+
+        }
+
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -626,9 +894,14 @@ public class FeedbackFragment extends Fragment {
     }
 
     private void q8() {
-        scrollView.smoothScrollTo(0, 0);
         final RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_8);
         radioGroup.setVisibility(View.VISIBLE);
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
 
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

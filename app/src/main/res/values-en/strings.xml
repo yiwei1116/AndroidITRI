@@ -163,4 +163,9 @@
     <string name="feedback_price">Price</string>
     <string name="feedback_safetly">Safety</string>
     <string name="feedback_equip_info">I need the product information for</string>
+    <string name="feedback_second_order">Your second choice product purchase is</string>
+    <string name="feedback_third_order">Your third choice product purchase is</string>
+    <string name="feedback_fourth_order">Your third choice product purchase is</string>
+    <string name="feedback_fifth_order">Your fifth choice product purchase is</string>
+    <string name="feedback_next">Next</string>
 </resources>

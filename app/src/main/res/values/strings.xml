@@ -184,6 +184,10 @@
     <string name="feedback_safetly">安全性</string>
     <string name="feedback_energy">節能性</string>
     <string name="feedback_first_order">第一優先購買的商品為</string>
+    <string name="feedback_second_order">第二優先購買的商品為</string>
+    <string name="feedback_third_order">第三優先購買的商品為</string>
+    <string name="feedback_fourth_order">第四優先購買的商品為</string>
+    <string name="feedback_fifth_order">第五優先購買的商品為</string>
     <string name="feedback_first_order_reason">因為商品具有：(可複選)</string>
     <string name="feedback_feature_function">&#160;&#160;&#160;功能良好</string>
     <string name="feedback_feature_beauty">&#160;&#160;&#160;視覺美觀佳</string>
