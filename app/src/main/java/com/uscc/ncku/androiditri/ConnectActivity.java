@@ -183,21 +183,22 @@ public class ConnectActivity extends Activity {
         **** Download function
         ** REAL ** download function: send a project_id to server and get back all info and path about download contents
      */
-    public void downloadProjectData(String projectId) {
-        new ReceiveData(projectId).execute();
+    // give string to check whether table should be fetched data from.
+    public void downloadProjectData(String intendedTable) {
+        new ReceiveData(intendedTable).execute();
     }
 
     public class ReceiveData extends AsyncTask<String, Void, Void> {
 
-        private String myProjectId;
+        private String intendedTable;
 
         @Override
         protected void onPreExecute() {
             Log.i("download", "Pre Execute success.");
         }
 
-        public ReceiveData(String projectId) {
-            myProjectId = projectId;
+        public ReceiveData(String table) {
+            intendedTable = table;
         }
 
         @Override
@@ -205,6 +206,26 @@ public class ConnectActivity extends Activity {
             String downloadResponse = "";
             // do all things here
             try {
+                switch (intendedTable) {
+                    case "device":
+                        break;
+                    case "beacon":
+                        break;
+                    case "company":
+                        break;
+                    case "field_map":
+                        break;
+                    case "hipster_template":
+                        break;
+                    case "hipster_text":
+                        break;
+                    case "mode":
+                        break;
+                    case "zone":
+                        break;
+                    default:
+                        break;
+                }
                 downloadResponse = performDownloadPost(new HashMap<String, String>() {
                     {
                         put("Accept", "application/json");
@@ -213,6 +234,7 @@ public class ConnectActivity extends Activity {
                 });
                 // log http response code
                 Log.i("HTTP result", downloadResponse);
+                // parse json string
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -237,10 +259,12 @@ public class ConnectActivity extends Activity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
 
+                String queryTable = "data=" + intendedTable;
+
                 // write to server
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
                 // server requires only a project id POSTed
-                outputStreamWriter.write(myProjectId);
+                outputStreamWriter.write(queryTable);
                 outputStreamWriter.flush();
                 outputStreamWriter.close();
 
@@ -267,5 +291,90 @@ public class ConnectActivity extends Activity {
         }
 
     }
+
+//    public class DownloadDeviceData extends AsyncTask<String, Void, Void> {
+//
+//        private String myProjectId;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            Log.i("download", "Pre Execute success.");
+//        }
+//
+//        public DownloadDeviceData(String projectId) {
+//            myProjectId = projectId;
+//        }
+//
+//        public DownloadDeviceData() {
+//
+//        }
+//
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//            String downloadResponse = "";
+//            // do all things here
+//            try {
+//                downloadResponse = performDownloadPost(new HashMap<String, String>() {
+//                    {
+//                        put("Accept", "application/json");
+//                        put("Content-Type", "application/json");
+//                    }
+//                });
+//                // log http response code
+//                Log.i("HTTP result", downloadResponse);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//            Log.i("download", "PostExecute success.");
+//        }
+//
+//        private String performDownloadPost(HashMap<String, String> hashMap) {
+//            String response = "";
+//            URL url;
+//            try {
+//                // send URL request
+//                url = new URL(downloadURL);
+//                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+//                httpURLConnection.setRequestMethod("POST");
+//                httpURLConnection.setUseCaches(false);
+//                httpURLConnection.setDoInput(true);
+//                httpURLConnection.setDoOutput(true);
+//
+//                // write to server
+//                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
+//                // server requires only a project id POSTed
+//                outputStreamWriter.write(myProjectId);
+//                outputStreamWriter.flush();
+//                outputStreamWriter.close();
+//
+//                int responseCode = httpURLConnection.getResponseCode();
+//                if (responseCode == HttpURLConnection.HTTP_OK) {
+//                    Log.e("download", "HTTP Response: HTTP - OK");
+//                    String line;
+//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
+//                    while ((line = bufferedReader.readLine()) != null) {
+//                        response += line;
+//                    }
+//                    Log.i("response code", response);
+//                    bufferedReader.close();
+//                } else {
+//                    Log.e("HTTP response", String.valueOf(responseCode));
+//                    response = "";
+//                }
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return response;
+//        }
+//
+//    }
 
 }

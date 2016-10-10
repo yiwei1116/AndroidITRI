@@ -98,6 +98,7 @@ public class LoadingActivity extends AppCompatActivity {
         animation.setRepeatMode(Animation.REVERSE);
         imgText.startAnimation(animation);
 
+        // call asyntask to animate
         new DataLoadingAsyncTask().execute();
     }
 
@@ -107,6 +108,12 @@ public class LoadingActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            /*
+                --> can delete
+             */
+            ConnectActivity connect = new ConnectActivity();
+//            connect.downloadProjectData("1");
 
             ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
 
