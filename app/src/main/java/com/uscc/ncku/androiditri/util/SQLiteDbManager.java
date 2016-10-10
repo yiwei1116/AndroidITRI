@@ -15,7 +15,7 @@ import com.uscc.ncku.androiditri.usage.DatabaseUtilizer;
 public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // database name
-    public static final String DATABASE_NAME = "android_itri.db";
+    public static final String DATABASE_NAME = "ITRI_1.db";
 
     public static final int VERSION = 1;
 
@@ -279,5 +279,164 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
+    // lease table query and insert
+    public boolean insertLease(int id,
+                               int pad_id,
+                               String borrower,
+                               String borrower_tel,
+                               String lease_date,
+                               String return_date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("pad_id", pad_id);
+        values.put("borrower", borrower);
+        values.put("borrower_tel", borrower_tel);
+        // lease_date & return_date have to be in correct datetime format
+        values.put("lease_date", lease_date);
+        values.put("return_date", return_date);
+        db.insert("lease", null, values);
+        return true;
+    }
+
+    public Cursor getLease(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from lease where id=" + id + "", null);
+        return cursor;
+    }
+
+
+    // mode table query and insert
+    public boolean insertMode(int mode_id,
+                              String name,
+                              String name_en,
+                              String introduction,
+                              String guide_voice,
+                              String video,
+                              String splash_bg_vertical,
+                              String splash_fg_vertical,
+                              String splash_blur_vertical,
+                              int like_count,
+                              int read_count,
+                              int time_total,
+                              int zone_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("mode_id", mode_id);
+        values.put("name", name);
+        values.put("name_en", name_en);
+        values.put("introduction", introduction);
+        values.put("guide_voice", guide_voice);
+        values.put("video", video);
+        values.put("splash_bg_vertical", splash_bg_vertical);
+        values.put("splash_fg_vertical", splash_fg_vertical);
+        values.put("splash_blur_vertical", splash_blur_vertical);
+        values.put("like_count", like_count);
+        values.put("read_count", read_count);
+        values.put("zone_id", zone_id);
+        db.insert("mode", null, values);
+        return true;
+    }
+
+    public Cursor getMode(int mode_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from mode where mode_id=" + mode_id + "", null);
+        return cursor;
+    }
+
+    // survey table query and insert
+    public boolean insertSurvey(int survey_id,
+                                String name,
+                                String email,
+                                String gender,
+                                String age,
+                                String education,
+                                String career,
+                                String experience,
+                                String salary,
+                                String location,
+                                int house_type,
+                                int family_type,
+                                int family_member,
+                                int know_way) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("survey_id", survey_id);
+        values.put("name", name);
+        values.put("email", email);
+        values.put("gender", gender);
+        values.put("age", age);
+        values.put("education", education);
+        values.put("career", career);
+        values.put("experience", experience);
+        values.put("salary", salary);
+        values.put("location", location);
+        values.put("house_type", house_type);
+        values.put("family_type", family_type);
+        values.put("family_member", family_member);
+        values.put("know_way", know_way);
+        db.insert("survey", null, values);
+        return true;
+    }
+
+    public Cursor getSurvey(int survey_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from survey where survey_id=" + survey_id + "", null);
+        return cursor;
+    }
+
+
+    // survey result table query and insert
+    public boolean insertSurveyResult(int id,
+                                      int question,
+                                      int answer,
+                                      int total) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("question", question);
+        values.put("answer", answer);
+        values.put("total", total);
+        db.insert("survey_result", null, values);
+        return true;
+    }
+
+    public Cursor getSurveyResult(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from survey_result where id=" + id + "", null);
+        return cursor;
+    }
+
+
+    // zone table query and insert
+    public boolean insertZone(int zone_id,
+                                String name,
+                                String name_en,
+                                String introduction,
+                                String guide_voice,
+                                String hint,
+                                String photo,
+                                String photo_vertical,
+                                int field_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("zone_id", zone_id);
+        values.put("name", name);
+        values.put("name_en", name_en);
+        values.put("introduction", introduction);
+        values.put("guide_voice", guide_voice);
+        values.put("hint", hint);
+        values.put("photo", photo);
+        values.put("photo_vertical", photo_vertical);
+        values.put("field_id", field_id);
+        db.insert("zone", null, values);
+        return true;
+    }
+
+    public Cursor getZone(int zone_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from zone where zone_id=" + zone_id + "", null);
+        return cursor;
+    }
 
 }

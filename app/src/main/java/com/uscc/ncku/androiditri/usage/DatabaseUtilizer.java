@@ -127,15 +127,19 @@ public class DatabaseUtilizer {
     public static final String RETURN_DATE = "return_date";
 
     // survey table
-    public static final String SURVEY_TABLE = "survey_table";
+    public static final String SURVEY_TABLE = "survey";
     public static final String SURVEY_ID = "survey_id";
     public static final String GENDER = "gender";
     public static final String AGE = "age";
     public static final String EDUCATION = "education";
     public static final String CAREER = "career";
+    public static final String EXPERIENCE = "experience";
+    public static final String SALARY = "salary";
     public static final String LOCATION = "location";
     public static final String HOUSE_TYPE = "house_type";
     public static final String FAMILY_TYPE = "family_type";
+    public static final String FAMILY_MEMBER = "family_member";
+    public static final String KNOW_WAY = "know_way";
 
     // survey result
     public static final String SURVEY_RESULT_TABLE = "survey_result";
@@ -286,9 +290,13 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.AGE + " INT NOT NULL, "
             + DatabaseUtilizer.EDUCATION + " INT NOT NULL, "
             + DatabaseUtilizer.CAREER + " INT NOT NULL, "
+            + DatabaseUtilizer.EXPERIENCE + " INT NOT NULL, "
+            + DatabaseUtilizer.SALARY + " INT NOT NULL, "
             + DatabaseUtilizer.LOCATION + " INT NOT NULL, "
             + DatabaseUtilizer.HOUSE_TYPE + " INT NOT NULL, "
-            + DatabaseUtilizer.FAMILY_TYPE + " INT NOT NULL"
+            + DatabaseUtilizer.FAMILY_TYPE + " INT NOT NULL, "
+            + DatabaseUtilizer.FAMILY_MEMBER + " INT NOT NULL, "
+            + DatabaseUtilizer.KNOW_WAY + " INT NOT NULL"
             + ")";
     // survey result
     public static final String DB_CREATE_TABLE_SURVEY_RESULT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_RESULT_TABLE + " ("
