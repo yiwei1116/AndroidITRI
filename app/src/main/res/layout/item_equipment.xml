@@ -60,6 +60,17 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_equip_photo_zoom"
+            android:src="@drawable/ic_zoom_in"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:layout_gravity="top|right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp" />
+
     </FrameLayout>
 
     <TextView
@@ -75,5 +86,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp" />
+
+
 
 </RelativeLayout>

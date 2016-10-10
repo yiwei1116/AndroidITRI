@@ -114,12 +114,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_2"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/function"
+                    android:id="@+id/feedback_function"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
                     android:paddingBottom="@dimen/feedback_rbtn_margin"
@@ -129,12 +129,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radiogroup_feedback_function"
-                    android:layout_below="@+id/function">
+                    android:layout_below="@+id/feedback_function">
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_function_very_support"
+                        android:id="@+id/rbtn_feedback_function_very_important"
                         android:text="@string/feedback_very_important"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
@@ -144,7 +144,7 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_function_support"
+                        android:id="@+id/rbtn_feedback_function_important"
                         android:text="@string/feedback_important"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
@@ -164,7 +164,7 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_function_unsupport"
+                        android:id="@+id/rbtn_feedback_function_unimportant"
                         android:text="@string/feedback_unimportant"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
@@ -174,7 +174,7 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_function_very_unsupport"
+                        android:id="@+id/rbtn_feedback_function_very_unimportant"
                         android:text="@string/feedback_very_unimportant"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
@@ -185,7 +185,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/beauty"
+                    android:id="@+id/feedback_beauty"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
                     android:paddingBottom="@dimen/feedback_rbtn_margin"
@@ -197,13 +197,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radiogroup_feedback_beauty"
-                    android:layout_below="@+id/beauty">
+                    android:layout_below="@+id/feedback_beauty">
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_beauty_very_support"
-                        android:text="@string/feedback_very_support"
+                        android:id="@+id/rbtn_feedback_beauty_very_important"
+                        android:text="@string/feedback_very_important"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
                         android:layout_marginTop="@dimen/feedback_rbtn_margin"
@@ -212,8 +212,8 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_beauty_support"
-                        android:text="@string/feedback_support"
+                        android:id="@+id/rbtn_feedback_beauty_important"
+                        android:text="@string/feedback_important"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
                         android:layout_marginTop="@dimen/feedback_rbtn_margin"
@@ -223,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/rbtn_feedback_beauty_soso"
-                        android:text="@string/feedback_soso"
+                        android:text="@string/feedback_sosososo"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
                         android:layout_marginTop="@dimen/feedback_rbtn_margin"
@@ -232,8 +232,8 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_beauty_unsupport"
-                        android:text="@string/feedback_unsupport"
+                        android:id="@+id/rbtn_feedback_beauty_unimportant"
+                        android:text="@string/feedback_unimportant"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
                         android:layout_marginTop="@dimen/feedback_rbtn_margin"
@@ -242,8 +242,416 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rbtn_feedback_beauty_very_unsupport"
-                        android:text="@string/feedback_very_unsupport"
+                        android:id="@+id/rbtn_feedback_beauty_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_operability"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:text="@string/feedback_operability"
+                    android:layout_below="@+id/radiogroup_feedback_beauty"/>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_operability"
+                    android:layout_below="@+id/feedback_operability">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_operability_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_operability_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_operability_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_operability_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_operability_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_humility"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:text="@string/feedback_humility"
+                    android:layout_below="@+id/radiogroup_feedback_operability" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_humility"
+                    android:layout_below="@+id/feedback_humility">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_humility_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_humility_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_humility_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_humility_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_humility_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_price"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:layout_below="@+id/radiogroup_feedback_humility"
+                    android:text="@string/feedback_price"/>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_price"
+                    android:layout_below="@+id/feedback_price">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_price_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_price_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_price_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_price_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_price_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_maintainence"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:text="@string/feedback_maintenance"
+                    android:layout_below="@+id/radiogroup_feedback_price" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_maintenance"
+                    android:layout_below="@+id/feedback_maintainence">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_maintenance_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_maintenance_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_maintenance_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_maintenance_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_maintenance_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_safetly"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:layout_below="@+id/radiogroup_feedback_maintenance"
+                    android:text="@string/feedback_safetly"/>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_safetly"
+                    android:layout_below="@+id/feedback_safetly">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_safetly_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_safetly_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_safetly_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_safetly_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_safetly_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_energy"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:paddingTop="50dp"
+                    android:text="@string/feedback_energy"
+                    android:layout_below="@+id/radiogroup_feedback_safetly" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_energy"
+                    android:layout_below="@+id/feedback_energy">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_energy_very_important"
+                        android:text="@string/feedback_very_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_energy_important"
+                        android:text="@string/feedback_important"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_energy_soso"
+                        android:text="@string/feedback_sosososo"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_energy_unimportant"
+                        android:text="@string/feedback_unimportant"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_energy_very_unimportant"
+                        android:text="@string/feedback_very_unimportant"
                         android:textSize="@dimen/feedback_rbtn_font_size"
                         android:button="@drawable/selecter_rbtn_feedback"
                         android:layout_marginTop="@dimen/feedback_rbtn_margin"/>
@@ -256,7 +664,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_3"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -351,13 +759,393 @@
                     android:text="@string/feedback_feature_safe"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:id="@+id/feedback_second_order"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_second_order"
+                    android:layout_below="@+id/rbtn_first_order_reason_safe" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/feedback_spinner_second_order"
+                    android:layout_below="@+id/feedback_second_order">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_second_order_reason"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_first_order_reason"
+                    android:layout_below="@+id/feedback_spinner_second_order" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_function"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/feedback_second_order_reason"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_function"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_beauty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_function"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_beauty"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_operation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_beauty"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_operation"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_humility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_operation"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_humility"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_maintainence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_humility"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_maintainence"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_maintainence"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_below="@+id/rbtn_second_order_reason_safe"
+                    android:id="@+id/feedback_third_order"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_third_order"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/feedback_spinner_third_order"
+                    android:layout_below="@+id/feedback_third_order">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_third_order_reason"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_first_order_reason"
+                    android:layout_below="@+id/feedback_spinner_third_order" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_function"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/feedback_third_order_reason"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_function"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_beauty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_function"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_beauty"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_operation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_beauty"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_operation"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_humility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_operation"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_humility"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_maintainence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_humility"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_maintainence"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_maintainence"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_below="@+id/rbtn_third_order_reason_safe"
+                    android:id="@+id/feedback_fourth_order"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_fourth_order"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/feedback_spinner_fourth_order"
+                    android:layout_below="@+id/feedback_fourth_order">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_fourth_order_reason"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_first_order_reason"
+                    android:layout_below="@+id/feedback_spinner_fourth_order" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_function"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/feedback_fourth_order_reason"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_function"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_beauty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_function"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_beauty"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_operation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_beauty"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_operation"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_humility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_operation"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_humility"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_maintainence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_humility"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_maintainence"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_maintainence"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_safe"
+                    android:id="@+id/feedback_fifth_order"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_fifth_order"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/feedback_spinner_fifth_order"
+                    android:layout_below="@+id/feedback_fifth_order">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_fifth_order_reason"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_first_order_reason"
+                    android:layout_below="@+id/feedback_spinner_fifth_order" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_function"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/feedback_fifth_order_reason"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="20dp"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_function"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_beauty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_function"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_beauty"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_operation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_beauty"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_operation"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_humility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_operation"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_humility"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_maintainence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_humility"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_maintainence"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_safe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_maintainence"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_4"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <RadioGroup
                     android:layout_width="wrap_content"
@@ -430,7 +1218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_5"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -532,9 +1320,101 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_6"
-                android:visibility="invisible">
+                android:visibility="gone">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_impressed_1"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_free_1" />
 
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/feedback_spinner_impressed_1"
+                    android:layout_below="@+id/feedback_impressed_1">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_impressed_2"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_free_2"
+                    android:layout_below="@+id/feedback_spinner_impressed_1" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/feedback_spinner_impressed_2"
+                    android:layout_below="@+id/feedback_impressed_2">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_impressed_3"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_free_3"
+                    android:layout_below="@+id/feedback_spinner_impressed_2" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/feedback_spinner_impressed_3"
+                    android:layout_below="@+id/feedback_impressed_3">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_impressed_4"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_free_4"
+                    android:layout_below="@+id/feedback_spinner_impressed_3" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/feedback_spinner_impressed_4"
+                    android:layout_below="@+id/feedback_impressed_4">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedback_impressed_5"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/feedback_subtitle_font_size"
+                    android:paddingBottom="@dimen/feedback_rbtn_margin"
+                    android:text="@string/feedback_free_5"
+                    android:layout_below="@+id/feedback_spinner_impressed_4" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/feedback_spinner_impressed_5"
+                    android:layout_below="@+id/feedback_impressed_5">
+                </Spinner>
 
             </RelativeLayout>
 
@@ -542,9 +1422,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/flayout_feedback_7"
-                android:visibility="invisible">
+                android:visibility="gone">
 
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogroup_feedback_7">
 
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_7_no"
+                        android:text="@string/feedback_nicht"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbtn_feedback_7_yes"
+                        android:text="@string/feedback_ja"
+                        android:textSize="@dimen/feedback_rbtn_font_size"
+                        android:button="@drawable/selecter_rbtn_feedback"
+                        android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                        android:layout_marginBottom="@dimen/feedback_rbtn_margin" />
+
+                </RadioGroup>
 
             </RelativeLayout>
 
@@ -552,7 +1457,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radiogroup_feedback_8"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <RadioButton
                     android:layout_width="wrap_content"

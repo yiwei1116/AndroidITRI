@@ -7,10 +7,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -175,18 +177,22 @@ public class EquipmentTabFragment extends Fragment {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked){
+                ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+
                 if (buttonView.getId() == R.id.btn_equip_video) {
                     ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
                     photo.setChecked(false);
+                    zoom.setVisibility(View.GONE);
                 } else if (buttonView.getId() == R.id.btn_equip_photo) {
                     ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
                     video.setChecked(false);
+                    zoom.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
 
-    class EquipmentTab {
+    private class EquipmentTab {
         String title;
         boolean isVideo;
         boolean isPhoto;
