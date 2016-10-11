@@ -64,7 +64,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     private SurfaceView mCameraPreview;
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
-    private boolean isBackCameraOn;
+    private boolean isBackCameraOn=true;
     private String mImageFileLocation = "";
     private Button switchCamera,capture,nextStep,reTake;
     private FrameLayout frameLayout;
@@ -252,7 +252,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
         for (int i = 0; i < cameraCount; i++) {
             Camera.getCameraInfo(i, cameraInfo);
-            if (isBackCameraOn) {
+           if (isBackCameraOn) {
                 if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                     releaseCamera();
                     mCamera = Camera.open(i);
