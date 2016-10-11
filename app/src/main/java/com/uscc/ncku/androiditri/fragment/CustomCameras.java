@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -58,8 +60,8 @@ import com.uscc.ncku.androiditri.R;
 public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener  {
     private ImageView imageView;
     private  String picPath;
-    private int targetImageViewWidth;
-    private int targetImageViewHeight;
+    private int   SurfaceViewWidth;
+    private int   SurfaceViewHeight;
     private File pictureFile;
     private SurfaceView mCameraPreview;
     private SurfaceHolder mSurfaceHolder;
@@ -67,7 +69,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     private boolean isBackCameraOn=true;
     private String mImageFileLocation = "";
     private Button switchCamera,capture,nextStep,reTake;
-    private FrameLayout frameLayout;
+    private FrameLayout layout;
+    private File image;
     Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
 
     /**
@@ -94,6 +97,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_preview, container, false);
+        layout = (FrameLayout)view.findViewById(R.id.custom_camera_container);
         nextStep = (Button)view.findViewById(R.id.next_step);
         reTake = (Button)view.findViewById(R.id.retake);
         mCameraPreview = (SurfaceView) view.findViewById(R.id.sv_camera);
@@ -121,7 +125,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             pictureFile = getOutputMediaFile();
-            // picPath =pictureFile.getAbsolutePath();
+            picPath =pictureFile.getAbsolutePath();
+            galleryAddPic();
             if (pictureFile == null) {
 
                 return;
@@ -189,10 +194,20 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
      Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
      imageView.setImageBitmap(rotatedBitmap);
- }
+ }*/
     public Bitmap setReducedImageSize() {
-    targetImageViewWidth = imageView.getMeasuredWidth();
-                targetImageViewHeight = imageView.getMeasuredHeight();
+
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                SurfaceViewWidth  = layout.getMeasuredWidth();
+                SurfaceViewHeight = layout.getMeasuredHeight();
+
+            }
+        });
+       /* SurfaceViewWidth = imageView.getMeasuredWidth();
+        SurfaceViewHeight = imageView.getMeasuredHeight();*/
 
 
 
@@ -203,13 +218,13 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         int cameraImageWidth = bmOptions.outWidth;
         int cameraImageHeight = bmOptions.outHeight;
 
-        int scaleFactor = Math.min(cameraImageWidth / targetImageViewWidth, cameraImageHeight / targetImageViewHeight);
+        int scaleFactor = Math.min(cameraImageWidth / SurfaceViewWidth, cameraImageHeight / SurfaceViewHeight);
         //inSampleSize == 4 returns an image that is 1/4 the width/height of the original
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inJustDecodeBounds = false;
 
         return BitmapFactory.decodeFile(picPath, bmOptions);
-    }*/
+    }
     private void initViews() {
 
         mSurfaceHolder = mCameraPreview.getHolder();
@@ -312,7 +327,12 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
     }
 
-
+    private void galleryAddPic() {
+         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+         Uri contentUri = Uri.fromFile(image);
+         mediaScanIntent.setData(contentUri);
+         getActivity().sendBroadcast(mediaScanIntent);
+     }
     private File getOutputMediaFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.TAIWAN).format(new Date());
         String imageFileName = "IMAGE" + timeStamp + "_";
@@ -322,13 +342,14 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
         // Create image  ** path => where to create image
         //File image = File.createTempFile(imageFileName, ".jpg", path);
-        File image = new File(path,imageFileName+".JPEG");
+         image = new File(path,imageFileName+".JPEG");
 
         return image;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+
         setStartPreview(mCamera, mSurfaceHolder);
     }
 
@@ -342,8 +363,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        targetImageViewWidth = width;
-        targetImageViewHeight = height;
+        SurfaceViewWidth = width;
+        SurfaceViewHeight = height;
         setStartPreview(mCamera, mSurfaceHolder);
     }
 
@@ -411,6 +432,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         releaseCamera();
     }
     public void nextStep(){
+        setReducedImageSize();
         FragmentManager fm = getFragmentManager();
         ChooseTemplate CT = new ChooseTemplate();
         FragmentTransaction transaction = fm.beginTransaction();

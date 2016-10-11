@@ -232,7 +232,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         startActivityForResult(cameraIntent, CAMERA_RESULT);*/
 
     }
-    //将图片文件添加至相册（便于浏览）
+
     /*private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photoFile);
