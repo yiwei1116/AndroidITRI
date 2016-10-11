@@ -9,14 +9,22 @@ import android.util.Log;
 
 import com.uscc.ncku.androiditri.usage.DatabaseUtilizer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Oslo on 10/6/16.
  */
 public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // database name
-    public static final String DATABASE_NAME = "ITRI_1.db";
+    public static final String DATABASE_NAME = "ITRI.db";
 
+
+    /*
+           ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
+     */
     public static final int VERSION = 1;
 
     public SQLiteDbManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -39,23 +47,25 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         // create tables
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_DEVICE);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_BEACON);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_COMPANY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_FIELD_MAP);
+        // need to upload hipster content
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_CONTENT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEMPLATE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEXT);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_MODE);
         // problem with path
 //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
+        // upload survey
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_PI);
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_VOICE);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_PI);
+//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_VOICE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
     }
 
@@ -101,6 +111,35 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from device where device_id=" + device_id + "", null);
         return cursor;
+    }
+
+    // get device files
+    public JSONArray queryDeviceFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select device_id, guide_voice, photo, photo_vertical from device", null);
+        cursor.moveToFirst();
+        String device_id;
+        String guide_voice;
+        String photo;
+        String photo_vertical;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("guide_voice", guide_voice);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
     }
 
     // project table query and insert
@@ -183,6 +222,28 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
+    // query company files
+    public JSONArray queryCompanyFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select company_id, qrcode from company", null);
+        cursor.moveToFirst();
+        String company_id;
+        String qrcode;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            company_id = cursor.getString(cursor.getColumnIndex("company_id"));
+            qrcode = cursor.getString(cursor.getColumnIndex("qrcode"));
+            // add to JSONObject
+            file.put("company_id", company_id);
+            file.put("qrcode", qrcode);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
 
     // field map table query and insert
     public boolean insertFieldMap(int field_map_id,
@@ -213,6 +274,38 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from field_map where field_map_id=" + field_map_id + "", null);
         return cursor;
+    }
+
+    // get field_map columns
+    public JSONArray queryFieldMapFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select field_map_id, guide_voice, photo, photo_vertical, map_svg from field_map", null);
+        cursor.moveToFirst();
+        String field_map_id;
+        String guide_voice;
+        String photo;
+        String photo_vertical;
+        String map_svg;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            field_map_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+            // add to JSONObject
+            file.put("device_id", field_map_id);
+            file.put("guide_voice", guide_voice);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            file.put("map_svg", map_svg);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
     }
 
     // hipster content table query and insert
@@ -261,6 +354,28 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
+    // get hipster template columns
+    public JSONArray queryHipsterTemplateFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select hipster_template_id, template from hipster_template", null);
+        cursor.moveToFirst();
+        String hipster_template_id;
+        String template;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            hipster_template_id = cursor.getString(cursor.getColumnIndex("hipster_template_id"));
+            template = cursor.getString(cursor.getColumnIndex("template"));
+            // add to JSONObject
+            file.put("hipster_template_id", hipster_template_id);
+            file.put("template", template);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
 
     // hipster text table query and insert
     public boolean insertHipsterText(int hipster_text_id,
@@ -342,6 +457,41 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from mode where mode_id=" + mode_id + "", null);
         return cursor;
+    }
+
+    // get mode files
+    public JSONArray queryModeFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
+        cursor.moveToFirst();
+        String device_id;
+        String guide_voice;
+        String video;
+        String splash_bg_vertical;
+        String splash_fg_vertical;
+        String splash_blur_vertical;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            video = cursor.getString(cursor.getColumnIndex("video"));
+            splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
+            splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
+            splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("guide_voice", guide_voice);
+            file.put("video", video);
+            file.put("splash_bg_vertical", splash_bg_vertical);
+            file.put("splash_fg_vertical", splash_fg_vertical);
+            file.put("splash_blur_vertical", splash_blur_vertical);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
     }
 
     // survey table query and insert
@@ -438,5 +588,39 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery("select * from zone where zone_id=" + zone_id + "", null);
         return cursor;
     }
+
+
+    // get zone files
+    public JSONArray queryZoneFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select zone_id, guide_voice, photo, photo_vertical from zone", null);
+        cursor.moveToFirst();
+        String device_id;
+        String guide_voice;
+        String photo;
+        String photo_vertical;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("guide_voice", guide_voice);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
+    /*
+        --> get those entries that would need to fetch data from server
+     */
+
 
 }
