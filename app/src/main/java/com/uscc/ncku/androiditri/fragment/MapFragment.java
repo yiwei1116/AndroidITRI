@@ -43,7 +43,7 @@ import com.uscc.ncku.androiditri.util.DownloadProject;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements View.OnClickListener {
     private static final String TOUR_INDEX = "TOUR_INDEX";
 
     private int tourIndex;
@@ -101,7 +101,8 @@ public class MapFragment extends Fragment {
 
         mWebViewMap = (WebView) v.findViewById(R.id.webview_map);
         address0 = (TextView)v.findViewById(R.id.device_address0);
-
+        Button YN = (Button)v.findViewById(R.id.YT);
+        YN.setOnClickListener(this);
         //test
         lastbeacon_mac = "";
         mSvgFile = "living_1f.svg";
@@ -236,6 +237,18 @@ public class MapFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void YT(){
+        FragmentManager fm = getFragmentManager();
+        YoutubeFragment CT = new YoutubeFragment();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CT );
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+
+
     }
 
     private final Handler bleHandler = new Handler() {
@@ -373,4 +386,9 @@ public class MapFragment extends Fragment {
                     }
                 }
             };
+
+    @Override
+    public void onClick(View v) {
+        YT();
+    }
 }
