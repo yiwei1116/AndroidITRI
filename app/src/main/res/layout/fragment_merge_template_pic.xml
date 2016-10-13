@@ -35,11 +35,18 @@
         android:layout_marginBottom="20sp"
 
         />
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/mask"
         android:weightSum="10"
+        android:visibility="gone"
+
         >
         <ImageView
         android:layout_width="match_parent"
@@ -69,37 +76,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/function"
+        android:weightSum="1"
+        android:visibility="gone"
+        >
         <ImageView
             android:layout_width="149dp"
             android:layout_height="126dp"
             android:id="@+id/QRcode"
             android:background="@drawable/test_qrcode"
             android:layout_gravity="center_vertical|center"
-            android:layout_marginTop="185sp"
-            android:layout_weight="0.15" />
+            android:layout_marginTop="155sp"
+            android:layout_weight="0.15"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button"
+            android:text="@string/save_to_phone"
+            android:id="@+id/savetoPhone"
             android:layout_below="@+id/QRcode"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:background="@drawable/btn_blue_fill"
+            android:layout_marginBottom="20dp"
+            android:textColor="@drawable/selecter_btn_black_white_txt_color"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button2"
-            android:layout_gravity="center"/>
+            android:text="@string/send_mail"
+            android:id="@+id/sendMail"
+            android:layout_below="@+id/savetoPhone"
+            android:background="@drawable/btn_blue_fill"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="@drawable/selecter_btn_black_white_txt_color"
+            />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button3"
-            android:layout_gravity="center"/>
+            android:text="@string/back_to_main"
+            android:textColor="@drawable/selecter_btn_black_white_txt_color"
+            android:id="@+id/backtoMain"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_blue_fill"
+
+            />
 
 
     </LinearLayout>

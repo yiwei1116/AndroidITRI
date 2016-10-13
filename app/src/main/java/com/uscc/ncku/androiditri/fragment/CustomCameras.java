@@ -315,16 +315,17 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             mCamera.takePicture(null, null, mPictureCallback);
 
         }
-        mCamera.autoFocus(new Camera.AutoFocusCallback() {
-            @Override
-            public void onAutoFocus(boolean success, Camera camera) {
-                if (success) {
-                    mCamera.takePicture(null, null, mPictureCallback);
+        else {
+            mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                @Override
+                public void onAutoFocus(boolean success, Camera camera) {
+                    if (success) {
+                        mCamera.takePicture(null, null, mPictureCallback);
 
+                    }
                 }
-            }
-        });
-
+            });
+        }
     }
 
     private void galleryAddPic() {

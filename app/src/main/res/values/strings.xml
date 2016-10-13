@@ -215,6 +215,9 @@
     <string name="mapguide_unvisited">未參觀點位</string>
     <string name="mapguide_next_visited">下一個參觀點位</string>
     <string name="feedback_question_7">未來您是否會購買相關智慧化系統或設備?</string>
+    <string name="save_to_phone">儲存至手機</string>
+    <string name="send_mail">寄email</string>
+    <string name="back_to_main">回到導覽</string>
 
 
 </resources>

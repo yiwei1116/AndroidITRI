@@ -1,7 +1,9 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
@@ -27,8 +30,11 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,14 +42,17 @@ import java.util.Date;
  * Use the {@link MergeTemplatePic#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MergeTemplatePic extends Fragment {
+public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
     private String templateIndex;
     private String WriteContext,BuildContext;
     private ImageView mergeImage,qrcodeImage;
     private TextView textView;
-    private Button icDownload;
+    private Button icDownload,savePhone,sendMail,backTour;
     private Toolbar toolbar;
+    private Bitmap mBitmap;
+    private LinearLayout mask,function;
+    private File imageFile;
     private static final int[] Template_Image = {
             R.drawable.template_1,
             R.drawable.template_2,
@@ -88,17 +97,19 @@ public class MergeTemplatePic extends Fragment {
          */
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
         //FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
+        mask = (LinearLayout)view.findViewById(R.id.mask);
+        function = (LinearLayout)view.findViewById(R.id.function);
         textView = (TextView)view.findViewById(R.id.context);
         mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
         qrcodeImage = (ImageView)view.findViewById(R.id.QRcode);
         icDownload = (Button)view.findViewById(R.id.ic_download);
-
-        icDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takeScreenshot();
-            }
-        });
+        savePhone = (Button)view.findViewById(R.id.savetoPhone);
+        sendMail = (Button)view.findViewById(R.id.sendMail);
+        backTour = (Button)view.findViewById(R.id.backtoMain);
+        savePhone.setOnClickListener(this);
+        sendMail.setOnClickListener(this);
+        backTour.setOnClickListener(this);
+        icDownload.setOnClickListener(this);
         Bundle bundle1 = getArguments();
        if(bundle1 != null) {
            templateIndex = (String) getArguments().get("TemplateNum");
@@ -132,6 +143,7 @@ public class MergeTemplatePic extends Fragment {
 
         try {
             mPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/" + now + ".jpeg";
+            Log.e("mPath",mPath);
             //藉由View來Cache全螢幕畫面後放入Bitmap
             View mView = getActivity().getWindow().getDecorView();
             mView.setDrawingCacheEnabled(true);
@@ -148,19 +160,9 @@ public class MergeTemplatePic extends Fragment {
             int mPhoneHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
 
             //將狀態列的部分移除並建立新的Bitmap
-            Bitmap mBitmap = Bitmap.createBitmap(mFullBitmap, 0, mStatusBarHeight, mPhoneWidth, mPhoneHeight - mStatusBarHeight);
+             mBitmap = Bitmap.createBitmap(mFullBitmap, 0, mStatusBarHeight, mPhoneWidth, mPhoneHeight - mStatusBarHeight);
             //將Cache的畫面清除
             mView.destroyDrawingCache();
-
-
-            File imageFile = new File(mPath);
-
-            FileOutputStream outputStream = new FileOutputStream(imageFile);
-            int quality = 100;
-            mBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-            outputStream.flush();
-            outputStream.close();
-            generateQRcode();
             //openScreenshot(imageFile);
             icDownload.setVisibility(View.VISIBLE);
             toolbar.setVisibility(View.VISIBLE);
@@ -187,6 +189,73 @@ public class MergeTemplatePic extends Fragment {
             e.printStackTrace();
         }
 
+
+    }
+    private void savetoPhone(){
+         imageFile = new File(mPath);
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            generateQRcode();
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    private void sendEmail() {
+        boolean found = false;
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        // gets the list of intents that can be loaded.
+        List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(share, 0);
+        if (!resInfo.isEmpty()){
+            for (ResolveInfo info : resInfo) {
+                if (info.activityInfo.packageName.toLowerCase().contains("com.google.android.gm") ||
+                        info.activityInfo.name.toLowerCase().contains("com.google.android.gm")
+                        )
+                {
+                    share.putExtra(Intent.EXTRA_SUBJECT,  "test");
+                    share.putExtra(Intent.EXTRA_TEXT,    "handsome");
+                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mPath)) ); // Optional, just if you wanna share an image.
+                    share.setPackage(info.activityInfo.packageName);
+                    found = true;
+                    break;
+                }
+
+            }
+            if (!found)
+                return;
+            startActivity(Intent.createChooser(share, "Select"));
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId()) {
+            case R.id.ic_download:
+                takeScreenshot();
+                icDownload.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                mask.setVisibility(View.VISIBLE);
+                function.setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.savetoPhone:
+                savetoPhone();
+                openScreenshot(imageFile);
+                break;
+            case R.id.sendMail:
+                savetoPhone();
+                sendEmail();
+        }
 
     }
 }
