@@ -351,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
+        containerSL.setVisibility(View.GONE);
     }
 
     private void finishOtherActivity() {

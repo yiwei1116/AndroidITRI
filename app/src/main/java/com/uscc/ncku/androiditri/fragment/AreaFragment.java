@@ -152,4 +152,6 @@ public class AreaFragment extends Fragment {
         super.onDetach();
         Log.i("GG", "onDetach");
     }
+
+
 }
