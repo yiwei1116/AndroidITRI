@@ -31,7 +31,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
 
         logoLoading();
-
+        manager = new SQLiteDbManager(this);
     }
 
     /**
@@ -112,8 +112,8 @@ public class LoadingActivity extends AppCompatActivity {
             /*
                 --> can delete
              */
-            ConnectActivity connect = new ConnectActivity();
-//            connect.downloadProjectData("1");
+
+            ConnectActivity connect = new ConnectActivity(manager);
 
             ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
 

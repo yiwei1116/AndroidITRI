@@ -1,9 +1,12 @@
 package com.uscc.ncku.androiditri;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,11 +25,12 @@ import java.util.HashMap;
 public class ConnectActivity extends Activity {
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
     private String downloadURL = "http://140.116.82.48/interface/download.php";
-    private final String mode_id = "mode_id";
-    private final String device_id = "device_id";
-    private final String add_count = "add_count";
-    private final String request_type = "type";
-    private final String request_data = "data";
+    public SQLiteDbManager sqLiteDbManager;
+
+
+    public ConnectActivity(SQLiteDbManager manager) {
+        sqLiteDbManager = manager;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,26 +210,7 @@ public class ConnectActivity extends Activity {
             String downloadResponse = "";
             // do all things here
             try {
-                switch (intendedTable) {
-                    case "device":
-                        break;
-                    case "beacon":
-                        break;
-                    case "company":
-                        break;
-                    case "field_map":
-                        break;
-                    case "hipster_template":
-                        break;
-                    case "hipster_text":
-                        break;
-                    case "mode":
-                        break;
-                    case "zone":
-                        break;
-                    default:
-                        break;
-                }
+
                 downloadResponse = performDownloadPost(new HashMap<String, String>() {
                     {
                         put("Accept", "application/json");
@@ -234,7 +219,9 @@ public class ConnectActivity extends Activity {
                 });
                 // log http response code
                 Log.i("HTTP result", downloadResponse);
-                // parse json string
+                // fetch as json array
+                JSONArray responseJSON = new JSONArray(downloadResponse);
+                saveToSQLite(responseJSON);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -246,6 +233,51 @@ public class ConnectActivity extends Activity {
             super.onPostExecute(aVoid);
             Log.i("download", "PostExecute success.");
         }
+
+
+        // parse and save to SQLite DB
+        private void saveToSQLite(JSONArray jsonArray) {
+            SQLiteDatabase db = sqLiteDbManager.getWritableDatabase();
+
+            // parse json string
+            switch (intendedTable) {
+                case "device":
+                    Log.i("device", String.valueOf(jsonArray));
+                    
+                    break;
+                case "beacon":
+                    Log.i("beacon", String.valueOf(jsonArray));
+
+                    break;
+                case "company":
+                    Log.i("company", String.valueOf(jsonArray));
+
+                    break;
+                case "field_map":
+                    Log.i("field_map", String.valueOf(jsonArray));
+
+                    break;
+                case "hipster_template":
+                    Log.i("hipster_template", String.valueOf(jsonArray));
+
+                    break;
+                case "hipster_text":
+                    Log.i("hipster_text", String.valueOf(jsonArray));
+
+                    break;
+                case "mode":
+                    Log.i("mode", String.valueOf(jsonArray));
+
+                    break;
+                case "zone":
+                    Log.i("zone", String.valueOf(jsonArray));
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         private String performDownloadPost(HashMap<String, String> hashMap) {
             String response = "";
