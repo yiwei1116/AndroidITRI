@@ -25,9 +25,10 @@ import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
-
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
     private int tourIndex;
@@ -119,14 +120,16 @@ public class MainActivity extends AppCompatActivity {
                     disableSoundFont();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
-                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment).addToBackStack(null);
+                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment, DiaryFragment.DIARY_FRAGMENT_TAG);
+                        transaction.addToBackStack(DiaryFragment.DIARY_FRAGMENT_TAG);
                     }
                     break;
                 case R.id.btn_map_main:
                     disableSoundFont();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-                        transaction.replace(R.id.flayout_fragment_continer, mapFragment).addToBackStack(null);
+                        transaction.replace(R.id.flayout_fragment_continer, mapFragment, MapFragment.MAP_FRAGMENT_TAG);
+                        transaction.addToBackStack(MapFragment.MAP_FRAGMENT_TAG);
                     }
                     break;
                 case R.id.btn_sound_main:
@@ -222,15 +225,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        int previousFragmentIndex = getFragmentManager().getBackStackEntryCount() - 1;
         Fragment f = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
         if (f instanceof MapFragment) {
             setBtnActive(mapBtn, R.drawable.btn_main_map_active);
             return;
         } else if (f instanceof DiaryFragment) {
             FragmentManager fm = getFragmentManager();
+            FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(previousFragmentIndex);
+            String name = backEntry.getName();
+            if (!name.equals(MapFragment.MAP_FRAGMENT_TAG)) {
+                setDiaryNormal();
+                fm.popBackStack();
+                return;
+            }
+
             FragmentTransaction transaction = fm.beginTransaction();
             setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-            transaction.replace(R.id.flayout_fragment_continer, mapFragment).addToBackStack(null);
+            transaction.replace(R.id.flayout_fragment_continer, mapFragment, MapFragment.MAP_FRAGMENT_TAG);
             transaction.commit();
             return;
         }

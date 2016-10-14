@@ -27,6 +27,7 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class AreaFragment extends Fragment {
+    public static final String AREA_FRAGMENT_TAG = "AREA_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
     private static final int[] TOUR_GUIDE = {
             R.drawable.designer_talking,

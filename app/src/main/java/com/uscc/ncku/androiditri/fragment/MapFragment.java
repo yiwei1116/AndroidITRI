@@ -44,6 +44,7 @@ import com.uscc.ncku.androiditri.util.DownloadProject;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
+    public static final String MAP_FRAGMENT_TAG = "MAP_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
 
     private int tourIndex;
@@ -57,7 +58,7 @@ public class MapFragment extends Fragment {
     private int mScanedField;
     private BLEScannerWrapper mBLEScannerWrapper;
     private DownloadProject.Beacon mLastSacnBeacon = null;
-
+    private View view;
     private DownloadProject mTourProject;
 
     //test
@@ -97,10 +98,10 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
+        view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mWebViewMap = (WebView) v.findViewById(R.id.webview_map);
-        address0 = (TextView)v.findViewById(R.id.device_address0);
+        mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
+        address0 = (TextView)view.findViewById(R.id.device_address0);
 
         //test
         lastbeacon_mac = "";
@@ -140,10 +141,10 @@ public class MapFragment extends Fragment {
             }
         });
 
-        final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
+        final RelativeLayout notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
         notice.setVisibility(View.VISIBLE);
-        Button cancel = (Button) v.findViewById(R.id.btn_cancel_map_area);
-        Button enter = (Button) v.findViewById(R.id.btn_enter_map_area);
+        Button cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
+        Button enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,15 +156,18 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 notice.setVisibility(View.GONE);
 
+                MainActivity.setMapNormal();
+
                 AreaFragment areaFragment = AreaFragment.newInstance(tourIndex);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, areaFragment).addToBackStack(null);
+                transaction.replace(R.id.flayout_fragment_continer, areaFragment, AreaFragment.AREA_FRAGMENT_TAG);
+                transaction.addToBackStack(AreaFragment.AREA_FRAGMENT_TAG);
                 transaction.commit();
             }
         });
 
-        return v;
+        return view;
     }
 
     @Override
