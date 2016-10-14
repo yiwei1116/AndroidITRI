@@ -168,4 +168,18 @@
     <string name="feedback_fourth_order">Your third choice product purchase is</string>
     <string name="feedback_fifth_order">Your fifth choice product purchase is</string>
     <string name="feedback_next">Next</string>
+    <string name="buildContext1"></string>
+    <string name="buildContext2"></string>
+    <string name="buildContext3"></string>
+    <string name="back_to_main"></string>
+    <string name="build_text"></string>
+    <string name="choose_photo"></string>
+    <string name="choose_template"></string>
+    <string name="context"></string>
+    <string name="nextstep">Next</string>
+    <string name="rm_test">testtesttesttesttesttesttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</string>
+    <string name="write_text"></string>
+    <string name="text_master"></string>
+    <string name="save_to_phone"></string>
+    <string name="send_mail"></string>
 </resources>
