@@ -29,6 +29,7 @@ import com.uscc.ncku.androiditri.R;
 public class AreaFragment extends Fragment {
     public static final String AREA_FRAGMENT_TAG = "AREA_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
+    private static final String ZONE = "ZONE";
     private static final int[] TOUR_GUIDE = {
             R.drawable.designer_talking,
             R.drawable.robot_talking,
@@ -36,6 +37,7 @@ public class AreaFragment extends Fragment {
     };
 
     private int tourIndex;
+    private int currentZone;
     private View view;
 
 
@@ -49,10 +51,11 @@ public class AreaFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment AreaFragment.
      */
-    public static AreaFragment newInstance(int param1) {
+    public static AreaFragment newInstance(int param1,int param2) {
         AreaFragment fragment = new AreaFragment();
         Bundle args = new Bundle();
         args.putInt(TOUR_INDEX, param1);
+        args.putInt(ZONE, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,8 +65,10 @@ public class AreaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
+            currentZone = getArguments().getInt(ZONE);
         }
         Log.i("GG", "onCreat");
+        Log.i("GG", currentZone+"");
     }
 
     @Override
