@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -234,44 +236,131 @@ public class ConnectActivity extends Activity {
             Log.i("download", "PostExecute success.");
         }
 
-
         // parse and save to SQLite DB
-        private void saveToSQLite(JSONArray jsonArray) {
+        private void saveToSQLite(JSONArray jsonArray) throws JSONException{
             SQLiteDatabase db = sqLiteDbManager.getWritableDatabase();
-
             // parse json string
+            // check which table it is
             switch (intendedTable) {
                 case "device":
                     Log.i("device", String.valueOf(jsonArray));
-                    
-                    break;
-                case "beacon":
-                    Log.i("beacon", String.valueOf(jsonArray));
-
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertDevice(json.optInt(DatabaseUtilizer.DEVICE_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.NAME_EN),
+                                json.optString(DatabaseUtilizer.INTRODUCTION),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
+                                json.optString(DatabaseUtilizer.DEVICE_HINT),
+                                json.optInt(DatabaseUtilizer.DEVICE_MODE_ID),
+                                json.optInt(DatabaseUtilizer.DEVICE_COMPANY_ID),
+                                json.optInt(DatabaseUtilizer.READ_COUNT));
+                    }
                     break;
                 case "company":
                     Log.i("company", String.valueOf(jsonArray));
-
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertCompany(json.optInt(DatabaseUtilizer.COMPANY_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.COMPANY_TEL),
+                                json.optString(DatabaseUtilizer.COMPANY_FAX),
+                                json.optString(DatabaseUtilizer.COMPANY_ADDR),
+                                json.optString(DatabaseUtilizer.COMPANY_WEB),
+                                json.optString(DatabaseUtilizer.QRCODE));
+                    }
+                    break;
+                case "beacon":
+                    Log.i("beacon", String.valueOf(jsonArray));
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertBeacon(json.optInt(DatabaseUtilizer.BEACON_ID),
+                                json.optString(DatabaseUtilizer.MAC_ADDR),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optInt(DatabaseUtilizer.BEACON_POWER),
+                                json.optInt(DatabaseUtilizer.BEACON_STATUS),
+                                json.optInt(DatabaseUtilizer.BEACON_ZONE),
+                                json.optInt(DatabaseUtilizer.X),
+                                json.optInt(DatabaseUtilizer.Y),
+                                json.optInt(DatabaseUtilizer.BEACON_FIELD_ID),
+                                json.optString(DatabaseUtilizer.BEACON_FIELD_NAME));
+                    }
                     break;
                 case "field_map":
-                    Log.i("field_map", String.valueOf(jsonArray));
-
+                    Log.i("field map", String.valueOf(jsonArray));
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertFieldMap(json.optInt(DatabaseUtilizer.FIELD_MAP_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.NAME_EN),
+                                json.optInt(DatabaseUtilizer.PROJECT_ID),
+                                json.optString(DatabaseUtilizer.INTRODUCTION),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
+                                json.optString(DatabaseUtilizer.MAP_SVG));
+                    }
                     break;
                 case "hipster_template":
-                    Log.i("hipster_template", String.valueOf(jsonArray));
-
+                    Log.i("template", String.valueOf(jsonArray));
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertHipsterTemplate(json.optInt(DatabaseUtilizer.HIPSTER_TEMPLATE_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.TEMPLATE));
+                    }
                     break;
                 case "hipster_text":
-                    Log.i("hipster_text", String.valueOf(jsonArray));
-
+                    Log.i("text", String.valueOf(jsonArray));
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertHipsterText(json.optInt(DatabaseUtilizer.HIPSTER_TEXT_ID),
+                                json.optString(DatabaseUtilizer.CONTENT));
+                    }
                     break;
                 case "mode":
                     Log.i("mode", String.valueOf(jsonArray));
-
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertMode(json.optInt(DatabaseUtilizer.MODE_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.NAME_EN),
+                                json.optString(DatabaseUtilizer.INTRODUCTION),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.VIDEO),
+                                json.optString(DatabaseUtilizer.MODE_SPLASH_BG),
+                                json.optString(DatabaseUtilizer.MODE_SPLASH_FG),
+                                json.optString(DatabaseUtilizer.MODE_SPLASH_BLUR),
+                                json.optInt(DatabaseUtilizer.LIKE_COUNT),
+                                json.optInt(DatabaseUtilizer.READ_COUNT),
+                                json.optInt(DatabaseUtilizer.TIME_TOTAL),
+                                json.optInt(DatabaseUtilizer.ZONE_ID));
+                    }
                     break;
                 case "zone":
                     Log.i("zone", String.valueOf(jsonArray));
-
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertZone(json.optInt(DatabaseUtilizer.ZONE_ID),
+                                json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.NAME_EN),
+                                json.optString(DatabaseUtilizer.INTRODUCTION),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.DEVICE_HINT),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO),
+                                json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
+                                json.optInt(DatabaseUtilizer.FIELD_ID));
+                    }
                     break;
                 default:
                     break;
