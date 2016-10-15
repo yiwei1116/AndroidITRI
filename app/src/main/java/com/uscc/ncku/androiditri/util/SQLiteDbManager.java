@@ -56,12 +56,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // upload survey
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
+        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
 
-        
+
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
         // problem with path
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
