@@ -37,6 +37,8 @@ import com.uscc.ncku.androiditri.ble.BLEModule;
 import com.uscc.ncku.androiditri.ble.BLEScannerWrapper;
 import com.uscc.ncku.androiditri.util.DownloadProject;
 
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,26 +46,61 @@ import com.uscc.ncku.androiditri.util.DownloadProject;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
+    public static final String MAP_FRAGMENT_TAG = "MAP_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
 
     private int tourIndex;
+    private int currentZone;
 
     private static final String TAG = "MapFragment";
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     JavaScriptInterface mJavaScriptInterface;
     private WebView mWebViewMap;
+    private RelativeLayout notice;
+    private Button cancel;
+    private Button enter;
     private String mSvgFile = "";
     private int mScanedField;
     private BLEScannerWrapper mBLEScannerWrapper;
-    private DownloadProject.Beacon mLastSacnBeacon = null;
-
+    private Beacon mLastSacnBeacon = null;
+    private View view;
     private DownloadProject mTourProject;
 
     //test
     private String lastbeacon_mac;
-    private boolean t;
     TextView address0;
+
+    private int currentPathOrder = 0;
+    private int currentZoneOrder = 0;
+    private int pathOrder[] = {1,2,3};
+    private int zoneOrder[] = {2,3,4,5 };
+
+    public ArrayList<Beacon> mBeaconList = new ArrayList<>();
+    public ArrayList<Field> mFieldList = new ArrayList<>();
+    public class Beacon
+    {
+        public String mac_addr;
+        public int zone;
+        public int field;
+        public Beacon(String mac_addr,int zone,int field)
+        {
+            this.mac_addr = mac_addr;
+            this.zone = zone;
+            this.field = field;
+        }
+    }
+    public class Field
+    {
+        public String map_name;
+        public int id;
+        public Field(int id,String map_name)
+        {
+            this.id = id;
+            this.map_name = map_name;
+        }
+    }
+
     ///
 
     public MapFragment() {
@@ -97,10 +134,10 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
+        view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mWebViewMap = (WebView) v.findViewById(R.id.webview_map);
-        address0 = (TextView)v.findViewById(R.id.device_address0);
+        mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
+        address0 = (TextView)view.findViewById(R.id.device_address0);
 
         //test
         lastbeacon_mac = "";
@@ -140,10 +177,9 @@ public class MapFragment extends Fragment {
             }
         });
 
-        final RelativeLayout notice = (RelativeLayout) v.findViewById(R.id.rlayout_map_area);
-        notice.setVisibility(View.VISIBLE);
-        Button cancel = (Button) v.findViewById(R.id.btn_cancel_map_area);
-        Button enter = (Button) v.findViewById(R.id.btn_enter_map_area);
+        notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
+        cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
+        enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,15 +191,18 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 notice.setVisibility(View.GONE);
 
-                AreaFragment areaFragment = AreaFragment.newInstance(tourIndex);
+                MainActivity.setMapNormal();
+
+                AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, areaFragment).addToBackStack(null);
+                transaction.replace(R.id.flayout_fragment_continer, areaFragment, AreaFragment.AREA_FRAGMENT_TAG);
+                transaction.addToBackStack(AreaFragment.AREA_FRAGMENT_TAG);
                 transaction.commit();
             }
         });
 
-        return v;
+        return view;
     }
 
     @Override
@@ -184,6 +223,7 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mBLEScannerWrapper.startBLEScan();
+        mWebViewMap.loadUrl("javascript: onResumeMap();");
     }
     @Override
     public void onPause() {
@@ -214,7 +254,8 @@ public class MapFragment extends Fragment {
 
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
-        websettings.setSupportZoom(false);  // do not remove this
+        //websettings.setSupportZoom(false);  // do not remove this
+        websettings.setBuiltInZoomControls(true); //顯示放大縮小 controller
         websettings.setAllowFileAccessFromFileURLs(true); // do not remove this
         websettings.setSupportMultipleWindows(false);
         websettings.setJavaScriptCanOpenWindowsAutomatically(false);
@@ -238,11 +279,18 @@ public class MapFragment extends Fragment {
         }
     }
 
-
     private final Handler bleHandler = new Handler() {
         public void handleMessage(Message msg) {
             try {
                 String mac = "";
+                //test
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30",2,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64",3,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D",15,2));
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77",16,2));
+                mFieldList.add(new Field(1,"living_1f"));
+                mFieldList.add(new Field(2,"living_2f"));
+                //test
                 switch (msg.what) {
                     case BLEModule.BLE_SCAN_DONE:
                         // get region number from mac address (device.getAddress())
@@ -268,6 +316,7 @@ public class MapFragment extends Fragment {
                         ///////////////////////////////
 
                         address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
+                        /*
                         if(!mac.equals("") && !mac.equals(lastbeacon_mac))
                         {
                             lastbeacon_mac = mac;
@@ -284,29 +333,33 @@ public class MapFragment extends Fragment {
                                 mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + "5" + ")");
                             }
                         }
+                        */
                         ////////////////////////////////
                         // query region id from database
-                        DownloadProject.Beacon b = GetZoneNum(mac);
+                        Beacon b = GetZoneNum(mac);
                         if (b == null) {
                             return;
                         }
-                        Log.d("ZontActivity", "b.zone.num = " + b.zone_num);
+                        Log.d("ZontActivity", "b.zone.num = " + b.zone);
+                        notice.setVisibility(View.VISIBLE);
+                        currentZone = b.zone;
+                        lastbeacon_mac = mac;
                         if (mLastSacnBeacon == null || mLastSacnBeacon.field != b.field) {
                             // Change field
-                            for (DownloadProject.Field f : mTourProject.mFieldList){
+                            for (Field f : mFieldList){
                                 if(f.id == b.field){
                                     mScanedField = f.id;
-                                    String loadfile =  "file:///" + mTourProject.getStoragePath() + f.map_name ;
-                                    Log.d("ZontActivity", "javascript: setSVGLoad('" + loadfile + "'," + b.zone_num + ")");
-                                    //mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + b.zone_num + ")");
+                                    String loadfile =  "file:///android_asset/" +  f.map_name +".svg";
+                                    Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + b.zone + ")");
+                                    mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + b.zone + ")");
 
                                     break;
                                 }
                             }
                         } else {
-                            /*if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                                //mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + b.zone_num + ")");
-                            }*/
+                            if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
+                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + b.zone + ")");
+                            }
                         }
 
                         // change map button status
@@ -331,14 +384,12 @@ public class MapFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        private DownloadProject.Beacon GetZoneNum(String mac){
+        private Beacon GetZoneNum(String mac){
             if(mac.length() == 0)
                 return null;
-            for(DownloadProject.Field f: mTourProject.mFieldList){
-                for(DownloadProject.Beacon b: f.mBeaconList){
-                    if(mac.equals(b.mac_addr)){
-                        return b;
-                    }
+            for(Beacon b: mBeaconList){
+                if(mac.equals(b.mac_addr)){
+                    return b;
                 }
             }
             return null;
@@ -374,5 +425,4 @@ public class MapFragment extends Fragment {
                     }
                 }
             };
-
 }
