@@ -1,9 +1,9 @@
 package com.uscc.ncku.androiditri.fragment;
 
-
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.TabLayout;
+import android.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
@@ -124,10 +124,16 @@ public class EquipmentTabFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
             container.addView(v);
-
+            YoutubeFragment fragment = new YoutubeFragment();
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.flayout_equip_intro, fragment)
+                    .addToBackStack(null)
+                    .commit();
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
             title.setText(equipTabs.get(position).title);
 
