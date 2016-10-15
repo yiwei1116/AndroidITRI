@@ -52,6 +52,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
  * create an instance of this fragment.
  */
 public class DiaryFragment extends Fragment implements View.OnClickListener{
+    public static final String DIARY_FRAGMENT_TAG = "DIARY_FRAGMENT_TAG";
     private DisplayMetrics mPhone;
     private final static int CAMERA_RESULT = 0;
     private final static int PHOTO_RESULT = 1;

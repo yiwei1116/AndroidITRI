@@ -176,7 +176,6 @@ public class ChooseTemplate extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         MainActivity.showDefaultToolbar();
-        MainActivity.setToolbarTitle(R.string.nothing);
     }
 
     @Override

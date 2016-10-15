@@ -26,39 +26,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/rm_a1m1e1_photo"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom">
 
-            <ToggleButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_equip_video"
-                android:layout_weight="1"
-                android:textOn="@string/video"
-                android:textOff="@string/video"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:background="@drawable/selecter_btn_equip_intro_bg"
-                android:alpha="0.94"
-                android:visibility="visible"/>
 
-            <ToggleButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_equip_photo"
-                android:layout_weight="1"
-                android:textOn="@string/photo"
-                android:textOff="@string/photo"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:background="@drawable/selecter_btn_equip_intro_bg"
-                android:alpha="0.94"
-                android:visibility="visible"/>
-
-        </LinearLayout>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -72,7 +41,42 @@
             android:layout_marginRight="10dp" />
 
     </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_below="@+id/flayout_equip_intro"
 
+        >
+
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_equip_video"
+            android:layout_weight="1"
+            android:textOn="@string/video"
+            android:textOff="@string/video"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:background="@drawable/selecter_btn_equip_intro_bg"
+            android:alpha="0.94"
+            android:visibility="visible"/>
+
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_equip_photo"
+            android:layout_weight="1"
+            android:textOn="@string/photo"
+            android:textOff="@string/photo"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:background="@drawable/selecter_btn_equip_intro_bg"
+            android:alpha="0.94"
+            android:visibility="visible"/>
+
+    </LinearLayout>
     <TextView
         android:id="@+id/txt_equip_intro_content"
         android:layout_width="wrap_content"
