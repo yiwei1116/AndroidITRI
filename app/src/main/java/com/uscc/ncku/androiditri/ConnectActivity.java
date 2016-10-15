@@ -362,9 +362,24 @@ public class ConnectActivity extends Activity {
                                 json.optInt(DatabaseUtilizer.FIELD_ID));
                     }
                     break;
+                case "path":
+                    Log.i("path", String.valueOf(jsonArray));
+                    for( int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = (JSONObject)jsonArray.get(i);
+                        // store each entry into database
+                        sqLiteDbManager.insertPath(json.optInt(DatabaseUtilizer.CHOOSE_PATH_ID),
+                                json.optInt(DatabaseUtilizer.PATH_ORDER),
+                                json.optInt(DatabaseUtilizer.PATH_SVG_ID),
+                                json.optInt(DatabaseUtilizer.START),
+                                json.optInt(DatabaseUtilizer.PATH_SN),
+                                json.optInt(DatabaseUtilizer.END),
+                                json.optInt(DatabaseUtilizer.PATH_EN));
+                    }
+                    break;
                 default:
                     break;
             }
+
         }
 
 
