@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.uscc.ncku.androiditri.usage.DatabaseUtilizer;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +17,7 @@ import org.json.JSONObject;
 public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // database name
-    public static final String DATABASE_NAME = "ITRI.db";
+    public static final String DATABASE_NAME = "android_itri_1.db";
 
 
     /*
@@ -47,7 +45,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         // create tables
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_DEVICE);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_BEACON);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_COMPANY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_FIELD_MAP);
@@ -55,18 +52,21 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_CONTENT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEMPLATE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEXT);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_MODE);
-        // problem with path
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
         // upload survey
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_PI);
-//        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_VOICE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
+
+        
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
+        // problem with path
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_PI);
+        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_VOICE);
     }
 
     public void onOpen(SQLiteDatabase db) {
@@ -174,7 +174,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 int status,
                                 int zone,
                                 int x,
-                                int y) {
+                                int y,
+                                int field_id,
+                                String field_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("beacon_id", beacon_id);
@@ -185,6 +187,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("zone", zone);
         values.put("x", x);
         values.put("y", y);
+        values.put("field_id", field_id);
+        values.put("field_name", field_name);
         db.insert("beacon", null, values);
         return true;
     }
@@ -448,6 +452,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("splash_blur_vertical", splash_blur_vertical);
         values.put("like_count", like_count);
         values.put("read_count", read_count);
+        values.put("time_total", time_total);
         values.put("zone_id", zone_id);
         db.insert("mode", null, values);
         return true;
@@ -618,9 +623,74 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
         return filePaths;
     }
-    /*
-        --> get those entries that would need to fetch data from server
-     */
+
+
+    // path table query and insert
+    public boolean insertPath(int choose_path_id,
+                              int path_order,
+                              int svg_id,
+                              int start,
+                              int sn,
+                              int end,
+                              int en) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("choose_path_id", choose_path_id);
+        values.put("path_order", path_order);
+        values.put("svg_id", svg_id);
+        values.put("start", start);
+        values.put("Sn", sn);
+        values.put("End", end);
+        values.put("En", en);
+        db.insert("path", null, values);
+        return true;
+    }
+
+
+    public Cursor getPath(int path_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from path where choose_path_id=" + path_id + "", null);
+        return cursor;
+    }
+
+
+    // get zone files
+    public JSONArray queryPaths() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from path", null);
+        cursor.moveToFirst();
+        int choose_path_id;
+        int order;
+        int svg_id;
+        int start;
+        int Sn;
+        int End;
+        int En;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            choose_path_id = cursor.getInt(cursor.getColumnIndex("choose_path_id"));
+            order = cursor.getInt(cursor.getColumnIndex("order"));
+            svg_id = cursor.getInt(cursor.getColumnIndex("svg_id"));
+            start = cursor.getInt(cursor.getColumnIndex("start"));
+            Sn = cursor.getInt(cursor.getColumnIndex("Sn"));
+            End = cursor.getInt(cursor.getColumnIndex("End"));
+            En = cursor.getInt(cursor.getColumnIndex("En"));
+            // add to JSONObject
+            file.put("choose_path_id", choose_path_id);
+            file.put("path_order", order);
+            file.put("svg_id", svg_id);
+            file.put("start", start);
+            file.put("Sn", Sn);
+            file.put("End", End);
+            file.put("En", En);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
 
 
 }

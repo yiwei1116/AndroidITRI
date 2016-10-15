@@ -1,4 +1,4 @@
-package com.uscc.ncku.androiditri.usage;
+package com.uscc.ncku.androiditri.util;
 
 /**
  * Created by Oslo on 9/27/16.
@@ -68,7 +68,7 @@ public class DatabaseUtilizer {
     public static final String MODE_NAME = "name";
     public static final String MODE_SPLASH_BG = "splash_bg_vertical";
     public static final String MODE_SPLASH_FG = "splash_fg_vertical";
-    public static final String MODE_SPLASH_BLUR = "splash_spur_vertical";
+    public static final String MODE_SPLASH_BLUR = "splash_blur_vertical";
 
     // zone table
     public static final String ZONE_TABLE = "zone";
@@ -76,9 +76,15 @@ public class DatabaseUtilizer {
     public static final String FIELD_ID = "field_id";
 
     // path table
-    public static final String PATH_TABLE = "path";
-    public static final String PATH_ID = "path_id";
-    public static final String PATH_ORDER = "order";
+    public static final String PATH_TABLE = "path"; // path
+    public static final String CHOOSE_PATH_ID = "choose_path_id"; // int
+    public static final String PATH_ORDER = "path_order"; // int
+    public static final String PATH_SVG_ID = "svg_id"; // int
+    public static final String START = "start"; // start
+    public static final String PATH_SN = "Sn"; // Sn
+    public static final String END = "End";
+    public static final String PATH_EN = "En"; // En
+
 
     // beacon table
     public static final String BEACON_TABLE = "beacon";
@@ -86,6 +92,8 @@ public class DatabaseUtilizer {
     public static final String BEACON_POWER = "power";
     public static final String BEACON_STATUS = "status";
     public static final String BEACON_ZONE = "zone";
+    public static final String BEACON_FIELD_NAME = "field_name";
+    public static final String BEACON_FIELD_ID = "field_id";
 
     // compnay
     public static final String COMPANY_TABLE = "company";
@@ -176,7 +184,7 @@ public class DatabaseUtilizer {
 
     // device
     public static final String DB_CREATE_TABLE_DEVICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.DEVICE_TABLE + " ("
-            + DatabaseUtilizer.DEVICE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.DEVICE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
@@ -190,7 +198,7 @@ public class DatabaseUtilizer {
             + ")";
     // project
     public static final String DB_CREATE_TABLE_PROJECT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PROJECT_TABLE + " ("
-            + DatabaseUtilizer.PROJECT_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.PROJECT_ID + " INT NOT NULL, "
             + DatabaseUtilizer.VERSION + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
@@ -198,18 +206,20 @@ public class DatabaseUtilizer {
             + ")";
     // beacon
     public static final String DB_CREATE_TABLE_BEACON = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.BEACON_TABLE + " ("
-            + DatabaseUtilizer.BEACON_ID + " INTEGER PRIMARY KEY, "
-            + DatabaseUtilizer.MAC_ADDR + " TEXT NOT NULL, "
-            + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
+            + DatabaseUtilizer.BEACON_ID + " INT NOT NULL, "
+            + DatabaseUtilizer.MAC_ADDR + " TEXT, "
+            + DatabaseUtilizer.NAME + " TEXT, "
             + DatabaseUtilizer.BEACON_POWER + " INT NOT NULL, "
             + DatabaseUtilizer.BEACON_STATUS + " INT NOT NULL, "
             + DatabaseUtilizer.BEACON_ZONE + " INT NOT NULL, "
             + DatabaseUtilizer.X + " INT NOT NULL, "
-            + DatabaseUtilizer.Y + " INT NOT NULL"
+            + DatabaseUtilizer.Y + " INT NOT NULL, "
+            + DatabaseUtilizer.BEACON_FIELD_ID + " INT, "
+            + DatabaseUtilizer.BEACON_FIELD_NAME + " TEXT"
             + ")";
     // company
     public static final String DB_CREATE_TABLE_COMPANY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.COMPANY_TABLE + " ("
-            + DatabaseUtilizer.COMPANY_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.COMPANY_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_TEL + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_FAX + " TEXT DEFAULT NULL, "
@@ -219,7 +229,7 @@ public class DatabaseUtilizer {
             + ")";
     // field map
     public static final String DB_CREATE_TABLE_FIELD_MAP = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.FIELD_MAP_TABLE + " ("
-            + DatabaseUtilizer.FIELD_MAP_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.FIELD_MAP_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.PROJECT_ID + " INT NOT NULL, "
@@ -231,7 +241,7 @@ public class DatabaseUtilizer {
             + ")";
     // hipster content
     public static final String DB_CREATE_TABLE_HIPSTER_CONTENT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_CONTENT_TABLE + " ("
-            + DatabaseUtilizer.HIPSTER_CONTENT_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.HIPSTER_CONTENT_ID + " INT NOT NULL, "
             + DatabaseUtilizer.CONTENT + " TEXT, "
             + DatabaseUtilizer.PICTURE + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.COMBINE_PICTURE + " TEXT NOT NULL, "
@@ -241,18 +251,18 @@ public class DatabaseUtilizer {
             + ")";
     // hipster template
     public static final String DB_CREATE_TABLE_HIPSTER_TEMPLATE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_TEMPLATE_TABLE + " ("
-            + DatabaseUtilizer.HIPSTER_TEMPLATE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.HIPSTER_TEMPLATE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.TEMPLATE + " TEXT NOT NULL"
             + ")";
     // hipster text
     public static final String DB_CREATE_TABLE_HIPSTER_TEXT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_TEXT_TABLE + " ("
-            + DatabaseUtilizer.HIPSTER_TEXT_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.HIPSTER_TEXT_ID + " INT NOT NULL, "
             + DatabaseUtilizer.CONTENT + " TEXT NOT NULL"
             + ")";
     // lease
     public static final String DB_CREATE_TABLE_LEASE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.LEASE_TABLE + " ("
-            + DatabaseUtilizer.LEASE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.LEASE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.PAD_ID + " TEXT NOT NULL, "
             + DatabaseUtilizer.BORROWER + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.BORROWER_TEL + " TEXT DEFAULT NULL, "
@@ -261,8 +271,8 @@ public class DatabaseUtilizer {
             + ")";
     // mode
     public static final String DB_CREATE_TABLE_MODE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.MODE_TABLE + " ("
-            + DatabaseUtilizer.MODE_ID + " INTEGER PRIMARY KEY, "
-            + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
+            + DatabaseUtilizer.MODE_ID + " INT NOT NULL, "
+            + DatabaseUtilizer.MODE_NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
@@ -272,18 +282,22 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.MODE_SPLASH_BLUR + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.LIKE_COUNT + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.READ_COUNT + " INT NOT NULL DEFAULT 0, "
-            + DatabaseUtilizer.TIME_TOTAL + " INT DEFAULT NULL, "
-            + DatabaseUtilizer.ZONE_ID + " INT NOT NULL"
+            + DatabaseUtilizer.TIME_TOTAL + " TEXT DEFAULT NULL, "
+            + DatabaseUtilizer.ZONE_ID + " INT"
             + ")";
     // path --> path_id is the only primary key, different from database
-//    public static final String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
-//            + DatabaseUtilizer.PATH_ID + " INTEGER PRIMARY KEY, "
-//            + DatabaseUtilizer.ZONE_ID + " INT NOT NULL, "
-//            + DatabaseUtilizer.PATH_ORDER + " INT NOT NULL"
-//            + ")";
+    public static final String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
+            + DatabaseUtilizer.CHOOSE_PATH_ID + " INT NOT NULL, "
+            + DatabaseUtilizer.PATH_ORDER + " INT, "
+            + DatabaseUtilizer.PATH_SVG_ID + " INT, "
+            + DatabaseUtilizer.START + " INT, "
+            + DatabaseUtilizer.PATH_SN + " TEXT, "
+            + DatabaseUtilizer.END + " INT, "
+            + DatabaseUtilizer.PATH_EN + " TEXT"
+            + ")";
     // survey
     public static final String DB_CREATE_TABLE_SURVEY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_TABLE + " ("
-            + DatabaseUtilizer.SURVEY_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.SURVEY_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.EMAIL + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GENDER + " INT NOT NULL, "
@@ -300,14 +314,14 @@ public class DatabaseUtilizer {
             + ")";
     // survey result
     public static final String DB_CREATE_TABLE_SURVEY_RESULT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_RESULT_TABLE + " ("
-            + DatabaseUtilizer.SURVEY_RESULT_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.SURVEY_RESULT_ID + " INT NOT NULL, "
             + DatabaseUtilizer.SURVEY_QUESTION + " INT NOT NULL, "
             + DatabaseUtilizer.SURVEY_ANSWER + " INT NOT NULL, "
             + DatabaseUtilizer.TOTAL + " INT NOT NULL"
             + ")";
     // users
     public static final String DB_CREATE_TABLE_USERS = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.USERS_TABLE + " ("
-            + DatabaseUtilizer.USER_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.USER_ID + " INT NOT NULL, "
             + DatabaseUtilizer.EMAIL + " TEXT NOT NULL, "
             + DatabaseUtilizer.PASSWORD + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPETENCE + " INT NOT NULL, "
@@ -315,27 +329,27 @@ public class DatabaseUtilizer {
             + ")";
     // vip device
     public static final String DB_CREATE_TABLE_VIP_DEVICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_DEVICE_TABLE + " ("
-            + DatabaseUtilizer.VIP_DEVICE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.VIP_DEVICE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.MAC_ADDR + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.POWER + " INT NOT NULL"
             + ")";
     // vip pi
     public static final String DB_CREATE_TABLE_VIP_PI = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_PI_TABLE + " ("
-            + DatabaseUtilizer.VIP_PI_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.VIP_PI_ID + " INT NOT NULL, "
             + DatabaseUtilizer.IPADDRESS + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
             + DatabaseUtilizer.VIP_VISIBLE + " INT NOT NULL DEFAULT 1"
             + ")";
     // vip voice
     public static final String DB_CREATE_TABLE_VIP_VOICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.VIP_VOICE_TABLE + " ("
-            + DatabaseUtilizer.VOICE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.VOICE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.VOICE + " TEXT NOT NULL, "
             + DatabaseUtilizer.VIP_DEVICE + " INT DEFAULT NULL"
             + ")";
     // zone
     public static final String DB_CREATE_TABLE_ZONE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.ZONE_TABLE + " ("
-            + DatabaseUtilizer.ZONE_ID + " INTEGER PRIMARY KEY, "
+            + DatabaseUtilizer.ZONE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
