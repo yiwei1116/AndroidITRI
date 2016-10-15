@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
@@ -25,6 +27,7 @@ import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
     private ChooseTemplate chooseTemplate;
-
+    private TextToSpeech textToSpeech;
     public ITRIObject myObject;
-
+    private Locale l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,12 +97,27 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setOnClickListener(new ButtonListener(this));
 
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
-
+        createLanguageTTS();
         finishOtherActivity();
 
         initFragment();
     }
+    @Override
+    public void onPause() {
+        if(textToSpeech !=null){
+            textToSpeech.stop();
+        }
+        super.onPause();
+    }
+    @Override
+    public void onDestroy() {
 
+        if( textToSpeech != null )
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+
+        super.onDestroy();
+    }
     class ButtonListener implements View.OnClickListener {
         private MainActivity activity;
 
@@ -117,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
                     disableSoundFont();
                     break;
                 case R.id.btn_diary_main:
+
                     disableSoundFont();
+                    setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
                         transaction.replace(R.id.flayout_fragment_continer, diaryFragment, DiaryFragment.DIARY_FRAGMENT_TAG);
@@ -133,6 +153,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.btn_sound_main:
+
+                    if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
+                        setSoundActive();
+                        EquipmentTabFragment eTF = new EquipmentTabFragment();
+                        textToSpeech.speak(eTF.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
+                        setSoundNormal();
+                        textToSpeech.stop();
+
+                    }
                     break;
                 case R.id.btn_font_main:
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
@@ -386,6 +417,37 @@ public class MainActivity extends AppCompatActivity {
             try {
                 TourSelectActivity.instance.finish();
             } catch (Exception e) {}
+        }
+    }
+    private void createLanguageTTS()
+    {
+
+        if( textToSpeech == null )
+        {
+            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
+                @Override
+                public void onInit(int status)
+                {
+
+                    if( status == TextToSpeech.SUCCESS ) {
+
+                        l = Locale.CHINESE;
+                        // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
+                        if( textToSpeech.isLanguageAvailable( l ) == TextToSpeech.LANG_COUNTRY_AVAILABLE )
+                        {
+                            textToSpeech.setLanguage( l );
+                        }
+                    }
+                    else{
+
+                        Toast.makeText(MainActivity.this,"語音導覽不支援此機型",Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+
+                }}
+            );
         }
     }
 
