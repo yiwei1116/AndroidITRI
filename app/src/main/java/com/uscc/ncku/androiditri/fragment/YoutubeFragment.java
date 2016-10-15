@@ -29,7 +29,7 @@ public class YoutubeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.you_tube_api, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_you_tube_player_view, container, false);
 
 
         YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
@@ -46,7 +46,7 @@ public class YoutubeFragment extends Fragment {
             public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
                 if (!wasRestored) {
                    player.cueVideo(VIDEO_ID);
-                    Log.e("123","123");
+
                 }
             }
 
