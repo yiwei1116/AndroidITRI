@@ -45,8 +45,12 @@ import java.util.ArrayList;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+<<<<<<< HEAD
 public class MapFragment extends Fragment {
     public static final String MAP_FRAGMENT_TAG = "MAP_FRAGMENT_TAG";
+=======
+public class MapFragment extends Fragment implements View.OnClickListener {
+>>>>>>> 74363e45661763adfe142f6dca082b30a8bba28d
     private static final String TOUR_INDEX = "TOUR_INDEX";
 
     private int tourIndex;
@@ -136,9 +140,16 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
+<<<<<<< HEAD
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
         address0 = (TextView)view.findViewById(R.id.device_address0);
 
+=======
+        mWebViewMap = (WebView) v.findViewById(R.id.webview_map);
+        address0 = (TextView)v.findViewById(R.id.device_address0);
+        Button YN = (Button)v.findViewById(R.id.YT);
+        YN.setOnClickListener(this);
+>>>>>>> 74363e45661763adfe142f6dca082b30a8bba28d
         //test
         lastbeacon_mac = "";
         mSvgFile = "living_1f.svg";
@@ -277,6 +288,18 @@ public class MapFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void YT(){
+        FragmentManager fm = getFragmentManager();
+        YoutubeFragment CT = new YoutubeFragment();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.flayout_fragment_continer, CT );
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+
+
+
     }
 
     private final Handler bleHandler = new Handler() {
@@ -425,4 +448,9 @@ public class MapFragment extends Fragment {
                     }
                 }
             };
+
+    @Override
+    public void onClick(View v) {
+        YT();
+    }
 }

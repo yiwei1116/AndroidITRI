@@ -64,4 +64,12 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:layout_gravity="left|center_vertical" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YT"
+        android:onClick="YT"
+        android:id="@+id/YT"
+        android:layout_gravity="center_horizontal|bottom" />
 </FrameLayout>
