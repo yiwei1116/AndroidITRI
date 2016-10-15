@@ -34,9 +34,9 @@ public class YoutubeFragment extends Fragment {
 
         YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
 
-
+/*
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
+        transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();*/
 
 
         youTubePlayerFragment.initialize(API_KEY, new OnInitializedListener() {
