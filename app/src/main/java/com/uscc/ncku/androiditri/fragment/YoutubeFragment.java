@@ -22,7 +22,7 @@ import com.uscc.ncku.androiditri.R;
 
 public class YoutubeFragment extends Fragment {
 
-    private static final String API_KEY = "AIzaSyDS_zahrRAmInZOVBT_gCRcR4oXa2kjzS0";
+    private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
 
 
     private static String VIDEO_ID = "tYA6TSTBjQ0";

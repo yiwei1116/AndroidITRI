@@ -2,6 +2,7 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -14,12 +15,14 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -33,7 +36,7 @@ import java.util.ArrayList;
  */
 
 
-public class EquipmentTabFragment extends Fragment {
+public class EquipmentTabFragment extends Fragment{
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
 
     private int equipNumber;
@@ -45,6 +48,9 @@ public class EquipmentTabFragment extends Fragment {
     private ArrayList<EquipmentTab> equipTabs;
 
 
+
+
+    public TextView txtContent;
     public EquipmentTabFragment() {
     }
 
@@ -70,6 +76,7 @@ public class EquipmentTabFragment extends Fragment {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
         }
         equipTabs = new ArrayList<EquipmentTab>();
+
         addTabs();
     }
 
@@ -78,6 +85,8 @@ public class EquipmentTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
         MainActivity.setFontNormal();
+        MainActivity.setSoundNormal();
+
         return view;
     }
 
@@ -98,11 +107,15 @@ public class EquipmentTabFragment extends Fragment {
         mTabs.setupWithViewPager(mViewPager);
     }
 
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         MainActivity.setFontDisabled();
     }
+
+
 
     private class SamplePagerAdapter extends PagerAdapter {
 
@@ -128,12 +141,6 @@ public class EquipmentTabFragment extends Fragment {
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
             container.addView(v);
-            YoutubeFragment fragment = new YoutubeFragment();
-            FragmentManager manager = getFragmentManager();
-            manager.beginTransaction()
-                    .replace(R.id.flayout_equip_intro, fragment)
-                    .addToBackStack(null)
-                    .commit();
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
             title.setText(equipTabs.get(position).title);
 
@@ -149,10 +156,16 @@ public class EquipmentTabFragment extends Fragment {
                 photo.setVisibility(View.GONE);
             }
 
-            TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
             txtContent.setText(equipTabs.get(position).textContent);
             txtContent.setTextSize(equipTabs.get(position).fontSize);
             txtContent.setMovementMethod(new ScrollingMovementMethod());
+
+            YoutubeFragment fragment = new YoutubeFragment();
+            FragmentManager manager = getFragmentManager();
+            manager.beginTransaction()
+                    .replace(R.id.flayout_equip_intro, fragment)
+                    .commit();
 
             return v;
         }
@@ -223,4 +236,13 @@ public class EquipmentTabFragment extends Fragment {
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
+    public String getIntroduction(){
+      String getIntrod ="導覽資訊寫在這裡" ;
+
+
+        return getIntrod;
+
+    }
+
+
 }

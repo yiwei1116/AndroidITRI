@@ -22,9 +22,11 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="214dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/rm_a1m1e1_photo"/>
+            android:src="@drawable/rm_a1m1e1_photo"
+            android:visibility="invisible"
+            />
 
 
 
@@ -40,19 +42,21 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp" />
 
+
     </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_below="@+id/flayout_equip_intro"
+        android:id="@+id/toogle_layout"
 
         >
 
         <ToggleButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/btn_equip_video"
             android:layout_weight="1"
             android:textOn="@string/video"
@@ -61,11 +65,12 @@
             android:textSize="16sp"
             android:background="@drawable/selecter_btn_equip_intro_bg"
             android:alpha="0.94"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:checked="false" />
 
         <ToggleButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/btn_equip_photo"
             android:layout_weight="1"
             android:textOn="@string/photo"
@@ -77,19 +82,22 @@
             android:visibility="visible"/>
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/txt_equip_intro_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/flayout_equip_intro"
+        android:layout_below="@+id/toogle_layout"
         android:textSize="18sp"
         android:maxLines="7"
         android:scrollbars="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+
+        />
 
 
 
