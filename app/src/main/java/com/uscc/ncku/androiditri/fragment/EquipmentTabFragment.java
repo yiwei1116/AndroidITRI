@@ -21,6 +21,8 @@ import android.widget.ToggleButton;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -45,12 +47,12 @@ public class EquipmentTabFragment extends Fragment{
 
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
-    private ArrayList<EquipmentTab> equipTabs;
+    private  ArrayList<EquipmentTab> equipTabs;
 
 
 
 
-    public TextView txtContent;
+    public static TextView txtContent;
     public EquipmentTabFragment() {
     }
 
@@ -236,8 +238,8 @@ public class EquipmentTabFragment extends Fragment{
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
-    public String getIntroduction(){
-      String getIntrod ="導覽資訊寫在這裡" ;
+    public static String getIntroduction(){
+      String getIntrod = txtContent.getText().toString();
 
 
         return getIntrod;
