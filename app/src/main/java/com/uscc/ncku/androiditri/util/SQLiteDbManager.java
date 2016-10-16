@@ -11,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Oslo on 10/6/16.
  */
@@ -690,6 +693,208 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             cursor.moveToNext();
         }
         return filePaths;
+    }
+
+
+    ///////// TODO ( DONE ) : seperate getting img paths from video paths
+    /*
+        --> get those entries that would need to fetch data from server
+     */
+    public List<String> getAllDownloadPaths() {
+        List<String> paths = new ArrayList<String>();
+        // get files needed to be download in company, device, field_map
+        // hipster_template, mode, zone
+        paths.addAll(getCompanyDownloadFiles());
+        paths.addAll(getDeviceDownloadFiles());
+        paths.addAll(getFieldMapDownloadFiles());
+        paths.addAll(getHipsterTemplateDownloadFiles());
+        paths.addAll(getModeDownloadFiles());
+        paths.addAll(getZoneDownloadFiles());
+
+        return paths;
+    }
+
+
+    public List<String> getCompanyDownloadFiles() {
+        List<String> companyFiles = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select qrcode from company", null);
+
+        cursor.moveToFirst();
+        String qrcode = null;
+        // fetch all qrcode
+        while (cursor.isAfterLast() == false) {
+            qrcode = cursor.getString(cursor.getColumnIndex("qrcode"));
+            Log.i("company", qrcode);
+            if (qrcode.length() != 0 && qrcode != null && qrcode != "null") {
+                // add to List if only the qrcode of that company is not empty
+                companyFiles.add(qrcode);
+            }
+            cursor.moveToNext();
+        }
+        return companyFiles;
+    }
+
+    public List<String> getDeviceDownloadFiles() {
+        List<String> deviceFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical from device", null);
+
+        cursor.moveToFirst();
+        String guide_voice = null;
+        String photo = null;
+        String photo_vertical = null;
+        // fetch all guide_voice, photo, photo_vertical
+        while (cursor.isAfterLast() == false) {
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            Log.i("device guide", guide_voice);
+            Log.i("device photo", photo);
+            Log.i("device ph_ve", photo_vertical);
+            if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
+                deviceFiles.add(guide_voice);
+            }
+            if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
+                deviceFiles.add(photo_vertical);
+            }
+            // add to List
+            deviceFiles.add(photo);
+            cursor.moveToNext();
+        }
+        return deviceFiles;
+    }
+
+    public List<String> getFieldMapDownloadFiles() {
+        List<String> fieldMapFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical, map_svg from field_map", null);
+
+        cursor.moveToFirst();
+        String guide_voice = null;
+        String photo = null;
+        String photo_vertical = null;
+        String map_svg = null;
+        // fetch all guide_voice, photo, photo_vertical & svg
+        while (cursor.isAfterLast() == false) {
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+            if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
+                fieldMapFiles.add(guide_voice);
+            }
+            if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
+                fieldMapFiles.add(photo_vertical);
+            }
+            fieldMapFiles.add(map_svg);
+            // add to List
+            fieldMapFiles.add(photo);
+            cursor.moveToNext();
+        }
+        return fieldMapFiles;
+    }
+
+    public List<String> getHipsterTemplateDownloadFiles() {
+        List<String> templateFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select template from hipster_template", null);
+
+        cursor.moveToFirst();
+        String template = null;
+        // fetch all template
+        while (cursor.isAfterLast() == false) {
+            template = cursor.getString(cursor.getColumnIndex("template"));
+            // add to List
+            templateFiles.add(template);
+            cursor.moveToNext();
+        }
+        return templateFiles;
+    }
+
+
+    public List<String> getModeDownloadFiles() {
+        List<String> modeFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select guide_voice, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
+
+        cursor.moveToFirst();
+        String guide_voice = null;
+        String bg = null;
+        String fg = null;
+        String blur = null;
+        // fetch all guide_voice, video, bg, fg, blur img
+        while (cursor.isAfterLast() == false) {
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            bg = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
+            fg = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
+            blur = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+            // check empty or not
+            if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
+                modeFiles.add(guide_voice);
+            }
+            if (bg.length() != 0 && bg != null && bg != "null") {
+                modeFiles.add(bg);
+            }
+            if (fg.length() != 0 && fg != null && fg != "null") {
+                modeFiles.add(fg);
+            }
+            if (blur.length() != 0 && blur != null && blur != "null") {
+                modeFiles.add(blur);
+            }
+            // add to List
+            cursor.moveToNext();
+        }
+        return modeFiles;
+    }
+
+    public List<String> getZoneDownloadFiles() {
+        List<String> zoneFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical from zone", null);
+
+        cursor.moveToFirst();
+        String guide_voice = null;
+        String photo = null;
+        String photo_vertical = null;
+        // fetch all guide_voice, photo, photo_vertical
+        while (cursor.isAfterLast() == false) {
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
+                zoneFiles.add(guide_voice);
+            }
+            if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
+                zoneFiles.add(photo_vertical);
+            }
+            // add to List
+            zoneFiles.add(photo);
+
+            cursor.moveToNext();
+        }
+        return zoneFiles;
+    }
+
+    /*
+        ----> get videos from Mode table
+     */
+    public List<String> getVideoFiles() {
+        List<String> videoFiles = new ArrayList<String>();;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select video from mode", null);
+        cursor.moveToFirst();
+        String video = null;
+        // fetch all guide_voice, video, bg, fg, blur img
+        while (cursor.isAfterLast() == false) {
+            video = cursor.getString(cursor.getColumnIndex("video"));
+            if (video.length() != 0 && video != null && video != "null") {
+                // add to List
+                videoFiles.add(video);
+            }
+            cursor.moveToNext();
+        }
+        return videoFiles;
     }
 
 

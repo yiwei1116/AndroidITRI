@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 
 import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -23,10 +25,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 
 public class ConnectActivity extends Activity {
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
     private String downloadURL = "http://140.116.82.48/interface/download.php";
+    private final String filePathURLPrefix = "http://140.116.82.48/web/";
     public SQLiteDbManager sqLiteDbManager;
 
 
@@ -512,5 +516,115 @@ public class ConnectActivity extends Activity {
 //        }
 //
 //    }
+
+    public class DownloadFilesTask extends AsyncTask<String, Void, Void> {
+
+        private List<String> files;
+
+        public DownloadFilesTask() {
+            files = null;
+        }
+
+        public DownloadFilesTask(List<String> files) {
+            this.files = files;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("start", "Download tasks start");
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            try {
+                downloadFiles();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.i("end", "Download tasks end");
+        }
+
+        private void downloadFiles() throws MalformedURLException {
+            String filename = null;
+            String filepath = null;
+            File rootDir = Environment.getExternalStorageDirectory();
+            final File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
+
+            try {
+                // TODO : should put all urls with strings
+                for (String eachFile : files) {
+                    if (eachFile.length() != 0 && eachFile != null && !eachFile.equals("null")) {
+
+                        // 解析檔名
+                        String[] splits = eachFile.split("/");
+                        filename = splits[splits.length - 1];
+                        // 解析路徑
+                        String pathSuffix = eachFile.substring(3);
+                        filepath = filePathURLPrefix + pathSuffix;
+                        Log.i("file data", eachFile);
+                        Log.i("filename", filename);
+                        Log.i("filepath", filepath);
+
+
+//                    URL url = new URL(filepath);
+//                    Log.d("path", String.valueOf(path));
+//                    HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+//                    urlConnection.setRequestMethod("GET");
+//                    urlConnection.setDoOutput(true);
+//                    FileOutputStream outputStream = new FileOutputStream(new File(path, filename));
+//                    InputStream inputStream = urlConnection.getInputStream();
+//                    byte[] buffer = new byte[4096];
+//                    int len = 0;
+//                    while ( (len = inputStream.read(buffer)) > 0) {
+//                        // write in file
+//                        outputStream.write(buffer, 0, len);
+//                    }
+//                    // close fileoutputstream
+//                    Log.i("download", "done");
+//                    outputStream.close();
+
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("error", String.valueOf(e));
+            }
+
+            // storage part
+
+//                File root = Environment.getExternalStorageDirectory();
+//                final File path = new File(root.getAbsolutePath() + "/download");
+//                if (!path.exists()) {
+//                    path.mkdirs();
+//                }
+//                // write file
+//                final File file = new File(path, "jsonArray.txt");
+//                try {
+//                    file.createNewFile();
+//                    FileOutputStream fout = new FileOutputStream(file);
+//                    PrintWriter outputStreamWriter = new PrintWriter(fout);
+//                    outputStreamWriter.write(String.valueOf(jsonArray));
+//                    outputStreamWriter.flush();
+//                    outputStreamWriter.close();
+//                    fout.flush();
+//                    fout.close();
+//                } catch (IOException e) {
+//                    Log.e("error", "write to file error.");
+//                }
+        }
+
+
+
+    }
+
+
 
 }
