@@ -156,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
                         setSoundActive();
-                        EquipmentTabFragment eTF = new EquipmentTabFragment();
-                        textToSpeech.speak(eTF.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+                        textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
