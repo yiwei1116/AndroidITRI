@@ -18,7 +18,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -49,26 +51,29 @@ public class ConnectActivity extends Activity {
     // for uploading
     // 1.survey   2. feedback   3. counter
 
-    /*
-        need:
-            function to download from server
-                --> get SVG files
-                --> get device data
-                --> get hipster data
-    */
+//    /*
+//        need:
+//            function to download from server
+//                --> get SVG files
+//                --> get device data
+//                --> get hipster data
+//    */
+//
+//
+//    /*
+//        **** Upload function
+//        upload JSONArray to server
+//     */
 
-
     /*
-        **** Upload function
-        upload JSONArray to server
+        **** UPLOAD CLASS ****
      */
-
     public void uploadJsonData(JSONObject uploadObject) {
         // call async method to execute upload task
         new SendData(uploadObject).execute();
     }
 
-    // inner class to upload data to server
+    // UPLOAD DATA TO SERVER
     public class SendData extends AsyncTask<String, Void, Void> {
 
         private int project_id;
@@ -189,9 +194,29 @@ public class ConnectActivity extends Activity {
 
     }
 
+
+    // upload should include : hipster_content, survey_result ?
+
+
+
+
+
+
+    // ********************** download all tables start **********************
+
+    public void downloadAllTables() {
+        downloadProjectData("device");
+        downloadProjectData("beacon");
+        downloadProjectData("company");
+        downloadProjectData("field_map");
+        downloadProjectData("hipster_template");
+        downloadProjectData("hipster_text");
+        downloadProjectData("mode");
+        downloadProjectData("zone");
+        downloadProjectData("path");
+    }
     /*
-        **** Download function
-        ** REAL ** download function: send a project_id to server and get back all info and path about download contents
+        **** DOWNLOAD CLASS : download all table data
      */
     // give string to check whether table should be fetched data from.
     public void downloadProjectData(String intendedTable) {
@@ -386,7 +411,6 @@ public class ConnectActivity extends Activity {
 
         }
 
-
         private String performDownloadPost(HashMap<String, String> hashMap) {
             String response = "";
             URL url;
@@ -432,91 +456,14 @@ public class ConnectActivity extends Activity {
 
     }
 
-//    public class DownloadDeviceData extends AsyncTask<String, Void, Void> {
-//
-//        private String myProjectId;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            Log.i("download", "Pre Execute success.");
-//        }
-//
-//        public DownloadDeviceData(String projectId) {
-//            myProjectId = projectId;
-//        }
-//
-//        public DownloadDeviceData() {
-//
-//        }
-//
-//        @Override
-//        protected Void doInBackground(String... strings) {
-//            String downloadResponse = "";
-//            // do all things here
-//            try {
-//                downloadResponse = performDownloadPost(new HashMap<String, String>() {
-//                    {
-//                        put("Accept", "application/json");
-//                        put("Content-Type", "application/json");
-//                    }
-//                });
-//                // log http response code
-//                Log.i("HTTP result", downloadResponse);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            super.onPostExecute(aVoid);
-//            Log.i("download", "PostExecute success.");
-//        }
-//
-//        private String performDownloadPost(HashMap<String, String> hashMap) {
-//            String response = "";
-//            URL url;
-//            try {
-//                // send URL request
-//                url = new URL(downloadURL);
-//                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.setRequestMethod("POST");
-//                httpURLConnection.setUseCaches(false);
-//                httpURLConnection.setDoInput(true);
-//                httpURLConnection.setDoOutput(true);
-//
-//                // write to server
-//                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new BufferedOutputStream(httpURLConnection.getOutputStream()));
-//                // server requires only a project id POSTed
-//                outputStreamWriter.write(myProjectId);
-//                outputStreamWriter.flush();
-//                outputStreamWriter.close();
-//
-//                int responseCode = httpURLConnection.getResponseCode();
-//                if (responseCode == HttpURLConnection.HTTP_OK) {
-//                    Log.e("download", "HTTP Response: HTTP - OK");
-//                    String line;
-//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
-//                    while ((line = bufferedReader.readLine()) != null) {
-//                        response += line;
-//                    }
-//                    Log.i("response code", response);
-//                    bufferedReader.close();
-//                } else {
-//                    Log.e("HTTP response", String.valueOf(responseCode));
-//                    response = "";
-//                }
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return response;
-//        }
-//
-//    }
+    // ********************** download all tables end **********************
 
+
+    // ********************** download files start **********************
+
+    /*
+        **** DOWNLOAD CLASS : download all files
+     */
     public class DownloadFilesTask extends AsyncTask<String, Void, Void> {
 
         private List<String> files;
@@ -563,8 +510,6 @@ public class ConnectActivity extends Activity {
                 // TODO : should put all urls with strings
                 for (String eachFile : files) {
                     if (eachFile.length() != 0 && eachFile != null && !eachFile.equals("null")) {
-
-                        // 解析檔名
                         String[] splits = eachFile.split("/");
                         filename = splits[splits.length - 1];
                         // 解析路徑
@@ -574,24 +519,22 @@ public class ConnectActivity extends Activity {
                         Log.i("filename", filename);
                         Log.i("filepath", filepath);
 
-
-//                    URL url = new URL(filepath);
-//                    Log.d("path", String.valueOf(path));
-//                    HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-//                    urlConnection.setRequestMethod("GET");
-//                    urlConnection.setDoOutput(true);
-//                    FileOutputStream outputStream = new FileOutputStream(new File(path, filename));
-//                    InputStream inputStream = urlConnection.getInputStream();
-//                    byte[] buffer = new byte[4096];
-//                    int len = 0;
-//                    while ( (len = inputStream.read(buffer)) > 0) {
-//                        // write in file
-//                        outputStream.write(buffer, 0, len);
-//                    }
-//                    // close fileoutputstream
-//                    Log.i("download", "done");
-//                    outputStream.close();
-
+                        URL url = new URL(filepath);
+                        Log.d("path", String.valueOf(path));
+                        HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                        urlConnection.setRequestMethod("GET");
+                        urlConnection.setDoOutput(true);
+                        FileOutputStream outputStream = new FileOutputStream(new File(path, filename));
+                        InputStream inputStream = urlConnection.getInputStream();
+                        byte[] buffer = new byte[4096];
+                        int len = 0;
+                        while ( (len = inputStream.read(buffer)) > 0) {
+                            // write in file
+                            outputStream.write(buffer, 0, len);
+                        }
+                        // close fileoutputstream
+                        Log.i("download", "done");
+                        outputStream.close();
                     }
                 }
             } catch (Exception e) {
@@ -625,6 +568,6 @@ public class ConnectActivity extends Activity {
 
     }
 
-
+    // ********************** download files end **********************
 
 }
