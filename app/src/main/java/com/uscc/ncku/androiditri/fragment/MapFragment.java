@@ -60,6 +60,7 @@ public class MapFragment extends Fragment {
     private RelativeLayout notice;
     private Button cancel;
     private Button enter;
+    private TextView txtMapArea;
     private String mSvgFile = "";
     private int mScanedField;
     private BLEScannerWrapper mBLEScannerWrapper;
@@ -81,11 +82,13 @@ public class MapFragment extends Fragment {
     public class Beacon
     {
         public String mac_addr;
+        public String name;
         public int zone;
         public int field;
-        public Beacon(String mac_addr,int zone,int field)
+        public Beacon(String mac_addr,String name,int zone,int field)
         {
             this.mac_addr = mac_addr;
+            this.name = name;
             this.zone = zone;
             this.field = field;
         }
@@ -178,8 +181,10 @@ public class MapFragment extends Fragment {
         });
 
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
+        notice.setVisibility(View.GONE);
         cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         enter = (Button) view.findViewById(R.id.btn_enter_map_area);
+        txtMapArea = (TextView) view.findViewById(R.id.txt_map_area);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,10 +289,10 @@ public class MapFragment extends Fragment {
             try {
                 String mac = "";
                 //test
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30",2,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64",3,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D",15,2));
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77",16,2));
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30","入口玄關",2,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64","植栽區與餐廳",3,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D","圖書資訊室",15,2));
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77","中央監控室",16,2));
                 mFieldList.add(new Field(1,"living_1f"));
                 mFieldList.add(new Field(2,"living_2f"));
                 //test
@@ -342,6 +347,7 @@ public class MapFragment extends Fragment {
                         }
                         Log.d("ZontActivity", "b.zone.num = " + b.zone);
                         notice.setVisibility(View.VISIBLE);
+                        txtMapArea.setText("   "+b.name);
                         currentZone = b.zone;
                         lastbeacon_mac = mac;
                         if (mLastSacnBeacon == null || mLastSacnBeacon.field != b.field) {
