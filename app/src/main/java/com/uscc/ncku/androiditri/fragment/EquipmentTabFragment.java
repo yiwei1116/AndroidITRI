@@ -12,11 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
@@ -47,7 +48,7 @@ public class EquipmentTabFragment extends Fragment{
 
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
-    private  ArrayList<EquipmentTab> equipTabs;
+    private ArrayList<EquipmentTab> equipTabs;
 
 
 
@@ -115,6 +116,7 @@ public class EquipmentTabFragment extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
         MainActivity.setFontDisabled();
+        MainActivity.setSoundDisabled();
     }
 
 
@@ -146,11 +148,11 @@ public class EquipmentTabFragment extends Fragment{
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
             title.setText(equipTabs.get(position).title);
 
-            ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
-            ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
+            RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
+            radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
+            RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
+            RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
             video.setChecked(true);
-            video.setOnCheckedChangeListener(new ChangeChecker(v));
-            photo.setOnCheckedChangeListener(new ChangeChecker(v));
 
             if (!equipTabs.get(position).isVideo) {
                 video.setVisibility(View.GONE);
@@ -166,7 +168,7 @@ public class EquipmentTabFragment extends Fragment{
             YoutubeFragment fragment = new YoutubeFragment();
             FragmentManager manager = getFragmentManager();
             manager.beginTransaction()
-                    .replace(R.id.flayout_equip_intro, fragment)
+                    .replace(R.id.equip_item_youtube, fragment)
                     .commit();
 
             return v;
@@ -188,28 +190,36 @@ public class EquipmentTabFragment extends Fragment{
 
     }
 
-    class ChangeChecker implements CompoundButton.OnCheckedChangeListener {
+    class RadioButtonListener implements RadioGroup.OnCheckedChangeListener {
         private View v;
 
-        public ChangeChecker(View v) {
+        public RadioButtonListener(View v) {
+            this.v = v;
+        }
+
+        public void setView(View v) {
             this.v = v;
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked){
-                ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+            FrameLayout youtubeLayout = (FrameLayout) v.findViewById(R.id.equip_item_youtube);
+            ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
 
-                if (buttonView.getId() == R.id.btn_equip_video) {
-                    ToggleButton photo = (ToggleButton) v.findViewById(R.id.btn_equip_photo);
-                    photo.setChecked(false);
+            switch (checkedId) {
+                case R.id.btn_equip_video:
+                    youtubeLayout.setVisibility(View.VISIBLE);
+                    imageView.setVisibility(View.GONE);
                     zoom.setVisibility(View.GONE);
-                } else if (buttonView.getId() == R.id.btn_equip_photo) {
-                    ToggleButton video = (ToggleButton) v.findViewById(R.id.btn_equip_video);
-                    video.setChecked(false);
+                    break;
+                case R.id.btn_equip_photo:
+                    youtubeLayout.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
                     zoom.setVisibility(View.VISIBLE);
-                }
+                    break;
             }
+
         }
     }
 

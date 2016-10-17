@@ -24,10 +24,16 @@
             android:layout_width="match_parent"
             android:layout_height="214dp"
             android:scaleType="centerCrop"
+            android:id="@+id/equip_item_image_view"
             android:src="@drawable/rm_a1m1e1_photo"
-            android:visibility="invisible"
-            />
+            android:visibility="gone" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="214dp"
+            android:id="@+id/equip_item_youtube"
+            android:visibility="visible">
+        </FrameLayout>
 
 
 
@@ -44,44 +50,45 @@
 
 
     </FrameLayout>
-    <LinearLayout
+
+    <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_below="@+id/flayout_equip_intro"
-        android:id="@+id/toogle_layout"
+        android:id="@+id/equip_item_radio_group">
 
-        >
-
-        <ToggleButton
+        <RadioButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:button="@android:color/transparent"
             android:id="@+id/btn_equip_video"
             android:layout_weight="1"
-            android:textOn="@string/video"
-            android:textOff="@string/video"
+            android:text="@string/video"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:background="@drawable/selecter_btn_equip_intro_bg"
             android:alpha="0.94"
             android:visibility="visible"
-            android:checked="false" />
+            android:checked="false"
+            android:textAlignment="center" />
 
-        <ToggleButton
+        <RadioButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:button="@android:color/transparent"
             android:id="@+id/btn_equip_photo"
             android:layout_weight="1"
-            android:textOn="@string/photo"
-            android:textOff="@string/photo"
+            android:text="@string/photo"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:background="@drawable/selecter_btn_equip_intro_bg"
             android:alpha="0.94"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:textAlignment="center" />
 
-    </LinearLayout>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/txt_equip_intro_content"
@@ -89,7 +96,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/toogle_layout"
+        android:layout_below="@+id/equip_item_radio_group"
         android:textSize="18sp"
         android:maxLines="7"
         android:scrollbars="vertical"
