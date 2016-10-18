@@ -196,7 +196,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private boolean hasPermission(String[] permission) {
         if (canMakeSmores()) {
             for (String permissions : permission) {
-                Log.e("checkPermissions","123");
+
                 return (ContextCompat.checkSelfPermission(getContext(), permissions) == PackageManager.PERMISSION_GRANTED);
 
             }
