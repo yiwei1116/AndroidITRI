@@ -34,6 +34,10 @@ public class CommunicationWithServer {
 
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
     private String downloadURL = "http://140.116.82.48/interface/download.php";
+    private String hipsterContentURL = "http://140.116.82.48/interface/catchhipster.php";
+    private String surveyOneURL = "http://140.116.82.48/interface/surveyone.php";
+    private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
+    private String counterURL = "http://140.116.82.48/interface/deviceadd.php";
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
     public SQLiteDbManager sqLiteDbManager;
 
@@ -60,9 +64,9 @@ public class CommunicationWithServer {
     /*
         **** UPLOAD CLASS ****
      */
-    public void uploadJsonData(JSONObject uploadObject) {
+    public void uploadJsonData(JSONObject uploadObject, String uploadURL) {
         // call async method to execute upload task
-        new SendData(uploadObject).execute();
+        new SendData(uploadObject, uploadURL).execute();
     }
 
     // UPLOAD DATA TO SERVER
@@ -72,6 +76,7 @@ public class CommunicationWithServer {
         // data to send
         private JSONArray jsonArray;
         private JSONObject json_string;
+        private String uploadURL;
 
         public SendData(int project_id) {
             this.project_id = project_id;
@@ -81,7 +86,10 @@ public class CommunicationWithServer {
             this.jsonArray = jsonArray;
         }
 
-        public SendData(JSONObject json_string) { this.json_string = json_string; }
+        public SendData(JSONObject json_string, String uploadURL) {
+            this.json_string = json_string;
+            this.uploadURL = uploadURL;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -93,7 +101,7 @@ public class CommunicationWithServer {
             String response = "";
             // do all things here
             try {
-                response = performUploadPost(serverURL, new HashMap<String, String>() {
+                response = performUploadPost(this.uploadURL, new HashMap<String, String>() {
                     {
                         put("Accept", "application/json");
                         put("Content-Type", "application/json");
@@ -187,15 +195,98 @@ public class CommunicationWithServer {
     }
 
 
-    // upload should include : hipster_content, survey_result ?
+    // upload should include : hipster_content, survey_result
+    public JSONObject packHipsterContentData(String textContent, String picturePath, String combinePicturePath, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+        JSONObject uploadObject = new JSONObject();
+        uploadObject.put("content", textContent);
+        uploadObject.put("picture", picturePath);
+        uploadObject.put("combine_picture", combinePicturePath);
+        uploadObject.put("hipster_template_id", hipsterTemplateId);
+        uploadObject.put("hipster_text_id", hipsterTextId);
+        uploadObject.put("zone_id", zoneId);
+        return uploadObject;
+    }
+
+    // WARNING: YIWEI should call this function
+    public void uploadHipsterContent(String textContent, String picturePath, String combinePicturePath, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+        JSONObject jsonObject = packHipsterContentData(textContent, picturePath, combinePicturePath, hipsterTemplateId, hipsterTextId, zoneId);
+        uploadJsonData(jsonObject, this.hipsterContentURL);
+    }
+
+    // TODO: yiwei has to upload file to server
 
 
+    // UPLOAD to "survey" table
+    public JSONObject packSurveyData (int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+        JSONObject uploadObject = new JSONObject();
+        uploadObject.put("gender", gender);
+        uploadObject.put("age", age);
+        uploadObject.put("education", education);
+        uploadObject.put("career", career);
+        uploadObject.put("experience", exp);
+        uploadObject.put("salary", salary);
+        uploadObject.put("location", location);
+        uploadObject.put("house_type", house_type);
+        uploadObject.put("family_type", family_type);
+        uploadObject.put("fimily_member", fimily_member);
+        uploadObject.put("know_way", know_way);
+        return uploadObject;
+    }
 
+    public void uploadSurveyData(int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+        JSONObject jsonObject = packSurveyData(gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
+        uploadJsonData(jsonObject, this.surveyOneURL);
+    }
 
+    // UPLOAD to "survey2" table
+    public JSONObject packSurveyTwoData (int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, int first_consider, int second_consider, int third_consider, int fourth_consider, int fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
+        JSONObject uploadObject = new JSONObject();
+        uploadObject.put("attitude", attitude);
+        uploadObject.put("functionality", functionality);
+        uploadObject.put("visual", visual);
+        uploadObject.put("operability", operability);
+        uploadObject.put("user_friendly", user_friendly);
+        uploadObject.put("price", price);
+        uploadObject.put("maintenance", maintenance);
+        uploadObject.put("safety", safety);
+        uploadObject.put("energy", energy);
+        uploadObject.put("first_choise", first_choise);
+        uploadObject.put("second_choise", second_choise);
+        uploadObject.put("third_choise", third_choise);
+        uploadObject.put("fourth_choise", fourth_choise);
+        uploadObject.put("fifth_choise", fifth_choise);
+        uploadObject.put("first_consider", first_consider);
+        uploadObject.put("second_consider", second_consider);
+        uploadObject.put("third_consider", third_consider);
+        uploadObject.put("fourth_consider", fourth_consider);
+        uploadObject.put("fifth_consider", fifth_consider);
+        uploadObject.put("subscription1", subscription1);
+        uploadObject.put("subscription2", subscription2);
+        uploadObject.put("subscription3", subscription3);
+        uploadObject.put("install1", install1);
+        uploadObject.put("install2", install2);
+        uploadObject.put("install3", install3);
+        uploadObject.put("install4", install4);
+        uploadObject.put("install5", install5);
+        uploadObject.put("impression1", impression1);
+        uploadObject.put("impression2", impression2);
+        uploadObject.put("impression3", impression3);
+        uploadObject.put("impression4", impression4);
+        uploadObject.put("impression5", impression5);
+        uploadObject.put("buy", buy);
+        uploadObject.put("reasonable_price", reasonable_price);
+        return uploadObject;
+    }
+
+    public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, int first_consider, int second_consider, int third_consider, int fourth_consider, int fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
+        JSONObject jsonObject = packSurveyTwoData( attitude,  functionality,  visual,  operability,  user_friendly,  price,  maintenance,  safety,  energy,  first_choise,  second_choise,  third_choise,  fourth_choise,  fifth_choise,  first_consider,  second_consider,  third_consider,  fourth_consider,  fifth_consider,  subscription1,  subscription2,  subscription3,  install1,  install2,  install3,  install4,  install5,  impression1,  impression2,  impression3,  impression4,  impression5,  buy,  reasonable_price);
+        uploadJsonData(jsonObject, this.surveyTwoURL);
+    }
 
 
     // ********************** download all tables start **********************
 
+    // Starting point: call this method to download all tables
     public void downloadAllTables() {
         downloadProjectData("device");
         downloadProjectData("beacon");
@@ -556,11 +647,8 @@ public class CommunicationWithServer {
 //                }
         }
 
-
-
     }
 
     // ********************** download files end **********************
-
 
 }
