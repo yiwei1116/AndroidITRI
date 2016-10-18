@@ -3,6 +3,7 @@ package com.uscc.ncku.androiditri;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +28,8 @@ import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
+import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private static LinearLayout mainBtnLayout;
     private static FrameLayout mainContainer;
     private static int container_margin_top;
+    /* custom fragment back stack */
+    private static LinkedList<Fragment> fragmentBackStack;
 
     private static RelativeLayout containerSL;
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     public ITRIObject myObject;
     private Locale l;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,18 +94,22 @@ public class MainActivity extends AppCompatActivity {
         mapBtn = (MainButton) findViewById(R.id.btn_map_main);
         soundBtn = (MainButton) findViewById(R.id.btn_sound_main);
         fontBtn = (MainButton) findViewById(R.id.btn_font_main);
-        infoBtn.setOnClickListener(new ButtonListener(this));
-        diaryBtn.setOnClickListener(new ButtonListener(this));
-        mapBtn.setOnClickListener(new ButtonListener(this));
-        soundBtn.setOnClickListener(new ButtonListener(this));
-        fontBtn.setOnClickListener(new ButtonListener(this));
+        infoBtn.setOnClickListener(new ButtonListener());
+        diaryBtn.setOnClickListener(new ButtonListener());
+        mapBtn.setOnClickListener(new ButtonListener());
+        soundBtn.setOnClickListener(new ButtonListener());
+        fontBtn.setOnClickListener(new ButtonListener());
 
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
         createLanguageTTS();
         finishOtherActivity();
 
+        fragmentBackStack = new LinkedList<Fragment>();
+
         initFragment();
+
     }
+
     @Override
     public void onPause() {
         if(textToSpeech !=null){
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onPause();
     }
+
     @Override
     public void onDestroy() {
 
@@ -118,17 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
-    class ButtonListener implements View.OnClickListener {
-        private MainActivity activity;
 
-        public ButtonListener(MainActivity activity) {
-            this.activity = activity;
-        }
+    class ButtonListener implements View.OnClickListener {
+
+        public ButtonListener() {}
 
         @Override
         public void onClick(View v) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();
 
             switch (v.getId()) {
                 case R.id.btn_info_main:
@@ -139,17 +144,13 @@ public class MainActivity extends AppCompatActivity {
                     disableSoundFont();
                     setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
-                        setBtnActive(diaryBtn, R.drawable.btn_main_diary_active);
-                        transaction.replace(R.id.flayout_fragment_continer, diaryFragment, DiaryFragment.DIARY_FRAGMENT_TAG);
-                        transaction.addToBackStack(DiaryFragment.DIARY_FRAGMENT_TAG);
+                        replaceFragment(diaryFragment);
                     }
                     break;
                 case R.id.btn_map_main:
                     disableSoundFont();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
-                        setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-                        transaction.replace(R.id.flayout_fragment_continer, mapFragment, MapFragment.MAP_FRAGMENT_TAG);
-                        transaction.addToBackStack(MapFragment.MAP_FRAGMENT_TAG);
+                        replaceFragment(mapFragment);
                     }
                     break;
                 case R.id.btn_sound_main:
@@ -205,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
             }
-
-            transaction.commit();
         }
     }
 
@@ -231,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
             mapFragment = MapFragment.newInstance(tourIndex);
         }
 
+        // add mapFragment to back stack
+        fragmentBackStack.addFirst(mapFragment);
+
         if (diaryFragment == null) {
             diaryFragment = DiaryFragment.newInstance();
         }
@@ -241,43 +243,48 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void setBtnActive(MainButton activeBtn, int bgId) {
-        if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_active)) {
-            setDiaryNormal();
-        }
-
-        if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_active)) {
-            setMapNormal();
-        }
-
-        activeBtn.setActive(bgId);
-    }
-
     @Override
     public void onBackPressed() {
-        int previousFragmentIndex = getFragmentManager().getBackStackEntryCount() - 1;
-        Fragment f = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        if (f instanceof MapFragment) {
-            setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-            return;
-        } else if (f instanceof DiaryFragment) {
-            FragmentManager fm = getFragmentManager();
-            FragmentManager.BackStackEntry backEntry = getFragmentManager().getBackStackEntryAt(previousFragmentIndex);
-            String name = backEntry.getName();
-            if (!name.equals(MapFragment.MAP_FRAGMENT_TAG)) {
-                setDiaryNormal();
-                fm.popBackStack();
-                return;
-            }
+        if (fragmentBackStack.isEmpty()) {
+            replaceFragment(mapFragment);
+        } else {
+            // get last fragment
+            Fragment f = fragmentBackStack.pop();
+            String fragmentTag = f.getClass().getSimpleName();
 
-            FragmentTransaction transaction = fm.beginTransaction();
-            setBtnActive(mapBtn, R.drawable.btn_main_map_active);
-            transaction.replace(R.id.flayout_fragment_continer, mapFragment, MapFragment.MAP_FRAGMENT_TAG);
-            transaction.commit();
-            return;
+            // if last fragment is map fragment, add it back to back stack
+            if (fragmentTag.equals(mapFragment.getClass().getSimpleName()))
+                fragmentBackStack.addLast(f);
+
+            // replace fragment
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.flayout_fragment_continer, f, fragmentTag);
+            ft.commit();
+        }
+    }
+
+    private void replaceFragment (Fragment fragment){
+        String fragmentTag = fragment.getClass().getSimpleName();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
         }
 
-        super.onBackPressed();
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
     public static void hideToolbar() {
@@ -317,6 +324,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static Toolbar getToolbar() {
         return toolbar;
+    }
+
+    public static LinkedList<Fragment> getFragmentBackStack() {
+        return fragmentBackStack;
     }
 
     public static void setToolbarTitle(int stringID) {

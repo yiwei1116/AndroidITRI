@@ -40,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
 import static android.Manifest.permission.CAMERA;
@@ -96,6 +97,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         photoCall.setOnClickListener(this);
 
         MainActivity.hideToolbar();
+        MainActivity.setDiaryActive();
 
         return view;
 
@@ -112,6 +114,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     public void onDestroyView() {
         super.onDestroyView();
         MainActivity.showDefaultToolbar();
+        MainActivity.setDiaryNormal();
     }
 
     @Override
@@ -209,12 +212,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     public void callCamera( ){
 
-        FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.flayout_fragment_continer, CC );
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(CC);
       /*
        Intent cameraIntent = new Intent();
         // sent to have the camera application capture an image and return it.
@@ -281,13 +280,35 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PHOTO_RESULT);*/
-        FragmentManager fm = getFragmentManager();
         CustomPhoto CsP = new CustomPhoto();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.flayout_fragment_continer, CsP );
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(CsP);
     }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
+    }
+
  /*   @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {

@@ -1,7 +1,6 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,6 +19,8 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
+import java.util.LinkedList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +28,6 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class AreaFragment extends Fragment {
-    public static final String AREA_FRAGMENT_TAG = "AREA_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
     private static final String ZONE = "ZONE";
     private static final int[] TOUR_GUIDE = {
@@ -113,13 +113,35 @@ public class AreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(4);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, modeSelectFragment).addToBackStack(null);
-                transaction.commit();
+                replaceFragment(modeSelectFragment);
             }
         });
 
+    }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
     @Override

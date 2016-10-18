@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -127,6 +128,28 @@ public class FeedbackFragment extends Fragment {
     public void onStart() {
         super.onStart();
         q1();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // hide all view in feedback while destroy view
+        RadioGroup rGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_1);
+        rGroup.setVisibility(View.GONE);
+        rGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_8);
+        rGroup.setVisibility(View.GONE);
+        RelativeLayout rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_2);
+        rLayout.setVisibility(View.GONE);
+        rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_3);
+        rLayout.setVisibility(View.GONE);
+        rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_4);
+        rLayout.setVisibility(View.GONE);
+        rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_5);
+        rLayout.setVisibility(View.GONE);
+        rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_6);
+        rLayout.setVisibility(View.GONE);
+        rLayout = (RelativeLayout) view.findViewById(R.id.flayout_feedback_7);
+        rLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -303,15 +326,15 @@ public class FeedbackFragment extends Fragment {
         }
 
         RadioGroup rGEnergy = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_energy);
-        if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_important) {
+        if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_important) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_important) {
+        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_important) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_soso) {
+        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_soso) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_unimportant) {
+        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_unimportant) {
 
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_unimportant) {
+        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_unimportant) {
 
         }
 
