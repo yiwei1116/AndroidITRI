@@ -1,9 +1,7 @@
 package com.uscc.ncku.androiditri;
 
-import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 
@@ -29,22 +27,16 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-public class ConnectActivity extends Activity {
+/**
+ * Created by Oslo on 10/18/16.
+ */
+public class CommunicationWithServer {
+
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
     private String downloadURL = "http://140.116.82.48/interface/download.php";
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
     public SQLiteDbManager sqLiteDbManager;
 
-
-    public ConnectActivity(SQLiteDbManager manager) {
-        sqLiteDbManager = manager;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connect);
-    }
 
     // for downloading
     // 1.SVG files   2.device   3.hipster template   4.shipster text
@@ -266,7 +258,7 @@ public class ConnectActivity extends Activity {
         }
 
         // parse and save to SQLite DB
-        private void saveToSQLite(JSONArray jsonArray) throws JSONException{
+        private void saveToSQLite(JSONArray jsonArray) throws JSONException {
             SQLiteDatabase db = sqLiteDbManager.getWritableDatabase();
             // parse json string
             // check which table it is
@@ -569,5 +561,6 @@ public class ConnectActivity extends Activity {
     }
 
     // ********************** download files end **********************
+
 
 }
