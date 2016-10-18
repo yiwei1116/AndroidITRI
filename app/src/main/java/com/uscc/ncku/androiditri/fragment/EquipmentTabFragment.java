@@ -89,6 +89,7 @@ public class EquipmentTabFragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
         MainActivity.setFontNormal();
         MainActivity.setSoundNormal();
+        MainActivity.setInfoNormal();
 
         return view;
     }
@@ -117,6 +118,7 @@ public class EquipmentTabFragment extends Fragment{
         super.onDestroyView();
         MainActivity.setFontDisabled();
         MainActivity.setSoundDisabled();
+        MainActivity.setInfoDisabled();
     }
 
 

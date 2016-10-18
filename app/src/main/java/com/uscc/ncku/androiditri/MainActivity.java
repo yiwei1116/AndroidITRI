@@ -138,6 +138,49 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btn_info_main:
                     disableSoundFont();
+
+                    if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
+                        setInfoActive();
+
+                        Fragment currentInfo = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        View infoView = currentInfo.getView();
+                        RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+
+                        Animation fadeIn = AnimationUtils.loadAnimation(
+                                currentInfo.getActivity(), R.anim.info_fade_in);
+
+                        infoLayout.setVisibility(View.VISIBLE);
+                        infoLayout.startAnimation(fadeIn);
+
+                    } else if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
+                        setInfoNormal();
+
+                        Fragment currentInfo = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        View infoView = currentInfo.getView();
+                        final RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+
+                        Animation fadeOut = AnimationUtils.loadAnimation(
+                                currentInfo.getActivity(), R.anim.info_fade_out);
+
+                        infoLayout.startAnimation(fadeOut);
+
+                        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                infoLayout.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                    }
                     break;
                 case R.id.btn_diary_main:
 
@@ -173,10 +216,10 @@ public class MainActivity extends AppCompatActivity {
                         containerSL.startAnimation(animation);
 
                         /////////// ****** method to get which fragment is it
-                        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        Fragment currentFont = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
                         EquipmentTabFragment ef = null;
-                        if (currentFragment instanceof EquipmentTabFragment) {
-                            ef = (EquipmentTabFragment) currentFragment;
+                        if (currentFont instanceof EquipmentTabFragment) {
+                            ef = (EquipmentTabFragment) currentFont;
                         }
 
                         SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
@@ -245,6 +288,46 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        /** if current fragment is equipment fragment and the info btn is actived
+         *  than hide info page while pressing back button
+         */
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        if (currentFragment instanceof EquipmentTabFragment) {
+            if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
+                setInfoNormal();
+
+                View infoView = currentFragment.getView();
+                final RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+
+                Animation fadeOut = AnimationUtils.loadAnimation(
+                        currentFragment.getActivity(), R.anim.info_fade_out);
+
+                infoLayout.startAnimation(fadeOut);
+
+                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        infoLayout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                return;
+            }
+        }
+
+        /**
+         *  normal situation of pressing back button
+         *  popping up latest fragment from fragment back stack
+         */
         if (fragmentBackStack.isEmpty()) {
             replaceFragment(mapFragment);
         } else {

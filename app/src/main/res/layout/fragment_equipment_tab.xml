@@ -22,5 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs_equipments"
+        android:id="@+id/rlayout_equipment_info"
+        android:background="@android:color/white"
+        android:visibility="gone">
+
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
