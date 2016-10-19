@@ -34,10 +34,10 @@ public class CommunicationWithServer {
 
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
     private String downloadURL = "http://140.116.82.48/interface/download.php";
-    private String hipsterContentURL = "http://140.116.82.48/interface/catchhipster.php";
-    private String surveyOneURL = "http://140.116.82.48/interface/surveyone.php";
+    private String hipsterContentURL = "http://140.116.82.48/interface/hipster.php"; // hipster content
+    private String surveyOneURL = "http://140.116.82.48/interface/survey.php"; // first survey
     private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
-    private String counterURL = "http://140.116.82.48/interface/deviceadd.php";
+    private String counterURL = "http://140.116.82.48/interface/deviceadd.php"; // counter
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
     public int totalCount;
     public int partialCount;
