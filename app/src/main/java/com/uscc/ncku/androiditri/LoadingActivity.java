@@ -106,11 +106,16 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
+<<<<<<< HEAD
 //        new DataLoadingAsyncTask().execute();
 //        communicationWithServer.DownloadFiles();
         SQLiteDatabase db = manager.getReadableDatabase();
         List<String> pathList = manager.getAllDownloadPaths();
         communicationWithServer.DownloadFiles(pathList);
+=======
+        new DataLoadingAsyncTask().execute();
+//        communicationWithServer.DownloadFiles();
+>>>>>>> 297afb46e25c50565d88197965f6cebd4ccd5c02
     }
 
     class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
