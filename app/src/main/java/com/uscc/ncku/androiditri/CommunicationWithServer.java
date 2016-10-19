@@ -39,8 +39,30 @@ public class CommunicationWithServer {
     private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
     private String counterURL = "http://140.116.82.48/interface/deviceadd.php";
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
+    public int totalCount;
+    public int partialCount;
     public SQLiteDbManager sqLiteDbManager;
 
+    public CommunicationWithServer() {
+        this.totalCount = 0;
+        this.partialCount = 0;
+    }
+
+    public void setTotalCount(int count) {
+        this.totalCount = count;
+    }
+
+    public void setPartialCount(int partial) {
+        this.partialCount = partial;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public int getPartialCount() {
+        return partialCount;
+    }
 
     // for downloading
     // 1.SVG files   2.device   3.hipster template   4.shipster text
@@ -547,17 +569,13 @@ public class CommunicationWithServer {
     /*
         **** DOWNLOAD CLASS : download all files
      */
-    public void DownloadFiles() {
-        new DownloadFilesTask().execute();
+    public void DownloadFiles(List<String> pathList) {
+        new DownloadFilesTask(pathList).execute();
     }
 
     public class DownloadFilesTask extends AsyncTask<String, Void, Void> {
 
         private List<String> files;
-
-        public DownloadFilesTask() {
-            files = null;
-        }
 
         public DownloadFilesTask(List<String> files) {
             this.files = files;

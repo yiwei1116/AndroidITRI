@@ -1,11 +1,12 @@
 package com.uscc.ncku.androiditri;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,6 +14,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import java.util.List;
 
 /**
  * Created by Lin on 2016/9/1.
@@ -104,7 +107,10 @@ public class LoadingActivity extends AppCompatActivity {
 
         // call asyntask to animate
 //        new DataLoadingAsyncTask().execute();
-        communicationWithServer.DownloadFiles();
+//        communicationWithServer.DownloadFiles();
+        SQLiteDatabase db = manager.getReadableDatabase();
+        List<String> pathList = manager.getAllDownloadPaths();
+        communicationWithServer.DownloadFiles(pathList);
     }
 
     class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {

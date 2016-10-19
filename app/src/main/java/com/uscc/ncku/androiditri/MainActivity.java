@@ -3,12 +3,10 @@ package com.uscc.ncku.androiditri;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -107,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentBackStack = new LinkedList<Fragment>();
 
         initFragment();
-
     }
 
     @Override
