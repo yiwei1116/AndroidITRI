@@ -25,6 +25,8 @@ import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.util.LinkedList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -87,15 +89,11 @@ public class ChooseTemplate extends Fragment {
         btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
                 TC = new TemplateContext();
                 Bundle bundle = new Bundle();
                 bundle.putString("Template", String.valueOf(viewPageIndex));
                 TC.setArguments(bundle);
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, TC);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                replaceFragment(TC);
 
             }
         });
@@ -121,6 +119,31 @@ public class ChooseTemplate extends Fragment {
         adapter = new ChooseTemp(getActivity());
         viewPager.setAdapter(adapter);
         return view   ;
+    }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
 

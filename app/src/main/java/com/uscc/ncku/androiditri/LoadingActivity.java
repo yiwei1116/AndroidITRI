@@ -23,12 +23,15 @@ public class LoadingActivity extends AppCompatActivity {
     /* loading level every time period from 0 to 10000 */
     public static final int LOADING_LEVEL = 200;
 
+    private CommunicationWithServer communicationWithServer;
+
     public SQLiteDbManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        communicationWithServer = new CommunicationWithServer();
 
         logoLoading();
         manager = new SQLiteDbManager(this);
@@ -38,6 +41,7 @@ public class LoadingActivity extends AppCompatActivity {
      * Logo loading animation.
      */
     private void logoLoading() {
+        communicationWithServer.downloadAllTables();
         ImageView imgLoading = (ImageView) findViewById(R.id.img_loading);
 
         final ClipDrawable drawable = (ClipDrawable) imgLoading.getDrawable();
@@ -99,7 +103,8 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
-        new DataLoadingAsyncTask().execute();
+//        new DataLoadingAsyncTask().execute();
+        communicationWithServer.DownloadFiles();
     }
 
     class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {

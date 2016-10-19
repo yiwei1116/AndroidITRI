@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -38,6 +37,7 @@ import com.uscc.ncku.androiditri.ble.BLEScannerWrapper;
 import com.uscc.ncku.androiditri.util.DownloadProject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 /**
@@ -46,7 +46,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
-    public static final String MAP_FRAGMENT_TAG = "MAP_FRAGMENT_TAG";
     private static final String TOUR_INDEX = "TOUR_INDEX";
 
     private int tourIndex;
@@ -139,6 +138,8 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        MainActivity.setMapActive();
+
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
         address0 = (TextView)view.findViewById(R.id.device_address0);
 
@@ -202,11 +203,7 @@ public class MapFragment extends Fragment {
                 MainActivity.setMapNormal();
 
                 AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, areaFragment, AreaFragment.AREA_FRAGMENT_TAG);
-                transaction.addToBackStack(AreaFragment.AREA_FRAGMENT_TAG);
-                transaction.commit();
+                replaceFragment(areaFragment);
             }
         });
 
@@ -225,6 +222,7 @@ public class MapFragment extends Fragment {
         super.onDestroyView();
         Toolbar toolbar = MainActivity.getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
+        MainActivity.setMapNormal();
     }
 
     @Override
@@ -248,6 +246,31 @@ public class MapFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
     private void initWebView() {

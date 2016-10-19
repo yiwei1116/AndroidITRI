@@ -25,9 +25,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,10 +128,7 @@ public class ModeHighlightFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(4);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, equipTabFragment).addToBackStack(null);
-                transaction.commit();
+                replaceFragment(equipTabFragment);
             }
         });
 
@@ -152,6 +151,31 @@ public class ModeHighlightFragment extends Fragment {
         params.leftMargin = (int) cor.get("leftMargin");
         params.topMargin = (int) cor.get("topMargin");
         equip.setLayoutParams(params);
+    }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
     class CalcPosition extends AsyncTask<Void, Void, HashMap> {

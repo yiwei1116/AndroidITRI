@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -39,14 +40,7 @@ import com.uscc.ncku.androiditri.R;
  * create an instance of this fragment.
  */
 public class CustomPhoto extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private GridView gridView;
     private ImageView imageView;
     public List<String> thumbs;  //存放縮圖的id
@@ -59,27 +53,16 @@ public class CustomPhoto extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CustomPhoto.
      */
-    // TODO: Rename and change types and number of parameters
     public static CustomPhoto newInstance(String param1, String param2) {
         CustomPhoto fragment = new CustomPhoto();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -155,12 +138,8 @@ public class CustomPhoto extends Fragment {
         imageAdapter.notifyDataSetChanged();
     }
     public void nextStep(){
-        FragmentManager fm = getFragmentManager();
         ChooseTemplate CT = new ChooseTemplate();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.flayout_fragment_continer, CT );
-        transaction.addToBackStack(null);
-        transaction.commit();
+        replaceFragment(CT);
 
     }
     @Override
@@ -179,6 +158,31 @@ public class CustomPhoto extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void replaceFragment (Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
+        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+
+        // find fragment in back stack
+        int i = 0;
+        while (i < fragmentBackStack.size()) {
+            Fragment f = fragmentBackStack.get(i);
+            if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                fragmentBackStack.remove(i);
+                break;
+            }
+            i++;
+        }
+
+        // add current fragment to back stack
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+        fragmentBackStack.addFirst(currentFragment);
+
+        // replace fragment with input fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
+        ft.commit();
     }
 
 }
