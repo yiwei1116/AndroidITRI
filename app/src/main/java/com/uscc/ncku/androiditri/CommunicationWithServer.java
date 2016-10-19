@@ -547,6 +547,10 @@ public class CommunicationWithServer {
     /*
         **** DOWNLOAD CLASS : download all files
      */
+    public void DownloadFiles() {
+        new DownloadFilesTask().execute();
+    }
+
     public class DownloadFilesTask extends AsyncTask<String, Void, Void> {
 
         private List<String> files;
