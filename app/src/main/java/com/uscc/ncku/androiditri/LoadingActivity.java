@@ -103,8 +103,8 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
-//        new DataLoadingAsyncTask().execute();
-        communicationWithServer.DownloadFiles();
+        new DataLoadingAsyncTask().execute();
+//        communicationWithServer.DownloadFiles();
     }
 
     class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
