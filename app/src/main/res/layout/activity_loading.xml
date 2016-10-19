@@ -41,7 +41,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/img_bar_loading"
             tools:src="@drawable/loading_line_base"
+            android:background="@drawable/loading_line_base"
+            android:src="@drawable/clip_loading_bar"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             android:layout_marginTop="10dp" />
 
     </LinearLayout>
