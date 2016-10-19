@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static RelativeLayout containerSL;
 
+    private CommunicationWithServer communicationWithServer;
+
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
     private ChooseTemplate chooseTemplate;
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         finishOtherActivity();
 
         fragmentBackStack = new LinkedList<Fragment>();
+
+        communicationWithServer = LoadingActivity.getCommunicationWithServer();
 
         initFragment();
     }
