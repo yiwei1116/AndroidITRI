@@ -1,9 +1,12 @@
 package com.uscc.ncku.androiditri;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
@@ -39,8 +42,32 @@ public class CommunicationWithServer {
     private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
     private String counterURL = "http://140.116.82.48/interface/deviceadd.php";
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
+    public int totalCount;
+    public int partialCount;
     public SQLiteDbManager sqLiteDbManager;
 
+    private LoadingActivity loadingActivity;
+
+    public CommunicationWithServer() {
+        this.totalCount = 0;
+        this.partialCount = 0;
+    }
+
+    public void setTotalCount(int count) {
+        this.totalCount = count;
+    }
+
+    public void setPartialCount(int partial) {
+        this.partialCount = partial;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public int getPartialCount() {
+        return partialCount;
+    }
 
     // for downloading
     // 1.SVG files   2.device   3.hipster template   4.shipster text
@@ -547,20 +574,20 @@ public class CommunicationWithServer {
     /*
         **** DOWNLOAD CLASS : download all files
      */
-    public void DownloadFiles() {
-        new DownloadFilesTask().execute();
+    public void DownloadFiles(List<String> pathList, ImageView imgBar, LoadingActivity loadingActivity) {
+        this.loadingActivity = loadingActivity;
+        new DownloadFilesTask(pathList, imgBar).execute();
     }
 
-    public class DownloadFilesTask extends AsyncTask<String, Void, Void> {
+    public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
 
         private List<String> files;
+        private ClipDrawable drawable;
+        private int i = 0;
 
-        public DownloadFilesTask() {
-            files = null;
-        }
-
-        public DownloadFilesTask(List<String> files) {
+        public DownloadFilesTask(List<String> files, ImageView imageView) {
             this.files = files;
+            drawable = (ClipDrawable) imageView.getDrawable();
         }
 
         @Override
@@ -579,9 +606,17 @@ public class CommunicationWithServer {
         }
 
         @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            drawable.setLevel(values[0]);
+        }
+
+        @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.i("end", "Download tasks end");
+
+            loadingActivity.startNextActivity();
         }
 
         private void downloadFiles() throws MalformedURLException {
@@ -622,6 +657,9 @@ public class CommunicationWithServer {
                         // close fileoutputstream
                         Log.i("download", "done");
                         outputStream.close();
+
+                        i += 1000;
+                        onProgressUpdate(i);
                     }
                 }
             } catch (Exception e) {

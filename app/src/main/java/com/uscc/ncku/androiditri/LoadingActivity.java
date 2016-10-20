@@ -1,11 +1,13 @@
 package com.uscc.ncku.androiditri;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,6 +15,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import java.util.List;
 
 /**
  * Created by Lin on 2016/9/1.
@@ -23,7 +27,7 @@ public class LoadingActivity extends AppCompatActivity {
     /* loading level every time period from 0 to 10000 */
     public static final int LOADING_LEVEL = 200;
 
-    private CommunicationWithServer communicationWithServer;
+    private static CommunicationWithServer communicationWithServer;
 
     public SQLiteDbManager manager;
 
@@ -103,59 +107,67 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
-//        new DataLoadingAsyncTask().execute();
-        communicationWithServer.DownloadFiles();
+//        SQLiteDatabase db = manager.getReadableDatabase();
+        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+        imgBar.setVisibility(View.VISIBLE);
+
+        List<String> pathList = manager.getAllDownloadPaths();
+        communicationWithServer.DownloadFiles(pathList, imgBar, this);
     }
 
-    class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
-        private ClipDrawable drawable;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            /*
-                --> can delete
-             */
-
-            ConnectActivity connect = new ConnectActivity(manager);
-
-            ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
-
-            imgBar.setBackgroundResource(R.drawable.loading_line_base);
-            imgBar.setImageResource(R.drawable.clip_loading_bar);
-
-            drawable = (ClipDrawable) imgBar.getDrawable();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            for (int i = 0; i < 10000; i+=LOADING_LEVEL) {
-                publishProgress(i);
-                try {
-                    Thread.sleep(LOADING_PERIOD);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            drawable.setLevel(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            Intent intent = new Intent(LoadingActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        }
+    public void startNextActivity() {
+        Intent intent = new Intent(LoadingActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
+
+    public static CommunicationWithServer getCommunicationWithServer() {
+        return communicationWithServer;
+    }
+
+//    class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
+//        private ClipDrawable drawable;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            /*
+//                --> can delete
+//             */
+//
+//            ConnectActivity connect = new ConnectActivity(manager);
+//
+//
+//
+////            drawable = (ClipDrawable) imgBar.getDrawable();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            for (int i = 0; i < 10000; i+=LOADING_LEVEL) {
+//                publishProgress(i);
+//                try {
+//                    Thread.sleep(LOADING_PERIOD);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onProgressUpdate(Integer... values) {
+//            super.onProgressUpdate(values);
+//            drawable.setLevel(values[0]);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void aVoid) {
+//            super.onPostExecute(aVoid);
+//
+//
+//        }
+//    }
 
 }
