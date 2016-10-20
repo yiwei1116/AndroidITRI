@@ -633,7 +633,7 @@ public class CommunicationWithServer {
             if ( !path.exists() ) {
                 path.mkdirs();
             }
-
+            Log.i("files", String.valueOf(files));
             try {
                 // TODO : should put all urls with strings
                 for (String eachFile : files) {
