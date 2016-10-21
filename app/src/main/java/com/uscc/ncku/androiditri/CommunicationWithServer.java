@@ -1,6 +1,5 @@
 package com.uscc.ncku.androiditri;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
@@ -36,11 +35,11 @@ import java.util.List;
 public class CommunicationWithServer {
 
     private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
-    private String downloadURL = "http://140.116.82.48/interface/download.php";
-    private String hipsterContentURL = "http://140.116.82.48/interface/catchhipster.php";
-    private String surveyOneURL = "http://140.116.82.48/interface/surveyone.php";
+    private String downloadURL = "http://140.116.82.48/interface/getfile.php";
+    private String hipsterContentURL = "http://140.116.82.48/interface/hipster.php"; // hipster content
+    private String surveyOneURL = "http://140.116.82.48/interface/survey.php"; // first survey
     private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
-    private String counterURL = "http://140.116.82.48/interface/deviceadd.php";
+    private String counterURL = "http://140.116.82.48/interface/deviceadd.php"; // counter
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
     public int totalCount;
     public int partialCount;
@@ -51,6 +50,12 @@ public class CommunicationWithServer {
     public CommunicationWithServer() {
         this.totalCount = 0;
         this.partialCount = 0;
+//        sqLiteDbManager = new SQLiteDbManager();
+    }
+
+    public CommunicationWithServer(LoadingActivity loadingActivity) {
+        this.loadingActivity = loadingActivity;
+        this.sqLiteDbManager = new SQLiteDbManager(this.loadingActivity);
     }
 
     public void setTotalCount(int count) {
@@ -351,7 +356,7 @@ public class CommunicationWithServer {
             String downloadResponse = "";
             // do all things here
             try {
-
+                Log.i("background", "do in background");
                 downloadResponse = performDownloadPost(new HashMap<String, String>() {
                     {
                         put("Accept", "application/json");
@@ -522,6 +527,7 @@ public class CommunicationWithServer {
         }
 
         private String performDownloadPost(HashMap<String, String> hashMap) {
+            Log.i("post", "perform download post");
             String response = "";
             URL url;
             try {
@@ -541,7 +547,7 @@ public class CommunicationWithServer {
                 outputStreamWriter.write(queryTable);
                 outputStreamWriter.flush();
                 outputStreamWriter.close();
-
+                Log.i("request", queryTable);
                 int responseCode = httpURLConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     Log.e("download", "HTTP Response: HTTP - OK");
@@ -623,11 +629,11 @@ public class CommunicationWithServer {
             String filename = null;
             String filepath = null;
             File rootDir = Environment.getExternalStorageDirectory();
-            final File path = new File(rootDir.getAbsolutePath() + "/itri");
+            final File path = new File(rootDir.getAbsolutePath() + "/test1");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
-
+            Log.i("files", String.valueOf(files));
             try {
                 // TODO : should put all urls with strings
                 for (String eachFile : files) {
@@ -646,7 +652,11 @@ public class CommunicationWithServer {
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                         urlConnection.setRequestMethod("GET");
                         urlConnection.setDoOutput(true);
-                        FileOutputStream outputStream = new FileOutputStream(new File(path, filename));
+                        File outputFile = new File(path, filename);
+                        if (!outputFile.exists()) {
+                            outputFile.createNewFile();
+                        }
+                        FileOutputStream outputStream = new FileOutputStream(outputFile);
                         InputStream inputStream = urlConnection.getInputStream();
                         byte[] buffer = new byte[4096];
                         int len = 0;
@@ -659,7 +669,7 @@ public class CommunicationWithServer {
                         outputStream.close();
 
                         i += 1000;
-                        onProgressUpdate(i);
+//                        onProgressUpdate(i);
                     }
                 }
             } catch (Exception e) {

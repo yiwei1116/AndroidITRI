@@ -35,7 +35,7 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        communicationWithServer = new CommunicationWithServer();
+        communicationWithServer = new CommunicationWithServer(this);
 
         logoLoading();
         manager = new SQLiteDbManager(this);
@@ -111,7 +111,11 @@ public class LoadingActivity extends AppCompatActivity {
         ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
         imgBar.setVisibility(View.VISIBLE);
 
+        // download all tables from server and save into SQLite
+        communicationWithServer.downloadAllTables();
+        // get all paths that require downloading files from server
         List<String> pathList = manager.getAllDownloadPaths();
+        // download files
         communicationWithServer.DownloadFiles(pathList, imgBar, this);
     }
 
