@@ -13,18 +13,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -42,6 +47,7 @@ public class TemplateContext extends Fragment {
     MergeTemplatePic MTP;
     private String StringContext;
     private  Bundle bundle1;
+    private  Spinner spinner;
     private RadioButton radioSexButton;
     private int selectedId;
     public TemplateContext() {
@@ -76,7 +82,9 @@ public class TemplateContext extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_template_context, container, false);
+        spinner = (Spinner) view.findViewById(R.id.spinner_item);
 
+       spinnerArea();
 
         MainActivity.setToolbarTitle(R.string.text_master);
 
@@ -208,12 +216,31 @@ public class TemplateContext extends Fragment {
         buildContext.setBackgroundResource(R.drawable.btn_right_active);
 
     }*/
-    public void clearText(){
+    public void spinnerArea(){
+
+        ArrayList<String> arrayList = new ArrayList<String>();
+        arrayList.add("Bangalore");
+        arrayList.add("Delhi");
+        arrayList.add("Mumbai");
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList);
+        spinner.setAdapter(adp);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long arg3)
+            {
+                String city = "The Area is " + parent.getItemAtPosition(position).toString();
+                Toast.makeText(parent.getContext(), city, Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
 
 
-
-
-
+        });
 
     }
 
