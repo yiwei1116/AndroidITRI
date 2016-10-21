@@ -74,7 +74,7 @@ public class MapFragment extends Fragment {
     private int currentPathOrder = 0;
     private int currentZoneOrder = 0;
     private int pathOrder[] = {1,2,3};
-    private int zoneOrder[] = {2,3,4,5 };
+    private int zoneOrder[] = {1,2,3,4 };
 
     public ArrayList<Beacon> mBeaconList = new ArrayList<>();
     public ArrayList<Field> mFieldList = new ArrayList<>();
@@ -145,7 +145,7 @@ public class MapFragment extends Fragment {
 
         //test
         lastbeacon_mac = "";
-        mSvgFile = "living_1f.svg";
+        mSvgFile = "Living3_Map_1F_english.svg";
         ///
         mTourProject = new DownloadProject();
         mTourProject.mIsDownloadCompleted =true;
@@ -312,12 +312,12 @@ public class MapFragment extends Fragment {
             try {
                 String mac = "";
                 //test
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30","入口玄關",2,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64","植栽區與餐廳",3,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D","圖書資訊室",15,2));
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77","中央監控室",16,2));
-                mFieldList.add(new Field(1,"living_1f"));
-                mFieldList.add(new Field(2,"living_2f"));
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30","大廳",1,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64","入口玄關",2,1));
+                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D","植栽區與餐廳",3,1));
+                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77","廚房",4,1));
+                mFieldList.add(new Field(1,"Living3_Map_1F_english"));
+                mFieldList.add(new Field(2,"Living3_Map_2F_english"));
                 //test
                 switch (msg.what) {
                     case BLEModule.BLE_SCAN_DONE:
@@ -368,6 +368,11 @@ public class MapFragment extends Fragment {
                         if (b == null) {
                             return;
                         }
+                        if (b.zone != zoneOrder[currentZoneOrder])
+                        {
+                            return;
+                        }
+                        currentZoneOrder++;
                         Log.d("ZontActivity", "b.zone.num = " + b.zone);
                         notice.setVisibility(View.VISIBLE);
                         txtMapArea.setText("   "+b.name);
@@ -379,15 +384,15 @@ public class MapFragment extends Fragment {
                                 if(f.id == b.field){
                                     mScanedField = f.id;
                                     String loadfile =  "file:///android_asset/" +  f.map_name +".svg";
-                                    Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + b.zone + ")");
-                                    mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + b.zone + ")");
+                                    Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
+                                    mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
 
                                     break;
                                 }
                             }
                         } else {
                             if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + b.zone + ")");
+                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
                             }
                         }
 
@@ -440,7 +445,7 @@ public class MapFragment extends Fragment {
                             }else{
                                 //String loadfile =  "file:///" + mTourProject.getStoragePath() + mSvgFile ;
                                 String loadfile =  "file:///android_asset/" + mSvgFile ;
-                                js = "javascript: setSVGLoad('" + loadfile + "',-1)";
+                                js = "javascript: setSVGLoad('" + loadfile + "',-1,1)";
                             }
                             mWebViewMap.loadUrl(js);
                             break;
