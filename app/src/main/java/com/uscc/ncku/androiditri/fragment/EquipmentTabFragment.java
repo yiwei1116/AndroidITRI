@@ -28,6 +28,7 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.AudioTour;
 
 import org.w3c.dom.Text;
 
@@ -58,7 +59,7 @@ public class EquipmentTabFragment extends Fragment {
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
     private ArrayList<EquipmentTab> equipTabs;
-
+    private AudioTour audioTour = new AudioTour(getActivity());
 
 
 
@@ -128,6 +129,7 @@ public class EquipmentTabFragment extends Fragment {
         MainActivity.setFontDisabled();
         MainActivity.setSoundDisabled();
         MainActivity.setInfoDisabled();
+        audioTour.release();
     }
 
 

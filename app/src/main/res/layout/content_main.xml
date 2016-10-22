@@ -26,6 +26,42 @@
         android:layout_above="@+id/llayout_button_main"
         android:clickable="true"
         android:layout_marginBottom="-6dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rlayout_sound"
+            android:background="@color/colorBlack"
+            android:alpha="0.9"
+            android:layout_gravity="center|bottom"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_pause"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/play_pause_video"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/audioBar"
+                android:maxHeight="2dp"
+                android:progress="15"
+                android:progressDrawable="@drawable/btn_font_bar"
+                android:thumb="@drawable/btn_font_circle"
+                android:layout_toRightOf="@+id/play_pause_video"
+                android:layout_centerVertical="true" />
+
+
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

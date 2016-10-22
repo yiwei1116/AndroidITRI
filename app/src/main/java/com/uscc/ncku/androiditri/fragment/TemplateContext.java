@@ -199,7 +199,6 @@ public class TemplateContext extends Fragment {
                 bundle1 = new Bundle();
                 StringContext = editText.getText().toString().trim();
 
-
                 Log.e("StringContext", StringContext);
                 bundle1.putString("TemplateNum", templateIndex);
                 bundle1.putString("WriteContext", StringContext);
@@ -287,6 +286,9 @@ public class TemplateContext extends Fragment {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 
                 arrayList.add(cursor.getString(cursor.getColumnIndex("name_en")));
+
+
+
 
             }
 
