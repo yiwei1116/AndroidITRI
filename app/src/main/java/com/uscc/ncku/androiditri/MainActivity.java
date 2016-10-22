@@ -235,12 +235,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
-                        setSoundNormal();
-                        try {
-                              pausePlay();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                            setSoundNormal();
+
+                              mediaPlayer.release();
                         // textToSpeech.stop();
 
                     }
@@ -600,12 +597,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void release(){
 
-
-        mediaPlayer.release();
-
-    }
     private TimerTask mTimerTask = new TimerTask() {
         @Override
         public void run() {
