@@ -652,7 +652,11 @@ public class CommunicationWithServer {
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                         urlConnection.setRequestMethod("GET");
                         urlConnection.setDoOutput(true);
-                        FileOutputStream outputStream = new FileOutputStream(new File(path, filename));
+                        File outputFile = new File(path, filename);
+                        if (!outputFile.exists()) {
+                            outputFile.createNewFile();
+                        }
+                        FileOutputStream outputStream = new FileOutputStream(outputFile);
                         InputStream inputStream = urlConnection.getInputStream();
                         byte[] buffer = new byte[4096];
                         int len = 0;
