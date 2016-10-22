@@ -7,7 +7,7 @@
 
         var isAndroid = false;
 		var currentRegion = "";
-
+        var nextRegion = "";
 		// on document ready
 		$(function() {
 			// reset opacity
@@ -23,10 +23,10 @@
 			}
 		});
 
-		function setSVGLoad(svg, region) {
+		function setSVGLoad(svg, region, next) {
 			$("body").load(svg, function() {
 				// execute after floorplan.svg loaded
-				onRegionChanged(region);
+				onRegionChanged(region,next);
 			});
 		}
 
@@ -36,52 +36,51 @@
 		}
 
 
-		function addLeadingZeros (n, length) {
-			var str = (n > 0 ? n : -n) + "";
-			var zeros = "";
-			for (var i = length - str.length; i > 0; i--)  {
-				zeros += "0";
-			}
-			zeros += str;
-			return n >= 0 ? zeros : "-" + zeros;
-		}
-
 		function hideCurrentRegion() {
 			// show blue pin on the label
-			$("#" + currentRegion + "_x5F_inactive").css("display", "inline");
+			$("#mv" + currentRegion).css("display", "inline");
 			// hide orange pin on label
-			$("#" + currentRegion + "_x5F_active").css("display", "none");
+			$("#ma" + currentRegion).css("display", "none");
 
 			// hide region block on the map
-			$("#" + currentRegion).css("display", "none");
-			$("#" + currentRegion).attr("class", "");
+			$("#r" + currentRegion).css("display", "none");
+			$("#r" + currentRegion).attr("class", "");
 			// hide region pin on the map
-			$("#pin_x5F_" + currentRegion).css("display", "none");
-			$("#pin_x5F_" + currentRegion).attr("class", "");
+			$("#tag" + currentRegion).css("display", "none");
+			$("#tag" + currentRegion).attr("class", "");
+
+			//hide path
+			$("#p" + currentRegion + "-p" + nextRegion).css("display", "none");
 		}
 
 		function showNewRegion() {
 			// hide blue pin on label
-			$("#" + currentRegion + "_x5F_inactive").css("display", "none");
+			$("#mn" + currentRegion).css("display", "none");
+			$("#mn" + currentRegion).attr("class", "");
 			// show orange pin on label
-			$("#" + currentRegion + "_x5F_active").css("display", "inline");
+			$("#ma" + currentRegion).css("display", "inline");
 
 			// show orange region
-			$("#" + currentRegion).css("display", "inline").attr("class", "fadeinAndBlinkClass");
-			$("#pin_x5F_" + currentRegion).css("display", "inline").attr("class", "fadeinClass");
+			$("#r" + currentRegion).css("display", "inline").attr("class", "fadeinAndBlinkClass");
+			$("#tag" + currentRegion).css("display", "inline").attr("class", "fadeinClass");
+
+			//show path
+			$("#p" + currentRegion + "-p" + nextRegion).css("display", "inline");
 		}
 
-		function onRegionChanged(region) {
+		function onRegionChanged(region,next) {
+
 			if (region >= 0) {
-				var regionStr = "area" + addLeadingZeros(region + 1, 2);
+				var regionStr = region + ""
 				if (currentRegion != "") {
 					hideCurrentRegion();
 				}
+				nextRegion = next;
 				// update current region
 				currentRegion = regionStr;
 				showNewRegion();
 
-				$("#" + regionStr + ", #pin_x5F_" + regionStr).click(function() {
+				$("#r" + regionStr + ", #tag" + regionStr).click(function() {
 					$('body').fadeOut(1000, function() {
 						// fadeout completion
 						if (isAndroid) {
@@ -90,6 +89,7 @@
 					});
 				});
 			}
+			$("#mn" + next).css("display", "inline").attr("class", "fadeinAndBlinkClass");
 		}
 		function onResumeMap() {
 			$('body').fadeIn(1000);

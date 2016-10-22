@@ -629,7 +629,7 @@ public class CommunicationWithServer {
             String filename = null;
             String filepath = null;
             File rootDir = Environment.getExternalStorageDirectory();
-            final File path = new File(rootDir.getAbsolutePath() + "/itri");
+            final File path = new File(rootDir.getAbsolutePath() + "/test1");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
@@ -669,7 +669,7 @@ public class CommunicationWithServer {
                         outputStream.close();
 
                         i += 1000;
-                        onProgressUpdate(i);
+//                        onProgressUpdate(i);
                     }
                 }
             } catch (Exception e) {

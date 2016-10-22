@@ -129,18 +129,63 @@
 
 
     </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:layout_gravity="bottom|center"
+        android:orientation="vertical"
+        >
 
-    <Button
-        android:id="@+id/btn_next_step"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/btn_nextstep_normal"
-        android:text="@string/nextstep"
-        android:textColor="@drawable/selecter_btn_black_white_txt_color"
-        android:textSize="@dimen/btn_font_size" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/area_background"
+            android:layout_gravity="center"
+            android:background="@color/btn_font_color_grey"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_area"
+            android:id="@+id/textView3"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="10dp"
+            />
+        <ImageView
+            android:layout_width="302dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:background="@color/colorWhite"
+            android:layout_marginBottom="10dp"
 
+            />
+        <Spinner
+            android:layout_width="302dp"
+            android:layout_height="35dp"
+            android:id ="@+id/spinner_item"
+            android:layout_gravity="center"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@color/colorWhite"
+            android:dropDownSelector="@drawable/spinner_select"
+            android:layout_marginBottom="10dp"
+            >
+
+         </Spinner>
+
+
+        <Button
+
+            android:id="@+id/btn_next_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_nextstep_normal"
+            android:text="@string/nextstep"
+            android:textColor="@drawable/selecter_btn_black_white_txt_color"
+            android:textSize="@dimen/btn_font_size"
+            android:layout_gravity="bottom|center_horizontal" />
+
+
+
+
+    </FrameLayout>
 </FrameLayout>

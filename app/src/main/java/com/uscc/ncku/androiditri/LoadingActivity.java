@@ -107,7 +107,7 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
-        SQLiteDatabase db = manager.getReadableDatabase();
+//        SQLiteDatabase db = manager.getReadableDatabase();
         ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
         imgBar.setVisibility(View.VISIBLE);
 
