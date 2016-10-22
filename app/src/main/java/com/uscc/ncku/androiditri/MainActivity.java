@@ -20,22 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
-import com.uscc.ncku.androiditri.util.AudioTour;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
@@ -57,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
     /* custom fragment back stack */
     private static LinkedList<Fragment> fragmentBackStack;
 
-    private static RelativeLayout containerSL;
+    private static FrameLayout containerSoundFontSize;
+    private static RelativeLayout fontSizeRL;
+    private static RelativeLayout soundRL;
     private boolean isStart ;  //讓mTimerTask是否開始運行
     private boolean isfirst = true;
     private CommunicationWithServer communicationWithServer;
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mediaBtn;
     private SeekBar seekBar;
     private Timer audioTimer;
-    private RelativeLayout soundRL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
         seekBar = (SeekBar) findViewById(R.id.audioBar);
 
-        containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
+        containerSoundFontSize = (FrameLayout) findViewById(R.id.flayout_sound_font_container);
+        fontSizeRL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
         soundRL = (RelativeLayout) findViewById(R.id.rlayout_sound);
         //createLanguageTTS();
-        addPlayList();
         finishOtherActivity();
 
         fragmentBackStack = new LinkedList<Fragment>();
@@ -224,24 +223,20 @@ public class MainActivity extends AppCompatActivity {
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
                         setSoundActive();
-                        showSeekbar();
-                        try {
-                            doPlay();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        //textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+
+                        ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+
+                        iSoundInterface.doPlay();
 
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
-                            setSoundNormal();
-                        try {
-                            pausePlay();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        setSoundNormal();
 
-                        // textToSpeech.stop();
+                        ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+
+                        iSoundInterface.pausePlay();
 
                     }
                     break;
@@ -250,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                         setFontActive();
 
                         Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.sound_font_in);
-                        containerSL.startAnimation(animation);
+                        fontSizeRL.startAnimation(animation);
 
                         /////////// ****** method to get which fragment is it
                         Fragment currentFont = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -507,29 +502,32 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
+        soundRL.setVisibility(View.VISIBLE);
     }
 
     public static void setSoundNormal() {
         soundBtn.setNormal(R.drawable.btn_main_sound_normal);
+        soundRL.setVisibility(View.GONE);
     }
 
     public static void setSoundDisabled() {
         soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
+        soundRL.setVisibility(View.GONE);
     }
 
     public static void setFontActive() {
         fontBtn.setActive(R.drawable.btn_main_font_active);
-        containerSL.setVisibility(View.VISIBLE);
+        fontSizeRL.setVisibility(View.VISIBLE);
     }
 
     public static void setFontNormal() {
         fontBtn.setNormal(R.drawable.btn_main_font_normal);
-        containerSL.setVisibility(View.GONE);
+        fontSizeRL.setVisibility(View.GONE);
     }
 
     public static void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
-        containerSL.setVisibility(View.GONE);
+        fontSizeRL.setVisibility(View.GONE);
     }
 
 
@@ -554,38 +552,6 @@ public class MainActivity extends AppCompatActivity {
                 TourSelectActivity.instance.finish();
             } catch (Exception e) {}
         }
-    }
-
-    public void showSeekbar(){
-        soundRL.setVisibility(View.VISIBLE);
-
-
-
-    }
-
-    public void addPlayList(){
-
-        playlist.add(R.raw.test);
-
-
-    }
-
-
-    public void doPlay() throws IOException {
-        mediaPlayer = MediaPlayer.create(this,playlist.get(0));
-        try {
-
-            mediaPlayer.seekTo(length);
-            mediaPlayer.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-    }
-    public void pausePlay() throws IOException {
-
-        mediaPlayer.pause();
-        length = mediaPlayer.getCurrentPosition();
-
     }
 
 

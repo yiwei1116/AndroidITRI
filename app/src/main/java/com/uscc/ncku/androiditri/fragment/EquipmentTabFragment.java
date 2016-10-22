@@ -1,10 +1,13 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.speech.tts.TextToSpeech;
@@ -34,7 +37,7 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
-import com.uscc.ncku.androiditri.util.AudioTour;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 
 import org.w3c.dom.Text;
 
@@ -53,7 +56,7 @@ import java.util.Locale;
  */
 
 
-public class EquipmentTabFragment extends Fragment {
+public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
 
     private int equipNumber;
@@ -71,7 +74,6 @@ public class EquipmentTabFragment extends Fragment {
             R.drawable.rm_grid1_a1m3
     };
     private int image_index = 0;
-    private AudioTour audioTour = new AudioTour(getActivity());
 
 
 
@@ -141,7 +143,11 @@ public class EquipmentTabFragment extends Fragment {
         MainActivity.setFontDisabled();
         MainActivity.setSoundDisabled();
         MainActivity.setInfoDisabled();
-        audioTour.release();
+
+        // release sound
+        for (EquipmentTab tab : equipTabs) {
+            tab.mediaPlayer.release();
+        }
     }
 
 
@@ -174,6 +180,7 @@ public class EquipmentTabFragment extends Fragment {
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return (YouTubePlayerFragment) getFragmentManager().findFragmentByTag(YouTubePlayerFragment.class.getSimpleName());
     }
+
     class RadioButtonListener implements RadioGroup.OnCheckedChangeListener {
         private View v;
 
@@ -283,31 +290,37 @@ public class EquipmentTabFragment extends Fragment {
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
             container.addView(v);
+
+            // set equipment title
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
             title.setText(equipTabs.get(position).title);
 
+            // set vidoe and photo button
             RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
             radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
             RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
             RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
             video.setChecked(true);
 
+            // set zoom button in photo button
             ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
             zoom.setOnClickListener(new ZoomButtonListener());
 
+            // if there is no photo button or no video button
             if (!equipTabs.get(position).isVideo) {
                 video.setVisibility(View.GONE);
             } else if (!equipTabs.get(position).isPhoto) {
                 photo.setVisibility(View.GONE);
             }
 
+            // set equipment content text
             txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
             txtContent.setText(equipTabs.get(position).textContent);
             txtContent.setTextSize(equipTabs.get(position).fontSize);
             txtContent.setMovementMethod(new ScrollingMovementMethod());
 
+            // set youtube player
             YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-
             youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
 
 
@@ -357,6 +370,11 @@ public class EquipmentTabFragment extends Fragment {
         boolean isPhoto;
         String textContent;
         int fontSize;
+
+        // for sound
+        MediaPlayer mediaPlayer;
+        int playList;
+        int playLength;
     }
 
     private void addTabs() {
@@ -367,21 +385,52 @@ public class EquipmentTabFragment extends Fragment {
             tab.isPhoto = true;
             tab.textContent = getResources().getString(R.string.rm_test);
             tab.fontSize = 18;
+
+            // add sound to each tab
+            tab.playList = R.raw.test;
+            tab.mediaPlayer = MediaPlayer.create(getActivity(), tab.playList);
+
             equipTabs.add(tab);
         }
     }
 
+    /*
+        font size button
+     */
     public void setFontSize(int size) {
         equipTabs.get(mViewPager.getCurrentItem()).fontSize = size;
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
-    public static String getIntroduction(){
-      String getIntrod = txtContent.getText().toString();
 
 
-        return getIntrod;
+    /*
+        sound button
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void doPlay() {
+        int currentIndex = mViewPager.getCurrentItem();
 
+        try {
+            equipTabs.get(currentIndex).mediaPlayer.seekTo(equipTabs.get(currentIndex).playLength);
+            equipTabs.get(currentIndex).mediaPlayer.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void pausePlay() {
+        int currentIndex = mViewPager.getCurrentItem();
+        equipTabs.get(currentIndex).mediaPlayer.pause();
+        equipTabs.get(currentIndex).playLength =
+                equipTabs.get(currentIndex).mediaPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public void release() {
+        equipTabs.get(mViewPager.getCurrentItem()).mediaPlayer.release();
     }
 
 
