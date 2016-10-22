@@ -749,9 +749,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-            Log.i("device guide", guide_voice);
-            Log.i("device photo", photo);
-            Log.i("device ph_ve", photo_vertical);
+//            Log.i("device guide", guide_voice);
+//            Log.i("device photo", photo);
+//            Log.i("device ph_ve", photo_vertical);
+
             if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
                 deviceFiles.add(guide_voice);
             }
@@ -880,7 +881,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         ----> get videos from Mode table
      */
     public List<String> getVideoFiles() {
-        List<String> videoFiles = new ArrayList<String>();;
+        List<String> videoFiles = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select video from mode", null);
         cursor.moveToFirst();

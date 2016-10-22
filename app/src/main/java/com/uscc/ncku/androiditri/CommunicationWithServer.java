@@ -3,7 +3,6 @@ package com.uscc.ncku.androiditri;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -74,25 +73,6 @@ public class CommunicationWithServer {
         return partialCount;
     }
 
-    // for downloading
-    // 1.SVG files   2.device   3.hipster template   4.shipster text
-    // for uploading
-    // 1.survey   2. feedback   3. counter
-
-//    /*
-//        need:
-//            function to download from server
-//                --> get SVG files
-//                --> get device data
-//                --> get hipster data
-//    */
-//
-//
-//    /*
-//        **** Upload function
-//        upload JSONArray to server
-//     */
-
     /*
         **** UPLOAD CLASS ****
      */
@@ -157,31 +137,6 @@ public class CommunicationWithServer {
             String response = "";
             URL url;
             try {
-                // configure json object & json array  --> example code
-//                counter1 = new JSONObject();
-//                counter1.put(mode_id, 1);
-//                counter1.put(device_id, 1);
-//                counter1.put(add_count, 25);
-//
-//                counter2 = new JSONObject();
-//                counter2.put(mode_id, 1);
-//                counter2.put(device_id, 2);
-//                counter2.put(add_count, 100);
-//
-//                counter3 = new JSONObject();
-//                counter3.put(mode_id, 1);
-//                counter3.put(device_id, 23);
-//                counter3.put(add_count, 50);
-//
-//                jsonArray = new JSONArray();
-//                jsonArray.put(counter1);
-//                jsonArray.put(counter2);
-//                jsonArray.put(counter3);
-//
-//                JSONObject json_string = new JSONObject();
-//                json_string.put(request_type, 1);
-//                json_string.put(request_data, jsonArray);
-
                 if (json_string == null) {
                     return "JSON data is null";
                 }
@@ -226,27 +181,23 @@ public class CommunicationWithServer {
 
     }
 
-
     // upload should include : hipster_content, survey_result
-    public JSONObject packHipsterContentData(String textContent, String picturePath, String combinePicturePath, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+    public JSONObject packHipsterContentData(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
         JSONObject uploadObject = new JSONObject();
         uploadObject.put("content", textContent);
-        uploadObject.put("picture", picturePath);
-        uploadObject.put("combine_picture", combinePicturePath);
+        uploadObject.put("combine_picture", picture);
         uploadObject.put("hipster_template_id", hipsterTemplateId);
         uploadObject.put("hipster_text_id", hipsterTextId);
         uploadObject.put("zone_id", zoneId);
         return uploadObject;
     }
 
-    // WARNING: YIWEI should call this function
-    public void uploadHipsterContent(String textContent, String picturePath, String combinePicturePath, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
-        JSONObject jsonObject = packHipsterContentData(textContent, picturePath, combinePicturePath, hipsterTemplateId, hipsterTextId, zoneId);
+    // 奕崴呼叫此函數 should call this function
+    // 文字內容，照片檔名，版型id，罐頭文字id，zoneid
+    public void uploadHipsterContent(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+        JSONObject jsonObject = packHipsterContentData(textContent, picture, hipsterTemplateId, hipsterTextId, zoneId);
         uploadJsonData(jsonObject, this.hipsterContentURL);
     }
-
-    // TODO: yiwei has to upload file to server
-
 
     // UPLOAD to "survey" table
     public JSONObject packSurveyData (int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
@@ -356,7 +307,6 @@ public class CommunicationWithServer {
             String downloadResponse = "";
             // do all things here
             try {
-                Log.i("background", "do in background");
                 downloadResponse = performDownloadPost(new HashMap<String, String>() {
                     {
                         put("Accept", "application/json");
@@ -364,7 +314,6 @@ public class CommunicationWithServer {
                     }
                 });
                 // log http response code
-                Log.i("HTTP result", downloadResponse);
                 // fetch as json array
                 JSONArray responseJSON = new JSONArray(downloadResponse);
                 saveToSQLite(responseJSON);
@@ -527,7 +476,6 @@ public class CommunicationWithServer {
         }
 
         private String performDownloadPost(HashMap<String, String> hashMap) {
-            Log.i("post", "perform download post");
             String response = "";
             URL url;
             try {
@@ -550,13 +498,11 @@ public class CommunicationWithServer {
                 Log.i("request", queryTable);
                 int responseCode = httpURLConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    Log.e("download", "HTTP Response: HTTP - OK");
                     String line;
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpURLConnection.getInputStream())));
                     while ((line = bufferedReader.readLine()) != null) {
                         response += line;
                     }
-                    Log.i("response code", response);
                     bufferedReader.close();
                 } else {
                     Log.e("HTTP response", String.valueOf(responseCode));
@@ -628,14 +574,15 @@ public class CommunicationWithServer {
         private void downloadFiles() throws MalformedURLException {
             String filename = null;
             String filepath = null;
-            File rootDir = Environment.getExternalStorageDirectory();
+            // using external storage space
+//            File rootDir = Environment.getExternalStorageDirectory();
+            File rootDir = loadingActivity.getFilesDir();
             final File path = new File(rootDir.getAbsolutePath() + "/test1");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
             Log.i("files", String.valueOf(files));
             try {
-                // TODO : should put all urls with strings
                 for (String eachFile : files) {
                     if (eachFile.length() != 0 && eachFile != null && !eachFile.equals("null")) {
                         String[] splits = eachFile.split("/");
@@ -643,29 +590,31 @@ public class CommunicationWithServer {
                         // 解析路徑
                         String pathSuffix = eachFile.substring(3);
                         filepath = filePathURLPrefix + pathSuffix;
-                        Log.i("file data", eachFile);
-                        Log.i("filename", filename);
-                        Log.i("filepath", filepath);
-
+                        Log.i("each file", eachFile);
                         URL url = new URL(filepath);
-                        Log.d("path", String.valueOf(path));
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-                        urlConnection.setRequestMethod("GET");
                         urlConnection.setDoOutput(true);
                         File outputFile = new File(path, filename);
                         if (!outputFile.exists()) {
                             outputFile.createNewFile();
+                        } else {
+                            // delete and create new one
+                            outputFile.delete();
+                            outputFile.createNewFile();
                         }
                         FileOutputStream outputStream = new FileOutputStream(outputFile);
                         InputStream inputStream = urlConnection.getInputStream();
+                        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 50);
                         byte[] buffer = new byte[4096];
                         int len = 0;
-                        while ( (len = inputStream.read(buffer)) > 0) {
+                        while ( (len = bufferedInputStream.read(buffer)) != -1) {
                             // write in file
                             outputStream.write(buffer, 0, len);
                         }
                         // close fileoutputstream
                         Log.i("download", "done");
+                        bufferedInputStream.close();
+                        inputStream.close();
                         outputStream.close();
 
                         i += 1000;
@@ -676,27 +625,6 @@ public class CommunicationWithServer {
                 Log.e("error", String.valueOf(e));
             }
 
-            // storage part
-
-//                File root = Environment.getExternalStorageDirectory();
-//                final File path = new File(root.getAbsolutePath() + "/download");
-//                if (!path.exists()) {
-//                    path.mkdirs();
-//                }
-//                // write file
-//                final File file = new File(path, "jsonArray.txt");
-//                try {
-//                    file.createNewFile();
-//                    FileOutputStream fout = new FileOutputStream(file);
-//                    PrintWriter outputStreamWriter = new PrintWriter(fout);
-//                    outputStreamWriter.write(String.valueOf(jsonArray));
-//                    outputStreamWriter.flush();
-//                    outputStreamWriter.close();
-//                    fout.flush();
-//                    fout.close();
-//                } catch (IOException e) {
-//                    Log.e("error", "write to file error.");
-//                }
         }
 
     }
