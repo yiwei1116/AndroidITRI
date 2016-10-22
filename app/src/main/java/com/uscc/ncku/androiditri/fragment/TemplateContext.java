@@ -26,11 +26,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +55,13 @@ public class TemplateContext extends Fragment {
     private  Spinner spinner;
     private RadioButton radioSexButton;
     private int selectedId;
+    public String db_name = "android_itri_1.db";
+    public String table_name_zone = "zone";
+    private SQLiteDbManager dbManager;
+    private SQLiteDatabase db;
+    private Cursor cursor;
+    private ArrayList<String> arrayList = new ArrayList<String>();
+    private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
     public TemplateContext() {
 
     }
@@ -68,6 +80,9 @@ public class TemplateContext extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbManager = new SQLiteDbManager(getActivity(), db_name);
+        db = dbManager.getReadableDatabase();
+        cursor = db.query(table_name_zone,null,null,null,null,null,null);
     }
 
 
@@ -84,7 +99,7 @@ public class TemplateContext extends Fragment {
         View view = inflater.inflate(R.layout.fragment_template_context, container, false);
         spinner = (Spinner) view.findViewById(R.id.spinner_item);
 
-       spinnerArea();
+        spinnerArea();
 
         MainActivity.setToolbarTitle(R.string.text_master);
 
@@ -218,10 +233,9 @@ public class TemplateContext extends Fragment {
     }*/
     public void spinnerArea(){
 
-        ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("Bangalore");
-        arrayList.add("Delhi");
-        arrayList.add("Mumbai");
+
+        arrayList.add("請選擇");
+        getZone();
         ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList);
         spinner.setAdapter(adp);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -229,8 +243,9 @@ public class TemplateContext extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long arg3)
             {
-                String city = "The Area is " + parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), city, Toast.LENGTH_LONG).show();
+
+                /*String city = "The Area is " + parent.getItemAtPosition(position).toString();
+                Toast.makeText(parent.getContext(), city, Toast.LENGTH_LONG).show();*/
 
             }
 
@@ -268,7 +283,16 @@ public class TemplateContext extends Fragment {
         ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
         ft.commit();
     }
+        public void getZone(){
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 
+                arrayList.add(cursor.getString(cursor.getColumnIndex("name_en")));
+
+            }
+
+            cursor.close();
+
+        }
 
  /*   @Override
     public void onClick(View v) {

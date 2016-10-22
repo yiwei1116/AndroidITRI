@@ -15,7 +15,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorControlNormal">#808080</item>
         <item name="colorControlActivated">#1e83c0</item>
-
+        <item name="android:spinnerDropDownItemStyle">@style/AppSpinnerDropDownItem</item>
     </style>
 
     <style name="AppTheme.NoActionBar.NoFull">
@@ -36,7 +36,10 @@
         <item name="actionMenuTextColor">@color/colorWhite</item>
 
     </style>
+    <style name="AppSpinnerDropDownItem" parent="Base.Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:background">@drawable/spinner_select</item>
 
+    </style>
 
 
     <style name="selectorDialog" parent="@android:style/Theme.Dialog">
