@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -18,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ import com.uscc.ncku.androiditri.util.MainButton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.StringTokenizer;
 import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
@@ -165,9 +168,9 @@ public class MainActivity extends AppCompatActivity {
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
 
-                        Fragment currentInfo = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        View infoView = currentInfo.getView();
-                        RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        View infoView = currentInfo.getCurrentTabView();
+                        ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
 
                         Animation fadeIn = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_in);
@@ -178,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
                     } else if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                         setInfoNormal();
 
-                        Fragment currentInfo = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        View infoView = currentInfo.getView();
-                        final RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        View infoView = currentInfo.getCurrentTabView();
+                        final ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
 
                         Animation fadeOut = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_out);
@@ -333,8 +336,8 @@ public class MainActivity extends AppCompatActivity {
             if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                 setInfoNormal();
 
-                View infoView = currentFragment.getView();
-                final RelativeLayout infoLayout = (RelativeLayout) infoView.findViewById(R.id.rlayout_equipment_info);
+                View infoView = ((EquipmentTabFragment) currentFragment).getCurrentTabView();
+                final ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
 
                 Animation fadeOut = AnimationUtils.loadAnimation(
                         currentFragment.getActivity(), R.anim.info_fade_out);
@@ -372,8 +375,24 @@ public class MainActivity extends AppCompatActivity {
             Fragment f = fragmentBackStack.pop();
             String fragmentTag = f.getClass().getSimpleName();
 
+            Log.d(TAG, String.valueOf(fragmentBackStack.size()));
+
+            // if current fragment is mapFragment and previous is diaryFragment
+            // then pop next fragment in back stack.
+            if (currentFragment instanceof MapFragment
+                    && f instanceof DiaryFragment) {
+
+                if (fragmentBackStack.size() > 0) {
+                    f = fragmentBackStack.pop();
+                    fragmentTag = f.getClass().getSimpleName();
+                }
+                
+            }
+
             // if last fragment is map fragment, add it back to back stack
-            if (fragmentTag.equals(mapFragment.getClass().getSimpleName()))
+            // if the last fragment in back stack is mapFragment than skip
+            if (fragmentTag.equals(mapFragment.getClass().getSimpleName()) &&
+                    !(fragmentBackStack.peekLast() instanceof MapFragment))
                 fragmentBackStack.addLast(f);
 
             // replace fragment
