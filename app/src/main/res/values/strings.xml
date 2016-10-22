@@ -220,5 +220,8 @@
     <string name="back_to_main">回到導覽</string>
     <string name="equipment_manufacture_info">廠商資訊</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

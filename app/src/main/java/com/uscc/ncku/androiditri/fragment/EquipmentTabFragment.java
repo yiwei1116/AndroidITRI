@@ -34,6 +34,7 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.AudioTour;
 
 import org.w3c.dom.Text;
 
@@ -64,12 +65,17 @@ public class EquipmentTabFragment extends Fragment {
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
     private ArrayList<EquipmentTab> equipTabs;
+<<<<<<< HEAD
 
     private static final int[] rm_images = {
             R.drawable.rm_grid1_a1m4,
             R.drawable.rm_grid1_a1m3
     };
     private int image_index = 0;
+=======
+    private AudioTour audioTour = new AudioTour(getActivity());
+
+>>>>>>> 768e9582b5c35110429c3b4856dd0194c21290fd
 
 
     public static TextView txtContent;
@@ -138,6 +144,7 @@ public class EquipmentTabFragment extends Fragment {
         MainActivity.setFontDisabled();
         MainActivity.setSoundDisabled();
         MainActivity.setInfoDisabled();
+        audioTour.release();
     }
 
 

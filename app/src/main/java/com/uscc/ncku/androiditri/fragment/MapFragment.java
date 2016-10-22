@@ -183,9 +183,13 @@ public class MapFragment extends Fragment {
 
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
 
-        notice.setVisibility(View.VISIBLE);
 
-        /*notice.setVisibility(View.VISIBLE);*/
+        notice.setVisibility(View.GONE);
+
+        //notice.setVisibility(View.VISIBLE);
+
+
+        notice.setVisibility(View.VISIBLE);
         cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         txtMapArea = (TextView) view.findViewById(R.id.txt_map_area);

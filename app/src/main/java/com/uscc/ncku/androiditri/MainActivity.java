@@ -3,6 +3,8 @@ package com.uscc.ncku.androiditri;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,11 +26,16 @@ import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.util.AudioTour;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
@@ -40,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private static MainButton mapBtn;
     private static MainButton soundBtn;
     private static MainButton fontBtn;
-
     private static Toolbar toolbar;
     private static TextView toolbarTitle;
     private static ImageView mainBtnNavBg;
@@ -51,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private static LinkedList<Fragment> fragmentBackStack;
 
     private static RelativeLayout containerSL;
-
+    private boolean isStart ;  //讓mTimerTask是否開始運行
+    private boolean isfirst = true;
     private CommunicationWithServer communicationWithServer;
 
     private MapFragment mapFragment;
@@ -60,7 +68,21 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     public ITRIObject myObject;
     private Locale l;
+    private AudioTour audioTour = new AudioTour(this);
+    private MediaPlayer mediaPlayer;
+    private boolean isPause;
+    private LinkedList<String> songList ;
+    private Context context;
+    private  int length,totalLength;
+    private ArrayList<Integer> playlist = new ArrayList<>();
+    private Button mediaBtn;
+    private SeekBar
 
+
+
+              seekBar;
+    private Timer audioTimer;
+    private RelativeLayout soundRL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
 
         mainBtnNavBg = (ImageView) findViewById(R.id.img_btnnavagitor_main);
         mainBtnLayout = (LinearLayout) findViewById(R.id.llayout_button_main);
-
         mainContainer = (FrameLayout) findViewById(R.id.flayout_fragment_continer);
         container_margin_top = (int) getResources().getDimension(R.dimen.toolbar_content_paddingTop);
 
+        mediaBtn = (Button) findViewById(R.id.play_pause_video);
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
         mapBtn = (MainButton) findViewById(R.id.btn_map_main);
@@ -99,11 +121,15 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new ButtonListener());
         soundBtn.setOnClickListener(new ButtonListener());
         fontBtn.setOnClickListener(new ButtonListener());
+        mediaBtn.setOnClickListener(new ButtonListener());
 
+        seekBar = (SeekBar) findViewById(R.id.audioBar);
+        seekBar.setOnSeekBarChangeListener(new MySeekbar());
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
-        createLanguageTTS();
+        soundRL = (RelativeLayout) findViewById(R.id.rlayout_sound);
+        //createLanguageTTS();
         finishOtherActivity();
-
+        addPlayList();
         fragmentBackStack = new LinkedList<Fragment>();
 
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
@@ -201,11 +227,18 @@ public class MainActivity extends AppCompatActivity {
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
                         setSoundActive();
-                        textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+                        //textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+                        try {
+                            doPlay();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
-                        setSoundNormal();
-                        textToSpeech.stop();
+                            setSoundNormal();
+
+                              mediaPlayer.release();
+                        // textToSpeech.stop();
 
                     }
                     break;
@@ -249,6 +282,11 @@ public class MainActivity extends AppCompatActivity {
                         setFontNormal();
                     }
                     break;
+                case R.id.play_pause_video:
+
+
+
+
             }
         }
     }
@@ -491,6 +529,7 @@ public class MainActivity extends AppCompatActivity {
         containerSL.setVisibility(View.GONE);
     }
 
+
     private void finishOtherActivity() {
         if(AboutActivity.instance != null) {
             try {
@@ -513,7 +552,91 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {}
         }
     }
-    private void createLanguageTTS()
+
+    public void showSeekbar(){
+        soundRL.setVisibility(View.VISIBLE);
+
+
+
+    }
+
+    public void addPlayList(){
+
+        playlist.add(R.raw.test);
+        totalLength = mediaPlayer.getDuration();
+
+    }
+
+
+    public void doPlay() throws IOException {
+
+        mediaPlayer = MediaPlayer.create(context,playlist.get(0));
+        try {
+            seekBar.setMax(mediaPlayer.getDuration());
+            if (isfirst) {  //第一次啟用產生new Timer();
+                audioTimer = new Timer();
+                audioTimer.schedule(mTimerTask, 0, 300);
+                isfirst=false;
+            }
+            mediaPlayer.start(); // 開始播放
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {//撥放完後暫停TimerTask
+                    isStart = false;
+                }
+            });
+
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void pausePlay() throws IOException {
+
+        mediaPlayer.pause();
+        length = mediaPlayer.getCurrentPosition();
+
+
+    }
+
+    private TimerTask mTimerTask = new TimerTask() {
+        @Override
+        public void run() {
+            if(isStart) {   //如果isStart = true,開始運行
+                seekBar.setProgress(mediaPlayer.getCurrentPosition());
+            }  //TimerTask會一直更新，使bar會隨著歌曲播放而改變bar位置
+
+        }
+    };
+
+    class MySeekbar implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress,
+                                      boolean fromUser) {
+            // TODO Auto-generated method stub
+
+        }
+
+        //拖移進度條時，TimerTask暫停運行，不然在你沒放開手指前bar會一直亂跳
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // TODO Auto-generated method stub
+            isStart = false;
+        }
+
+        //放開進度條時，TimerTask運行，歌曲會因為你拖移進度條放開後改變播放位置
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // TODO Auto-generated method stub
+            isStart = true;
+            mediaPlayer.seekTo(seekBar.getProgress());
+        }
+
+    }
+
+
+
+   /* private void createLanguageTTS()
     {
 
         if( textToSpeech == null )
@@ -544,5 +667,5 @@ public class MainActivity extends AppCompatActivity {
             );
         }
     }
-
+*/
 }
