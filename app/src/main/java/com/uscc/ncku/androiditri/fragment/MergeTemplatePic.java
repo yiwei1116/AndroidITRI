@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -245,7 +247,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 icDownload.setVisibility(View.GONE);
                 textView.setVisibility(View.GONE);
                 mask.setVisibility(View.VISIBLE);
+
+                Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
+
                 function.setVisibility(View.VISIBLE);
+                function.setAnimation(fadeIn);
 
                 break;
             case R.id.savetoPhone:

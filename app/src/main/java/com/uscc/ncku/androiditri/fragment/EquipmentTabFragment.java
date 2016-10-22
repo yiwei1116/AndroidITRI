@@ -1,6 +1,8 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -194,6 +198,17 @@ public class EquipmentTabFragment extends Fragment {
 
         }
     }
+
+    class ZoomButtonListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Dialog dialog=new Dialog(getActivity(), R.style.AppTheme_NoActionBar);
+            dialog.setContentView(R.layout.item_equipment_zoom_photo);
+            dialog.show();
+        }
+    }
+
     private class SamplePagerAdapter extends PagerAdapter {
 
         @Override
@@ -229,6 +244,9 @@ public class EquipmentTabFragment extends Fragment {
             RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
             video.setChecked(true);
 
+            ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+            zoom.setOnClickListener(new ZoomButtonListener());
+
             if (!equipTabs.get(position).isVideo) {
                 video.setVisibility(View.GONE);
             } else if (!equipTabs.get(position).isPhoto) {
@@ -241,7 +259,6 @@ public class EquipmentTabFragment extends Fragment {
             txtContent.setMovementMethod(new ScrollingMovementMethod());
 
             YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-
 
             youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
 
