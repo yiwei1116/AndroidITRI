@@ -182,4 +182,5 @@
     <string name="text_master"></string>
     <string name="save_to_phone"></string>
     <string name="send_mail"></string>
+    <string name="equipment_manufacture_info">Manufacturer Information</string>
 </resources>

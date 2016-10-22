@@ -108,15 +108,17 @@ public class LoadingActivity extends AppCompatActivity {
 
         // call asyntask to animate
 //        SQLiteDatabase db = manager.getReadableDatabase();
-        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
-        imgBar.setVisibility(View.VISIBLE);
+//        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+//        imgBar.setVisibility(View.VISIBLE);
+//
+//        // download all tables from server and save into SQLite
+//        communicationWithServer.downloadAllTables();
+//        // get all paths that require downloading files from server
+//        List<String> pathList = manager.getAllDownloadPaths();
+//        // download files
+//        communicationWithServer.DownloadFiles(pathList, imgBar, this);
 
-        // download all tables from server and save into SQLite
-        communicationWithServer.downloadAllTables();
-        // get all paths that require downloading files from server
-        List<String> pathList = manager.getAllDownloadPaths();
-        // download files
-        communicationWithServer.DownloadFiles(pathList, imgBar, this);
+        startNextActivity();
     }
 
     public void startNextActivity() {
@@ -128,50 +130,5 @@ public class LoadingActivity extends AppCompatActivity {
     public static CommunicationWithServer getCommunicationWithServer() {
         return communicationWithServer;
     }
-
-//    class DataLoadingAsyncTask extends AsyncTask<Void, Integer, Void> {
-//        private ClipDrawable drawable;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//            /*
-//                --> can delete
-//             */
-//
-//            ConnectActivity connect = new ConnectActivity(manager);
-//
-//
-//
-////            drawable = (ClipDrawable) imgBar.getDrawable();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            for (int i = 0; i < 10000; i+=LOADING_LEVEL) {
-//                publishProgress(i);
-//                try {
-//                    Thread.sleep(LOADING_PERIOD);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            super.onProgressUpdate(values);
-//            drawable.setLevel(values[0]);
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            super.onPostExecute(aVoid);
-//
-//
-//        }
-//    }
 
 }

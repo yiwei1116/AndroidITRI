@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.speech.tts.TextToSpeech;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -63,7 +65,11 @@ public class EquipmentTabFragment extends Fragment {
     private ViewPager mViewPager;
     private ArrayList<EquipmentTab> equipTabs;
 
-
+    private static final int[] rm_images = {
+            R.drawable.rm_grid1_a1m4,
+            R.drawable.rm_grid1_a1m3
+    };
+    private int image_index = 0;
 
 
     public static TextView txtContent;
@@ -201,8 +207,48 @@ public class EquipmentTabFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Dialog dialog=new Dialog(getActivity(), R.style.AppTheme_NoActionBar);
+            final Dialog dialog = new Dialog(getActivity(), R.style.AppTheme_NoActionBar);
             dialog.setContentView(R.layout.item_equipment_zoom_photo);
+
+            final ImageView imageView = (ImageView) dialog.findViewById(R.id.zoom_photo_image);
+
+            ImageButton close = (ImageButton) dialog.findViewById(R.id.zoom_photo_close);
+            ImageButton previous = (ImageButton) dialog.findViewById(R.id.zoom_photo_previous);
+            ImageButton next = (ImageButton) dialog.findViewById(R.id.zoom_photo_next);
+
+            if (rm_images.length > 1) {
+                previous.setVisibility(View.VISIBLE);
+                next.setVisibility(View.VISIBLE);
+                previous.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        image_index--;
+                        image_index = (image_index < 0) ? image_index + rm_images.length : image_index;
+                        imageView.setImageResource(rm_images[image_index]);
+                    }
+                });
+                next.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        image_index++;
+                        image_index %= rm_images.length;
+                        imageView.setImageResource(rm_images[image_index]);
+                    }
+                });
+
+                imageView.setImageResource(rm_images[image_index]);
+            } else if (rm_images.length == 1) {
+                imageView.setImageResource(rm_images[image_index]);
+            }
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+
             dialog.show();
         }
     }
