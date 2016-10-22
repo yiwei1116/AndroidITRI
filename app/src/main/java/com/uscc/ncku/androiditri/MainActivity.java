@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     public ITRIObject myObject;
     private Locale l;
-    private AudioTour audioTour = new AudioTour(this);
+
     private MediaPlayer mediaPlayer;
     private boolean isPause;
     private LinkedList<String> songList ;
@@ -76,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private  int length,totalLength;
     private ArrayList<Integer> playlist = new ArrayList<>();
     private Button mediaBtn;
-    private SeekBar
-
-
-
-              seekBar;
+    private SeekBar seekBar;
     private Timer audioTimer;
     private RelativeLayout soundRL;
     @Override
@@ -124,12 +120,13 @@ public class MainActivity extends AppCompatActivity {
         mediaBtn.setOnClickListener(new ButtonListener());
 
         seekBar = (SeekBar) findViewById(R.id.audioBar);
-        seekBar.setOnSeekBarChangeListener(new MySeekbar());
+
         containerSL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
         soundRL = (RelativeLayout) findViewById(R.id.rlayout_sound);
         //createLanguageTTS();
-        finishOtherActivity();
         addPlayList();
+        finishOtherActivity();
+
         fragmentBackStack = new LinkedList<Fragment>();
 
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
@@ -227,17 +224,23 @@ public class MainActivity extends AppCompatActivity {
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
                         setSoundActive();
-                        //textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+                        showSeekbar();
                         try {
                             doPlay();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        //textToSpeech.speak(EquipmentTabFragment.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                             setSoundNormal();
+                        try {
+                            pausePlay();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                              mediaPlayer.release();
                         // textToSpeech.stop();
 
                     }
@@ -563,76 +566,31 @@ public class MainActivity extends AppCompatActivity {
     public void addPlayList(){
 
         playlist.add(R.raw.test);
-        totalLength = mediaPlayer.getDuration();
+
 
     }
 
 
     public void doPlay() throws IOException {
-
-        mediaPlayer = MediaPlayer.create(context,playlist.get(0));
+        mediaPlayer = MediaPlayer.create(this,playlist.get(0));
         try {
-            seekBar.setMax(mediaPlayer.getDuration());
-            if (isfirst) {  //第一次啟用產生new Timer();
-                audioTimer = new Timer();
-                audioTimer.schedule(mTimerTask, 0, 300);
-                isfirst=false;
-            }
-            mediaPlayer.start(); // 開始播放
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {//撥放完後暫停TimerTask
-                    isStart = false;
-                }
-            });
 
+            mediaPlayer.seekTo(length);
+            mediaPlayer.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-
     }
     public void pausePlay() throws IOException {
 
         mediaPlayer.pause();
         length = mediaPlayer.getCurrentPosition();
 
-
     }
 
-    private TimerTask mTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            if(isStart) {   //如果isStart = true,開始運行
-                seekBar.setProgress(mediaPlayer.getCurrentPosition());
-            }  //TimerTask會一直更新，使bar會隨著歌曲播放而改變bar位置
 
-        }
-    };
 
-    class MySeekbar implements SeekBar.OnSeekBarChangeListener {
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress,
-                                      boolean fromUser) {
-            // TODO Auto-generated method stub
-
-        }
-
-        //拖移進度條時，TimerTask暫停運行，不然在你沒放開手指前bar會一直亂跳
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-            isStart = false;
-        }
-
-        //放開進度條時，TimerTask運行，歌曲會因為你拖移進度條放開後改變播放位置
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            // TODO Auto-generated method stub
-            isStart = true;
-            mediaPlayer.seekTo(seekBar.getProgress());
-        }
-
-    }
 
 
 
