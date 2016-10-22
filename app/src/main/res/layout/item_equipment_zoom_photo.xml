@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rectangle_overlay"
+    android:alpha="0.8"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zoom_photo_close"
+        android:background="@color/trans"
+        android:src="@drawable/white_close"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/zoom_photo_image"
+        android:layout_below="@+id/zoom_photo_close"
+        android:layout_above="@+id/zoom_photo_previous"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zoom_photo_previous"
+        android:background="@color/trans"
+        android:src="@drawable/ic_arrowback"
+        android:visibility="invisible"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/zoom_photo_next"
+        android:background="@color/trans"
+        android:src="@drawable/ic_arrownext"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

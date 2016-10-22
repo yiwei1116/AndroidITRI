@@ -218,6 +218,10 @@
     <string name="save_to_phone">儲存至手機</string>
     <string name="send_mail">寄email</string>
     <string name="back_to_main">回到導覽</string>
+    <string name="equipment_manufacture_info">廠商資訊</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
