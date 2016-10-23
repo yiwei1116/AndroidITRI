@@ -577,7 +577,7 @@ public class CommunicationWithServer {
             // using external storage space
 //            File rootDir = Environment.getExternalStorageDirectory();
             File rootDir = loadingActivity.getFilesDir();
-            final File path = new File(rootDir.getAbsolutePath() + "/test1");
+            final File path = new File(rootDir.getAbsolutePath() + "/itri");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
