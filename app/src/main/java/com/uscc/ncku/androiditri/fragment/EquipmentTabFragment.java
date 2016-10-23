@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.app.FragmentManager;
@@ -29,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +63,7 @@ import java.util.Locale;
 public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
 
-    private int equipNumber;
+    private int equipNumber, currentIndex ;
 
     private View view;
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
@@ -70,7 +72,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
     private ArrayList<EquipmentTabInformation> equipTabs;
-
+    private SeekBar seekBar;
+    private MediaPlayer mediaPlayer;
     private static final int[] rm_images = {
             R.drawable.rm_grid1_a1m4,
             R.drawable.rm_grid1_a1m3
@@ -143,6 +146,36 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
 
         mTabs.setupWithViewPager(mViewPager);
+       /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.pause();
+                    view.findViewById(R.id.pause_audio).setVisibility(View.INVISIBLE);
+                    view.findViewById(R.id.play_audio).setVisibility(View.VISIBLE);
+                }
+                mediaPlayer.pause();
+            }
+        });
+        view.findViewById(R.id.play_audio).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.play_audio).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.pause_audio).setVisibility(View.VISIBLE);
+                if (mediaPlayer != null) {
+                    try {
+
+                        mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
+                        mediaPlayer.start();
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        });*/
     }
 
 
@@ -374,7 +407,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             dialog.show();
         }
     }
-
+    //cursor
     private void addTabs() {
         for (int i = 0; i < equipNumber; i++) {
             EquipmentTabInformation tab = new EquipmentTabInformation();
@@ -383,7 +416,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             tab.setPhoto(true);
             tab.setTextContent(getResources().getString(R.string.rm_test));
             tab.setFontSize(18);
-
             // add sound to each tab
             tab.setPlayList(R.raw.test);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
@@ -412,23 +444,30 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void doPlay() {
-        int currentIndex = mViewPager.getCurrentItem();
+
+        currentIndex = mViewPager.getCurrentItem();
+        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
 
         try {
-            equipTabs.get(currentIndex).getMediaPlayer().seekTo(equipTabs.get(currentIndex).getPlayLength());
-            equipTabs.get(currentIndex).getMediaPlayer().start();
+
+            mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
+            mediaPlayer.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void pausePlay() {
-        int currentIndex = mViewPager.getCurrentItem();
-        equipTabs.get(currentIndex).getMediaPlayer().pause();
-        equipTabs.get(currentIndex).setPlayLength(
-                equipTabs.get(currentIndex).getMediaPlayer().getCurrentPosition());
+
+        mediaPlayer.pause();
+        equipTabs.get(currentIndex).setPlayLength(mediaPlayer.getCurrentPosition());
     }
+
+
+
+
 
     @Override
     public void release() {

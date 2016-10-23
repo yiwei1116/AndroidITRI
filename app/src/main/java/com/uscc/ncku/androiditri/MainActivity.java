@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         mainContainer = (FrameLayout) findViewById(R.id.flayout_fragment_continer);
         container_margin_top = (int) getResources().getDimension(R.dimen.toolbar_content_paddingTop);
 
-        mediaBtn = (Button) findViewById(R.id.play_pause_video);
+
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
         mapBtn = (MainButton) findViewById(R.id.btn_map_main);
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         mapBtn.setOnClickListener(new ButtonListener());
         soundBtn.setOnClickListener(new ButtonListener());
         fontBtn.setOnClickListener(new ButtonListener());
-        mediaBtn.setOnClickListener(new ButtonListener());
+
 
         seekBar = (SeekBar) findViewById(R.id.audioBar);
 
@@ -134,22 +135,30 @@ public class MainActivity extends AppCompatActivity {
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
 
         initFragment();
+        findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.pause();
+                    findViewById(R.id.pause_audio).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.play_audio).setVisibility(View.VISIBLE);
+                }
+                mediaPlayer.pause();
+            }
+        });
     }
 
     @Override
     public void onPause() {
-        if(textToSpeech !=null){
-            textToSpeech.stop();
-        }
+
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
 
-        if( textToSpeech != null )
-            textToSpeech.stop();
-            textToSpeech.shutdown();
+
 
         super.onDestroy();
     }
@@ -283,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
                         setFontNormal();
                     }
                     break;
-                case R.id.play_pause_video:
 
 
 
@@ -522,6 +530,7 @@ public class MainActivity extends AppCompatActivity {
     public static void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
         soundRL.setVisibility(View.VISIBLE);
+
     }
 
     public static void setSoundNormal() {

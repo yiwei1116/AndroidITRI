@@ -28,24 +28,30 @@
         android:layout_marginBottom="-6dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:id="@+id/rlayout_sound"
             android:background="@color/colorBlack"
             android:alpha="0.9"
             android:layout_gravity="center|bottom"
             android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:visibility="gone">
+
+            >
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/ic_pause"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/play_pause_video"
-                android:layout_alignParentLeft="true"
+                android:id="@+id/pause_audio"
                 android:layout_centerVertical="true" />
-
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_play_arrow"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/play_audio"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                />
 
             <SeekBar
                 android:layout_width="wrap_content"
@@ -55,7 +61,7 @@
                 android:progress="15"
                 android:progressDrawable="@drawable/btn_font_bar"
                 android:thumb="@drawable/btn_font_circle"
-                android:layout_toRightOf="@+id/play_pause_video"
+                android:layout_toRightOf="@+id/pause_audio"
                 android:layout_centerVertical="true" />
 
 
@@ -65,14 +71,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:id="@+id/rlayout_font_size_zoom"
             android:background="@color/colorBlack"
             android:alpha="0.9"
             android:layout_gravity="center|bottom"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:visibility="gone">
+            android:visibility="gone"
+
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
