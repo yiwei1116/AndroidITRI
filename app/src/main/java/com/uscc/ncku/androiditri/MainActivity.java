@@ -31,6 +31,7 @@ import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
+import com.uscc.ncku.androiditri.util.TimeUtilities;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Timer;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Runnable{
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
@@ -61,26 +62,23 @@ public class MainActivity extends AppCompatActivity {
     private static FrameLayout containerSoundFontSize;
     private static RelativeLayout fontSizeRL;
     private static RelativeLayout soundRL;
-    private boolean isStart ;  //讓mTimerTask是否開始運行
-    private boolean isfirst = true;
+
     private CommunicationWithServer communicationWithServer;
 
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
-    private ChooseTemplate chooseTemplate;
-    private TextToSpeech textToSpeech;
+
     public ITRIObject myObject;
     private Locale l;
 
-    private MediaPlayer mediaPlayer;
-    private boolean isPause;
-    private LinkedList<String> songList ;
-    private Context context;
-    private  int length,totalLength;
-    private ArrayList<Integer> playlist = new ArrayList<>();
-    private Button mediaBtn;
-    private SeekBar seekBar;
-    private Timer audioTimer;
+    private Button startButton,pauseButton;
+    private MediaPlayer soundPlayer;
+    private SeekBar soundSeekBar;
+    private Thread  soundThread;
+    private Handler mHandler = new Handler();
+    private TextView currentTime,completeTime;
+    private TimeUtilities utils;
+    private EquipmentTabFragment equipmentTabFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +107,21 @@ public class MainActivity extends AppCompatActivity {
         mainContainer = (FrameLayout) findViewById(R.id.flayout_fragment_continer);
         container_margin_top = (int) getResources().getDimension(R.dimen.toolbar_content_paddingTop);
 
+        // AudioTime
+        startButton = (Button)findViewById(R.id.play_audio);
+        pauseButton = (Button)findViewById(R.id.pause_audio);
+        soundSeekBar = (SeekBar) findViewById(R.id.audioBar);
+        currentTime = (TextView) findViewById(R.id.current_time);
+        completeTime = (TextView)findViewById(R.id.complete_time);
+        //soundPlayer = MediaPlayer.create(this.getBaseContext(),R.raw.test);
+        utils = new TimeUtilities();
+        setupListeners();
+     /*soundThread = new Thread(this);
+        soundThread.start();*/
+
+
+
+        equipmentTabFragment = new EquipmentTabFragment();
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -122,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setOnClickListener(new ButtonListener());
 
 
-        seekBar = (SeekBar) findViewById(R.id.audioBar);
 
         containerSoundFontSize = (FrameLayout) findViewById(R.id.flayout_sound_font_container);
         fontSizeRL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
@@ -135,19 +147,9 @@ public class MainActivity extends AppCompatActivity {
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
 
         initFragment();
-        findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer != null) {
-                    mediaPlayer.pause();
-                    findViewById(R.id.pause_audio).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.play_audio).setVisibility(View.VISIBLE);
-                }
-                mediaPlayer.pause();
-            }
-        });
     }
+
 
     @Override
     public void onPause() {
@@ -234,21 +236,31 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_sound_main:
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
-                        setSoundActive();
 
-                        ISoundInterface iSoundInterface =
+                        setSoundActive();
+                        soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
+                        soundThread = new Thread(MainActivity.this);
+                        soundThread.start();
+
+                        //soundPlayer = equipmentTabFragment.getCurrentmedia();.
+
+                        soundPlayer.start();
+                        audioPlay();
+                       /* ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
-                        iSoundInterface.doPlay();
+                        iSoundInterface.doPlay();*/
 
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
-
-                        ISoundInterface iSoundInterface =
+                        mHandler.removeCallbacks(mUpdateTimeTask);
+                        soundThread.interrupt();
+                        soundPlayer.release();
+                       /* ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
-                        iSoundInterface.pausePlay();
+                        iSoundInterface.pausePlay();*/
 
                     }
                     break;
@@ -308,6 +320,104 @@ public class MainActivity extends AppCompatActivity {
         if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
             setFontNormal();
         }
+    }
+    private void setupListeners(){
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioPlay();
+            }
+        });
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioPause();
+            }
+        });
+        soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    soundPlayer.seekTo(progress);
+
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void run() {
+        int currentPosition = 0;
+        int soundTotal = soundPlayer.getDuration();
+        soundSeekBar.setMax(soundTotal);
+        while (soundPlayer!=null && currentPosition < soundTotal){
+
+            try {
+                Thread.sleep(300);
+
+                currentPosition = soundPlayer.getCurrentPosition();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            soundSeekBar.setProgress(currentPosition);
+
+        }
+    }
+    /**
+     * Update timer on seekbar
+     * */
+    public void updateProgressBar() {
+        mHandler.postDelayed(mUpdateTimeTask, 500);
+    }
+
+    /**
+     * Background Runnable thread
+     * */
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            getAudioTime();
+
+            // Running this thread after 100 milliseconds
+            mHandler.postDelayed(this, 100);
+        }
+    };
+    private void getAudioTime(){
+
+
+        long totalDuration = soundPlayer.getDuration();
+        long currentDuration = soundPlayer.getCurrentPosition();
+        // Displaying Total Duration time
+        completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
+        // Displaying time completed playing
+        currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
+    }
+    private void audioPlay(){
+        getAudioTime();
+        soundPlayer.start();
+        updateProgressBar();
+        startButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.VISIBLE);
+
+    }
+    private void audioPause(){
+
+
+        soundPlayer.pause();
+        pauseButton.setVisibility(View.GONE);
+        startButton.setVisibility(View.VISIBLE);
     }
 
     private void initFragment() {
@@ -530,6 +640,7 @@ public class MainActivity extends AppCompatActivity {
     public static void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
         soundRL.setVisibility(View.VISIBLE);
+
 
     }
 

@@ -436,7 +436,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
+/*    public MediaPlayer getCurrentmedia(){
+        currentIndex = mViewPager.getCurrentItem();
+        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
 
+        return mediaPlayer;
+
+    }*/
 
     /*
         sound button
