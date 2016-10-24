@@ -23,6 +23,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "android_itri_1.db";
 
 
+    // TODO: 1. 處理重複儲存資料 2. 下載音樂檔
+
     /*
            ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
      */
@@ -399,6 +401,29 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from hipster_text where hipster_text_id=" + hipster_text_id + "", null);
         return cursor;
+    }
+
+    // get hipster text files in an JSONArray
+    public JSONArray queryHipsterTextFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select hipster_text_id, content from hipster_text", null);
+        cursor.moveToFirst();
+        String hipster_text_id;
+        String content;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            hipster_text_id = cursor.getString(cursor.getColumnIndex("hipster_text_id"));
+            content = cursor.getString(cursor.getColumnIndex("content"));
+            // add to JSONObject
+            file.put("hipster_text_id", hipster_text_id);
+            file.put("content", content);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
     }
 
     // lease table query and insert
@@ -896,6 +921,69 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             cursor.moveToNext();
         }
         return videoFiles;
+    }
+
+
+    // ********************** 文青樣板、罐頭文字、區域顯示  給定資料部分 **********************
+    // 文青樣板：用 queryHipsterTemplateFiles()
+    // 罐頭文字：用 queryHipsterTextFiles()
+    // 區域清單顯示：
+    public JSONArray queryListOfZones() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select zone_id, name, name_en from zone", null);
+        cursor.moveToFirst();
+        String zone_id;
+        String name;
+        String name_en;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            zone_id = cursor.getString(cursor.getColumnIndex("zone_id"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+
+            // add to JSONObject
+            file.put("zone_id", zone_id);
+            file.put("name", name);
+            file.put("name_en", name_en);
+
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
+
+    // ********************** 裝置  給定資料部分 **********************
+
+    // 用給定的mode_id取出所有裝置
+    public JSONArray queryDeviceFilesByMode(int mode_id) throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select device_id, guide_voice, photo, photo_vertical from device where mode_id=" + mode_id, null);
+        cursor.moveToFirst();
+        String device_id;
+        String guide_voice;
+        String photo;
+        String photo_vertical;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("guide_voice", guide_voice);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
     }
 
 
