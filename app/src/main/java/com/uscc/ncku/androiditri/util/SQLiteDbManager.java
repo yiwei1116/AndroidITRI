@@ -987,6 +987,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // ******************** counter part ********************
+    // 每次經過一個device，揪呼叫此函數進行拜訪次數的+1
+    public void addReadCount(int device_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select read_count from device where device_id=" + device_id, null);
+        int read_count = 0;
+        cursor.moveToFirst();
+        read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+        read_count++;
+        SQLiteDatabase writeDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("read_count",read_count);
+        // update to the same field
+        writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
+    }
 
+    // 按讚就加1
+    public void addLikeCount(int device_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from device where device_id=" + device_id, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        like_count++;
+        SQLiteDatabase writeDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("like_count",like_count);
+        // update to the same field
+        writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
+    }
 
 }

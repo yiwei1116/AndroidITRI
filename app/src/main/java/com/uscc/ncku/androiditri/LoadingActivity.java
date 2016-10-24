@@ -15,8 +15,6 @@ import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
-import java.util.List;
-
 /**
  * Created by Lin on 2016/9/1.
  */
@@ -110,17 +108,13 @@ public class LoadingActivity extends AppCompatActivity {
         ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
         imgBar.setVisibility(View.VISIBLE);
 
-        // download all tables from server and save into SQLite
-        communicationWithServer.downloadAllTables();
-        // get all paths that require downloading files from server
-        List<String> pathList = manager.getAllDownloadPaths();
-
-        // download files
-        communicationWithServer.DownloadFiles(pathList, imgBar, this);
-//         download video files
-//        List<String> videoList = manager.getVideoFiles();
-//        communicationWithServer.DownloadFiles(videoList, imgBar, this);
-
+//        // download all tables from server and save into SQLite
+//        communicationWithServer.downloadAllTables();
+//        // get all paths that require downloading files from server
+//        List<String> pathList = manager.getAllDownloadPaths();
+//
+//        // download files
+//        communicationWithServer.DownloadFiles(pathList, imgBar, this);
         startNextActivity();
     }
 
