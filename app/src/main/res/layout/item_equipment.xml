@@ -8,85 +8,83 @@
         android:id="@+id/equipment_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="@dimen/title_font_size"
         android:textColor="@color/btn_font_color_blue"
-        android:layout_centerHorizontal="true" />
+        android:textSize="@dimen/title_font_size" />
 
     <FrameLayout
+        android:id="@+id/flayout_equip_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/flayout_equip_intro"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/equipment_title">
+        android:layout_below="@+id/equipment_title"
+        android:layout_marginTop="10dp">
 
         <ImageView
+            android:id="@+id/equip_item_image_view"
             android:layout_width="match_parent"
             android:layout_height="214dp"
             android:scaleType="centerCrop"
-            android:id="@+id/equip_item_image_view"
             android:src="@drawable/rm_a1m1e1_photo"
             android:visibility="gone" />
 
         <FrameLayout
+            android:id="@+id/equip_item_youtube"
             android:layout_width="match_parent"
             android:layout_height="214dp"
-            android:id="@+id/equip_item_youtube"
-            android:visibility="visible">
-        </FrameLayout>
-
+            android:visibility="visible"></FrameLayout>
 
 
         <ImageButton
+            android:id="@+id/btn_equip_photo_zoom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_equip_photo_zoom"
-            android:src="@drawable/ic_zoom_in"
-            android:background="@android:color/transparent"
-            android:visibility="gone"
             android:layout_gravity="top|right"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp" />
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_zoom_in"
+            android:visibility="gone" />
 
 
     </FrameLayout>
 
     <RadioGroup
+        android:id="@+id/equip_item_radio_group"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
         android:layout_below="@+id/flayout_equip_intro"
-        android:id="@+id/equip_item_radio_group">
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
 
         <RadioButton
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:button="@android:color/transparent"
             android:id="@+id/btn_equip_video"
-            android:layout_weight="1"
-            android:text="@string/video"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:background="@drawable/selecter_btn_equip_intro_bg"
-            android:alpha="0.94"
-            android:visibility="visible"
-            android:checked="false"
-            android:textAlignment="center" />
-
-        <RadioButton
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:button="@android:color/transparent"
-            android:id="@+id/btn_equip_photo"
             android:layout_weight="1"
-            android:text="@string/photo"
+            android:alpha="0.94"
+            android:background="@drawable/selecter_btn_equip_intro_bg"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:text="@string/video"
+            android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:background="@drawable/selecter_btn_equip_intro_bg"
+            android:visibility="visible" />
+
+        <RadioButton
+            android:id="@+id/btn_equip_photo"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
             android:alpha="0.94"
-            android:visibility="visible"
-            android:textAlignment="center" />
+            android:background="@drawable/selecter_btn_equip_intro_bg"
+            android:button="@android:color/transparent"
+            android:text="@string/photo"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="visible" />
 
     </RadioGroup>
 
@@ -94,18 +92,134 @@
         android:id="@+id/txt_equip_intro_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/equip_item_radio_group"
-        android:textSize="18sp"
         android:maxLines="7"
-        android:scrollbars="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:scrollbars="vertical"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
 
         />
 
+    <ScrollView
+        android:id="@+id/scrollview_equipment_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs_equipments"
+        android:background="@android:color/white"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/flayout_equipment_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/equipment_info_title_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rm_a1m1e1_infobg"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gradient_overlay" />
+
+                <TextView
+                    android:id="@+id/equipment_info_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:text="互動資訊牆"
+                    android:textColor="@android:color/white"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/equipment_manufacture_info"
+                    android:textColor="@color/btn_font_color_grey"
+                    android:textSize="14sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/flayout_equipment_info_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/flayout_equipment_info_title">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/comanyinfopage_bg" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="70dp"
+                    android:paddingTop="22dp">
+
+                    <TextView
+                        android:id="@+id/equipment_info_company_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="奇奇光電"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/equipment_info_company_site"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/equipment_info_company_name"
+                        android:layout_marginTop="33dp"
+                        android:text="www.gglight.com"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/equipment_info_company_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/equipment_info_company_site"
+                        android:layout_marginTop="35dp"
+                        android:text="12345678"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/equipment_info_company_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/equipment_info_company_phone"
+                        android:layout_marginTop="32dp"
+                        android:text="光頭路78號"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/equipment_info_company_qrcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/equipment_info_company_location"
+                        android:layout_marginTop="38dp"
+                        android:src="@drawable/rm_a1m1e1_qrcode" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

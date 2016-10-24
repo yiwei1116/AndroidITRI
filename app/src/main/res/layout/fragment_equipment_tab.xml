@@ -22,46 +22,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tabs_equipments"
-        android:id="@+id/rlayout_equipment_info"
-        android:background="@android:color/white"
-        android:visibility="visible">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/equipment_info_title_image"
-                android:src="@drawable/rm_a1m1e1_photo"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/equipment_info_title"
-                android:text="互動資訊牆"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/equipment_manufacture_info"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center_horizontal" />
-
-        </FrameLayout>
-
-
-
-
-
-    </RelativeLayout>
-
-
 </RelativeLayout>

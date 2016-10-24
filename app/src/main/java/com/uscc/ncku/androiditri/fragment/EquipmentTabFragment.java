@@ -1,17 +1,22 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +40,8 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
-import com.uscc.ncku.androiditri.util.AudioTour;
+import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 
 import org.w3c.dom.Text;
 
@@ -53,10 +60,10 @@ import java.util.Locale;
  */
 
 
-public class EquipmentTabFragment extends Fragment {
+public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
 
-    private int equipNumber;
+    private int equipNumber, currentIndex ;
 
     private View view;
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
@@ -64,14 +71,14 @@ public class EquipmentTabFragment extends Fragment {
     private static String VIDEO_ID = "tYA6TSTBjQ0";
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
-    private ArrayList<EquipmentTab> equipTabs;
-
+    private ArrayList<EquipmentTabInformation> equipTabs;
+    private SeekBar seekBar;
+    private MediaPlayer mediaPlayer;
     private static final int[] rm_images = {
             R.drawable.rm_grid1_a1m4,
             R.drawable.rm_grid1_a1m3
     };
     private int image_index = 0;
-    private AudioTour audioTour = new AudioTour(getActivity());
 
 
 
@@ -100,7 +107,15 @@ public class EquipmentTabFragment extends Fragment {
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
         }
-        equipTabs = new ArrayList<EquipmentTab>();
+        equipTabs = new ArrayList<EquipmentTabInformation>();
+
+        Toolbar toolbar = MainActivity.getToolbar();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         addTabs();
     }
@@ -131,6 +146,36 @@ public class EquipmentTabFragment extends Fragment {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
 
         mTabs.setupWithViewPager(mViewPager);
+       /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.pause();
+                    view.findViewById(R.id.pause_audio).setVisibility(View.INVISIBLE);
+                    view.findViewById(R.id.play_audio).setVisibility(View.VISIBLE);
+                }
+                mediaPlayer.pause();
+            }
+        });
+        view.findViewById(R.id.play_audio).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.play_audio).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.pause_audio).setVisibility(View.VISIBLE);
+                if (mediaPlayer != null) {
+                    try {
+
+                        mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
+                        mediaPlayer.start();
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }
+        });*/
     }
 
 
@@ -141,7 +186,11 @@ public class EquipmentTabFragment extends Fragment {
         MainActivity.setFontDisabled();
         MainActivity.setSoundDisabled();
         MainActivity.setInfoDisabled();
-        audioTour.release();
+
+        // release sound
+        for (EquipmentTabInformation tab : equipTabs) {
+            tab.getMediaPlayer().release();
+        }
     }
 
 
@@ -174,6 +223,108 @@ public class EquipmentTabFragment extends Fragment {
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return (YouTubePlayerFragment) getFragmentManager().findFragmentByTag(YouTubePlayerFragment.class.getSimpleName());
     }
+
+    private class SamplePagerAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return equipNumber;
+        }
+        // 判斷是否由對象生成界面
+        @Override
+        public boolean isViewFromObject(View view, Object o) {
+
+
+            return o == view;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
+            return equipTitle;
+        }
+        // 初始化position位置的界面 類似於baseAdapter的 getView方法
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+
+            View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
+                    container, false);
+            container.addView(v);
+
+            // set current view to equipment tab
+            equipTabs.get(position).setView(v);
+
+            // set equipment title
+            TextView title = (TextView) v.findViewById(R.id.equipment_title);
+            title.setText(equipTabs.get(position).getTitle());
+
+            // set vidoe and photo button
+            RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
+            radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
+            RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
+            RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
+            video.setChecked(true);
+
+            // set zoom button in photo button
+            ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+            zoom.setOnClickListener(new ZoomButtonListener());
+
+            // if there is no photo button or no video button
+            if (!equipTabs.get(position).isVideo()) {
+                video.setVisibility(View.GONE);
+            } else if (!equipTabs.get(position).isPhoto()) {
+                photo.setVisibility(View.GONE);
+            }
+
+            // set equipment content text
+            txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            txtContent.setText(equipTabs.get(position).getTextContent());
+            txtContent.setTextSize(equipTabs.get(position).getFontSize());
+            txtContent.setMovementMethod(new ScrollingMovementMethod());
+
+            // set youtube player
+            YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+            youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                    if (!wasRestored) {
+                        player.cueVideo(VIDEO_ID);
+
+                    }
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+                    // YouTube error
+                    String errorMessage = error.toString();
+                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                    Log.d("errorMessage:", errorMessage);
+                }
+            });
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+
+            return v;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        public void renew() {
+            this.notifyDataSetChanged();
+        }
+
+    }
+
     class RadioButtonListener implements RadioGroup.OnCheckedChangeListener {
         private View v;
 
@@ -256,132 +407,77 @@ public class EquipmentTabFragment extends Fragment {
             dialog.show();
         }
     }
-
-    private class SamplePagerAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return equipNumber;
-        }
-        // 判斷是否由對象生成界面
-        @Override
-        public boolean isViewFromObject(View view, Object o) {
-
-
-            return o == view;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
-            return equipTitle;
-        }
-        // 初始化position位置的界面 類似於baseAdapter的 getView方法
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-
-            View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
-                    container, false);
-            container.addView(v);
-            TextView title = (TextView) v.findViewById(R.id.equipment_title);
-            title.setText(equipTabs.get(position).title);
-
-            RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
-            radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
-            RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
-            RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
-            video.setChecked(true);
-
-            ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
-            zoom.setOnClickListener(new ZoomButtonListener());
-
-            if (!equipTabs.get(position).isVideo) {
-                video.setVisibility(View.GONE);
-            } else if (!equipTabs.get(position).isPhoto) {
-                photo.setVisibility(View.GONE);
-            }
-
-            txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
-            txtContent.setText(equipTabs.get(position).textContent);
-            txtContent.setTextSize(equipTabs.get(position).fontSize);
-            txtContent.setMovementMethod(new ScrollingMovementMethod());
-
-            YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-
-            youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    if (!wasRestored) {
-                        player.cueVideo(VIDEO_ID);
-
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-                    // YouTube error
-                    String errorMessage = error.toString();
-                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                    Log.d("errorMessage:", errorMessage);
-                }
-            });
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
-
-            return v;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        public void renew() {
-            this.notifyDataSetChanged();
-        }
-
-    }
-
-
-
-    private class EquipmentTab {
-        String title;
-        boolean isVideo;
-        boolean isPhoto;
-        String textContent;
-        int fontSize;
-    }
-
+    //cursor
     private void addTabs() {
         for (int i = 0; i < equipNumber; i++) {
-            EquipmentTab tab = new EquipmentTab();
-            tab.title = "互動資訊牆";
-            tab.isVideo = true;
-            tab.isPhoto = true;
-            tab.textContent = getResources().getString(R.string.rm_test);
-            tab.fontSize = 18;
+            EquipmentTabInformation tab = new EquipmentTabInformation();
+            tab.setTitle("互動資訊牆");
+            tab.setVideo(true);
+            tab.setPhoto(true);
+            tab.setTextContent(getResources().getString(R.string.rm_test));
+            tab.setFontSize(18);
+            // add sound to each tab
+            tab.setPlayList(R.raw.test);
+            tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
+
             equipTabs.add(tab);
         }
     }
 
+    public View getCurrentTabView() {
+        return equipTabs.get(mViewPager.getCurrentItem()).getView();
+    }
+
+    /*
+        font size button
+     */
     public void setFontSize(int size) {
-        equipTabs.get(mViewPager.getCurrentItem()).fontSize = size;
+        equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
-    public static String getIntroduction(){
-      String getIntrod = txtContent.getText().toString();
+/*    public MediaPlayer getCurrentmedia(){
+        currentIndex = mViewPager.getCurrentItem();
+        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
+
+        return mediaPlayer;
+
+    }*/
+
+    /*
+        sound button
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void doPlay() {
+
+        currentIndex = mViewPager.getCurrentItem();
+        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
+
+        try {
+
+            mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
+            mediaPlayer.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void pausePlay() {
+
+        mediaPlayer.pause();
+        equipTabs.get(currentIndex).setPlayLength(mediaPlayer.getCurrentPosition());
+    }
 
 
-        return getIntrod;
 
+
+
+    @Override
+    public void release() {
+        equipTabs.get(mViewPager.getCurrentItem()).getMediaPlayer().release();
     }
 
 
