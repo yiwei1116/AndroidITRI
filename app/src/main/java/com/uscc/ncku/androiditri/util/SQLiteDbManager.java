@@ -204,6 +204,97 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
+    public JSONArray queryBeaconFiles() throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from beacon", null);
+        cursor.moveToFirst();
+        String beacon_id;
+        String mac_addr;
+        String name;
+        int power;
+        int status;
+        int zone;
+        int x;
+        int y;
+        int field_id;
+        String field_name;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
+            mac_addr = cursor.getString(cursor.getColumnIndex("mac_addr"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            power = cursor.getInt(cursor.getColumnIndex("power"));
+            status = cursor.getInt(cursor.getColumnIndex("status"));
+            zone = cursor.getInt(cursor.getColumnIndex("zone"));
+            x = cursor.getInt(cursor.getColumnIndex("x"));
+            y = cursor.getInt(cursor.getColumnIndex("y"));
+            field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
+            field_name = cursor.getString(cursor.getColumnIndex("field_name"));
+
+            // add to JSONObject
+            file.put("device_id", beacon_id);
+            file.put("mac_addr", mac_addr);
+            file.put("name", name);
+            file.put("power", power);
+            file.put("status", status);
+            file.put("zone", zone);
+            file.put("x", x);
+            file.put("y", y);
+            file.put("field_id", field_id);
+            file.put("field_name", field_name);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
+
+
+    public JSONObject queryBeaconFileWithMacAddr(String mac_addr) throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from beacon where mac_addr=" + mac_addr, null);
+        cursor.moveToFirst();
+        String beacon_id;
+        String name;
+        int power;
+        int status;
+        int zone;
+        int x;
+        int y;
+        int field_id;
+        String field_name;
+        // fetch all company_id & qrcode
+            beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            power = cursor.getInt(cursor.getColumnIndex("power"));
+            status = cursor.getInt(cursor.getColumnIndex("status"));
+            zone = cursor.getInt(cursor.getColumnIndex("zone"));
+            x = cursor.getInt(cursor.getColumnIndex("x"));
+            y = cursor.getInt(cursor.getColumnIndex("y"));
+            field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
+            field_name = cursor.getString(cursor.getColumnIndex("field_name"));
+
+            // add to JSONObject
+            file.put("device_id", beacon_id);
+            file.put("name", name);
+            file.put("power", power);
+            file.put("status", status);
+            file.put("zone", zone);
+            file.put("x", x);
+            file.put("y", y);
+            file.put("field_id", field_id);
+            file.put("field_name", field_name);
+            filePaths.put(file);
+            file = null;
+//            cursor.moveToNext();
+        return file;
+    }
+
+
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,
