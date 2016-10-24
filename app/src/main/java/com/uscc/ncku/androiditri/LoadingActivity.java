@@ -118,8 +118,8 @@ public class LoadingActivity extends AppCompatActivity {
         // download files
         communicationWithServer.DownloadFiles(pathList, imgBar, this);
 //         download video files
-        List<String> videoList = manager.getVideoFiles();
-        communicationWithServer.DownloadFiles(videoList, imgBar, this);
+//        List<String> videoList = manager.getVideoFiles();
+//        communicationWithServer.DownloadFiles(videoList, imgBar, this);
 
         startNextActivity();
     }

@@ -986,5 +986,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
+    // ******************** counter part ********************
+
 
 }
