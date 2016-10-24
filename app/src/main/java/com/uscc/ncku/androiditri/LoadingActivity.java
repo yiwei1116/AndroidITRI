@@ -3,7 +3,6 @@ package com.uscc.ncku.androiditri;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -107,16 +106,20 @@ public class LoadingActivity extends AppCompatActivity {
         imgText.startAnimation(animation);
 
         // call asyntask to animate
-//        SQLiteDatabase db = manager.getReadableDatabase();
-//        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
-//        imgBar.setVisibility(View.VISIBLE);
-//
-//        // download all tables from server and save into SQLite
-//        communicationWithServer.downloadAllTables();
-//        // get all paths that require downloading files from server
-//        List<String> pathList = manager.getAllDownloadPaths();
-//        // download files
-//        communicationWithServer.DownloadFiles(pathList, imgBar, this);
+        SQLiteDatabase db = manager.getReadableDatabase();
+        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+        imgBar.setVisibility(View.VISIBLE);
+
+        // download all tables from server and save into SQLite
+        communicationWithServer.downloadAllTables();
+        // get all paths that require downloading files from server
+        List<String> pathList = manager.getAllDownloadPaths();
+
+        // download files
+        communicationWithServer.DownloadFiles(pathList, imgBar, this);
+//         download video files
+        List<String> videoList = manager.getVideoFiles();
+        communicationWithServer.DownloadFiles(videoList, imgBar, this);
 
         startNextActivity();
     }

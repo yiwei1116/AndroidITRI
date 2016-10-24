@@ -23,7 +23,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public static final String DATABASE_NAME = "android_itri_1.db";
 
 
-    // TODO: 1. 處理重複儲存資料 2. 下載音樂檔
+    // TODO: 2. 下載音樂檔
 
     /*
            ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
