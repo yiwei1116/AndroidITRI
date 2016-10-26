@@ -33,13 +33,14 @@ import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 import com.uscc.ncku.androiditri.util.TimeUtilities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Timer;
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //soundPlayer = MediaPlayer.create(this.getBaseContext(),R.raw.test);
         utils = new TimeUtilities();
         setupListeners();
+
      /*soundThread = new Thread(this);
         soundThread.start();*/
 
@@ -239,12 +241,12 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
                         setSoundActive();
                         soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
-                        soundThread = new Thread(MainActivity.this);
+                        soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
                         //soundPlayer = equipmentTabFragment.getCurrentmedia();.
 
-                        soundPlayer.start();
+
                         audioPlay();
                        /* ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -357,30 +359,12 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
     }
 
-    @Override
-    public void run() {
-        int currentPosition = 0;
-        int soundTotal = soundPlayer.getDuration();
-        soundSeekBar.setMax(soundTotal);
-        while (soundPlayer!=null && currentPosition < soundTotal){
 
-            try {
-                Thread.sleep(300);
-
-                currentPosition = soundPlayer.getCurrentPosition();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            soundSeekBar.setProgress(currentPosition);
-
-        }
-    }
     /**
      * Update timer on seekbar
      * */
     public void updateProgressBar() {
-        mHandler.postDelayed(mUpdateTimeTask, 500);
+        mHandler.postDelayed(mUpdateTimeTask, 100);
     }
 
     /**
@@ -399,13 +383,15 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
         long totalDuration = soundPlayer.getDuration();
         long currentDuration = soundPlayer.getCurrentPosition();
+        soundSeekBar.setMax((int)totalDuration);
+        soundSeekBar.setProgress((int)currentDuration);
         // Displaying Total Duration time
         completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
         // Displaying time completed playing
         currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
     }
     private void audioPlay(){
-        getAudioTime();
+
         soundPlayer.start();
         updateProgressBar();
         startButton.setVisibility(View.GONE);
