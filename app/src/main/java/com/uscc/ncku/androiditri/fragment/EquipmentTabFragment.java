@@ -149,7 +149,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
         mViewPager.setAdapter(new SamplePagerAdapter());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
-
       /*  mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -168,7 +167,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             }
         });*/
         mTabs.setupWithViewPager(mViewPager);
-
        /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -432,7 +430,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     }
     //cursor
     private void addTabs() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < equipNumber; i++) {
             EquipmentTabInformation tab = new EquipmentTabInformation();
             tab.setTitle("互動資訊牆");
             tab.setVideo(true);
