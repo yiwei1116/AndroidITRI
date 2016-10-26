@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
-    private EquipmentTabFragment equipmentTabFragment;
+    private EquipmentTabFragment equipmentTabFragment = new EquipmentTabFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +240,8 @@ public class MainActivity extends AppCompatActivity {
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
 
                         setSoundActive();
-                        soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
+                        soundPlayer = equipmentTabFragment.getCurrentmedia();
+                        //soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
                         soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
