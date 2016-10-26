@@ -1,10 +1,10 @@
 package com.uscc.ncku.androiditri;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.ClipDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
@@ -526,20 +526,30 @@ public class CommunicationWithServer {
     /*
         **** DOWNLOAD CLASS : download all files
      */
-    public void DownloadFiles(List<String> pathList, ImageView imgBar, LoadingActivity loadingActivity) {
+    public void DownloadFiles(List<String> pathList, LoadingActivity loadingActivity, Handler handler) {
         this.loadingActivity = loadingActivity;
-        new DownloadFilesTask(pathList, imgBar).execute();
+        new DownloadFilesTask(pathList, handler).execute();
     }
 
     public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
 
         private List<String> files;
-        private ClipDrawable drawable;
-        private int i = 0;
+        private Handler handler;
+        private int progressLevel;
+        private int progress;
 
-        public DownloadFilesTask(List<String> files, ImageView imageView) {
+        public DownloadFilesTask(List<String> files, Handler handler) {
             this.files = files;
-            drawable = (ClipDrawable) imageView.getDrawable();
+            this.handler = handler;
+
+            // if files is not empty, set level to 10000 / files.size
+            if (!files.isEmpty()) {
+                this.progressLevel = 10000 / files.size();
+                this.progress = 0;
+            } else {
+                this.progressLevel = 0;
+                this.progress = 10000;
+            }
         }
 
         @Override
@@ -560,7 +570,12 @@ public class CommunicationWithServer {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            drawable.setLevel(values[0]);
+
+            // update progress bar in main UI thread
+            Message msg = handler.obtainMessage();
+            msg.what = 1;
+            msg.arg1 = values[0];
+            handler.sendMessage(msg);
         }
 
         @Override
@@ -581,7 +596,13 @@ public class CommunicationWithServer {
             if ( !path.exists() ) {
                 path.mkdirs();
             }
+
             Log.i("files", String.valueOf(files));
+
+            // if files is empty set progress to 100%
+            if (files.isEmpty())
+                onProgressUpdate(progress);
+
             try {
                 for (String eachFile : files) {
                     if (eachFile.length() != 0 && eachFile != null && !eachFile.equals("null")) {
@@ -617,8 +638,8 @@ public class CommunicationWithServer {
                         inputStream.close();
                         outputStream.close();
 
-                        i += 1000;
-//                        onProgressUpdate(i);
+                        progress += progressLevel;
+                        onProgressUpdate(progress);
                     }
                 }
             } catch (Exception e) {

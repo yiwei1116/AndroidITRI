@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -14,6 +15,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by Lin on 2016/9/1.
@@ -96,6 +100,9 @@ public class LoadingActivity extends AppCompatActivity {
         ImageView imgText = (ImageView) findViewById(R.id.img_text_loading);
         imgText.setImageResource(R.drawable.loading_text);
 
+        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+        imgBar.setVisibility(View.VISIBLE);
+
         final Animation animation = new AlphaAnimation(1, (float) 0.2);
         animation.setDuration(800);
         animation.setInterpolator(new LinearInterpolator());
@@ -103,19 +110,31 @@ public class LoadingActivity extends AppCompatActivity {
         animation.setRepeatMode(Animation.REVERSE);
         imgText.startAnimation(animation);
 
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what == 1){
+                    ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
+                    ClipDrawable drawable = (ClipDrawable) imgBar.getDrawable();
+
+                    drawable.setLevel(msg.arg1);
+                }
+                super.handleMessage(msg);
+            }
+        };
+
         // call asyntask to animate
         SQLiteDatabase db = manager.getReadableDatabase();
-        ImageView imgBar = (ImageView) findViewById(R.id.img_bar_loading);
-        imgBar.setVisibility(View.VISIBLE);
 
-//        // download all tables from server and save into SQLite
-//        communicationWithServer.downloadAllTables();
-//        // get all paths that require downloading files from server
-//        List<String> pathList = manager.getAllDownloadPaths();
-//
-//        // download files
-//        communicationWithServer.DownloadFiles(pathList, imgBar, this);
-        startNextActivity();
+        // download all tables from server and save into SQLite
+        communicationWithServer.downloadAllTables();
+        // get all paths that require downloading files from server
+        List<String> pathList = manager.getAllDownloadPaths();
+
+        // download files
+        communicationWithServer.DownloadFiles(pathList, this, handler);
+
+//        startNextActivity();
     }
 
     public void startNextActivity() {
