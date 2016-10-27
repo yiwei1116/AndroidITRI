@@ -149,7 +149,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
         mViewPager.setAdapter(new SamplePagerAdapter());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
-      /*  mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -157,15 +157,15 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             @Override
             public void onPageSelected(int position) {
                 int viewPageIndex = position;
-                Log.e("index1",String.valueOf(mViewPager.getCurrentItem()));
-                Log.e("position",String.valueOf(position));
+                Log.e("index1", String.valueOf(mViewPager.getCurrentItem()));
+                Log.e("position", String.valueOf(position));
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
-        });*/
+        });
         mTabs.setupWithViewPager(mViewPager);
        /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
@@ -457,49 +457,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
         samplePagerAdapter.renew();
     }
+    @Override
     public MediaPlayer getCurrentmedia(){
         currentIndex = mViewPager.getCurrentItem();
-        Log.e("index",String.valueOf(currentIndex));
+        Log.e("index", String.valueOf(currentIndex));
         mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
 
         return mediaPlayer;
 
-    }
-
-    /*
-        sound button
-     */
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void doPlay() {
-
-        currentIndex = mViewPager.getCurrentItem();
-        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
-
-        try {
-
-            mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
-            mediaPlayer.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void pausePlay() {
-
-        mediaPlayer.pause();
-        equipTabs.get(currentIndex).setPlayLength(mediaPlayer.getCurrentPosition());
-    }
-
-
-
-
-
-    @Override
-    public void release() {
-        equipTabs.get(mViewPager.getCurrentItem()).getMediaPlayer().release();
     }
 
 

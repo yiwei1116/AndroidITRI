@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
-    private EquipmentTabFragment equipmentTabFragment = new EquipmentTabFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        equipmentTabFragment = new EquipmentTabFragment();
+
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -240,19 +240,18 @@ public class MainActivity extends AppCompatActivity {
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
 
                         setSoundActive();
-                        soundPlayer = equipmentTabFragment.getCurrentmedia();
-                        //soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
+/*
+                        ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        soundPlayer = iSoundInterface.getCurrentmedia();*/
+
+                        soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
                         soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
-                        //soundPlayer = equipmentTabFragment.getCurrentmedia();.
 
 
                         audioPlay();
-                       /* ISoundInterface iSoundInterface =
-                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-
-                        iSoundInterface.doPlay();*/
 
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
@@ -260,10 +259,7 @@ public class MainActivity extends AppCompatActivity {
                         mHandler.removeCallbacks(mUpdateTimeTask);
                         soundThread.interrupt();
                         soundPlayer.release();
-                       /* ISoundInterface iSoundInterface =
-                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
-                        iSoundInterface.pausePlay();*/
 
                     }
                     break;
@@ -466,6 +462,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 return;
+            }
+            if(soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)){
+                setSoundNormal();
+                mHandler.removeCallbacks(mUpdateTimeTask);
+                soundThread.interrupt();
+                soundPlayer.release();
+
+
+
             }
         }
 
