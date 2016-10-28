@@ -618,26 +618,26 @@ public class CommunicationWithServer {
                         File outputFile = new File(path, filename);
                         if (!outputFile.exists()) {
                             outputFile.createNewFile();
+                            FileOutputStream outputStream = new FileOutputStream(outputFile);
+                            InputStream inputStream = urlConnection.getInputStream();
+                            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 50);
+                            byte[] buffer = new byte[4096];
+                            int len = 0;
+                            while ( (len = bufferedInputStream.read(buffer)) != -1) {
+                                // write in file
+                                outputStream.write(buffer, 0, len);
+                            }
+                            // close fileoutputstream
+                            Log.i("f-outputstream", "download " + filename + " done.");
+                            bufferedInputStream.close();
+                            inputStream.close();
+                            outputStream.close();
                         } else {
                             // delete and create new one
-                            outputFile.delete();
-                            outputFile.createNewFile();
+//                            outputFile.delete();
+//                            outputFile.createNewFile();
+                            Log.i("exists", filename + " skip download - already exists");
                         }
-                        FileOutputStream outputStream = new FileOutputStream(outputFile);
-                        InputStream inputStream = urlConnection.getInputStream();
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 50);
-                        byte[] buffer = new byte[4096];
-                        int len = 0;
-                        while ( (len = bufferedInputStream.read(buffer)) != -1) {
-                            // write in file
-                            outputStream.write(buffer, 0, len);
-                        }
-                        // close fileoutputstream
-                        Log.i("download", "done");
-                        bufferedInputStream.close();
-                        inputStream.close();
-                        outputStream.close();
-
                         progress += progressLevel;
                         onProgressUpdate(progress);
                     }
