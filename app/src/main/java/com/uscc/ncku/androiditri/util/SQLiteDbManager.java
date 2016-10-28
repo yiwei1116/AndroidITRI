@@ -129,23 +129,42 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, guide_voice, photo, photo_vertical from device", null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, mode_id, company_id, read_count from device", null);
         cursor.moveToFirst();
         String device_id;
-        String guide_voice;
+        String name;
+        String name_en;
+        String introduction;
         String photo;
         String photo_vertical;
+        String hint;
+        int mode_id;
+        int company_id;
+        int read_count;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             device_id = cursor.getString(cursor.getColumnIndex("device_id"));
-            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            mode_id = cursor.getInt(cursor.getColumnIndex("zone"));
+            company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
+            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+
             // add to JSONObject
             file.put("device_id", device_id);
-            file.put("guide_voice", guide_voice);
+            file.put("name", name);
+            file.put("name_en", name_en);
+            file.put("introduction", introduction);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
+            file.put("hint", hint);
+            file.put("mode_id", mode_id);
+            file.put("company_id", company_id);
+            file.put("read_count", read_count);
             filePaths.put(file);
             file = null;
             cursor.moveToNext();
@@ -619,7 +638,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                               int like_count,
                               int read_count,
                               int time_total,
-                              int zone_id) {
+                              int zone_id,
+                              int did_read) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("mode_id", mode_id);
@@ -635,6 +655,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("read_count", read_count);
         values.put("time_total", time_total);
         values.put("zone_id", zone_id);
+        // 0 or 1
+        values.put("did_read", did_read);
 //        db.insert("mode", null, values);
 //        return true;
         long rowId = db.insertWithOnConflict("mode", null, values, 4);
@@ -657,7 +679,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
+        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical, like_count, read_count, time_total, zone_id, did_read from mode", null);
         cursor.moveToFirst();
         String device_id;
         String guide_voice;
@@ -665,6 +687,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String splash_bg_vertical;
         String splash_fg_vertical;
         String splash_blur_vertical;
+        int like_count = 0;
+        int read_count = 0;
+        int time_total = 0;
+        int zone_id = 0;
+        int did_read = 0;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             device_id = cursor.getString(cursor.getColumnIndex("device_id"));
@@ -673,6 +700,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
             splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
             splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+            time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
+            zone_id = cursor.getInt(cursor.getColumnIndex("zone_id"));
+            did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
             // add to JSONObject
             file.put("device_id", device_id);
             file.put("guide_voice", guide_voice);
@@ -680,6 +712,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("splash_bg_vertical", splash_bg_vertical);
             file.put("splash_fg_vertical", splash_fg_vertical);
             file.put("splash_blur_vertical", splash_blur_vertical);
+            file.put("like_count", like_count);
+            file.put("read_count", read_count);
+            file.put("time_total", time_total);
+            file.put("zone_id", zone_id);
+            file.put("did_read", did_read);
             filePaths.put(file);
             file = null;
             cursor.moveToNext();
@@ -687,6 +724,123 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
+    //////// *************** 振哥 ****************
+
+    // for 振哥 return the "已讀" given with mode_id
+    public int getModeDidRead(int mode_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select did_read from mode where mode_id=" + mode_id, null);
+        cursor.moveToFirst();
+        int mode_did_read = 0;
+        // fetch all company_id & qrcode
+        mode_did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
+        cursor.moveToNext();
+        return mode_did_read;
+    }
+
+    // for 振哥 --> return mode data with zone_id
+    public JSONArray queryModeDataWithZoneId(int zone_id) throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical, like_count, read_count, time_total, did_read from mode where zone_id=" + zone_id, null);
+        cursor.moveToFirst();
+        String device_id;
+        String guide_voice;
+        String video;
+        String splash_bg_vertical;
+        String splash_fg_vertical;
+        String splash_blur_vertical;
+        int like_count = 0;
+        int read_count = 0;
+        int time_total = 0;
+        int did_read = 0;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            video = cursor.getString(cursor.getColumnIndex("video"));
+            splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
+            splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
+            splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+            time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
+            did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("guide_voice", guide_voice);
+            file.put("video", video);
+            file.put("splash_bg_vertical", splash_bg_vertical);
+            file.put("splash_fg_vertical", splash_fg_vertical);
+            file.put("splash_blur_vertical", splash_blur_vertical);
+            file.put("like_count", like_count);
+            file.put("read_count", read_count);
+            file.put("time_total", time_total);
+            file.put("did_read", did_read);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
+
+    public JSONArray customizedDeviceDataWithCounts(int mode_id) throws JSONException {
+        JSONObject file = new JSONObject();
+        JSONArray filePaths = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, company_id, read_count from device where mode_id=" + mode_id, null);
+        cursor.moveToFirst();
+        String device_id;
+        String name;
+        String name_en;
+        String introduction;
+        String photo;
+        String photo_vertical;
+        String hint;
+        int company_id;
+        int read_count;
+        // fetch all company_id & qrcode
+        while (cursor.isAfterLast() == false) {
+            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            hint = cursor.getString(cursor.getColumnIndex("hint"));
+            company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
+            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+
+            // add to JSONObject
+            file.put("device_id", device_id);
+            file.put("name", name);
+            file.put("name_en", name_en);
+            file.put("introduction", introduction);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            file.put("hint", hint);
+            file.put("company_id", company_id);
+            file.put("read_count", read_count);
+            filePaths.put(file);
+            file = null;
+            cursor.moveToNext();
+        }
+        return filePaths;
+    }
+
+    public int getNumbersOfDevicesFromMode(int mode_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from device where mode_id=" + mode_id, null);
+        cursor.moveToFirst();
+
+        int count_devices = cursor.getCount();
+        cursor.close();
+        // get counts and return
+        return count_devices;
+    }
+
+    // **************  survey ************
     // survey table query and insert
     public boolean insertSurvey(int survey_id,
                                 String name,
@@ -1204,5 +1358,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }
+
+
 
 }

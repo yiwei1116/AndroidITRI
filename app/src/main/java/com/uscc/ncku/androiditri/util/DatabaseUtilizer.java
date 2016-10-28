@@ -69,6 +69,7 @@ public class DatabaseUtilizer {
     public static final String MODE_SPLASH_BG = "splash_bg_vertical";
     public static final String MODE_SPLASH_FG = "splash_fg_vertical";
     public static final String MODE_SPLASH_BLUR = "splash_blur_vertical";
+    public static final String MODE_DID_READ = "did_read";
 
     // zone table
     public static final String ZONE_TABLE = "zone";
@@ -283,7 +284,8 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.LIKE_COUNT + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.READ_COUNT + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.TIME_TOTAL + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.ZONE_ID + " INT NOT NULL"
+            + DatabaseUtilizer.ZONE_ID + " INT NOT NULL, "
+            + DatabaseUtilizer.MODE_DID_READ + " INT DEFAULT 0"
             + ")";
     // path --> path_id is the only primary key, different from database
     public static final String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
