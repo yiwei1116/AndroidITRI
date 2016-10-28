@@ -41,6 +41,7 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
+import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 
 import org.w3c.dom.Text;
@@ -60,10 +61,11 @@ import java.util.Locale;
  */
 
 
-public class EquipmentTabFragment extends Fragment implements ISoundInterface{
+public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
+    private static final String TXTTAG = "txtContentTag";
 
-    private int equipNumber, currentIndex ;
+    public int equipNumber, currentIndex ;
 
     private View view;
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
@@ -73,16 +75,21 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     private ViewPager mViewPager;
     private ArrayList<EquipmentTabInformation> equipTabs;
     private SeekBar seekBar;
-    private MediaPlayer mediaPlayer;
+    public MediaPlayer mediaPlayer;
     private static final int[] rm_images = {
             R.drawable.rm_grid1_a1m4,
             R.drawable.rm_grid1_a1m3
     };
     private int image_index = 0;
+    //private ArrayList<Integer> audioList = new ArrayList<Integer>();
 
+    private   int[] audioList = {
+            R.raw.test,
+            R.raw.test1,
+            R.raw.test2,
+            R.raw.test3,
+    };
 
-
-    public static TextView txtContent;
     public EquipmentTabFragment() {
     }
 
@@ -109,7 +116,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,9 +131,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
-        MainActivity.setFontNormal();
-        MainActivity.setSoundNormal();
-        MainActivity.setInfoNormal();
+        ((MainActivity) getActivity()).setFontNormal();
+        ((MainActivity) getActivity()).setSoundNormal();
+        ((MainActivity) getActivity()).setInfoNormal();
 
         return view;
     }
@@ -144,7 +151,23 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
         mViewPager.setAdapter(new SamplePagerAdapter());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            @Override
+            public void onPageSelected(int position) {
+                int viewPageIndex = position;
+                Log.e("index1", String.valueOf(mViewPager.getCurrentItem()));
+                Log.e("position", String.valueOf(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mTabs.setupWithViewPager(mViewPager);
        /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
@@ -183,9 +206,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.setFontDisabled();
-        MainActivity.setSoundDisabled();
-        MainActivity.setInfoDisabled();
+        ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity) getActivity()).setSoundDisabled();
+        ((MainActivity) getActivity()).setInfoDisabled();
 
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
@@ -230,11 +253,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         public int getCount() {
             return equipNumber;
         }
+
         // 判斷是否由對象生成界面
         @Override
         public boolean isViewFromObject(View view, Object o) {
-
-
             return o == view;
         }
 
@@ -243,16 +265,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
             return equipTitle;
         }
+
         // 初始化position位置的界面 類似於baseAdapter的 getView方法
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
 
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
-            container.addView(v);
-
-            // set current view to equipment tab
-            equipTabs.get(position).setView(v);
 
             // set equipment title
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
@@ -277,7 +296,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             }
 
             // set equipment content text
-            txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            String txtContentTag = TXTTAG + String.valueOf(position);
+            TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            txtContent.setTag(txtContentTag);
             txtContent.setText(equipTabs.get(position).getTextContent());
             txtContent.setTextSize(equipTabs.get(position).getFontSize());
             txtContent.setMovementMethod(new ScrollingMovementMethod());
@@ -305,6 +326,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             });
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+
+            container.addView(v);
+
+            // set current view to equipment tab
+            equipTabs.get(position).setView(v);
 
             return v;
         }
@@ -415,9 +441,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             tab.setVideo(true);
             tab.setPhoto(true);
             tab.setTextContent(getResources().getString(R.string.rm_test));
-            tab.setFontSize(18);
             // add sound to each tab
-            tab.setPlayList(R.raw.test);
+            tab.setPlayList(audioList[i]);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
             equipTabs.add(tab);
@@ -431,53 +456,22 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     /*
         font size button
      */
+    @Override
     public void setFontSize(int size) {
+        String tag = TXTTAG + String.valueOf(mViewPager.getCurrentItem());
+        TextView tvRecord = (TextView) mViewPager.findViewWithTag(tag);
+        tvRecord.setTextSize(size);
         equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);
-        SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
-        samplePagerAdapter.renew();
     }
-/*    public MediaPlayer getCurrentmedia(){
+
+    @Override
+    public MediaPlayer getCurrentmedia(){
         currentIndex = mViewPager.getCurrentItem();
+        Log.e("index", String.valueOf(currentIndex));
         mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
 
         return mediaPlayer;
 
-    }*/
-
-    /*
-        sound button
-     */
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void doPlay() {
-
-        currentIndex = mViewPager.getCurrentItem();
-        mediaPlayer = equipTabs.get(currentIndex).getMediaPlayer();
-
-        try {
-
-            mediaPlayer.seekTo(equipTabs.get(currentIndex).getPlayLength());
-            mediaPlayer.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void pausePlay() {
-
-        mediaPlayer.pause();
-        equipTabs.get(currentIndex).setPlayLength(mediaPlayer.getCurrentPosition());
-    }
-
-
-
-
-
-    @Override
-    public void release() {
-        equipTabs.get(mViewPager.getCurrentItem()).getMediaPlayer().release();
     }
 
 

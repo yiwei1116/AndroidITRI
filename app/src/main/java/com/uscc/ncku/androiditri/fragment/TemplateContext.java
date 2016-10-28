@@ -101,9 +101,9 @@ public class TemplateContext extends Fragment {
 
         spinnerArea();
 
-        MainActivity.setToolbarTitle(R.string.text_master);
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.text_master);
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,7 +260,7 @@ public class TemplateContext extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

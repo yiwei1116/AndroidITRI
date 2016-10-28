@@ -35,6 +35,9 @@ public class HomeActivity extends AppCompatActivity {
                 res.updateConfiguration(conf, dm);
 
                 Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, false);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -50,6 +53,9 @@ public class HomeActivity extends AppCompatActivity {
                 res.updateConfiguration(conf, dm);
 
                 Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, true);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

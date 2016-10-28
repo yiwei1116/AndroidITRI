@@ -83,10 +83,10 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        MainActivity.transparateToolbar();
-        MainActivity.setToolbarTitle(R.string.nothing);
+        ((MainActivity) getActivity()).transparateToolbar();
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.nothing);
 
-        toolbar = MainActivity.getToolbar();
+        toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +135,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
+        ((MainActivity) getActivity()).showDefaultToolbar();
     }
     private void takeScreenshot() {
         Date now = new Date();

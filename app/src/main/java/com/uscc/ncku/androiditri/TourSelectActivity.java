@@ -19,6 +19,8 @@ import android.widget.TextView;
 public class TourSelectActivity extends AppCompatActivity {
     public static TourSelectActivity instance = null;
 
+    private boolean isEnglish;
+
     private static final int[] TOUR_IMG = {
             R.drawable.tour_select_designer,
             R.drawable.tour_select_robot,
@@ -35,6 +37,9 @@ public class TourSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour_select);
         instance = this;
+
+        Bundle bundle = this.getIntent().getExtras();
+        isEnglish = bundle.getBoolean(MainActivity.GET_TOUR_INDEX);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tour_select);
         setSupportActionBar(toolbar);
@@ -116,6 +121,7 @@ public class TourSelectActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(TourSelectActivity.this, SurveyActivity.class);
                     Bundle bundle = new Bundle();
+                    bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
                     bundle.putInt(MainActivity.GET_TOUR_INDEX, tourViewPager.getCurrentItem());
                     intent.putExtras(bundle);
                     startActivity(intent);

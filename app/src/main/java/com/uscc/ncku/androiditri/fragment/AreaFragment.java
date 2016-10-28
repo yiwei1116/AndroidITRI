@@ -76,8 +76,8 @@ public class AreaFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.i("GG", "onCreatView");
 
-        MainActivity.hideToolbar();
-        Toolbar toolbar = MainActivity.getToolbar();
+        ((MainActivity) getActivity()).hideToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class AreaFragment extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;
@@ -165,7 +165,7 @@ public class AreaFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
+        ((MainActivity) getActivity()).showDefaultToolbar();
         Log.i("GG", "onDestoryView");
     }
 

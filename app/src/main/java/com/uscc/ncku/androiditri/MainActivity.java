@@ -28,40 +28,44 @@ import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 import com.uscc.ncku.androiditri.util.TimeUtilities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Timer;
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
+    public static final String GET_IS_ENGLISH = "GET_IS_ENGLISH";
 
     private int tourIndex;
+    private boolean isEnglish;
 
-    private static MainButton infoBtn;
-    private static MainButton diaryBtn;
-    private static MainButton mapBtn;
-    private static MainButton soundBtn;
-    private static MainButton fontBtn;
-    private static Toolbar toolbar;
-    private static TextView toolbarTitle;
-    private static ImageView mainBtnNavBg;
-    private static LinearLayout mainBtnLayout;
-    private static FrameLayout mainContainer;
-    private static int container_margin_top;
+    private MainButton infoBtn;
+    private MainButton diaryBtn;
+    private MainButton mapBtn;
+    private MainButton soundBtn;
+    private MainButton fontBtn;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+    private ImageView mainBtnNavBg;
+    private LinearLayout mainBtnLayout;
+    private FrameLayout mainContainer;
+    private int container_margin_top;
     /* custom fragment back stack */
-    private static LinkedList<Fragment> fragmentBackStack;
+    private LinkedList<Fragment> fragmentBackStack;
 
-    private static FrameLayout containerSoundFontSize;
-    private static RelativeLayout fontSizeRL;
-    private static RelativeLayout soundRL;
+    private FrameLayout containerSoundFontSize;
+    private RelativeLayout fontSizeRL;
+    private RelativeLayout soundRL;
 
     private CommunicationWithServer communicationWithServer;
 
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     private Handler mHandler = new Handler();
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
-    private EquipmentTabFragment equipmentTabFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(GET_TOUR_INDEX);
+        isEnglish = bundle.getBoolean(GET_IS_ENGLISH);
 
         // call function to get current projectId
         myObject = new ITRIObject();
@@ -116,12 +121,13 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //soundPlayer = MediaPlayer.create(this.getBaseContext(),R.raw.test);
         utils = new TimeUtilities();
         setupListeners();
+
      /*soundThread = new Thread(this);
         soundThread.start();*/
 
 
 
-        equipmentTabFragment = new EquipmentTabFragment();
+
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
         diaryBtn = (MainButton) findViewById(R.id.btn_diary_main);
@@ -238,18 +244,18 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
 
                         setSoundActive();
+/*
+                        ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        soundPlayer = iSoundInterface.getCurrentmedia();*/
+
                         soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
-                        soundThread = new Thread(MainActivity.this);
+                        soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
-                        //soundPlayer = equipmentTabFragment.getCurrentmedia();.
 
-                        soundPlayer.start();
+
                         audioPlay();
-                       /* ISoundInterface iSoundInterface =
-                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-
-                        iSoundInterface.doPlay();*/
 
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
@@ -257,10 +263,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                         mHandler.removeCallbacks(mUpdateTimeTask);
                         soundThread.interrupt();
                         soundPlayer.release();
-                       /* ISoundInterface iSoundInterface =
-                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
-                        iSoundInterface.pausePlay();*/
 
                     }
                     break;
@@ -272,21 +275,17 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                         fontSizeRL.startAnimation(animation);
 
                         /////////// ****** method to get which fragment is it
-                        Fragment currentFont = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        EquipmentTabFragment ef = null;
-                        if (currentFont instanceof EquipmentTabFragment) {
-                            ef = (EquipmentTabFragment) currentFont;
-                        }
+                        final IFontSize currentFontSize =
+                                (IFontSize) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
                         SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
-                        final EquipmentTabFragment finalEf = ef;
                         assert seekBar != null;
                         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                 if (fromUser) {
                                     int level = progress / 5;
-                                    finalEf.setFontSize(level + 15);
+                                    currentFontSize.setFontSize(level + 15);
                                 }
                             }
 
@@ -304,9 +303,6 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                         setFontNormal();
                     }
                     break;
-
-
-
 
             }
         }
@@ -357,30 +353,12 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
     }
 
-    @Override
-    public void run() {
-        int currentPosition = 0;
-        int soundTotal = soundPlayer.getDuration();
-        soundSeekBar.setMax(soundTotal);
-        while (soundPlayer!=null && currentPosition < soundTotal){
 
-            try {
-                Thread.sleep(300);
-
-                currentPosition = soundPlayer.getCurrentPosition();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            soundSeekBar.setProgress(currentPosition);
-
-        }
-    }
     /**
      * Update timer on seekbar
      * */
     public void updateProgressBar() {
-        mHandler.postDelayed(mUpdateTimeTask, 500);
+        mHandler.postDelayed(mUpdateTimeTask, 100);
     }
 
     /**
@@ -399,13 +377,15 @@ public class MainActivity extends AppCompatActivity implements Runnable{
 
         long totalDuration = soundPlayer.getDuration();
         long currentDuration = soundPlayer.getCurrentPosition();
+        soundSeekBar.setMax((int)totalDuration);
+        soundSeekBar.setProgress((int)currentDuration);
         // Displaying Total Duration time
         completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
         // Displaying time completed playing
         currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
     }
     private void audioPlay(){
-        getAudioTime();
+
         soundPlayer.start();
         updateProgressBar();
         startButton.setVisibility(View.GONE);
@@ -480,6 +460,15 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                 });
                 return;
             }
+            if(soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)){
+                setSoundNormal();
+                mHandler.removeCallbacks(mUpdateTimeTask);
+                soundThread.interrupt();
+                soundPlayer.release();
+
+
+
+            }
         }
 
         /**
@@ -544,7 +533,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         ft.commit();
     }
 
-    public static void hideToolbar() {
+    public void hideToolbar() {
         toolbar.setVisibility(View.GONE);
 
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mainContainer.getLayoutParams();
@@ -552,7 +541,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         mainContainer.setLayoutParams(layoutParams);
     }
 
-    public static void showDefaultToolbar() {
+    public void showDefaultToolbar() {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setBackgroundResource(R.drawable.header_blank);
 
@@ -561,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         mainContainer.setLayoutParams(layoutParams);
     }
 
-    public static void showFeedbackToolbar() {
+    public void showFeedbackToolbar() {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setBackgroundResource(R.color.colorWhite);
 
@@ -570,7 +559,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         mainContainer.setLayoutParams(layoutParams);
     }
 
-    public static void transparateToolbar() {
+    public void transparateToolbar() {
         toolbar.setVisibility(View.VISIBLE);
         toolbar.setBackgroundResource(R.color.trans);
 
@@ -579,96 +568,99 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         mainContainer.setLayoutParams(layoutParams);
     }
 
-    public static Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return toolbar;
     }
 
-    public static LinkedList<Fragment> getFragmentBackStack() {
+    public LinkedList<Fragment> getFragmentBackStack() {
         return fragmentBackStack;
     }
 
-    public static void setToolbarTitle(int stringID) {
+    public void setToolbarTitle(int stringID) {
         toolbarTitle.setText(stringID);
     }
 
-    public static void hideMainBtn() {
+    public void hideMainBtn() {
         mainBtnNavBg.getLayoutParams().height = 0;
         mainBtnLayout.setVisibility(View.GONE);
     }
 
-    public static void showMainBtn() {
+    public void showMainBtn() {
         mainBtnNavBg.getLayoutParams().height = ViewGroup.MarginLayoutParams.WRAP_CONTENT;
         mainBtnLayout.setVisibility(View.VISIBLE);
     }
 
-    public static void setInfoActive() {
+    public void setInfoActive() {
         infoBtn.setActive(R.drawable.btn_main_info_active);
     }
 
-    public static void setInfoNormal() {
+    public void setInfoNormal() {
         infoBtn.setNormal(R.drawable.btn_main_info_normal);
     }
 
-    public static void setInfoDisabled() {
+    public void setInfoDisabled() {
         infoBtn.setDisable(R.drawable.btn_main_info_disabled);
     }
 
-    public static void setDiaryActive() {
+    public void setDiaryActive() {
         diaryBtn.setActive(R.drawable.btn_main_diary_active);
     }
 
-    public static void setDiaryNormal() {
+    public void setDiaryNormal() {
         diaryBtn.setNormal(R.drawable.btn_main_diary_normal);
     }
 
-    public static void setDiaryDisabled() {
+    public void setDiaryDisabled() {
         diaryBtn.setDisable(R.drawable.btn_main_diary_disabled);
     }
 
-    public static void setMapActive() {
+    public void setMapActive() {
         mapBtn.setActive(R.drawable.btn_main_map_active);
     }
 
-    public static void setMapNormal() {
+    public void setMapNormal() {
         mapBtn.setNormal(R.drawable.btn_main_map_normal);
     }
 
-    public static void setMapDisabled() {
+    public void setMapDisabled() {
         mapBtn.setDisable(R.drawable.btn_main_map_disabled);
     }
 
-    public static void setSoundActive() {
+    public void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
         soundRL.setVisibility(View.VISIBLE);
 
 
     }
 
-    public static void setSoundNormal() {
+    public void setSoundNormal() {
         soundBtn.setNormal(R.drawable.btn_main_sound_normal);
         soundRL.setVisibility(View.GONE);
     }
 
-    public static void setSoundDisabled() {
+    public void setSoundDisabled() {
         soundBtn.setDisable(R.drawable.btn_main_sound_disabled);
         soundRL.setVisibility(View.GONE);
     }
 
-    public static void setFontActive() {
+    public void setFontActive() {
         fontBtn.setActive(R.drawable.btn_main_font_active);
         fontSizeRL.setVisibility(View.VISIBLE);
     }
 
-    public static void setFontNormal() {
+    public void setFontNormal() {
         fontBtn.setNormal(R.drawable.btn_main_font_normal);
         fontSizeRL.setVisibility(View.GONE);
     }
 
-    public static void setFontDisabled() {
+    public void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
         fontSizeRL.setVisibility(View.GONE);
     }
 
+    public boolean isEnglish() {
+        return isEnglish;
+    }
 
     private void finishOtherActivity() {
         if(AboutActivity.instance != null) {

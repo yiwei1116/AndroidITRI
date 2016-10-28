@@ -81,9 +81,9 @@ public class FeedbackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        MainActivity.hideMainBtn();
-        MainActivity.showFeedbackToolbar();
-        Toolbar toolbar = MainActivity.getToolbar();
+        ((MainActivity) getActivity()).hideMainBtn();
+        ((MainActivity) getActivity()).showFeedbackToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         setHasOptionsMenu(true);
 
         toolbar.setNavigationIcon(R.drawable.grey_back);
@@ -155,9 +155,9 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showMainBtn();
-        MainActivity.showDefaultToolbar();
-        Toolbar toolbar = MainActivity.getToolbar();
+        ((MainActivity) getActivity()).showMainBtn();
+        ((MainActivity) getActivity()).showDefaultToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(R.drawable.btn_back);
     }
@@ -172,7 +172,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +219,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,7 +359,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -580,7 +580,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -667,7 +667,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -775,7 +775,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -883,7 +883,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -926,7 +926,7 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

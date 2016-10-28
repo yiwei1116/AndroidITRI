@@ -71,11 +71,11 @@ public class ChooseTemplate extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_choose_template, container, false);
 
-        MainActivity.transparateToolbar();
-        MainActivity.hideMainBtn();
-        MainActivity.setToolbarTitle(R.string.choose_template);
+        ((MainActivity) getActivity()).transparateToolbar();
+        ((MainActivity) getActivity()).hideMainBtn();
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_template);
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +123,7 @@ public class ChooseTemplate extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;
@@ -198,7 +198,7 @@ public class ChooseTemplate extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
+        ((MainActivity) getActivity()).showDefaultToolbar();
     }
 
     @Override
