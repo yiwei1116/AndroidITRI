@@ -219,5 +219,8 @@
     <string name="send_mail">寄email</string>
     <string name="back_to_main">回到導覽</string>
     <string name="equipment_manufacture_info">廠商資訊</string>
+    <string name="coach_info">按下信息圖標\n即可查看地圖標示</string>
+    <string name="coach_question">按下問卷圖標\n即可填寫問卷</string>
+    <string name="understand">了解</string>
 
 </resources>

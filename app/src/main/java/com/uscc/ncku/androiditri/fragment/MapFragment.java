@@ -130,6 +130,8 @@ public class MapFragment extends Fragment {
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
         }
+
+        ((MainActivity) getActivity()).showMapCoachInfo();
     }
 
     @SuppressLint("SetJavaScriptEnabled")

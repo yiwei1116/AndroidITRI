@@ -1,9 +1,10 @@
 package com.uscc.ncku.androiditri;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
 
+    private boolean isCoachInfoFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -710,6 +712,41 @@ public class MainActivity extends AppCompatActivity {
                 TourSelectActivity.instance.finish();
             } catch (Exception e) {}
         }
+    }
+
+    public void showMapCoachInfo() {
+        if (isCoachInfoFirst) {
+            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_info);
+            dialog.setContentView(R.layout.alertdialog_coach_info);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach_info);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showMapCoachQuestion();
+                    dialog.dismiss();
+                }
+            });
+
+            isCoachInfoFirst = false;
+        }
+    }
+
+    private void showMapCoachQuestion() {
+        final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_question);
+        dialog.setContentView(R.layout.alertdialog_coach_question);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+
+        Button understand = (Button) dialog.findViewById(R.id.btn_coach_question);
+        understand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
 

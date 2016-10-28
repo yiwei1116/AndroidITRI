@@ -372,7 +372,8 @@ public class ConnectActivity extends Activity {
                                 json.optInt(DatabaseUtilizer.LIKE_COUNT),
                                 json.optInt(DatabaseUtilizer.READ_COUNT),
                                 json.optInt(DatabaseUtilizer.TIME_TOTAL),
-                                json.optInt(DatabaseUtilizer.ZONE_ID));
+                                json.optInt(DatabaseUtilizer.ZONE_ID),
+                                0);
                     }
                     break;
                 case "zone":

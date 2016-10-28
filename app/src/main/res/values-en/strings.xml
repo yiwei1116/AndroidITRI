@@ -183,4 +183,7 @@
     <string name="save_to_phone"></string>
     <string name="send_mail"></string>
     <string name="equipment_manufacture_info">Manufacturer Information</string>
+    <string name="coach_info">Click the icon\nto see the map guide</string>
+    <string name="coach_question">Click the icon\nto give feedback</string>
+    <string name="understand">OK</string>
 </resources>
