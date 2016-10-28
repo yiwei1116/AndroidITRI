@@ -82,7 +82,7 @@ public class ModeSelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_select, container, false);
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +176,7 @@ public class ModeSelectFragment extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

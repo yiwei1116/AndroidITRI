@@ -86,7 +86,7 @@ public class ModeHighlightFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_highlight, container, false);
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +165,7 @@ public class ModeHighlightFragment extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

@@ -138,7 +138,7 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        MainActivity.setMapActive();
+        ((MainActivity) getActivity()).setMapActive();
 
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
         address0 = (TextView)view.findViewById(R.id.device_address0);
@@ -160,7 +160,7 @@ public class MapFragment extends Fragment {
             }
         }
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         setHasOptionsMenu(true);
         toolbar.setNavigationIcon(R.drawable.icon_info);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -204,7 +204,7 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 notice.setVisibility(View.GONE);
 
-                MainActivity.setMapNormal();
+                ((MainActivity) getActivity()).setMapNormal();
 
                 AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
                 replaceFragment(areaFragment);
@@ -224,9 +224,9 @@ public class MapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
-        MainActivity.setMapNormal();
+        ((MainActivity) getActivity()).setMapNormal();
     }
 
     @Override
@@ -254,7 +254,7 @@ public class MapFragment extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

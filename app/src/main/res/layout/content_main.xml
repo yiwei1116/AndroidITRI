@@ -31,7 +31,7 @@
             android:layout_height="70dp"
             android:id="@+id/rlayout_sound"
             android:background="@color/colorBlack"
-            android:alpha="0.6"
+            android:alpha="0.8"
             android:layout_gravity="center|bottom"
             android:paddingTop="20dp"
             android:visibility="gone"
@@ -96,7 +96,6 @@
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="14dp"
-
                 android:id="@+id/audioBar"
                 android:progressDrawable="@drawable/progress"
                 android:thumb="@drawable/progress_bar_circle"
@@ -114,7 +113,7 @@
             android:layout_height="70dp"
             android:id="@+id/rlayout_font_size_zoom"
             android:background="@color/colorBlack"
-            android:alpha="0.6"
+            android:alpha="0.8"
             android:layout_gravity="center|bottom"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"

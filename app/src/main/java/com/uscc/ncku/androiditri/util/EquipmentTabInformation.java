@@ -46,6 +46,7 @@ public class EquipmentTabInformation {
     // constructor
     public EquipmentTabInformation() {
         this.equipPhotoIndex = 0;
+        this.fontSize = 18;
     }
 
     public String getCompanyLocation() {

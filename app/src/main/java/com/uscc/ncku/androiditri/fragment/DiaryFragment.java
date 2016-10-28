@@ -96,8 +96,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
 
-        MainActivity.hideToolbar();
-        MainActivity.setDiaryActive();
+        ((MainActivity) getActivity()).hideToolbar();
+        ((MainActivity) getActivity()).setDiaryActive();
 
         return view;
 
@@ -107,14 +107,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        MainActivity.showMainBtn();
+        ((MainActivity) getActivity()).showMainBtn();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
-        MainActivity.setDiaryNormal();
+        ((MainActivity) getActivity()).showDefaultToolbar();
+        ((MainActivity) getActivity()).setDiaryNormal();
     }
 
     @Override
@@ -286,7 +286,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

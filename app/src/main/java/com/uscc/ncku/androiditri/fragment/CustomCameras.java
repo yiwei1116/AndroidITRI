@@ -108,8 +108,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         capture.setOnClickListener(this);
         nextStep.setOnClickListener(this);
         reTake.setOnClickListener(this);
-        MainActivity.hideMainBtn();
-        MainActivity.hideToolbar();
+        ((MainActivity) getActivity()).hideMainBtn();
+        ((MainActivity) getActivity()).hideToolbar();
         Button back = (Button) view.findViewById(R.id.btn_camera_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -398,7 +398,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
+        ((MainActivity) getActivity()).showDefaultToolbar();
     }
 
     private Camera getCamera() {
@@ -442,7 +442,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;

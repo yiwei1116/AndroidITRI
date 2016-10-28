@@ -41,6 +41,7 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
+import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 
 import org.w3c.dom.Text;
@@ -60,8 +61,9 @@ import java.util.Locale;
  */
 
 
-public class EquipmentTabFragment extends Fragment implements ISoundInterface{
+public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
+    private static final String TXTTAG = "txtContentTag";
 
     public int equipNumber, currentIndex ;
 
@@ -87,7 +89,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             R.raw.test2,
             R.raw.test3,
     };
-    public static TextView txtContent;
+
     public EquipmentTabFragment() {
     }
 
@@ -114,7 +116,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
-        Toolbar toolbar = MainActivity.getToolbar();
+        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,9 +131,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
-        MainActivity.setFontNormal();
-        MainActivity.setSoundNormal();
-        MainActivity.setInfoNormal();
+        ((MainActivity) getActivity()).setFontNormal();
+        ((MainActivity) getActivity()).setSoundNormal();
+        ((MainActivity) getActivity()).setInfoNormal();
 
         return view;
     }
@@ -204,9 +206,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.setFontDisabled();
-        MainActivity.setSoundDisabled();
-        MainActivity.setInfoDisabled();
+        ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity) getActivity()).setSoundDisabled();
+        ((MainActivity) getActivity()).setInfoDisabled();
 
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
@@ -251,11 +253,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
         public int getCount() {
             return equipNumber;
         }
+
         // 判斷是否由對象生成界面
         @Override
         public boolean isViewFromObject(View view, Object o) {
-
-
             return o == view;
         }
 
@@ -264,16 +265,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
             return equipTitle;
         }
+
         // 初始化position位置的界面 類似於baseAdapter的 getView方法
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
 
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
-            container.addView(v);
-
-            // set current view to equipment tab
-            equipTabs.get(position).setView(v);
 
             // set equipment title
             TextView title = (TextView) v.findViewById(R.id.equipment_title);
@@ -298,7 +296,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             }
 
             // set equipment content text
-            txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            String txtContentTag = TXTTAG + String.valueOf(position);
+            TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            txtContent.setTag(txtContentTag);
             txtContent.setText(equipTabs.get(position).getTextContent());
             txtContent.setTextSize(equipTabs.get(position).getFontSize());
             txtContent.setMovementMethod(new ScrollingMovementMethod());
@@ -326,6 +326,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             });
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+
+            container.addView(v);
+
+            // set current view to equipment tab
+            equipTabs.get(position).setView(v);
 
             return v;
         }
@@ -436,7 +441,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
             tab.setVideo(true);
             tab.setPhoto(true);
             tab.setTextContent(getResources().getString(R.string.rm_test));
-            tab.setFontSize(18);
             // add sound to each tab
             tab.setPlayList(audioList[i]);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
@@ -452,11 +456,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface{
     /*
         font size button
      */
+    @Override
     public void setFontSize(int size) {
+        String tag = TXTTAG + String.valueOf(mViewPager.getCurrentItem());
+        TextView tvRecord = (TextView) mViewPager.findViewWithTag(tag);
+        tvRecord.setTextSize(size);
         equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);
-        SamplePagerAdapter samplePagerAdapter = (SamplePagerAdapter) mViewPager.getAdapter();
-        samplePagerAdapter.renew();
     }
+
     @Override
     public MediaPlayer getCurrentmedia(){
         currentIndex = mViewPager.getCurrentItem();

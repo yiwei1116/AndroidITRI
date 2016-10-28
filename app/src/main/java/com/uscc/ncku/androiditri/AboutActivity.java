@@ -13,6 +13,8 @@ import android.widget.TextView;
 public class AboutActivity extends AppCompatActivity {
     public static AboutActivity instance = null;
 
+    private boolean isEnglish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,9 @@ public class AboutActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.nothing);
+
+        Bundle bundle = this.getIntent().getExtras();
+        isEnglish = bundle.getBoolean(MainActivity.GET_TOUR_INDEX);
 
         originPage();
 
@@ -118,6 +123,9 @@ public class AboutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AboutActivity.this, TourSelectActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

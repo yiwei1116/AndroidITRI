@@ -18,6 +18,7 @@ public class SurveyActivity extends AppCompatActivity {
     public static SurveyActivity instance = null;
 
     private int tourIndex;
+    private boolean isEnglish;
     private boolean menuHide = true;
 
     @Override
@@ -34,6 +35,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
+        isEnglish = bundle.getBoolean(MainActivity.GET_IS_ENGLISH);
         instance = this;
     }
 
@@ -64,6 +66,7 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
                 bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -961,6 +964,7 @@ public class SurveyActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
                 bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -987,6 +991,7 @@ public class SurveyActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
                 bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -997,6 +1002,7 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
                 bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
                 intent.putExtras(bundle);
                 startActivity(intent);

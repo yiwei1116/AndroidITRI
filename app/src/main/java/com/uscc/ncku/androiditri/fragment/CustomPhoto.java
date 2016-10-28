@@ -74,9 +74,9 @@ public class CustomPhoto extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridView1);
 
 
-        MainActivity.setToolbarTitle(R.string.choose_photo);
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_photo);
 
-        toolbar = MainActivity.getToolbar();
+        toolbar = ((MainActivity) getActivity()).getToolbar();
 
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public class CustomPhoto extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
     public void CustomPhoto() {
-        MainActivity.hideMainBtn();
+        ((MainActivity) getActivity()).hideMainBtn();
 
         ContentResolver cr = getActivity().getContentResolver();
         String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA };
@@ -151,8 +151,8 @@ public class CustomPhoto extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        MainActivity.showDefaultToolbar();
-        MainActivity.setToolbarTitle(R.string.nothing);
+        ((MainActivity) getActivity()).showDefaultToolbar();
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.nothing);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class CustomPhoto extends Fragment {
 
     private void replaceFragment (Fragment fragment) {
         String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = MainActivity.getFragmentBackStack();
+        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
 
         // find fragment in back stack
         int i = 0;
