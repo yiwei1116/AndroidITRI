@@ -679,6 +679,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setInfoNormalIfActive() {
+        if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
+            setInfoNormal();
+        }
+    }
+
     public boolean isEnglish() {
         return isEnglish;
     }

@@ -125,7 +125,6 @@
                     android:id="@+id/equipment_info_title_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/rm_a1m1e1_infobg"
                     android:scaleType="fitXY"
                     android:src="@drawable/gradient_overlay" />
 
@@ -135,7 +134,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="24dp"
-                    android:text="互動資訊牆"
                     android:textColor="@android:color/white"
                     android:textSize="32sp" />
 
@@ -171,7 +169,6 @@
                         android:id="@+id/equipment_info_company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="奇奇光電"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -181,7 +178,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/equipment_info_company_name"
                         android:layout_marginTop="33dp"
-                        android:text="www.gglight.com"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -191,7 +187,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/equipment_info_company_site"
                         android:layout_marginTop="35dp"
-                        android:text="12345678"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -201,7 +196,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/equipment_info_company_phone"
                         android:layout_marginTop="32dp"
-                        android:text="光頭路78號"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -210,8 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/equipment_info_company_location"
-                        android:layout_marginTop="38dp"
-                        android:src="@drawable/rm_a1m1e1_qrcode" />
+                        android:layout_marginTop="38dp" />
 
                 </RelativeLayout>
 
