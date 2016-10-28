@@ -1,19 +1,12 @@
 package com.uscc.ncku.androiditri.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
-import android.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -22,9 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,17 +27,13 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 /**
@@ -158,9 +144,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             @Override
             public void onPageSelected(int position) {
-                int viewPageIndex = position;
-                Log.e("index1", String.valueOf(mViewPager.getCurrentItem()));
-                Log.e("position", String.valueOf(position));
+                ((MainActivity) getActivity()).setSoundNormalIfActive();
+                ((MainActivity) getActivity()).setFontNormalIfActive();
             }
 
             @Override
@@ -298,6 +283,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             // set equipment content text
             String txtContentTag = TXTTAG + String.valueOf(position);
             TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+            // set text content tag for font size later
             txtContent.setTag(txtContentTag);
             txtContent.setText(equipTabs.get(position).getTextContent());
             txtContent.setTextSize(equipTabs.get(position).getFontSize());
@@ -340,14 +326,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             container.removeView((View) object);
         }
 
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        public void renew() {
-            this.notifyDataSetChanged();
-        }
+//        @Override
+//        public int getItemPosition(Object object) {
+//            return POSITION_NONE;
+//        }
+//
+//        public void renew() {
+//            this.notifyDataSetChanged();
+//        }
 
     }
 
@@ -355,10 +341,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         private View v;
 
         public RadioButtonListener(View v) {
-            this.v = v;
-        }
-
-        public void setView(View v) {
             this.v = v;
         }
 
@@ -433,6 +415,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             dialog.show();
         }
     }
+
     //cursor
     private void addTabs() {
         for (int i = 0; i < equipNumber; i++) {

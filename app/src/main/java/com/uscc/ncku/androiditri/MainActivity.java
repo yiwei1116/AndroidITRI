@@ -3,11 +3,11 @@ package com.uscc.ncku.androiditri;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.graphics.drawable.ClipDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,22 +24,16 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.uscc.ncku.androiditri.fragment.ChooseTemplate;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
-import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 import com.uscc.ncku.androiditri.util.TimeUtilities;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.StringTokenizer;
-import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
@@ -80,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar soundSeekBar;
     private Thread  soundThread;
     private Handler mHandler = new Handler();
+    private Handler soundUpdateUIHandler;
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
 
@@ -118,6 +113,25 @@ public class MainActivity extends AppCompatActivity {
         soundSeekBar = (SeekBar) findViewById(R.id.audioBar);
         currentTime = (TextView) findViewById(R.id.current_time);
         completeTime = (TextView)findViewById(R.id.complete_time);
+
+        // update UI thread through sound thread
+        soundUpdateUIHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what == 1){
+                    long totalDuration = soundPlayer.getDuration();
+                    long currentDuration = soundPlayer.getCurrentPosition();
+                    soundSeekBar.setMax((int)totalDuration);
+                    soundSeekBar.setProgress((int)currentDuration);
+                    // Displaying Total Duration time
+                    completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
+                    // Displaying time completed playing
+                    currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
+                }
+                super.handleMessage(msg);
+            }
+        };
+
         //soundPlayer = MediaPlayer.create(this.getBaseContext(),R.raw.test);
         utils = new TimeUtilities();
         setupListeners();
@@ -156,21 +170,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    public void onPause() {
-
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-
-
-
-        super.onDestroy();
-    }
-
     class ButtonListener implements View.OnClickListener {
 
         public ButtonListener() {}
@@ -179,8 +178,12 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             switch (v.getId()) {
+                /**
+                 *  Company Information Button
+                 */
                 case R.id.btn_info_main:
-                    disableSoundFont();
+                    setSoundNormalIfActive();
+                    setFontNormalIfActive();
 
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
@@ -225,21 +228,33 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                     break;
+                /**
+                 * Diary Button
+                 */
                 case R.id.btn_diary_main:
+                    setSoundNormalIfActive();
+                    setFontNormalIfActive();
 
-                    disableSoundFont();
-                    setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         replaceFragment(diaryFragment);
                     }
                     break;
+                /**
+                 *  Map Button
+                 */
                 case R.id.btn_map_main:
-                    disableSoundFont();
+                    setSoundNormalIfActive();
+                    setFontNormalIfActive();
+
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         replaceFragment(mapFragment);
                     }
                     break;
+                /**
+                 *  Sound Button
+                 */
                 case R.id.btn_sound_main:
+                    setFontNormalIfActive();
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
 
@@ -260,14 +275,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
-                        mHandler.removeCallbacks(mUpdateTimeTask);
-                        soundThread.interrupt();
-                        soundPlayer.release();
-
-
+                        setSoundStop();
                     }
                     break;
+                /**
+                 *  Font Size Button
+                 */
                 case R.id.btn_font_main:
+                    setSoundNormalIfActive();
+
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         setFontActive();
 
@@ -308,15 +324,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void disableSoundFont() {
-        if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
-            setSoundNormal();
-        }
-
-        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
-            setFontNormal();
-        }
-    }
     private void setupListeners(){
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,32 +379,39 @@ public class MainActivity extends AppCompatActivity {
             mHandler.postDelayed(this, 100);
         }
     };
-    private void getAudioTime(){
+    private void getAudioTime() {
 
-
-        long totalDuration = soundPlayer.getDuration();
-        long currentDuration = soundPlayer.getCurrentPosition();
-        soundSeekBar.setMax((int)totalDuration);
-        soundSeekBar.setProgress((int)currentDuration);
-        // Displaying Total Duration time
-        completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
-        // Displaying time completed playing
-        currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
+        // send a message to update UI handler to update UI thread
+        Message msg = soundUpdateUIHandler.obtainMessage();
+        msg.what = 1;
+        soundUpdateUIHandler.sendMessage(msg);
+//        long totalDuration = soundPlayer.getDuration();
+//        long currentDuration = soundPlayer.getCurrentPosition();
+//        soundSeekBar.setMax((int)totalDuration);
+//        soundSeekBar.setProgress((int)currentDuration);
+//        // Displaying Total Duration time
+//        completeTime.setText("/ "+utils.milliSecondsToTimer(totalDuration));
+//        // Displaying time completed playing
+//        currentTime.setText(""+utils.milliSecondsToTimer(currentDuration));
     }
-    private void audioPlay(){
 
+    private void audioPlay() {
         soundPlayer.start();
         updateProgressBar();
         startButton.setVisibility(View.GONE);
         pauseButton.setVisibility(View.VISIBLE);
-
     }
-    private void audioPause(){
 
-
+    private void audioPause() {
         soundPlayer.pause();
         pauseButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
+    }
+
+    private void setSoundStop() {
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        soundThread.interrupt();
+        soundPlayer.release();
     }
 
     private void initFragment() {
@@ -418,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
             diaryFragment = DiaryFragment.newInstance();
         }
 
+        // add first fragment and commit
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.add(R.id.flayout_fragment_continer, mapFragment);
@@ -460,15 +475,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return;
             }
-            if(soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)){
-                setSoundNormal();
-                mHandler.removeCallbacks(mUpdateTimeTask);
-                soundThread.interrupt();
-                soundPlayer.release();
 
 
-
-            }
+            setFontNormalIfActive();
+            setSoundNormalIfActive();
         }
 
         /**
@@ -629,8 +639,6 @@ public class MainActivity extends AppCompatActivity {
     public void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
         soundRL.setVisibility(View.VISIBLE);
-
-
     }
 
     public void setSoundNormal() {
@@ -656,6 +664,19 @@ public class MainActivity extends AppCompatActivity {
     public void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
         fontSizeRL.setVisibility(View.GONE);
+    }
+
+    public void setSoundNormalIfActive() {
+        if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
+            setSoundNormal();
+            setSoundStop();
+        }
+    }
+
+    public void setFontNormalIfActive() {
+        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
+            setFontNormal();
+        }
     }
 
     public boolean isEnglish() {

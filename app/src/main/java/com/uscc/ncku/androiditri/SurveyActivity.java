@@ -308,7 +308,7 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn11 = (Button) findViewById(R.id.survey_page4_other);
 
         // smaller font size with English
-        if (getResources().getString(R.string.survey04_occupation).equals("Current occupation")) {
+        if (isEnglish) {
             btn8.setTextSize(12);
             btn7.setTextSize(12);
         }
@@ -680,7 +680,7 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn4 = (Button) findViewById(R.id.survey_page8_other);
 
         // smaller font size with English
-        if (getResources().getString(R.string.survey08_house).equals("Housing type of residence")) {
+        if (isEnglish) {
             btn2.setTextSize(16);
         }
 
@@ -893,8 +893,7 @@ public class SurveyActivity extends AppCompatActivity {
         Button btn5 = (Button) findViewById(R.id.survey_page11_other);
 
         // smaller font size with English
-        if (getResources().getString(R.string.survey11_notice).equals(
-                "How did you come to know about this exhibition center's guide service")) {
+        if (isEnglish) {
             btn3.setTextSize(16);
         }
 
