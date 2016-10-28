@@ -108,8 +108,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("mode_id", mode_id);
         values.put("company_id", company_id);
         values.put("read_count", read_count);
-        db.insert("device", null, values);
-        return true;
+
+        long rowId = db.insertWithOnConflict("device", null, values, 4);
+        if (rowId != -1) {
+            Log.i("device", "insert device_id=" + device_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getDevice(int device_id) {
@@ -160,8 +166,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name", name);
         values.put("introduction", introduction);
         values.put("active", active);
-        db.insert("project", null, values);
-        return true;
+//        db.insert("project", null, values);
+        long rowId = db.insertWithOnConflict("project", null, values, 4);
+        if (rowId != -1) {
+            Log.i("project", "insert project_id=" + project_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getProject(int project_id) {
@@ -194,8 +206,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("y", y);
         values.put("field_id", field_id);
         values.put("field_name", field_name);
-        db.insert("beacon", null, values);
-        return true;
+        long rowId = db.insertWithOnConflict("beacon", null, values, 4);
+        if (rowId != -1) {
+            Log.i("beacon", "insert beacon_id=" + beacon_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
+//        db.insert("beacon", null, values);
+//        return true;
     }
 
     public Cursor getBeacon(int beacon_id) {
@@ -312,8 +331,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("addr", addr);
         values.put("web", web);
         values.put("qrcode", qrcode);
-        db.insert("company", null, values);
-        return true;
+        long rowId = db.insertWithOnConflict("company", null, values, 4);
+        if (rowId != -1) {
+            Log.i("company", "insert company_id=" + company_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
+//        db.insert("company", null, values);
+//        return true;
     }
 
     public Cursor getCompany(int company_id) {
@@ -366,8 +392,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("map_svg", map_svg);
-        db.insert("field_map", null, values);
-        return true;
+        long rowId = db.insertWithOnConflict("field_map", null, values, 4);
+        if (rowId != -1) {
+            Log.i("field_map", "insert field_map_id=" + field_map_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
+//        db.insert("field_map", null, values);
+//        return true;
     }
 
     public Cursor getFieldMap(int field_map_id) {
@@ -425,8 +458,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("hipster_template_id", hipster_template_id);
         values.put("hipster_text_id", hipster_text_id);
         values.put("zone_id", zone_id);
-        db.insert("hipster_content", null, values);
-        return true;
+        long rowId = db.insertWithOnConflict("hipster_content", null, values, 4);
+        if (rowId != -1) {
+            Log.i("hipster_content", "insert hipster_content_id=" + hipster_content_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
+//        db.insert("hipster_content", null, values);
+//        return true;
     }
 
     public Cursor getHipsterContent(int hipster_content_id) {
@@ -444,8 +484,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("hipster_template_id", hipster_template_id);
         values.put("name", name);
         values.put("template", template);
-        db.insert("hipster_template", null, values);
-        return true;
+//        db.insert("hipster_template", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("hipster_template", null, values, 4);
+        if (rowId != -1) {
+            Log.i("hipster_template", "insert hipster_template_id=" + hipster_template_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getHipsterTemplate(int hipster_template_id) {
@@ -484,8 +531,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("hipster_text_id", hipster_text_id);
         values.put("content", content);
-        db.insert("hipster_text", null, values);
-        return true;
+//        db.insert("hipster_text", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("hipster_text", null, values, 4);
+        if (rowId != -1) {
+            Log.i("hipster_text", "insert hipster_text_id=" + hipster_text_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getHipsterText(int hipster_text_id) {
@@ -533,8 +587,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // lease_date & return_date have to be in correct datetime format
         values.put("lease_date", lease_date);
         values.put("return_date", return_date);
-        db.insert("lease", null, values);
-        return true;
+//        db.insert("lease", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("lease", null, values, 4);
+        if (rowId != -1) {
+            Log.i("lease", "insert id=" + id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getLease(int id) {
@@ -573,8 +634,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("read_count", read_count);
         values.put("time_total", time_total);
         values.put("zone_id", zone_id);
-        db.insert("mode", null, values);
-        return true;
+//        db.insert("mode", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("mode", null, values, 4);
+        if (rowId != -1) {
+            Log.i("mode", "insert mode_id=" + mode_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getMode(int mode_id) {
@@ -649,8 +717,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("family_type", family_type);
         values.put("family_member", family_member);
         values.put("know_way", know_way);
-        db.insert("survey", null, values);
-        return true;
+//        db.insert("survey", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("survey", null, values, 4);
+        if (rowId != -1) {
+            Log.i("survey", "insert survey_id=" + survey_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getSurvey(int survey_id) {
@@ -671,8 +746,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("question", question);
         values.put("answer", answer);
         values.put("total", total);
-        db.insert("survey_result", null, values);
-        return true;
+//        db.insert("survey_result", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("survey_result", null, values, 4);
+        if (rowId != -1) {
+            Log.i("survey_result", "insert id=" + id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getSurveyResult(int id) {
@@ -703,8 +785,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("field_id", field_id);
-        db.insert("zone", null, values);
-        return true;
+//        db.insert("zone", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("zone", null, values, 4);
+        if (rowId != -1) {
+            Log.i("zone", "insert zone_id=" + zone_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Cursor getZone(int zone_id) {
@@ -761,8 +850,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("Sn", sn);
         values.put("End", end);
         values.put("En", en);
-        db.insert("path", null, values);
-        return true;
+//        db.insert("path", null, values);
+//        return true;
+        long rowId = db.insertWithOnConflict("path", null, values, 4);
+        if (rowId != -1) {
+            Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
