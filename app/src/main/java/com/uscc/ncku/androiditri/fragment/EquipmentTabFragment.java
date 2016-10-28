@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +61,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private static String VIDEO_ID = "tYA6TSTBjQ0";
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
+    private int mLastViewPage = 0;
     private ArrayList<EquipmentTabInformation> equipTabs;
     private SeekBar seekBar;
     public MediaPlayer mediaPlayer;
@@ -140,12 +143,22 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
             public void onPageSelected(int position) {
+                // normal sound and font size button
                 ((MainActivity) getActivity()).setSoundNormalIfActive();
                 ((MainActivity) getActivity()).setFontNormalIfActive();
+
+                // normal information button and hide previous company information
+                ((MainActivity) getActivity()).setInfoNormalIfActive();
+                View currView = equipTabs.get(mLastViewPage).getView();
+                ScrollView infoLayout = (ScrollView) currView.findViewById(R.id.scrollview_equipment_info);
+                infoLayout.setVisibility(View.GONE);
+
+                mLastViewPage = position;
             }
 
             @Override
@@ -258,60 +271,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
 
-            // set equipment title
-            TextView title = (TextView) v.findViewById(R.id.equipment_title);
-            title.setText(equipTabs.get(position).getTitle());
+            setEquipmentTab(v, position);
 
-            // set vidoe and photo button
-            RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
-            radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
-            RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
-            RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
-            video.setChecked(true);
-
-            // set zoom button in photo button
-            ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
-            zoom.setOnClickListener(new ZoomButtonListener());
-
-            // if there is no photo button or no video button
-            if (!equipTabs.get(position).isVideo()) {
-                video.setVisibility(View.GONE);
-            } else if (!equipTabs.get(position).isPhoto()) {
-                photo.setVisibility(View.GONE);
-            }
-
-            // set equipment content text
-            String txtContentTag = TXTTAG + String.valueOf(position);
-            TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
-            // set text content tag for font size later
-            txtContent.setTag(txtContentTag);
-            txtContent.setText(equipTabs.get(position).getTextContent());
-            txtContent.setTextSize(equipTabs.get(position).getFontSize());
-            txtContent.setMovementMethod(new ScrollingMovementMethod());
-
-            // set youtube player
-            YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-            youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    if (!wasRestored) {
-                        player.cueVideo(VIDEO_ID);
-
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-                    // YouTube error
-                    String errorMessage = error.toString();
-                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                    Log.d("errorMessage:", errorMessage);
-                }
-            });
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+            setEquipmentInfo(v, position);
 
             container.addView(v);
 
@@ -428,8 +390,99 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setPlayList(audioList[i]);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
+            // add company information
+            tab.setCompanyTitleText("互動資訊牆");
+            tab.setCompanyTitleImage(R.drawable.rm_a1m1e1_infobg);
+            tab.setCompanyName("GG電");
+            tab.setCompanyWebsite("www.gglight.com");
+            tab.setCompanyPhone("12345678");
+            tab.setCompanyLocation("光頭路78號");
+            tab.setCompanyQRcode(R.drawable.rm_a1m1e1_qrcode);
+
             equipTabs.add(tab);
         }
+    }
+
+    private void setEquipmentTab(View v, int position) {
+        // set equipment title
+        TextView title = (TextView) v.findViewById(R.id.equipment_title);
+        title.setText(equipTabs.get(position).getTitle());
+
+        // set vidoe and photo button
+        RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
+        RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
+        RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
+        video.setChecked(true);
+
+        // set zoom button in photo button
+        ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
+        zoom.setOnClickListener(new ZoomButtonListener());
+
+        // if there is no photo button or no video button
+        if (!equipTabs.get(position).isVideo()) {
+            video.setVisibility(View.GONE);
+        } else if (!equipTabs.get(position).isPhoto()) {
+            photo.setVisibility(View.GONE);
+        }
+
+        // set equipment content text
+        String txtContentTag = TXTTAG + String.valueOf(position);
+        TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+        // set text content tag for font size later
+        txtContent.setTag(txtContentTag);
+        txtContent.setText(equipTabs.get(position).getTextContent());
+        txtContent.setTextSize(equipTabs.get(position).getFontSize());
+        txtContent.setMovementMethod(new ScrollingMovementMethod());
+
+        // set youtube player
+        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+        youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                if (!wasRestored) {
+                    player.cueVideo(VIDEO_ID);
+
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+                // YouTube error
+                String errorMessage = error.toString();
+                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                Log.d("errorMessage:", errorMessage);
+            }
+        });
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+    }
+
+    private void setEquipmentInfo(View v, int position) {
+        EquipmentTabInformation currTab = equipTabs.get(position);
+
+        ImageView bg = (ImageView) v.findViewById(R.id.equipment_info_title_image);
+        bg.setBackgroundResource(currTab.getCompanyTitleImage());
+
+        TextView title = (TextView) v.findViewById(R.id.equipment_info_title);
+        title.setText(currTab.getCompanyTitleText());
+
+        TextView compName = (TextView) v.findViewById(R.id.equipment_info_company_name);
+        compName.setText(currTab.getCompanyName());
+
+        TextView compWeb = (TextView) v.findViewById(R.id.equipment_info_company_site);
+        compWeb.setText(currTab.getCompanyWebsite());
+
+        TextView compPhone = (TextView) v.findViewById(R.id.equipment_info_company_phone);
+        compPhone.setText(currTab.getCompanyPhone());
+
+        TextView compLocation = (TextView) v.findViewById(R.id.equipment_info_company_location);
+        compLocation.setText(currTab.getCompanyLocation());
+
+        ImageView compQRcode = (ImageView) v.findViewById(R.id.equipment_info_company_qrcode);
+        compQRcode.setImageResource(currTab.getCompanyQRcode());
     }
 
     public View getCurrentTabView() {
