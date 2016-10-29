@@ -745,7 +745,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical, like_count, read_count, time_total, did_read from mode where zone_id=" + zone_id, null);
         cursor.moveToFirst();
-        String device_id;
+        String mode_id;
         String guide_voice;
         String video;
         String splash_bg_vertical;
@@ -757,7 +757,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int did_read = 0;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            mode_id = cursor.getString(cursor.getColumnIndex("mode_id"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
@@ -768,7 +768,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
             did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
             // add to JSONObject
-            file.put("device_id", device_id);
+            file.put("mode_id", mode_id);
             file.put("guide_voice", guide_voice);
             file.put("video", video);
             file.put("splash_bg_vertical", splash_bg_vertical);
@@ -839,6 +839,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // get counts and return
         return count_devices;
     }
+
+//    public boolean updateModeDidRead() {
+//
+//    }
 
     // **************  survey ************
     // survey table query and insert
