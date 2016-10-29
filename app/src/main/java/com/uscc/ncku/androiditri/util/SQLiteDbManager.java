@@ -840,9 +840,20 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return count_devices;
     }
 
-//    public boolean updateModeDidRead() {
-//
-//    }
+    // update mode table with mode_ids
+    public boolean updateModeDidRead(int[] modeIdArray) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        for (int i = 0; i < modeIdArray.length; i++) {
+            values.put("did_read", 1);
+            long correctUpdateId = db.update("mode", values, "mode_id=" + modeIdArray[i], null);
+            if (correctUpdateId != -1) {} else {
+                Log.e("更新已讀失敗", "mode_id=" + modeIdArray[i]);
+                return false;
+            }
+        }
+        return true;
+    }
 
     // **************  survey ************
     // survey table query and insert
