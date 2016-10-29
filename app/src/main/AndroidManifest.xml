@@ -68,7 +68,6 @@
             android:theme="@style/AppTheme.NoActionBar.NoFull"
 
             />
-        <activity android:name=".ConnectActivity" />
 
         <service
             android:name=".FeedbackIntentService"

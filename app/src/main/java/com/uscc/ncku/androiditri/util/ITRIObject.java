@@ -34,7 +34,6 @@ public class ITRIObject {
 
     // activity
     public static String aboutActivity = "AboutActivity";
-    public static String connectActivity = "ConnectActivity";
     public static String counterActvity = "CounterActivity";
     public static String feedbackIntentService = "FeedbackIntentService";
     public static String homeActivity = "HomeActivity";

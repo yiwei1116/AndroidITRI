@@ -2,6 +2,7 @@ package com.uscc.ncku.androiditri.fragment;
 
 
 import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,11 @@ import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedList;
 
@@ -39,6 +45,8 @@ public class AreaFragment extends Fragment {
     private int tourIndex;
     private int currentZone;
     private View view;
+
+    private SQLiteDbManager dbManager;
 
 
     public AreaFragment() {
@@ -69,6 +77,19 @@ public class AreaFragment extends Fragment {
         }
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
+
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+        JSONArray array = new JSONArray();
+        try {
+            array = dbManager.queryModeDataWithZoneId(currentZone);
+
+            JSONObject obj = (JSONObject) array.get(0);
+            int id = obj.optInt("mode_id");
+            String name = obj.optString("name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
