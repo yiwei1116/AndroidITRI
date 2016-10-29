@@ -1,8 +1,6 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,9 +16,13 @@ import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 /**
@@ -30,25 +32,23 @@ import java.util.LinkedList;
  */
 public class ModeSelectFragment extends Fragment {
     private static final String TAG = "MODE_SELECT_DEBUG";
-    private static final String MODE_NUMBER = "modeNumber";
+    private static final String MODE_NUMBER = "MODE_NUMBER";
+    private static final String CURRENT_ZONE = "CURRENT_ZONE";
     private static final int[] RM_GRID_BG = {
         R.drawable.rm_grid1_a1m1,
         R.drawable.rm_grid1_a1m2,
         R.drawable.rm_grid1_a1m3,
         R.drawable.rm_grid1_a1m4
     };
-    private static final String[] RM_GRID_TITLE = {
-            "迎賓模式",
-            "浮空投影模式",
-            "大氣環境監測模式",
-            "植生牆自動澆灌系統"
-    };
 
     private int modeNumber;
+    private int currentZone;
+    private JSONArray modesArray;
 
     private View view;
     private ArrayList<Item> modeItem;
 
+    private SQLiteDbManager dbManager;
 
     public ModeSelectFragment() {
     }
@@ -60,10 +60,11 @@ public class ModeSelectFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ModeSelectFragment.
      */
-    public static ModeSelectFragment newInstance(int param1) {
+    public static ModeSelectFragment newInstance(int param1, int param2) {
         ModeSelectFragment fragment = new ModeSelectFragment();
         Bundle args = new Bundle();
         args.putInt(MODE_NUMBER, param1);
+        args.putInt(CURRENT_ZONE, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,12 +74,25 @@ public class ModeSelectFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             modeNumber = getArguments().getInt(MODE_NUMBER);
+            currentZone = getArguments().getInt(CURRENT_ZONE);
         }
 
         ((MainActivity) getActivity()).showModeCoachSwapUp();
 
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        try {
+            modesArray = dbManager.queryModeDataWithZoneId(currentZone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         modeItem = new ArrayList<Item>();
-        addModeItem();
+
+        try {
+            addModeItem();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -110,12 +124,15 @@ public class ModeSelectFragment extends Fragment {
         modeGrid.setAdapter(adapter);
     }
 
-    private void addModeItem() {
-        for (int i = 0; i < modeNumber; i++) {
+    private void addModeItem() throws JSONException {
+        boolean isEnglish = ((MainActivity) getActivity()).isEnglish();
+        JSONObject mode;
+        for (int i = 0; i < modesArray.length(); i++) {
+            mode = modesArray.getJSONObject(i);
             Item item = new Item();
-            item.imgID = RM_GRID_BG[i];
-            item.title = RM_GRID_TITLE[i];
-            item.isRead = false;
+            item.imgID = RM_GRID_BG[0];
+            item.title = isEnglish ? mode.getString("name_en") : mode.getString("name");
+            item.isRead = mode.getInt("did_read");
             modeItem.add(item);
         }
     }
@@ -123,7 +140,7 @@ public class ModeSelectFragment extends Fragment {
     class Item {
         int imgID;
         String title;
-        boolean isRead;
+        int isRead;
     }
 
     class Adapter extends BaseAdapter {
@@ -145,11 +162,21 @@ public class ModeSelectFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            modeItem.get(position).isRead = true;
-            this.notifyDataSetInvalidated();
+            try {
+                JSONObject selectMode = modesArray.getJSONObject(position);
+                int modeId = selectMode.getInt("mode_id");
 
-            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance("a", "b");
-            replaceFragment(modeHighlight);
+                // update is read to mode
+                dbManager.updateModeDidRead(modeId);
+
+                this.notifyDataSetInvalidated();
+
+                ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(modeId);
+                ((MainActivity) getActivity()).replaceFragment(modeHighlight);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             return position;
         }
 
@@ -167,7 +194,7 @@ public class ModeSelectFragment extends Fragment {
             gridTitle.setText(modeItem.get(position).title);
 
             TextView read = (TextView) convertView.findViewById(R.id.grid_item_read);
-            if (modeItem.get(position).isRead) {
+            if (modeItem.get(position).isRead == 1) {
                 read.setVisibility(View.VISIBLE);
             } else {
                 read.setVisibility(View.INVISIBLE);
@@ -175,31 +202,6 @@ public class ModeSelectFragment extends Fragment {
 
             return convertView;
         }
-    }
-
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
-
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
-        }
-
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
-
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
     }
 
 }

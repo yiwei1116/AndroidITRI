@@ -1,16 +1,12 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.provider.ContactsContract;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,8 +25,9 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
+import org.json.JSONArray;
+
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,14 +38,9 @@ public class ModeHighlightFragment extends Fragment {
     private static final String TAG = "DEGUB";
     private static final int HIGHLIGHT_FLIP_TIMES = 4;
     private static final int HIGHLIGHT_FLIP_DURATION = 300;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String MODE_ID = "MODE_ID";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int modeId;
 
     private View view;
 
@@ -59,15 +51,13 @@ public class ModeHighlightFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment ModeHighlightFragment.
      */
-    public static ModeHighlightFragment newInstance(String param1, String param2) {
+    public static ModeHighlightFragment newInstance(int param2) {
         ModeHighlightFragment fragment = new ModeHighlightFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(MODE_ID, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +66,7 @@ public class ModeHighlightFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            modeId = getArguments().getInt(MODE_ID);
         }
     }
 
@@ -138,7 +127,7 @@ public class ModeHighlightFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(4);
-                replaceFragment(equipTabFragment);
+                ((MainActivity) getActivity()).replaceFragment(equipTabFragment);
             }
         });
 
@@ -161,31 +150,6 @@ public class ModeHighlightFragment extends Fragment {
         params.leftMargin = (int) cor.get("leftMargin");
         params.topMargin = (int) cor.get("topMargin");
         equip.setLayoutParams(params);
-    }
-
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
-
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
-        }
-
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
-
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
     }
 
     class CalcPosition extends AsyncTask<Void, Void, HashMap> {

@@ -139,7 +139,7 @@ public class CustomPhoto extends Fragment {
     }
     public void nextStep(){
         ChooseTemplate CT = new ChooseTemplate();
-        replaceFragment(CT);
+        ((MainActivity) getActivity()).replaceFragment(CT);
 
     }
     @Override
@@ -158,31 +158,6 @@ public class CustomPhoto extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
-
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
-        }
-
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
-
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
     }
 
 }

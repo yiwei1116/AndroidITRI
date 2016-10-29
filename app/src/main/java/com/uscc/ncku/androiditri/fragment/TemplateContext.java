@@ -204,7 +204,7 @@ public class TemplateContext extends Fragment {
                 bundle1.putString("WriteContext", StringContext);
                 bundle1.putString("BuildContext", textBulid);
                 MTP.setArguments(bundle1);
-                replaceFragment(MTP);
+                ((MainActivity) getActivity()).replaceFragment(MTP);
             }
         });
         return view;
@@ -258,43 +258,17 @@ public class TemplateContext extends Fragment {
 
     }
 
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
+    public void getZone() {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
+            arrayList.add(cursor.getString(cursor.getColumnIndex("name_en")));
+
+
         }
 
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
+        cursor.close();
 
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
     }
-        public void getZone(){
-            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-
-                arrayList.add(cursor.getString(cursor.getColumnIndex("name_en")));
-
-
-
-
-            }
-
-            cursor.close();
-
-        }
 
  /*   @Override
     public void onClick(View v) {
