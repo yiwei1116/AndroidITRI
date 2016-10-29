@@ -74,6 +74,9 @@ public class ModeSelectFragment extends Fragment {
         if (getArguments() != null) {
             modeNumber = getArguments().getInt(MODE_NUMBER);
         }
+
+        ((MainActivity) getActivity()).showModeCoachSwapUp();
+
         modeItem = new ArrayList<Item>();
         addModeItem();
     }

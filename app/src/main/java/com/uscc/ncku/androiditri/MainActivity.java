@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private TimeUtilities utils;
 
     private boolean isCoachInfoFirst = true;
+    private boolean isCoachSwipUpFirst = true;
+    private boolean isCoachSlideLeftFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -747,6 +749,44 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    public void showModeCoachSwapUp() {
+        if (isCoachSwipUpFirst) {
+            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
+            dialog.setContentView(R.layout.alertdialog_coach_mode_swapup);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach_up);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            isCoachSwipUpFirst = false;
+        }
+    }
+
+    public void showEquipCoachSlide() {
+        if (isCoachSlideLeftFirst) {
+            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
+            dialog.setContentView(R.layout.alertdialog_coach_equip_slide);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach_left);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            isCoachSlideLeftFirst = false;
+        }
     }
 
 

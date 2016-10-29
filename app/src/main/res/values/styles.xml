@@ -92,4 +92,8 @@
         <item name="android:layout_marginLeft">0dp</item>
     </style>
 
+    <style name="dialog_coach_normal" parent="android:Theme.Black.NoTitleBar">
+
+    </style>
+
 </resources>

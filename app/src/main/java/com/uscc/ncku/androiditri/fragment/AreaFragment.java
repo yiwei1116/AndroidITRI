@@ -81,15 +81,15 @@ public class AreaFragment extends Fragment {
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         SQLiteDatabase db = dbManager.getReadableDatabase();
         JSONArray array = new JSONArray();
-        try {
-            array = dbManager.queryModeDataWithZoneId(currentZone);
-
-            JSONObject obj = (JSONObject) array.get(0);
-            int id = obj.optInt("mode_id");
-            String name = obj.optString("name");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            array = dbManager.queryModeDataWithZoneId(currentZone);
+//
+//            JSONObject obj = (JSONObject) array.get(0);
+//            int id = obj.optInt("mode_id");
+//            String name = obj.optString("name");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tour_select_coachmarks"/>
+
+    <TextView
+        android:id="@+id/txt_coach_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/coach_swip_leftright"
+        android:textColor="@android:color/white"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btn_coach_left"
+        android:layout_marginBottom="90dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_coach_left"
+        android:text="@string/understand"
+        android:textColor="@drawable/selecter_btn_black_white_txt_color"
+        android:textSize="@dimen/btn_font_size"
+        android:background="@drawable/selecter_btn_black_white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp" />
+
+</RelativeLayout>

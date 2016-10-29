@@ -113,6 +113,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
         });
 
+        ((MainActivity) getActivity()).showEquipCoachSlide();
+
         addTabs();
     }
 
@@ -332,7 +334,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         @Override
         public void onClick(View v) {
-            final Dialog dialog = new Dialog(getActivity(), R.style.AppTheme_NoActionBar);
+            final Dialog dialog = new Dialog(getActivity(), R.style.dialog_coach_normal);
             dialog.setContentView(R.layout.item_equipment_zoom_photo);
 
             final ImageView imageView = (ImageView) dialog.findViewById(R.id.zoom_photo_image);
