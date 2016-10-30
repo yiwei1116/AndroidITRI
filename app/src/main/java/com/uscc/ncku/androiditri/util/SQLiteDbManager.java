@@ -742,7 +742,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // get mode files with mode_id  振哥
-    public JSONArray queryModeFiles(int mode_id) throws JSONException {
+    public JSONObject queryModeFiles(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from mode where mode_id=" + mode_id, null);
@@ -791,7 +791,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("zone_id", zone_id);
         file.put("did_read", did_read);
         cursor.close();
-        return filePaths;
+        return file;
     }
 
     // for 振哥 return the "已讀" given with mode_id
