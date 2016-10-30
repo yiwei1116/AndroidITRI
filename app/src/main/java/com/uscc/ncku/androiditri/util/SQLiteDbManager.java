@@ -745,7 +745,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONArray queryModeFiles(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from mode", null);
+        Cursor cursor = db.rawQuery("select * from mode where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         String name;
         String name_en;
@@ -761,7 +761,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int zone_id = 0;
         int did_read = 0;
         // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
             JSONObject file = new JSONObject();
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
@@ -790,10 +789,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("read_count", read_count);
             file.put("time_total", time_total);
             file.put("zone_id", zone_id);
-            file.put("did_read", did_read);
-            filePaths.put(file);
-            cursor.moveToNext();
-        }
+        file.put("did_read", did_read);
         cursor.close();
         return filePaths;
     }
