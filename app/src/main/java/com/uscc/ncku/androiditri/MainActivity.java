@@ -30,6 +30,7 @@ import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
@@ -138,12 +139,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        //soundPlayer = MediaPlayer.create(this.getBaseContext(),R.raw.test);
         utils = new TimeUtilities();
         setupListeners();
 
-     /*soundThread = new Thread(this);
-        soundThread.start();*/
 
 
 
@@ -265,12 +263,11 @@ public class MainActivity extends AppCompatActivity {
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
 
                         setSoundActive();
-/*
                         ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        soundPlayer = iSoundInterface.getCurrentmedia();*/
+                        soundPlayer = iSoundInterface.getCurrentmedia();
 
-                        soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
+                       // soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
                         soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
@@ -416,8 +413,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSoundStop() {
         mHandler.removeCallbacks(mUpdateTimeTask);
+        audioPause();
         soundThread.interrupt();
-        soundPlayer.release();
+
     }
 
     private void initFragment() {
@@ -809,36 +807,5 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-   /* private void createLanguageTTS()
-    {
 
-        if( textToSpeech == null )
-        {
-            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
-                @Override
-                public void onInit(int status)
-                {
-
-                    if( status == TextToSpeech.SUCCESS ) {
-
-                        l = Locale.CHINESE;
-                        // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
-                        if( textToSpeech.isLanguageAvailable( l ) == TextToSpeech.LANG_COUNTRY_AVAILABLE )
-                        {
-                            textToSpeech.setLanguage( l );
-                        }
-                    }
-                    else{
-
-                        Toast.makeText(MainActivity.this,"語音導覽不支援此機型",Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-
-                }}
-            );
-        }
-    }
-*/
 }
