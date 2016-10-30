@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by Oslo on 10/6/16.
@@ -125,33 +124,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
-    // get device files
-    public JSONArray queryDeviceFiles() throws JSONException {
-        JSONObject file = new JSONObject();
+    // get device files without guide voice
+    public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, mode_id, company_id, read_count from device", null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, guide_voice, photo, photo_vertical, hint, company_id, read_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
-        String device_id;
+        int device_id;
         String name;
         String name_en;
         String introduction;
+        String guide_voice;
         String photo;
         String photo_vertical;
         String hint;
-        int mode_id;
         int company_id;
         int read_count;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            JSONObject file = new JSONObject();
+
+            device_id = cursor.getInt(cursor.getColumnIndex("device_id"));
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             hint = cursor.getString(cursor.getColumnIndex("hint"));
-            mode_id = cursor.getInt(cursor.getColumnIndex("zone"));
             company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
 
@@ -160,6 +160,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name", name);
             file.put("name_en", name_en);
             file.put("introduction", introduction);
+            file.put("guide_voice", guide_voice);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             file.put("hint", hint);
@@ -167,7 +168,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("company_id", company_id);
             file.put("read_count", read_count);
             filePaths.put(file);
-            file = new JSONObject();
             cursor.moveToNext();
         }
         cursor.close();
@@ -187,7 +187,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name", name);
         values.put("introduction", introduction);
         values.put("active", active);
-//        db.insert("project", null, values);
         long rowId = db.insertWithOnConflict("project", null, values, 4);
         if (rowId != -1) {
             Log.i("project", "insert project_id=" + project_id + " success.");
@@ -202,7 +201,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery("select * from project where project_id=" + project_id + "", null);
         return cursor;
     }
-
 
     // beacon table query and insert
     public boolean insertBeacon(int beacon_id,
@@ -234,8 +232,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-//        db.insert("beacon", null, values);
-//        return true;
     }
 
     public Cursor getBeacon(int beacon_id) {
@@ -292,7 +288,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
-    // return JSONObject for 佳穎
+    // return JSONObject for beacon
     public JSONObject queryBeaconFileWithMacAddr(String mac_addr) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -337,7 +333,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // int number = obj.optInt("column");
     }
 
-
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,
@@ -362,8 +357,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-//        db.insert("company", null, values);
-//        return true;
     }
 
     public Cursor getCompany(int company_id) {
@@ -518,8 +511,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-//        db.insert("hipster_content", null, values);
-//        return true;
     }
 
     public Cursor getHipsterContent(int hipster_content_id) {
@@ -537,8 +528,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("hipster_template_id", hipster_template_id);
         values.put("name", name);
         values.put("template", template);
-//        db.insert("hipster_template", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("hipster_template", null, values, 4);
         if (rowId != -1) {
             Log.i("hipster_template", "insert hipster_template_id=" + hipster_template_id + " success.");
@@ -585,8 +574,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("hipster_text_id", hipster_text_id);
         values.put("content", content);
-//        db.insert("hipster_text", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("hipster_text", null, values, 4);
         if (rowId != -1) {
             Log.i("hipster_text", "insert hipster_text_id=" + hipster_text_id + " success.");
@@ -642,8 +629,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // lease_date & return_date have to be in correct datetime format
         values.put("lease_date", lease_date);
         values.put("return_date", return_date);
-//        db.insert("lease", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("lease", null, values, 4);
         if (rowId != -1) {
             Log.i("lease", "insert id=" + id + " success.");
@@ -692,8 +677,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("zone_id", zone_id);
         // 0 or 1
         values.put("did_read", did_read);
-//        db.insert("mode", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("mode", null, values, 4);
         if (rowId != -1) {
             Log.i("mode", "insert mode_id=" + mode_id + " success.");
@@ -709,14 +692,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
-    // get mode files
-    public JSONArray queryModeFiles() throws JSONException {
-        JSONObject file = new JSONObject();
+    // get mode files with mode_id  振哥
+    public JSONArray queryModeFiles(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical, like_count, read_count, time_total, zone_id, did_read from mode", null);
+        Cursor cursor = db.rawQuery("select * from mode", null);
         cursor.moveToFirst();
-        String device_id;
+        String name;
+        String name_en;
+        String introduction;
         String guide_voice;
         String video;
         String splash_bg_vertical;
@@ -729,7 +713,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int did_read = 0;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            JSONObject file = new JSONObject();
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
@@ -741,7 +728,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             zone_id = cursor.getInt(cursor.getColumnIndex("zone_id"));
             did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
             // add to JSONObject
-            file.put("device_id", device_id);
+            file.put("mode_id", mode_id);
+            file.put("name", name);
+            file.put("name_en", name_en);
+            file.put("introduction", introduction);
             file.put("guide_voice", guide_voice);
             file.put("video", video);
             file.put("splash_bg_vertical", splash_bg_vertical);
@@ -753,14 +743,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("zone_id", zone_id);
             file.put("did_read", did_read);
             filePaths.put(file);
-            file = new JSONObject();
             cursor.moveToNext();
         }
         cursor.close();
         return filePaths;
     }
-
-    //////// *************** 振哥 ****************
 
     // for 振哥 return the "已讀" given with mode_id
     public int getModeDidRead(int mode_id) {
@@ -897,7 +884,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return count_devices;
     }
 
-    // update mode table with mode_ids
+    // update mode table with mode_id
     public boolean updateModeDidRead(int modeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -943,8 +930,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("family_type", family_type);
         values.put("family_member", family_member);
         values.put("know_way", know_way);
-//        db.insert("survey", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("survey", null, values, 4);
         if (rowId != -1) {
             Log.i("survey", "insert survey_id=" + survey_id + " success.");
@@ -972,8 +957,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("question", question);
         values.put("answer", answer);
         values.put("total", total);
-//        db.insert("survey_result", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("survey_result", null, values, 4);
         if (rowId != -1) {
             Log.i("survey_result", "insert id=" + id + " success.");
@@ -1011,8 +994,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("field_id", field_id);
-//        db.insert("zone", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("zone", null, values, 4);
         if (rowId != -1) {
             Log.i("zone", "insert zone_id=" + zone_id + " success.");
@@ -1049,38 +1030,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return file;
     }
 
-
-    // get zone files
-    public JSONArray queryZoneFiles() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select zone_id, guide_voice, photo, photo_vertical from zone", null);
-        cursor.moveToFirst();
-        String device_id;
-        String guide_voice;
-        String photo;
-        String photo_vertical;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
-            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
-            photo = cursor.getString(cursor.getColumnIndex("photo"));
-            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-            // add to JSONObject
-            file.put("device_id", device_id);
-            file.put("guide_voice", guide_voice);
-            file.put("photo", photo);
-            file.put("photo_vertical", photo_vertical);
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
-    }
-
-
     // path table query and insert
     public boolean insertPath(int choose_path_id,
                               int path_order,
@@ -1098,8 +1047,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("Sn", sn);
         values.put("End", end);
         values.put("En", en);
-//        db.insert("path", null, values);
-//        return true;
         long rowId = db.insertWithOnConflict("path", null, values, 4);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
@@ -1115,7 +1062,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery("select * from path where choose_path_id=" + path_id + "", null);
         return cursor;
     }
-
 
     // get zone files
     public JSONArray queryPaths() throws JSONException {
@@ -1157,7 +1103,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
 
-    ///////// TODO ( DONE ) : seperate getting img paths from video paths
     /*
         --> get those entries that would need to fetch data from server
      */
@@ -1211,9 +1156,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-//            Log.i("device guide", guide_voice);
-//            Log.i("device photo", photo);
-//            Log.i("device ph_ve", photo_vertical);
 
             if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
                 deviceFiles.add(guide_voice);
@@ -1432,6 +1374,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // ******************** counter part ********************
+
     // 每次經過一個device，揪呼叫此函數進行拜訪次數的+1
     public void addReadCount(int device_id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1464,9 +1407,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }
 
-
-    // ********************* 呼叫函數回傳需要的檔案 **************************
-    // TODO: 寫這些函數
-
+    // set all mode did_read to 0 --> 振哥 to test
+    public void setModeDidReadZero() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.rawQuery("UPDATE mode SET did_read=0", null);
+    }
 
 }
