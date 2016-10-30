@@ -124,6 +124,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
         ((MainActivity) getActivity()).setFontNormal();
         ((MainActivity) getActivity()).setSoundNormal();
+
         ((MainActivity) getActivity()).setInfoNormal();
 
         return view;
@@ -153,6 +154,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 // normal sound and font size button
                 ((MainActivity) getActivity()).setSoundNormalIfActive();
                 ((MainActivity) getActivity()).setFontNormalIfActive();
+                ((MainActivity) getActivity()).audioPause();
 
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
