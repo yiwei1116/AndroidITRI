@@ -213,7 +213,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     public void callCamera( ){
 
         CustomCameras CC = new CustomCameras();
-        replaceFragment(CC);
+        ((MainActivity) getActivity()).replaceFragment(CC);
       /*
        Intent cameraIntent = new Intent();
         // sent to have the camera application capture an image and return it.
@@ -281,32 +281,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PHOTO_RESULT);*/
         CustomPhoto CsP = new CustomPhoto();
-        replaceFragment(CsP);
-    }
-
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
-
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
-        }
-
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
-
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
+        ((MainActivity) getActivity()).replaceFragment(CsP);
     }
 
  /*   @Override

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by Oslo on 10/6/16.
@@ -166,9 +167,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("company_id", company_id);
             file.put("read_count", read_count);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -283,9 +285,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("field_id", field_id);
             file.put("field_name", field_name);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -325,6 +328,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("y", y);
         file.put("field_id", field_id);
         file.put("field_name", field_name);
+        cursor.close();
         return file;
 
         // P.S.
@@ -412,9 +416,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("company_id", company_id);
             file.put("qrcode", qrcode);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -482,9 +487,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("photo_vertical", photo_vertical);
             file.put("map_svg", map_svg);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -565,9 +571,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("hipster_template_id", hipster_template_id);
             file.put("template", template);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -612,9 +619,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("hipster_text_id", hipster_text_id);
             file.put("content", content);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -745,9 +753,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("zone_id", zone_id);
             file.put("did_read", did_read);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -770,9 +779,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select mode_id, guide_voice, video, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical, like_count, read_count, time_total, did_read from mode where zone_id=" + zone_id, null);
+        Cursor cursor = db.rawQuery("select * from mode where zone_id=" + zone_id, null);
         cursor.moveToFirst();
-        String mode_id;
+        int mode_id;
+        String name;
+        String name_en;
+        String introduction;
         String guide_voice;
         String video;
         String splash_bg_vertical;
@@ -784,7 +796,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int did_read = 0;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            mode_id = cursor.getString(cursor.getColumnIndex("mode_id"));
+            mode_id = cursor.getInt(cursor.getColumnIndex("mode_id"));
+            name = cursor.getString(cursor.getColumnIndex("name"));
+            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
@@ -796,6 +811,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
             // add to JSONObject
             file.put("mode_id", mode_id);
+            file.put("name", name);
+            file.put("name_en", name_en);
+            file.put("introduction", introduction);
             file.put("guide_voice", guide_voice);
             file.put("video", video);
             file.put("splash_bg_vertical", splash_bg_vertical);
@@ -806,9 +824,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("time_total", time_total);
             file.put("did_read", did_read);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -850,10 +869,21 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("company_id", company_id);
             file.put("read_count", read_count);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
+    }
+
+    public int getNumbersOfModeFromZone(int zone_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from mode where zone_id=" + zone_id, null);
+        cursor.moveToFirst();
+
+        int count_mode = cursor.getCount();
+        cursor.close();
+        return count_mode;
     }
 
     public int getNumbersOfDevicesFromMode(int mode_id) {
@@ -868,16 +898,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // update mode table with mode_ids
-    public boolean updateModeDidRead(int[] modeIdArray) {
+    public boolean updateModeDidRead(int modeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        for (int i = 0; i < modeIdArray.length; i++) {
-            values.put("did_read", 1);
-            long correctUpdateId = db.update("mode", values, "mode_id=" + modeIdArray[i], null);
-            if (correctUpdateId != -1) {} else {
-                Log.e("更新已讀失敗", "mode_id=" + modeIdArray[i]);
-                return false;
-            }
+        values.put("did_read", 1);
+        long correctUpdateId = db.update("mode", values, "mode_id=" +modeId, null);
+        if (correctUpdateId != -1) {} else {
+            Log.e("更新已讀失敗", "mode_id=" + modeId);
+            return false;
         }
         return true;
     }
@@ -994,10 +1022,31 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getZone(int zone_id) {
+    public JSONObject queryZone(int zone_id) throws JSONException {
+        JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from zone where zone_id=" + zone_id + "", null);
-        return cursor;
+        cursor .moveToFirst();
+        String name = cursor.getString(cursor.getColumnIndex("name"));
+        String name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+        String introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+        String guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+        String hint = cursor.getString(cursor.getColumnIndex("hint"));
+        String photo = cursor.getString(cursor.getColumnIndex("photo"));
+        String photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+        int field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
+
+        file.put("name", name);
+        file.put("name_en", name_en);
+        file.put("introduction", introduction);
+        file.put("guide_voice", guide_voice);
+        file.put("hint", hint);
+        file.put("photo", photo);
+        file.put("photo_vertical", photo_vertical);
+        file.put("field_id", field_id);
+
+        cursor.close();
+        return file;
     }
 
 
@@ -1024,9 +1073,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -1099,9 +1149,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("End", End);
             file.put("En", En);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -1142,6 +1193,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             }
             cursor.moveToNext();
         }
+        cursor.close();
         return companyFiles;
     }
 
@@ -1173,6 +1225,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             deviceFiles.add(photo);
             cursor.moveToNext();
         }
+        cursor.close();
         return deviceFiles;
     }
 
@@ -1203,6 +1256,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             fieldMapFiles.add(photo);
             cursor.moveToNext();
         }
+        cursor.close();
         return fieldMapFiles;
     }
 
@@ -1220,6 +1274,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             templateFiles.add(template);
             cursor.moveToNext();
         }
+        cursor.close();
         return templateFiles;
     }
 
@@ -1256,6 +1311,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             // add to List
             cursor.moveToNext();
         }
+        cursor.close();
         return modeFiles;
     }
 
@@ -1284,6 +1340,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
             cursor.moveToNext();
         }
+        cursor.close();
         return zoneFiles;
     }
 
@@ -1305,6 +1362,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             }
             cursor.moveToNext();
         }
+        cursor.close();
         return videoFiles;
     }
 
@@ -1334,9 +1392,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name_en", name_en);
 
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -1365,9 +1424,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             filePaths.put(file);
-            file = null;
+            file = new JSONObject();
             cursor.moveToNext();
         }
+        cursor.close();
         return filePaths;
     }
 
@@ -1383,6 +1443,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("read_count",read_count);
+        cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }
@@ -1398,6 +1459,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("like_count",like_count);
+        cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }

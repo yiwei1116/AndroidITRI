@@ -1,11 +1,10 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.app.FragmentTransaction;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +20,8 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.LinkedList;
 
 
 /**
@@ -47,6 +43,16 @@ public class AreaFragment extends Fragment {
     private View view;
 
     private SQLiteDbManager dbManager;
+
+    private String title;
+    private String title_en;
+    private String photoBg;
+    private String photoBg_vertical;
+    private String introduction;
+    private String hint;
+    private String guide_voice;
+
+    private boolean isEnglish;
 
 
     public AreaFragment() {
@@ -74,22 +80,28 @@ public class AreaFragment extends Fragment {
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
             currentZone = getArguments().getInt(ZONE);
+            if (currentZone == 0)
+                currentZone = 1;
         }
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        SQLiteDatabase db = dbManager.getReadableDatabase();
-        JSONArray array = new JSONArray();
         try {
-            array = dbManager.queryModeDataWithZoneId(currentZone);
+            JSONObject area = dbManager.queryZone(currentZone);
 
-            JSONObject obj = (JSONObject) array.get(0);
-            int id = obj.optInt("mode_id");
-            String name = obj.optString("name");
+            title = area.getString("name");
+            title_en = area.getString("name_en");
+            photoBg = area.getString("photo");
+            photoBg_vertical = area.getString("photo_vertical");
+            introduction = area.getString("introduction");
+            hint = area.getString("hint");
+            guide_voice = area.getString("guide_voice");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        isEnglish = ((MainActivity) getActivity()).isEnglish();
     }
 
     @Override
@@ -116,13 +128,17 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onStart");
 
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
+        areaTitle.setText(isEnglish ? title_en : title);
 
         TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
+        areaContent.setText(introduction);
+        areaContent.setMovementMethod(new ScrollingMovementMethod());
 
         ImageView tourGuide = (ImageView) view.findViewById(R.id.tour_guide_area);
         tourGuide.setBackgroundResource(TOUR_GUIDE[tourIndex]);
 
         TextView tourSpeech = (TextView) view.findViewById(R.id.tour_speech_area);
+        tourSpeech.setText(hint);
 
         RelativeLayout tour = (RelativeLayout) view.findViewById(R.id.rlayout_tour_speech);
 
@@ -133,36 +149,12 @@ public class AreaFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(4);
-                replaceFragment(modeSelectFragment);
+                int modeNumber = dbManager.getNumbersOfModeFromZone(currentZone);
+                ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone);
+                ((MainActivity) getActivity()).replaceFragment(modeSelectFragment);
             }
         });
 
-    }
-
-    private void replaceFragment (Fragment fragment) {
-        String fragmentTag = fragment.getClass().getSimpleName();
-        LinkedList<Fragment> fragmentBackStack = ((MainActivity) getActivity()).getFragmentBackStack();
-
-        // find fragment in back stack
-        int i = 0;
-        while (i < fragmentBackStack.size()) {
-            Fragment f = fragmentBackStack.get(i);
-            if (f.getClass().getSimpleName().equals(fragmentTag)) {
-                fragmentBackStack.remove(i);
-                break;
-            }
-            i++;
-        }
-
-        // add current fragment to back stack
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-        fragmentBackStack.addFirst(currentFragment);
-
-        // replace fragment with input fragment
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.flayout_fragment_continer, fragment, fragmentTag);
-        ft.commit();
     }
 
     @Override

@@ -20,28 +20,21 @@
         android:id="@+id/title_area_fragment"
         android:layout_below="@+id/page_area_fragment"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/big_title_font_size"
-        android:layout_marginTop="15dp" />
+        android:textSize="@dimen/big_title_font_size" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/content_area_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollview_cotent_area"
         android:layout_below="@+id/title_area_fragment"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:paddingLeft="@dimen/content_padding_rl"
         android:paddingRight="@dimen/content_padding_rl"
-        android:layout_marginTop="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/content_area_fragment"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/title_font_size" />
-
-    </ScrollView>
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -49,18 +42,22 @@
         android:id="@+id/rlayout_tour_speech"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="-20dp"
-        android:scaleX="0.75"
-        android:scaleY="0.75"
-        android:layout_marginBottom="-41dp">
+        android:scaleX="0.68"
+        android:scaleY="0.68"
+        android:layout_marginBottom="-52dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/tour_speech_area"
+            android:maxLines="3"
             android:background="@drawable/speech_bubble"
             android:layout_toRightOf="@+id/tour_guide_area"
-            android:layout_marginLeft="-50dp"
-            android:layout_marginBottom="-30dp" />
+            android:layout_marginLeft="-60dp"
+            android:layout_marginBottom="-30dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:padding="8dp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -82,7 +79,5 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/btn_font_size"
         android:layout_centerHorizontal="true" />
-
-
 
 </RelativeLayout>

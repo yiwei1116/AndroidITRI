@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.MainButton;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import com.uscc.ncku.androiditri.util.TimeUtilities;
 
 import java.util.LinkedList;
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private TimeUtilities utils;
 
     private boolean isCoachInfoFirst = true;
+    private boolean isCoachSwipUpFirst = true;
+    private boolean isCoachSlideLeftFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -521,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void replaceFragment (Fragment fragment){
+    public void replaceFragment(Fragment fragment){
         String fragmentTag = fragment.getClass().getSimpleName();
 
         // find fragment in back stack
@@ -529,6 +533,12 @@ public class MainActivity extends AppCompatActivity {
         while (i < fragmentBackStack.size()) {
             Fragment f = fragmentBackStack.get(i);
             if (f.getClass().getSimpleName().equals(fragmentTag)) {
+                // release fragment resource and remove from back stack
+                // if the fragment is map or diary than not to destroy
+                if (!(f instanceof MapFragment) && !(f instanceof DiaryFragment)) {
+                    f.onDetach();
+                }
+
                 fragmentBackStack.remove(i);
                 break;
             }
@@ -747,6 +757,50 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    public void showModeCoachSwapUp() {
+        if (isCoachSwipUpFirst) {
+            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
+            dialog.setContentView(R.layout.alertdialog_coach_mode_swapup);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach_up);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            // set all mode did_read false at the first time
+            SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
+            SQLiteDatabase db = dbManager.getReadableDatabase();
+            String sql = "UPDATE mode SET did_read=0";
+            db.execSQL(sql);
+
+            isCoachSwipUpFirst = false;
+        }
+    }
+
+    public void showEquipCoachSlide() {
+        if (isCoachSlideLeftFirst) {
+            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
+            dialog.setContentView(R.layout.alertdialog_coach_equip_slide);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach_left);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            isCoachSlideLeftFirst = false;
+        }
     }
 
 

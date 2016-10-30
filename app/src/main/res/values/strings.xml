@@ -222,5 +222,7 @@
     <string name="coach_info">按下信息圖標\n即可查看地圖標示</string>
     <string name="coach_question">按下問卷圖標\n即可填寫問卷</string>
     <string name="understand">了解</string>
+    <string name="coach_swapup">向上滑動即可\n看到更多模式</string>
+    <string name="coach_swip_leftright">向左或向右滑動即可\n變更設備資訊</string>
 
 </resources>
