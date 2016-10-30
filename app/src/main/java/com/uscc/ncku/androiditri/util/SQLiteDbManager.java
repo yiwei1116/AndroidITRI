@@ -174,6 +174,55 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
+    // 振哥
+    public JSONObject queryDeviceAndCompanyData(int device_id) throws JSONException {
+        JSONObject file = new JSONObject();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select name, name_en, introduction, guide_voice, photo, photo_vertical, hint, mode_id, company_id, read_count from device where device_id=" + device_id, null);
+        cursor.moveToFirst();
+        String name;
+        String name_en;
+        String introduction;
+        String guide_voice;
+        String photo;
+        String photo_vertical;
+        String hint;
+        int mode_id;
+        int company_id;
+        int read_count;
+
+        // fetch all company_id & qrcode
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+        introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+        guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+        photo = cursor.getString(cursor.getColumnIndex("photo"));
+        photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+        hint = cursor.getString(cursor.getColumnIndex("hint"));
+        mode_id = cursor.getInt(cursor.getColumnIndex("mode_id"));
+        company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
+        read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+
+        // add to JSONObject
+        file.put("device_id", device_id);
+        file.put("name", name);
+        file.put("name_en", name_en);
+        file.put("introduction", introduction);
+        file.put("guide_voice", guide_voice);
+        file.put("photo", photo);
+        file.put("photo_vertical", photo_vertical);
+        file.put("hint", hint);
+        file.put("mode_id", mode_id);
+        file.put("company_id", company_id);
+        file.put("read_count", read_count);
+        file.put("company_data", getCompanyJSONObject(company_id));
+
+        cursor.moveToNext();
+        cursor.close();
+        return file;
+    }
+
+
     // project table query and insert
     public boolean insertProject(int project_id,
                                 String version,
