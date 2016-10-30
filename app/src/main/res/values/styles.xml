@@ -95,5 +95,8 @@
     <style name="dialog_coach_normal" parent="android:Theme.Black.NoTitleBar">
 
     </style>
+    <style name="dialog_store_success" parent="android:Theme.Black.NoTitleBar">
+
+    </style>
 
 </resources>

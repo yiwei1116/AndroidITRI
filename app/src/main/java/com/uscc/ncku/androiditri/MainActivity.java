@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setVisibility(View.VISIBLE);
     }
 
-    private void audioPause() {
+    public void audioPause() {
         soundPlayer.pause();
         pauseButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
@@ -413,7 +413,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setSoundStop() {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        audioPause();
         soundThread.interrupt();
 
     }
@@ -480,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-
+            soundPlayer.release();
             setFontNormalIfActive();
             setSoundNormalIfActive();
         }

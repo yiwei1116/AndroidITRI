@@ -1,11 +1,13 @@
 package com.uscc.ncku.androiditri.fragment;
 
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -223,8 +225,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                         info.activityInfo.name.toLowerCase().contains("com.google.android.gm")
                         )
                 {
-                    share.putExtra(Intent.EXTRA_SUBJECT,  "test");
-                    share.putExtra(Intent.EXTRA_TEXT,    "handsome");
+                    share.putExtra(Intent.EXTRA_SUBJECT,  "");
+                    share.putExtra(Intent.EXTRA_TEXT,    "");
                     share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mPath)) ); // Optional, just if you wanna share an image.
                     share.setPackage(info.activityInfo.packageName);
                     found = true;
@@ -244,19 +246,13 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         switch(v.getId()) {
             case R.id.ic_download:
                 takeScreenshot();
-                icDownload.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-                mask.setVisibility(View.VISIBLE);
-
-                Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
-
-                function.setVisibility(View.VISIBLE);
-                function.setAnimation(fadeIn);
+                showStoreLayout();
 
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
-                openScreenshot(imageFile);
+                //openScreenshot(imageFile);
+                showStoreSuccess();
                 break;
             case R.id.sendMail:
                 savetoPhone();
@@ -264,4 +260,23 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         }
 
     }
+    private void showStoreSuccess(){
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.dialog_store_success);
+        dialog.setContentView(R.layout.store_success);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+
+    }
+    private void showStoreLayout(){
+
+
+        icDownload.setVisibility(View.GONE);
+        textView.setVisibility(View.GONE);
+        mask.setVisibility(View.VISIBLE);
+        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
+        function.setVisibility(View.VISIBLE);
+        function.setAnimation(fadeIn);
+    }
+
 }
