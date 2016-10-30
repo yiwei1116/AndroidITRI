@@ -34,7 +34,7 @@
         android:paddingLeft="@dimen/content_padding_rl"
         android:paddingRight="@dimen/content_padding_rl"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="@dimen/edtxt_hint_font_size" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

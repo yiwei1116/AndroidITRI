@@ -39,7 +39,7 @@ public class TourSelectActivity extends AppCompatActivity {
         instance = this;
 
         Bundle bundle = this.getIntent().getExtras();
-        isEnglish = bundle.getBoolean(MainActivity.GET_TOUR_INDEX);
+        isEnglish = bundle.getBoolean(MainActivity.GET_IS_ENGLISH);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tour_select);
         setSupportActionBar(toolbar);

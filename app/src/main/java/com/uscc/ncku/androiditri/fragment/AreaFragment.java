@@ -81,7 +81,7 @@ public class AreaFragment extends Fragment {
             tourIndex = getArguments().getInt(TOUR_INDEX);
             currentZone = getArguments().getInt(ZONE);
             if (currentZone == 0)
-                currentZone = 1;
+                currentZone = 2;
         }
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");

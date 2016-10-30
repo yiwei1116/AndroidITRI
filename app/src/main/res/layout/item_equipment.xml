@@ -135,6 +135,7 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="24dp"
                     android:textColor="@android:color/white"
+                    android:textAlignment="center"
                     android:textSize="32sp" />
 
                 <TextView

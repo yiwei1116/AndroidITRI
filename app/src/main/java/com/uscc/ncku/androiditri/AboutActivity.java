@@ -26,7 +26,7 @@ public class AboutActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.nothing);
 
         Bundle bundle = this.getIntent().getExtras();
-        isEnglish = bundle.getBoolean(MainActivity.GET_TOUR_INDEX);
+        isEnglish = bundle.getBoolean(MainActivity.GET_IS_ENGLISH);
 
         originPage();
 

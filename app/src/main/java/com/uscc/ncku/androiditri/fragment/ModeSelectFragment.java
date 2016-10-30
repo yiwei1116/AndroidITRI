@@ -130,17 +130,17 @@ public class ModeSelectFragment extends Fragment {
         for (int i = 0; i < modesArray.length(); i++) {
             mode = modesArray.getJSONObject(i);
             Item item = new Item();
+            item.modeId = mode.getInt("mode_id");
             item.imgID = RM_GRID_BG[0];
             item.title = isEnglish ? mode.getString("name_en") : mode.getString("name");
-            item.isRead = mode.getInt("did_read");
             modeItem.add(item);
         }
     }
 
     class Item {
+        int modeId;
         int imgID;
         String title;
-        int isRead;
     }
 
     class Adapter extends BaseAdapter {
@@ -162,20 +162,16 @@ public class ModeSelectFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            try {
-                JSONObject selectMode = modesArray.getJSONObject(position);
-                int modeId = selectMode.getInt("mode_id");
+            int selectModeId = modeItem.get(position).modeId;
 
-                // update is read to mode
-                dbManager.updateModeDidRead(modeId);
+            // update is read to mode
+            dbManager.updateModeDidRead(selectModeId);
 
-                this.notifyDataSetInvalidated();
+            // renew grid view
+            this.notifyDataSetInvalidated();
 
-                ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(modeId);
-                ((MainActivity) getActivity()).replaceFragment(modeHighlight);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(selectModeId);
+            ((MainActivity) getActivity()).replaceFragment(modeHighlight);
 
             return position;
         }
@@ -194,7 +190,9 @@ public class ModeSelectFragment extends Fragment {
             gridTitle.setText(modeItem.get(position).title);
 
             TextView read = (TextView) convertView.findViewById(R.id.grid_item_read);
-            if (modeItem.get(position).isRead == 1) {
+
+            int isRead = dbManager.getModeDidRead(modeItem.get(position).modeId);
+            if (isRead == 1) {
                 read.setVisibility(View.VISIBLE);
             } else {
                 read.setVisibility(View.INVISIBLE);
