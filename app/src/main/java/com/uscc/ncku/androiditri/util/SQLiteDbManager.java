@@ -368,6 +368,33 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return cursor;
     }
 
+    public JSONObject getCompanyJSONObject(int company_id) throws JSONException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select name, tel, fax, addr, web, qrcode from company where company_id=" + company_id, null);
+        String name ;
+        String tel ;
+        String fax ;
+        String addr;
+        String web;
+        String qrcode;
+        cursor.moveToFirst();
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        tel = cursor.getString(cursor.getColumnIndex("tel"));
+        fax = cursor.getString(cursor.getColumnIndex("fax"));
+        addr = cursor.getString(cursor.getColumnIndex("addr"));
+        web = cursor.getString(cursor.getColumnIndex("web"));
+        qrcode = cursor.getString(cursor.getColumnIndex("qrcode"));
+        JSONObject obj = new JSONObject();
+        obj.put("name", name);
+        obj.put("tel", tel);
+        obj.put("fax", fax);
+        obj.put("addr", addr);
+        obj.put("web", web);
+        obj.put("qrcode", qrcode);
+        cursor.close();
+        return obj;
+    }
+
     // query company files
     public JSONArray queryCompanyFiles() throws JSONException {
         JSONObject file = new JSONObject();
@@ -854,6 +881,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
         return true;
     }
+
 
     // **************  survey ************
     // survey table query and insert
@@ -1374,6 +1402,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }
 
+
+    // ********************* 呼叫函數回傳需要的檔案 **************************
+    // TODO: 寫這些函數
 
 
 }
