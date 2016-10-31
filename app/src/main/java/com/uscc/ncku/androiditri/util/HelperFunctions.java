@@ -1,5 +1,10 @@
 package com.uscc.ncku.androiditri.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.File;
+
 /**
  * Created by Oslo on 10/14/16.
  */
@@ -20,5 +25,10 @@ public class HelperFunctions {
 
     }
 
+    public static Bitmap readImageBitmap(String internalImagePath) {
+        File fileObj = new File(internalImagePath);
+        Bitmap bitmap = BitmapFactory.decodeFile(fileObj.getAbsolutePath());
+        return bitmap;
+    }
 
 }

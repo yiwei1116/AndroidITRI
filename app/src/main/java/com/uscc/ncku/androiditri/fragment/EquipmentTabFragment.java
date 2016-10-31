@@ -1,12 +1,11 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -116,6 +115,15 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).showEquipCoachSlide();
 
         addTabs();
+
+        // testing calling files dir: /data/data/package.projectname/files
+//        File fileDir = this.getActivity().getFilesDir();
+//        String fileDirPath = String.valueOf(fileDir);
+//        // get filename --> may need to parse
+//        String finalFile = "test";
+//        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
+//        ImageView image ;
+//        image.setImageBitmap(bitmap);
     }
 
     @Override

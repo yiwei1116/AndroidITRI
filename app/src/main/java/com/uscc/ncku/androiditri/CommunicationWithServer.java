@@ -593,11 +593,11 @@ public class CommunicationWithServer {
             // using external storage space
 //            File rootDir = Environment.getExternalStorageDirectory();
             File rootDir = loadingActivity.getFilesDir();
+//            rootDir = loadingActivity.getApplicationInfo().da
             final File path = new File(rootDir.getAbsolutePath() + "/itri");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
-
             Log.i("files", String.valueOf(files));
 
             // if files is empty set progress to 100%
@@ -652,6 +652,4 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
-
-
 }

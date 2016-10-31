@@ -27,7 +27,6 @@ public class AboutActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         isEnglish = bundle.getBoolean(MainActivity.GET_TOUR_INDEX);
-
         originPage();
 
     }
