@@ -3,12 +3,17 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +39,7 @@ import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 
@@ -61,6 +67,9 @@ public class TemplateContext extends Fragment {
     private SQLiteDatabase db;
     private Cursor cursor;
     private ArrayList<String> arrayList = new ArrayList<String>();
+    private int dp_minX,dp_minY,dp_maxX,dp_maxY;
+    private int width,length;
+    int[] parm;
     private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
     public TemplateContext() {
 
@@ -179,7 +188,7 @@ public class TemplateContext extends Fragment {
         });
         write = (FrameLayout)view.findViewById(R.id.write);
         build = (FrameLayout)view.findViewById(R.id.build);
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle != null) {
             templateIndex = (String)getArguments().get("Template");
 
@@ -203,10 +212,16 @@ public class TemplateContext extends Fragment {
                 bundle1.putString("TemplateNum", templateIndex);
                 bundle1.putString("WriteContext", StringContext);
                 bundle1.putString("BuildContext", textBulid);
+                bundle1.putString("dp_minX",String.valueOf(dp_minX));
+                bundle1.putString("dp_minY",String.valueOf(dp_minY));
+                bundle1.putString("weight",String.valueOf(width));
+                bundle1.putString("height",String.valueOf(length));
                 MTP.setArguments(bundle1);
                 ((MainActivity) getActivity()).replaceFragment(MTP);
             }
         });
+
+        new CalcPosition().execute();
         return view;
     }
  /*   public void writeText() {
@@ -270,17 +285,87 @@ public class TemplateContext extends Fragment {
 
     }
 
- /*   @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.writeContext:
-                writeText();
+    class CalcPosition extends AsyncTask<Void, Void, HashMap> {
 
-                break;
-            case R.id.buildContext:
-                buildText();
+        @Override
+        protected HashMap doInBackground(Void... params) {
+            /*
+                Important!!!
+                this drawable must put in drawable-nodpi, or there might be a wrong calculation.
+            */
+            final int[] Template_merge = {
+                    R.drawable.template_1,
+                    R.drawable.template_2,
+            };
+            Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), Template_merge[Integer.valueOf(templateIndex)]);
+            int minX = sourceBitmap.getWidth();
+            int minY = sourceBitmap.getHeight();
+            int maxX = -1;
+            int maxY = -1;
+            int areaY = 2*(sourceBitmap.getHeight())/3;
+            Log.e("getWidth()",String.valueOf(sourceBitmap.getWidth()));
+            Log.e("getHeight()",String.valueOf(sourceBitmap.getHeight()));
+            Log.e("areaY",String.valueOf(areaY));
+            for (int y = 0; y < areaY; y++) {
+                for (int x = 0; x < sourceBitmap.getWidth(); x++) {
 
-                break;
+                    int alpha = sourceBitmap.getPixel(x, y) >> 24;
+
+                    if (alpha == 0) {
+                        if (x < minX)
+                            minX = x;
+                        if (x > maxX)
+                            maxX = x;
+                        if (y < minY)
+                            minY = y;
+                        if (y > maxY)
+                            maxY = y;
+                    }
+
+                }
+            }
+            Log.e("px", String.format("minX: %d, minY: %d, maxX: %d, maxY %d", minX, minY, maxX, maxY));
+            dp_minX = Math.round(convertPixelToDp(minX, getActivity()));
+            dp_minY = Math.round(convertPixelToDp(minY-getStatusBarHeight(), getActivity()));
+            dp_maxX = Math.round(convertPixelToDp(maxX, getActivity()));
+            dp_maxY = Math.round(convertPixelToDp(maxY, getActivity()));
+            width = Math.round(dp_maxX - dp_minX);
+            length = Math.round(dp_maxY - dp_minY);
+
+
+            Log.e("dp", String.format("dp_minX: %d, dp_minY: %d, dp_maxX: %d, dp_maxY %d,width %d,length %d", dp_minX, dp_minY, dp_maxX, dp_maxY,width,length));
+
+
+
+            return null;
         }
-    }*/
+
+    }
+
+    public static float convertPixelToDp(float px, Context context){
+        float dp = px / getDensity(context);
+        return dp;
+    }
+    /**
+     * 取得螢幕密度
+     * 120dpi = 0.75
+     * 160dpi = 1 (default)
+     * 240dpi = 1.5
+     * @param context
+     * @return
+     */
+    public static float getDensity(Context context){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return metrics.density;
+    }
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        Log.e("bar", String.valueOf(result));
+        return result;
+    }
+
 }

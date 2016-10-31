@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
@@ -50,13 +51,16 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
     private String templateIndex;
     private String WriteContext,BuildContext;
-    private ImageView mergeImage,qrcodeImage;
+    private ImageView mergeImage,qrcodeImage,test;
     private TextView textView;
     private Button icDownload,savePhone,sendMail,backTour;
     private Toolbar toolbar;
     private Bitmap mBitmap;
     private LinearLayout mask,function;
     private File imageFile;
+    private  int dp_minX,dp_minY;
+    private RelativeLayout layout;
+    int width,length;
     private static final int[] Template_Image = {
             R.drawable.template_1,
             R.drawable.template_2,
@@ -101,6 +105,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
          */
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
         //FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
+        layout = (RelativeLayout)view.findViewById(R.id.pic_location);
         mask = (LinearLayout)view.findViewById(R.id.mask);
         function = (LinearLayout)view.findViewById(R.id.function);
         textView = (TextView)view.findViewById(R.id.context);
@@ -110,16 +115,23 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         savePhone = (Button)view.findViewById(R.id.savetoPhone);
         sendMail = (Button)view.findViewById(R.id.sendMail);
         backTour = (Button)view.findViewById(R.id.backtoMain);
+
         savePhone.setOnClickListener(this);
         sendMail.setOnClickListener(this);
         backTour.setOnClickListener(this);
         icDownload.setOnClickListener(this);
+
         Bundle bundle1 = getArguments();
        if(bundle1 != null) {
            templateIndex = (String) getArguments().get("TemplateNum");
            mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
            WriteContext = (String) getArguments().get("WriteContext");
            BuildContext = (String) getArguments().get("BuildContext");
+           dp_minX = Integer.valueOf((String) getArguments().get("dp_minX"));
+           dp_minY = Integer.valueOf((String) getArguments().get("dp_minY"));
+           width =Integer.valueOf((String) getArguments().get("weight"));
+           length = Integer.valueOf((String) getArguments().get("height"));
+           Log.e("dp", String.format("dp_minX: %d, dp_minY: %d, width %d,length %d", dp_minX, dp_minY, width,length));
 
            if (WriteContext != null) {
                textView.setText(WriteContext);
@@ -131,6 +143,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
            Log.e("textview2",textView.getText().toString());
        }
         textView.setVisibility(View.VISIBLE);
+        init();
         return view;
     }
 
@@ -278,5 +291,14 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         function.setVisibility(View.VISIBLE);
         function.setAnimation(fadeIn);
     }
+       private void init() {
 
+            ImageView iv = new ImageView(getActivity());
+            iv.setBackgroundResource(R.drawable.koala);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width*3, length*3);
+            params.leftMargin = dp_minX*3;
+            params.topMargin = dp_minY*3;
+            layout.addView(iv, params);
+
+        }
 }

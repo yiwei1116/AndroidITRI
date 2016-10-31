@@ -126,7 +126,11 @@
             android:background="@drawable/btn_blue_fill"
 
             />
-
-
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pic_location"
+        >
+    </RelativeLayout>
 </FrameLayout>

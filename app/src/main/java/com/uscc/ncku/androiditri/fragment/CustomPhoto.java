@@ -128,7 +128,7 @@ public class CustomPhoto extends Fragment {
             String filepath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));//抓路徑
 
             imagePaths.add(filepath);
-            Log.e("filepath", filepath);
+            Log.i("filepath", filepath);
         }
 
         cursor.close();

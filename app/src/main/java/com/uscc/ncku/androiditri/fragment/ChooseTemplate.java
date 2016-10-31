@@ -4,12 +4,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -40,6 +45,7 @@ public class ChooseTemplate extends Fragment {
     ChooseTemp adapter;
     TemplateContext TC;
     private int viewPageIndex;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -108,7 +114,8 @@ public class ChooseTemplate extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 viewPageIndex = position;
-                Log.e("position",String.valueOf(position));
+                Log.e("position", String.valueOf(position));
+
             }
 
             @Override
@@ -116,6 +123,7 @@ public class ChooseTemplate extends Fragment {
 
             }
         });
+
         adapter = new ChooseTemp(getActivity());
         viewPager.setAdapter(adapter);
         return view   ;
@@ -127,6 +135,7 @@ public class ChooseTemplate extends Fragment {
                 R.drawable.card_1,
                 R.drawable.card_2,
         };
+
         private LayoutInflater mLayoutInflater;
         public ChooseTemp(Context context){
             mContext = context;
@@ -180,4 +189,8 @@ public class ChooseTemplate extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
+
+
 }

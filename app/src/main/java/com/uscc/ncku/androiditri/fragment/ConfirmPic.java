@@ -161,7 +161,6 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
         switch(v.getId()) {
             case R.id.next_step:
                 nextStep();
-
                 break;
             case R.id.retake:
                 ReTake();
