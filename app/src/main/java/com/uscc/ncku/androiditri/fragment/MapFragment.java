@@ -33,7 +33,6 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.ble.BLEModule;
 import com.uscc.ncku.androiditri.ble.BLEScannerWrapper;
-import com.uscc.ncku.androiditri.util.DownloadProject;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONObject;
@@ -55,6 +54,7 @@ public class MapFragment extends Fragment {
 
     JavaScriptInterface mJavaScriptInterface;
     private WebView mWebViewMap;
+    private Bundle webViewState;
     private RelativeLayout notice;
     private Button cancel;
     private Button enter;
@@ -66,7 +66,6 @@ public class MapFragment extends Fragment {
     private View view;
     private SQLiteDbManager dbManager;
 
-    private DownloadProject mTourProject;
 
     //test
     private String lastbeacon_mac;
@@ -114,6 +113,8 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //super.onViewCreated(view, savedInstanceState);
+
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
         ((MainActivity) getActivity()).setMapActive();
@@ -125,13 +126,26 @@ public class MapFragment extends Fragment {
         //test
         lastbeacon_mac = "";
         mSvgFile = "Living3_Map_1F_english.svg";
-        ///
-        mTourProject = new DownloadProject();
-        mTourProject.mIsDownloadCompleted =true;
+        //
 
         buildBLEScannerWrapper();
         initWebView();
 
+        String aURL = "file:///android_asset/index.html";
+        String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
+        mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
+        /*if (webViewState != null) {
+            //Fragment实例并未被销毁, 重新create view
+            mWebViewMap.restoreState(webViewState);
+        } else if (savedInstanceState != null) {
+            //Fragment实例被销毁重建
+            mWebViewMap.restoreState(savedInstanceState);
+        }else {
+            String aURL = "file:///android_asset/index.html";
+            String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
+            mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
+        }
+*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -192,7 +206,14 @@ public class MapFragment extends Fragment {
 
         return view;
     }
-
+    /*@Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Fragment被销毁的情况, 依靠outState保存WebView状态
+        if (mWebViewMap != null) {
+            mWebViewMap.saveState(outState);
+        }
+    }*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -208,6 +229,7 @@ public class MapFragment extends Fragment {
         ((MainActivity) getActivity()).setMapNormal();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -217,6 +239,10 @@ public class MapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        /*mWebViewMap.onPause();
+        webViewState = new Bundle();
+        mWebViewMap.saveState(webViewState);
+*/
         mBLEScannerWrapper.stopBLEScan();
     }
 
@@ -252,9 +278,7 @@ public class MapFragment extends Fragment {
         websettings.setLoadWithOverviewMode(true);
         websettings.setUseWideViewPort(true);
 
-        String aURL = "file:///android_asset/index.html";
-        String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
-        mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
+
     }
 
     private void buildBLEScannerWrapper(){
@@ -285,7 +309,8 @@ public class MapFragment extends Fragment {
                         if (mBLEScannerWrapper.getTheLowestRssiDevice() != null) {
                             Log.d("Lowest RSSI Mac = ", mBLEScannerWrapper.getTheLowestRssiDevice().getAddress());
                         }
-                        if(!mTourProject.mIsDownloadCompleted) {
+
+                        if(!true) {        ////////// isDownload need to modify
                             // Project not download yet.
                             return;
                         }
@@ -301,8 +326,15 @@ public class MapFragment extends Fragment {
 
                         ////////////////////////////////
                         // query region id from database
+                        if(mac.equals(""))
+                            return;
                         JSONObject beacon = dbManager.queryBeaconFileWithMacAddr(mac);
-
+                        /*
+                        Log.e("test mac  ", beacon.optString("mac_addr"));
+                        Log.e("test bid  ", beacon.optString("device_id"));
+                        Log.e("test name  ", beacon.optString("name"));
+                        Log.e("test zone  ", beacon.optString("zone"));
+                        */
                         if (beacon == null) {
                             return;
                         }

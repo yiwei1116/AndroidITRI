@@ -30,7 +30,7 @@ public class BLEScannerWrapper {
 
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after 10 seconds.
-    private static final int SCAN_PERIOD = 2000;
+    private static final int SCAN_PERIOD = 1000;
     private static final int SCAN_PAUSE_PERIOD = 2000;
     private static final int RSSI_THRESHOLD = -70;
 
@@ -221,7 +221,7 @@ public class BLEScannerWrapper {
 
                                 // if the BLE device
                                 if (mScanDeviceName == null || mScanDeviceName.equals("") || aLocalName.getLocalName().equalsIgnoreCase(mScanDeviceName)) {
-                                    Log.d(TAG, "name: " + aLocalName.getLocalName() + ", device mac: " + device.getAddress());
+                                    //Log.d(TAG, "name: " + aLocalName.getLocalName() + ", device mac: " + device.getAddress());
 
                                     for (SortedMap.Entry<Integer, BluetoothDevice> aBluetoothDeviceEnrty : mRSSILeDevicesMap.entrySet()) {
                                         // get bluetooth device
