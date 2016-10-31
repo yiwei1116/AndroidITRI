@@ -87,6 +87,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             R.raw.test1,
             R.raw.test2,
             R.raw.test3,
+            R.raw.test,
+            R.raw.test1,
+            R.raw.test2,
+            R.raw.test3,
     };
 
     private SQLiteDbManager dbManager;
@@ -405,12 +409,15 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
     //cursor
     private void addTabs() throws JSONException {
-        JSONArray deviceds = dbManager.queryDeviceFilesByMode(modeId);
+        JSONArray devicesArray = dbManager.queryDeviceFilesByMode(modeId);
+        int[] deviceIds = new int[equipNumber];
+        for (int i = 0; i < equipNumber; i++) {
+            JSONObject d = devicesArray.getJSONObject(i);
+            deviceIds[i] = d.getInt("device_id");
+        }
 
         for (int i = 0; i < equipNumber; i++) {
-//            int deviceId = deviceds.getJSONObject(equipNumber).getInt("device_id");
-            // FIXME: error
-            JSONObject equip = dbManager.queryDeviceAndCompanyData(equipNumber);
+            JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceIds[i]);
 
             EquipmentTabInformation tab = new EquipmentTabInformation();
 

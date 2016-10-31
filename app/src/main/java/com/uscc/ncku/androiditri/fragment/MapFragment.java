@@ -141,6 +141,7 @@ public class MapFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
         ((MainActivity) getActivity()).setMapActive();
+        ((MainActivity) getActivity()).setToolbarTitle(R.string.nothing);
 
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
         address0 = (TextView)view.findViewById(R.id.device_address0);

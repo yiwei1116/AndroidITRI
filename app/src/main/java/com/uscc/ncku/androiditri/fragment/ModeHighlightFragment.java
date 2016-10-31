@@ -61,7 +61,6 @@ public class ModeHighlightFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ModeHighlightFragment.
      */
     public static ModeHighlightFragment newInstance(int param2) {
@@ -133,6 +132,8 @@ public class ModeHighlightFragment extends Fragment {
     }
 
     private void modeHighlight() {
+        ((MainActivity) getActivity()).setToolbarTitle(modeName);
+
         ImageView equipHighlight = (ImageView) view.findViewById(R.id.img_equipment_highlight);
         equipHighlight.setImageResource(R.drawable.rm_a1m1_highlight);
 

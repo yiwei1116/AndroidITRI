@@ -80,6 +80,8 @@ public class AreaFragment extends Fragment {
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
             currentZone = getArguments().getInt(ZONE);
+
+            // FIXME: if there are no beacon nearby, than currentZone set to 2
             if (currentZone == 0)
                 currentZone = 2;
         }
@@ -150,7 +152,8 @@ public class AreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int modeNumber = dbManager.getNumbersOfModeFromZone(currentZone);
-                ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone);
+                String currentZonename = isEnglish ? title_en : title;
+                ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone, currentZonename);
                 ((MainActivity) getActivity()).replaceFragment(modeSelectFragment);
             }
         });

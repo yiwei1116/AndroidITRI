@@ -603,6 +603,10 @@ public class MainActivity extends AppCompatActivity {
         toolbarTitle.setText(stringID);
     }
 
+    public void setToolbarTitle(String title) {
+        toolbarTitle.setText(title);
+    }
+
     public void hideMainBtn() {
         mainBtnNavBg.getLayoutParams().height = 0;
         mainBtnLayout.setVisibility(View.GONE);

@@ -34,6 +34,7 @@ public class ModeSelectFragment extends Fragment {
     private static final String TAG = "MODE_SELECT_DEBUG";
     private static final String MODE_NUMBER = "MODE_NUMBER";
     private static final String CURRENT_ZONE = "CURRENT_ZONE";
+    private static final String CURRENT_NAME = "CURRENT_NAME";
     private static final int[] RM_GRID_BG = {
         R.drawable.rm_grid1_a1m1,
         R.drawable.rm_grid1_a1m2,
@@ -60,11 +61,12 @@ public class ModeSelectFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ModeSelectFragment.
      */
-    public static ModeSelectFragment newInstance(int param1, int param2) {
+    public static ModeSelectFragment newInstance(int param1, int param2, String param3) {
         ModeSelectFragment fragment = new ModeSelectFragment();
         Bundle args = new Bundle();
         args.putInt(MODE_NUMBER, param1);
         args.putInt(CURRENT_ZONE, param2);
+        args.putString(CURRENT_NAME, param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +78,6 @@ public class ModeSelectFragment extends Fragment {
             modeNumber = getArguments().getInt(MODE_NUMBER);
             currentZone = getArguments().getInt(CURRENT_ZONE);
         }
-
-        ((MainActivity) getActivity()).showModeCoachSwapUp();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
@@ -106,6 +106,9 @@ public class ModeSelectFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+
+        ((MainActivity) getActivity()).setToolbarTitle(getArguments().getString(CURRENT_NAME));
+        ((MainActivity) getActivity()).showModeCoachSwapUp();
 
         return view;
     }
