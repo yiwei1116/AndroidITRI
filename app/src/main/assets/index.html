@@ -56,7 +56,6 @@
 		function showNewRegion() {
 			// hide blue pin on label
 			$("#mn" + currentRegion).css("display", "none");
-			$("#mn" + currentRegion).attr("class", "");
 			// show orange pin on label
 			$("#ma" + currentRegion).css("display", "inline");
 
@@ -89,7 +88,7 @@
 					});
 				});
 			}
-			$("#mn" + next).css("display", "inline").attr("class", "fadeinAndBlinkClass");
+			$("#mn" + next).css("display", "inline")
 		}
 		function onResumeMap() {
 			$('body').fadeIn(1000);

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -35,9 +34,9 @@ import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.ble.BLEModule;
 import com.uscc.ncku.androiditri.ble.BLEScannerWrapper;
 import com.uscc.ncku.androiditri.util.DownloadProject;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import org.json.JSONObject;
 
 
 /**
@@ -63,8 +62,10 @@ public class MapFragment extends Fragment {
     private String mSvgFile = "";
     private int mScanedField;
     private BLEScannerWrapper mBLEScannerWrapper;
-    private Beacon mLastSacnBeacon = null;
+    private JSONObject mLastSacnBeacon = null;
     private View view;
+    private SQLiteDbManager dbManager;
+
     private DownloadProject mTourProject;
 
     //test
@@ -75,33 +76,6 @@ public class MapFragment extends Fragment {
     private int currentZoneOrder = 0;
     private int pathOrder[] = {1,2,3};
     private int zoneOrder[] = {1,2,3,4 };
-
-    public ArrayList<Beacon> mBeaconList = new ArrayList<>();
-    public ArrayList<Field> mFieldList = new ArrayList<>();
-    public class Beacon
-    {
-        public String mac_addr;
-        public String name;
-        public int zone;
-        public int field;
-        public Beacon(String mac_addr,String name,int zone,int field)
-        {
-            this.mac_addr = mac_addr;
-            this.name = name;
-            this.zone = zone;
-            this.field = field;
-        }
-    }
-    public class Field
-    {
-        public String map_name;
-        public int id;
-        public Field(int id,String map_name)
-        {
-            this.id = id;
-            this.map_name = map_name;
-        }
-    }
 
     ///
 
@@ -132,6 +106,8 @@ public class MapFragment extends Fragment {
         }
 
         ((MainActivity) getActivity()).showMapCoachInfo();
+
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -296,14 +272,7 @@ public class MapFragment extends Fragment {
         public void handleMessage(Message msg) {
             try {
                 String mac = "";
-                //test
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C1:30","大廳",1,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:27:64","入口玄關",2,1));
-                mBeaconList.add(new Beacon("98:7B:F3:5B:28:8D","植栽區與餐廳",3,1));
-                mBeaconList.add(new Beacon("7C:EC:79:E5:C3:77","廚房",4,1));
-                mFieldList.add(new Field(1,"Living3_Map_1F_english"));
-                mFieldList.add(new Field(2,"Living3_Map_2F_english"));
-                //test
+
                 switch (msg.what) {
                     case BLEModule.BLE_SCAN_DONE:
                         // get region number from mac address (device.getAddress())
@@ -321,7 +290,7 @@ public class MapFragment extends Fragment {
                             return;
                         }
                         if(mLastSacnBeacon != null){
-                            if(mac.equals(mLastSacnBeacon.mac_addr)){
+                            if(mac.equals(mLastSacnBeacon.optString("mac_addr"))){
                                 // 跟上次的Beacon 一樣
                                 return;
                             }
@@ -329,55 +298,37 @@ public class MapFragment extends Fragment {
                         ///////////////////////////////
 
                         address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
-                        /*
-                        if(!mac.equals("") && !mac.equals(lastbeacon_mac))
-                        {
-                            lastbeacon_mac = mac;
-                            if(mac.equals("7C:EC:79:E5:C1:30")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + "2" + ")");
-                            }
-                            else if(mac.equals("98:7B:F3:5B:27:64")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + "3" + ")");
-                            }
-                            else if(mac.equals("98:7B:F3:5B:28:8D")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + "4" + ")");
-                            }
-                            else if(mac.equals("7C:EC:79:E5:C3:77")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + "5" + ")");
-                            }
-                        }
-                        */
+
                         ////////////////////////////////
                         // query region id from database
-                        Beacon b = GetZoneNum(mac);
-                        if (b == null) {
+                        JSONObject beacon = dbManager.queryBeaconFileWithMacAddr(mac);
+
+                        if (beacon == null) {
                             return;
                         }
-                        if (b.zone != zoneOrder[currentZoneOrder])
+                        if (beacon.optInt("zone") != zoneOrder[currentZoneOrder])
                         {
                             return;
                         }
                         currentZoneOrder++;
-                        Log.d("ZontActivity", "b.zone.num = " + b.zone);
+                        Log.d("ZontActivity", "b.zone.num = " + beacon.optInt("zone"));
                         notice.setVisibility(View.VISIBLE);
-                        txtMapArea.setText("   "+b.name);
-                        currentZone = b.zone;
+                        txtMapArea.setText("   "+beacon.optString("name"));
+                        currentZone = beacon.optInt("zone");
                         lastbeacon_mac = mac;
-                        if (mLastSacnBeacon == null || mLastSacnBeacon.field != b.field) {
+                        if (mLastSacnBeacon == null || mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
                             // Change field
-                            for (Field f : mFieldList){
-                                if(f.id == b.field){
-                                    mScanedField = f.id;
-                                    String loadfile =  "file:///android_asset/" +  f.map_name +".svg";
-                                    Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
-                                    mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
 
-                                    break;
-                                }
-                            }
+                            mScanedField = beacon.optInt("field_id");
+                            String loadfile =  "file:///android_asset/" +  beacon.optString("field_name") +".svg";
+                            loadfile =  "file:///android_asset/Living3_Map_1F_english.svg";
+                            Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + beacon.optInt("zone") + "," + zoneOrder[currentZoneOrder] + ")");
+                            mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + beacon.optInt("zone") + "," + zoneOrder[currentZoneOrder] + ")");
+
+
                         } else {
                             if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + b.zone + "," + zoneOrder[currentZoneOrder] + ")");
+                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + beacon.optInt("zone") + "," + zoneOrder[currentZoneOrder] + ")");
                             }
                         }
 
@@ -393,7 +344,7 @@ public class MapFragment extends Fragment {
                             }
                         }
                         */
-                        mLastSacnBeacon = b;
+                        mLastSacnBeacon = beacon;
                         break;
                     case BLEModule.BLE_LOW_POWER_WARNING:
 
@@ -402,16 +353,6 @@ public class MapFragment extends Fragment {
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }
-        private Beacon GetZoneNum(String mac){
-            if(mac.length() == 0)
-                return null;
-            for(Beacon b: mBeaconList){
-                if(mac.equals(b.mac_addr)){
-                    return b;
-                }
-            }
-            return null;
         }
     };
     public Handler getJsHandler() {

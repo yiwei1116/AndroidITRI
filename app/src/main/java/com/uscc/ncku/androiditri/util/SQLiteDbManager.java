@@ -338,13 +338,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // return JSONObject for beacon
-    public JSONObject queryBeaconFileWithMacAddr(String mac_addr) throws JSONException {
+    public JSONObject queryBeaconFileWithMacAddr(String mac) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from beacon where mac_addr=" + mac_addr, null);
+        Cursor cursor = db.rawQuery("select * from beacon where mac_addr=" + "'" + mac + "'", null);
         cursor.moveToFirst();
         String beacon_id;
         String name;
+        String mac_addr;
         int power;
         int status;
         int zone;
@@ -353,6 +354,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int field_id;
         String field_name;
         // fetch all company_id & qrcode
+        mac_addr = cursor.getString(cursor.getColumnIndex("mac_addr"));
         beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
         name = cursor.getString(cursor.getColumnIndex("name"));
         power = cursor.getInt(cursor.getColumnIndex("power"));
@@ -364,6 +366,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
         // add to JSONObject
+        file.put("mac_addr", mac_addr);
         file.put("device_id", beacon_id);
         file.put("name", name);
         file.put("power", power);
