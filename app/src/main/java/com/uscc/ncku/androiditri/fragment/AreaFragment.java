@@ -1,6 +1,9 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +15,20 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 
 /**
@@ -129,6 +136,9 @@ public class AreaFragment extends Fragment {
         super.onStart();
         Log.i("GG", "onStart");
 
+        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
+        getImageFromFile(photoBg);
+
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
         areaTitle.setText(isEnglish ? title_en : title);
 
@@ -195,6 +205,26 @@ public class AreaFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.i("GG", "onDetach");
+    }
+
+    private void getImageFromFile(String name) {
+//        testing calling files dir: /data/data/package.projectname/files
+        File fileDir = this.getActivity().getFilesDir();
+        String fileDirPath = String.valueOf(fileDir);
+        // get filename --> may need to parse
+
+        String[] paths = name.split("/");
+
+        String finalFile = fileDirPath + "/" + paths[paths.length-1];
+        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
+
+//        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
+//        Drawable back = new BitmapDrawable(bitmap);
+//        background.setBackgroundDrawable(back);
+
+        Log.d("GGGG", name);
+        Log.d("GGGG", fileDirPath);
+        Log.d("GGGG", finalFile);
     }
 
 
