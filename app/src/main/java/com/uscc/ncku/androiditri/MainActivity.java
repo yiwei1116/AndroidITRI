@@ -406,7 +406,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void audioPause() {
-        soundPlayer.pause();
+        // FIXME: if soundPlayr != null
+        if (soundPlayer != null)
+            soundPlayer.pause();
         pauseButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
     }
@@ -479,7 +481,9 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            soundPlayer.release();
+            // FIXME: if soundPlayr != null
+            if (soundPlayer != null)
+                soundPlayer.release();
             setFontNormalIfActive();
             setSoundNormalIfActive();
         }
@@ -597,6 +601,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setToolbarTitle(int stringID) {
         toolbarTitle.setText(stringID);
+    }
+
+    public void setToolbarTitle(String title) {
+        toolbarTitle.setText(title);
     }
 
     public void hideMainBtn() {

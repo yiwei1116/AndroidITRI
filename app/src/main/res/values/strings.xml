@@ -131,9 +131,7 @@
     <string name="equip">設備</string>
     <string name="photo" translatable="false">PHOTO</string>
     <string name="video" translatable="false">VIDEO</string>
-    <string name="rm_test">測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="survey_gender_female">女</string>
     <string name="survey_gender_male">男</string>
     <string name="demo_text">這是範例</string>

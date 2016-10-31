@@ -71,7 +71,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
      *
      * @return A new instance of fragment DiaryFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static DiaryFragment newInstance() {
         DiaryFragment fragment = new DiaryFragment();
 

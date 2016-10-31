@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -33,6 +35,11 @@ import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -50,9 +57,12 @@ import java.util.ArrayList;
 
 public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
+    private static final String MODE_ID = "MODE_ID";
     private static final String TXTTAG = "txtContentTag";
 
     public int equipNumber, currentIndex ;
+    private int modeId;
+    private boolean isEnglish;
 
     private View view;
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
@@ -76,7 +86,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             R.raw.test1,
             R.raw.test2,
             R.raw.test3,
+            R.raw.test,
+            R.raw.test1,
+            R.raw.test2,
+            R.raw.test3,
     };
+
+    private SQLiteDbManager dbManager;
 
     public EquipmentTabFragment() {
     }
@@ -88,10 +104,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
      * @param param1 Parameter 1.
      * @return A new instance of fragment EquipmentTabFragment.
      */
-    public static EquipmentTabFragment newInstance(int param1) {
+    public static EquipmentTabFragment newInstance(int param1, int param2) {
         EquipmentTabFragment fragment = new EquipmentTabFragment();
         Bundle args = new Bundle();
         args.putInt(EQUIP_NUMBER, param1);
+        args.putInt(MODE_ID, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,6 +118,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
+            modeId = getArguments().getInt(MODE_ID);
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
@@ -112,8 +130,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
         });
 
-        ((MainActivity) getActivity()).showEquipCoachSlide();
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
+        ((MainActivity) getActivity()).showEquipCoachSlide();
+        isEnglish = ((MainActivity) getActivity()).isEnglish();
+
+<<<<<<< HEAD
         addTabs();
 
         // testing calling files dir: /data/data/package.projectname/files
@@ -124,6 +146,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 //        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
 //        ImageView image ;
 //        image.setImageBitmap(bitmap);
+=======
+        try {
+            addTabs();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+>>>>>>> fbf5a689acfb8b5af57849b85987264c97e2f9af
     }
 
     @Override
@@ -391,24 +420,37 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     }
 
     //cursor
-    private void addTabs() {
+    private void addTabs() throws JSONException {
+        JSONArray devicesArray = dbManager.queryDeviceFilesByMode(modeId);
+        int[] deviceIds = new int[equipNumber];
         for (int i = 0; i < equipNumber; i++) {
+            JSONObject d = devicesArray.getJSONObject(i);
+            deviceIds[i] = d.getInt("device_id");
+        }
+
+        for (int i = 0; i < equipNumber; i++) {
+            JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceIds[i]);
+
             EquipmentTabInformation tab = new EquipmentTabInformation();
-            tab.setTitle("互動資訊牆");
+
+            String name = isEnglish ? equip.getString("name_en") : equip.getString("name");
+            tab.setTitle(name);
+            // TODO: set video and photo button
             tab.setVideo(true);
             tab.setPhoto(true);
-            tab.setTextContent(getResources().getString(R.string.rm_test));
+            tab.setTextContent(equip.getString("introduction"));
             // add sound to each tab
             tab.setPlayList(audioList[i]);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
+            JSONObject company = equip.getJSONObject("company_data");
             // add company information
-            tab.setCompanyTitleText("互動資訊牆");
+            tab.setCompanyTitleText(name);
             tab.setCompanyTitleImage(R.drawable.rm_a1m1e1_infobg);
-            tab.setCompanyName("GG電");
-            tab.setCompanyWebsite("www.gglight.com");
-            tab.setCompanyPhone("12345678");
-            tab.setCompanyLocation("光頭路78號");
+            tab.setCompanyName(company.getString("name"));
+            tab.setCompanyWebsite(company.getString("web"));
+            tab.setCompanyPhone(company.getString("tel"));
+            tab.setCompanyLocation(company.getString("addr"));
             tab.setCompanyQRcode(R.drawable.rm_a1m1e1_qrcode);
 
             equipTabs.add(tab);
@@ -418,6 +460,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private void setEquipmentTab(View v, int position) {
         // set equipment title
         TextView title = (TextView) v.findViewById(R.id.equipment_title);
+        Log.d("GGG", String.valueOf(position));
         title.setText(equipTabs.get(position).getTitle());
 
         // set vidoe and photo button

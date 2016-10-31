@@ -34,6 +34,7 @@ public class ModeSelectFragment extends Fragment {
     private static final String TAG = "MODE_SELECT_DEBUG";
     private static final String MODE_NUMBER = "MODE_NUMBER";
     private static final String CURRENT_ZONE = "CURRENT_ZONE";
+    private static final String CURRENT_NAME = "CURRENT_NAME";
     private static final int[] RM_GRID_BG = {
         R.drawable.rm_grid1_a1m1,
         R.drawable.rm_grid1_a1m2,
@@ -60,11 +61,12 @@ public class ModeSelectFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ModeSelectFragment.
      */
-    public static ModeSelectFragment newInstance(int param1, int param2) {
+    public static ModeSelectFragment newInstance(int param1, int param2, String param3) {
         ModeSelectFragment fragment = new ModeSelectFragment();
         Bundle args = new Bundle();
         args.putInt(MODE_NUMBER, param1);
         args.putInt(CURRENT_ZONE, param2);
+        args.putString(CURRENT_NAME, param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +78,6 @@ public class ModeSelectFragment extends Fragment {
             modeNumber = getArguments().getInt(MODE_NUMBER);
             currentZone = getArguments().getInt(CURRENT_ZONE);
         }
-
-        ((MainActivity) getActivity()).showModeCoachSwapUp();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
@@ -107,6 +107,9 @@ public class ModeSelectFragment extends Fragment {
             }
         });
 
+        ((MainActivity) getActivity()).setToolbarTitle(getArguments().getString(CURRENT_NAME));
+        ((MainActivity) getActivity()).showModeCoachSwapUp();
+
         return view;
     }
 
@@ -130,17 +133,17 @@ public class ModeSelectFragment extends Fragment {
         for (int i = 0; i < modesArray.length(); i++) {
             mode = modesArray.getJSONObject(i);
             Item item = new Item();
+            item.modeId = mode.getInt("mode_id");
             item.imgID = RM_GRID_BG[0];
             item.title = isEnglish ? mode.getString("name_en") : mode.getString("name");
-            item.isRead = mode.getInt("did_read");
             modeItem.add(item);
         }
     }
 
     class Item {
+        int modeId;
         int imgID;
         String title;
-        int isRead;
     }
 
     class Adapter extends BaseAdapter {
@@ -162,20 +165,16 @@ public class ModeSelectFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            try {
-                JSONObject selectMode = modesArray.getJSONObject(position);
-                int modeId = selectMode.getInt("mode_id");
+            int selectModeId = modeItem.get(position).modeId;
 
-                // update is read to mode
-                dbManager.updateModeDidRead(modeId);
+            // update is read to mode
+            dbManager.updateModeDidRead(selectModeId);
 
-                this.notifyDataSetInvalidated();
+            // renew grid view
+            this.notifyDataSetInvalidated();
 
-                ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(modeId);
-                ((MainActivity) getActivity()).replaceFragment(modeHighlight);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(selectModeId);
+            ((MainActivity) getActivity()).replaceFragment(modeHighlight);
 
             return position;
         }
@@ -194,7 +193,9 @@ public class ModeSelectFragment extends Fragment {
             gridTitle.setText(modeItem.get(position).title);
 
             TextView read = (TextView) convertView.findViewById(R.id.grid_item_read);
-            if (modeItem.get(position).isRead == 1) {
+
+            int isRead = dbManager.getModeDidRead(modeItem.get(position).modeId);
+            if (isRead == 1) {
                 read.setVisibility(View.VISIBLE);
             } else {
                 read.setVisibility(View.INVISIBLE);
