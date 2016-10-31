@@ -81,7 +81,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private int image_index = 0;
     //private ArrayList<Integer> audioList = new ArrayList<Integer>();
 
-    private   int[] audioList = {
+    private int[] audioList = {
             R.raw.test,
             R.raw.test1,
             R.raw.test2,
@@ -135,9 +135,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
 
-<<<<<<< HEAD
-        addTabs();
-
         // testing calling files dir: /data/data/package.projectname/files
 //        File fileDir = this.getActivity().getFilesDir();
 //        String fileDirPath = String.valueOf(fileDir);
@@ -146,13 +143,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 //        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
 //        ImageView image ;
 //        image.setImageBitmap(bitmap);
-=======
         try {
             addTabs();
         } catch (JSONException e) {
             e.printStackTrace();
         }
->>>>>>> fbf5a689acfb8b5af57849b85987264c97e2f9af
+
     }
 
     @Override
