@@ -14,10 +14,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.uscc.ncku.androiditri.util.ITRIObject;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by Lin on 2016/9/1.
@@ -37,6 +37,8 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         communicationWithServer = new CommunicationWithServer(this);
+
+        ITRIObject.setIsDownloadDone();
 
         logoLoading();
         manager = new SQLiteDbManager(this);

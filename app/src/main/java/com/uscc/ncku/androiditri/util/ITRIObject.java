@@ -8,6 +8,17 @@ import org.json.JSONObject;
  * Created by Oslo on 10/3/16.
  */
 public class ITRIObject {
+
+    public static int isDownloadDone;
+
+    public static void setIsDownloadDone() {
+        isDownloadDone = 0;
+    }
+
+    public static int getIsDownloadDone() {
+        return isDownloadDone;
+    }
+
     // fragments:
     public static String areaFragment = "AreaFragment";
     public static String choosePhoto = "ChoosePhoto";
