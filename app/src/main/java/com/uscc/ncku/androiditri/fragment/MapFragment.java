@@ -266,7 +266,7 @@ public class MapFragment extends Fragment {
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-
+        mWebViewMap.setInitialScale(180);
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
         //websettings.setSupportZoom(false);  // do not remove this
@@ -322,7 +322,7 @@ public class MapFragment extends Fragment {
                         }
                         ///////////////////////////////
 
-                        address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
+                        //address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
 
                         ////////////////////////////////
                         // query region id from database
