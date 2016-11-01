@@ -1,6 +1,9 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +15,21 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 
 /**
@@ -43,6 +51,7 @@ public class AreaFragment extends Fragment {
     private View view;
 
     private SQLiteDbManager dbManager;
+    private CommunicationWithServer comm;
 
     private String title;
     private String title_en;
@@ -88,6 +97,7 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
 
+        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             JSONObject area = dbManager.queryZone(currentZone);
@@ -128,6 +138,11 @@ public class AreaFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i("GG", "onStart");
+
+        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
+        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), photoBg);
+        Drawable back = new BitmapDrawable(bitmap);
+        background.setBackgroundDrawable(back);
 
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
         areaTitle.setText(isEnglish ? title_en : title);
@@ -196,6 +211,5 @@ public class AreaFragment extends Fragment {
         super.onDetach();
         Log.i("GG", "onDetach");
     }
-
 
 }

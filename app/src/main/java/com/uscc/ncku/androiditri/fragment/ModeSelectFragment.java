@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
@@ -50,6 +51,7 @@ public class ModeSelectFragment extends Fragment {
     private ArrayList<Item> modeItem;
 
     private SQLiteDbManager dbManager;
+    private CommunicationWithServer comm;
 
     public ModeSelectFragment() {
     }
@@ -79,6 +81,7 @@ public class ModeSelectFragment extends Fragment {
             currentZone = getArguments().getInt(CURRENT_ZONE);
         }
 
+        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             modesArray = dbManager.queryModeDataWithZoneId(currentZone);
