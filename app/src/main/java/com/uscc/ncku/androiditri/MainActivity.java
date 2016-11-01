@@ -595,6 +595,10 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
+    public CommunicationWithServer getCommunicationWithServer() {
+        return communicationWithServer;
+    }
+
     public LinkedList<Fragment> getFragmentBackStack() {
         return fragmentBackStack;
     }

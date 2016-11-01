@@ -1,12 +1,16 @@
 package com.uscc.ncku.androiditri;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONArray;
@@ -652,4 +656,18 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
+
+
+    // ********************** get bitmap from file name ****************
+    public Bitmap getBitmapFromFile(Context context, String name) {
+        // get file directory
+        File fileDir = context.getFilesDir();
+        String fileDirPath = String.valueOf(fileDir);
+
+        // parse file name
+        String[] paths = name.split("/");
+
+        String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
+        return HelperFunctions.readImageBitmap(finalFile);
+    }
 }

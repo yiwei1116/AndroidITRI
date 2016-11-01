@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
@@ -50,6 +51,7 @@ public class AreaFragment extends Fragment {
     private View view;
 
     private SQLiteDbManager dbManager;
+    private CommunicationWithServer comm;
 
     private String title;
     private String title_en;
@@ -95,6 +97,7 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
 
+        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             JSONObject area = dbManager.queryZone(currentZone);
@@ -137,7 +140,9 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onStart");
 
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
-        getImageFromFile(photoBg);
+        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), photoBg);
+        Drawable back = new BitmapDrawable(bitmap);
+        background.setBackgroundDrawable(back);
 
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
         areaTitle.setText(isEnglish ? title_en : title);
@@ -206,26 +211,5 @@ public class AreaFragment extends Fragment {
         super.onDetach();
         Log.i("GG", "onDetach");
     }
-
-    private void getImageFromFile(String name) {
-//        testing calling files dir: /data/data/package.projectname/files
-        File fileDir = this.getActivity().getFilesDir();
-        String fileDirPath = String.valueOf(fileDir);
-        // get filename --> may need to parse
-
-        String[] paths = name.split("/");
-
-        String finalFile = fileDirPath + "/" + paths[paths.length-1];
-        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
-
-//        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
-//        Drawable back = new BitmapDrawable(bitmap);
-//        background.setBackgroundDrawable(back);
-
-        Log.d("GGGG", name);
-        Log.d("GGGG", fileDirPath);
-        Log.d("GGGG", finalFile);
-    }
-
 
 }

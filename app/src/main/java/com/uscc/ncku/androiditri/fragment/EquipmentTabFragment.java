@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
@@ -93,6 +94,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     };
 
     private SQLiteDbManager dbManager;
+    private CommunicationWithServer comm;
 
     public EquipmentTabFragment() {
     }
@@ -130,6 +132,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
         });
 
+        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
