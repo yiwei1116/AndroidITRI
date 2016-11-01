@@ -670,4 +670,7 @@ public class CommunicationWithServer {
         String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
         return HelperFunctions.readImageBitmap(finalFile);
     }
+
+
+
 }

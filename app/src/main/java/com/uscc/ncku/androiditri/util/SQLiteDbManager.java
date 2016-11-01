@@ -22,7 +22,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // database name
     public static final String DATABASE_NAME = "android_itri_1.db";
 
-
     // TODO: 2. 下載音樂檔
 
     /*
@@ -353,6 +352,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int y;
         int field_id;
         String field_name;
+        String map_svg;
         // fetch all company_id & qrcode
         mac_addr = cursor.getString(cursor.getColumnIndex("mac_addr"));
         beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
@@ -365,6 +365,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
+        Cursor fieldMapCursor = db.rawQuery("select map_svg from field_map where field_map_id=" + field_id, null);
+        cursor.moveToFirst();
+        map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
+
         // add to JSONObject
         file.put("mac_addr", mac_addr);
         file.put("device_id", beacon_id);
@@ -376,6 +380,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("y", y);
         file.put("field_id", field_id);
         file.put("field_name", field_name);
+        file.put("map_svg", map_svg);
         cursor.close();
         return file;
 
