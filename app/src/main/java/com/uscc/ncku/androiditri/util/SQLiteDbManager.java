@@ -364,10 +364,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         y = cursor.getInt(cursor.getColumnIndex("y"));
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
-
         Cursor fieldMapCursor = db.rawQuery("select map_svg from field_map where field_map_id=" + field_id, null);
-        cursor.moveToFirst();
+        fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
+
+        // parse file name
+        String[] paths = map_svg.split("/");
+        String svgName = paths[paths.length-1];
 
         // add to JSONObject
         file.put("mac_addr", mac_addr);
@@ -380,7 +383,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("y", y);
         file.put("field_id", field_id);
         file.put("field_name", field_name);
-        file.put("map_svg", map_svg);
+        file.put("map_svg", svgName);
+        Log.e("map_svg", String.valueOf(svgName));
         cursor.close();
         return file;
 

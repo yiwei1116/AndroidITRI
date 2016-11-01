@@ -65,6 +65,7 @@ public class MapFragment extends Fragment {
     private JSONObject mLastSacnBeacon = null;
     private View view;
     private SQLiteDbManager dbManager;
+    private String fileDirPath;
 
 
     //test
@@ -107,13 +108,14 @@ public class MapFragment extends Fragment {
         ((MainActivity) getActivity()).showMapCoachInfo();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        fileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         view = inflater.inflate(R.layout.fragment_map, container, false);
 
@@ -125,27 +127,29 @@ public class MapFragment extends Fragment {
 
         //test
         lastbeacon_mac = "";
-        mSvgFile = "Living3_Map_1F_english.svg";
+
+        mSvgFile = "Living3_Map_1F_no_bg_20161020.svg";
         //
 
         buildBLEScannerWrapper();
         initWebView();
 
-        String aURL = "file:///android_asset/index.html";
-        String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
-        mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
-        /*if (webViewState != null) {
+
+        if (webViewState != null) {
             //Fragment实例并未被销毁, 重新create view
             mWebViewMap.restoreState(webViewState);
+            Log.e(TAG,"no destroy and restore");
         } else if (savedInstanceState != null) {
             //Fragment实例被销毁重建
             mWebViewMap.restoreState(savedInstanceState);
+            Log.e(TAG,"destroy and rebuild");
         }else {
             String aURL = "file:///android_asset/index.html";
             String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
             mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
+            Log.e(TAG,"first build");
         }
-*/
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -206,14 +210,15 @@ public class MapFragment extends Fragment {
 
         return view;
     }
-    /*@Override
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //Fragment被销毁的情况, 依靠outState保存WebView状态
         if (mWebViewMap != null) {
             mWebViewMap.saveState(outState);
         }
-    }*/
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -239,10 +244,10 @@ public class MapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        /*mWebViewMap.onPause();
+        mWebViewMap.onPause();
         webViewState = new Bundle();
         mWebViewMap.saveState(webViewState);
-*/
+
         mBLEScannerWrapper.stopBLEScan();
     }
 
@@ -266,7 +271,7 @@ public class MapFragment extends Fragment {
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-        mWebViewMap.setInitialScale(180);
+        //mWebViewMap.setInitialScale(180);
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
         //websettings.setSupportZoom(false);  // do not remove this
@@ -322,7 +327,7 @@ public class MapFragment extends Fragment {
                         }
                         ///////////////////////////////
 
-                        //address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
+                        address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac)+"\n上一個偵測到的address: "+(lastbeacon_mac.equals("")?"無":lastbeacon_mac));
 
                         ////////////////////////////////
                         // query region id from database
@@ -353,7 +358,8 @@ public class MapFragment extends Fragment {
 
                             mScanedField = beacon.optInt("field_id");
                             String loadfile =  "file:///android_asset/" +  beacon.optString("field_name") +".svg";
-                            loadfile =  "file:///android_asset/Living3_Map_1F_english.svg";
+                            loadfile =  "file:///android_asset/" + mSvgFile;
+
                             Log.d(TAG, "javascript: setSVGLoad('" + loadfile + "'," + beacon.optInt("zone") + "," + zoneOrder[currentZoneOrder] + ")");
                             mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + beacon.optInt("zone") + "," + zoneOrder[currentZoneOrder] + ")");
 
