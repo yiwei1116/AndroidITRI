@@ -430,8 +430,8 @@ public class MainActivity extends AppCompatActivity {
             mapFragment = MapFragment.newInstance(tourIndex);
         }
 
-        // add mapFragment to back stack
-        fragmentBackStack.addFirst(mapFragment);
+//        // add mapFragment to back stack
+//        fragmentBackStack.addFirst(mapFragment);
 
         if (diaryFragment == null) {
             diaryFragment = DiaryFragment.newInstance();
