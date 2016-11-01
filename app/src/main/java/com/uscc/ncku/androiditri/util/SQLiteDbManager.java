@@ -384,7 +384,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("field_id", field_id);
         file.put("field_name", field_name);
         file.put("map_svg", svgName);
-        Log.e("map_svg", String.valueOf(svgName));
         cursor.close();
         return file;
 

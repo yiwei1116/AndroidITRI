@@ -28,6 +28,7 @@
 			$("body").load(svg, function() {
 				// execute after floorplan.svg loaded
 				onRegionChanged(region,next);
+				Android.onSVGLoadDone();
 			});
 		}
 
@@ -70,7 +71,7 @@
 
 		function onRegionChanged(region,next) {
 
-			if (region >= 0) {
+			if (region > 0) {
 				var regionStr = region + ""
 				if (currentRegion != "") {
 					hideCurrentRegion();
@@ -90,9 +91,6 @@
 				});
 			}
 			$("#mn" + next).css("display", "inline")
-		}
-		function onResumeMap() {
-			$('body').fadeIn(1000);
 		}
 
     </script>
