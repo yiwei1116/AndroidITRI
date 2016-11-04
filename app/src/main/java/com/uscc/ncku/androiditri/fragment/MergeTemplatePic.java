@@ -58,7 +58,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private Bitmap mBitmap;
     private LinearLayout mask,function;
     private File imageFile;
-    private  int dp_minX,dp_minY;
+    private  int minX,minY;
     private RelativeLayout layout;
     int width,length;
     private static final int[] Template_Image = {
@@ -127,11 +127,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
            mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
            WriteContext = (String) getArguments().get("WriteContext");
            BuildContext = (String) getArguments().get("BuildContext");
-           dp_minX = Integer.valueOf((String) getArguments().get("dp_minX"));
-           dp_minY = Integer.valueOf((String) getArguments().get("dp_minY"));
+           minX = Integer.valueOf((String) getArguments().get("minX"));
+           minY = Integer.valueOf((String) getArguments().get("minY"));
            width =Integer.valueOf((String) getArguments().get("weight"));
            length = Integer.valueOf((String) getArguments().get("height"));
-           Log.e("dp", String.format("dp_minX: %d, dp_minY: %d, width %d,length %d", dp_minX, dp_minY, width,length));
+
 
            if (WriteContext != null) {
                textView.setText(WriteContext);
@@ -285,7 +285,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
 
         icDownload.setVisibility(View.GONE);
-        textView.setVisibility(View.GONE);
+        //textView.setVisibility(View.GONE);
         mask.setVisibility(View.VISIBLE);
         Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
@@ -293,12 +293,12 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     }
        private void init() {
 
-            ImageView iv = new ImageView(getActivity());
-            iv.setBackgroundResource(R.drawable.koala);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width*3, length*3);
-            params.leftMargin = dp_minX*3;
-            params.topMargin = dp_minY*3;
-            layout.addView(iv, params);
+            ImageView pic = new ImageView(getActivity());
+            pic.setBackgroundResource(R.drawable.koala);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, length);
+            params.leftMargin = minX;
+            params.topMargin = minY;
+            layout.addView(pic, params);
 
         }
 }

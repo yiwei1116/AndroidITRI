@@ -118,7 +118,7 @@ public class CustomPhoto extends Fragment {
         thumbs = new ArrayList<String>();
         imagePaths = new ArrayList<String>();
 
-        for (int i = cursor.getCount()-1 ; i >= 0 ; i--) {
+        for (int i = (cursor.getCount()-1) ; i >= 0 ; i--) {
 
             cursor.moveToPosition(i);
             int id = cursor.getInt(cursor
