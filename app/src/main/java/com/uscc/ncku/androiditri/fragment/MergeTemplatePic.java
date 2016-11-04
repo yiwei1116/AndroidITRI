@@ -1,11 +1,10 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.app.Dialog;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -17,10 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,9 +34,7 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -51,16 +48,18 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
     private String templateIndex;
     private String WriteContext,BuildContext;
-    private ImageView mergeImage,qrcodeImage,test;
+    private String photoUri;
+    private ImageView mergeImage,qrcodeImage,pic;
     private TextView textView;
     private Button icDownload,savePhone,sendMail,backTour;
     private Toolbar toolbar;
     private Bitmap mBitmap;
     private LinearLayout mask,function;
     private File imageFile;
-    private  int minX,minY;
+    private  int minX,minY,picWidth,picHeight;
     private RelativeLayout layout;
     int width,length;
+    Bundle bundle1;
     private static final int[] Template_Image = {
             R.drawable.template_1,
             R.drawable.template_2,
@@ -121,16 +120,18 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         backTour.setOnClickListener(this);
         icDownload.setOnClickListener(this);
 
-        Bundle bundle1 = getArguments();
+         bundle1 = getArguments();
        if(bundle1 != null) {
            templateIndex = (String) getArguments().get("TemplateNum");
            mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
            WriteContext = (String) getArguments().get("WriteContext");
            BuildContext = (String) getArguments().get("BuildContext");
+           photoUri = (String) getArguments().get("photoUri");
            minX = Integer.valueOf((String) getArguments().get("minX"));
            minY = Integer.valueOf((String) getArguments().get("minY"));
            width =Integer.valueOf((String) getArguments().get("weight"));
            length = Integer.valueOf((String) getArguments().get("height"));
+
 
 
            if (WriteContext != null) {
@@ -293,8 +294,34 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     }
        private void init() {
 
-            ImageView pic = new ImageView(getActivity());
-            pic.setBackgroundResource(R.drawable.koala);
+           pic = new ImageView(getActivity());
+           pic.setImageURI(Uri.parse(photoUri));
+
+            /*pic.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+
+                    pic.setImageURI(Uri.parse(photoUri));
+                    pic.buildDrawingCache();
+                    Bitmap bmp = pic.getDrawingCache();
+
+                    picWidth = bmp.getWidth();
+                    picHeight = bmp.getHeight();
+                    float scaleWidth = ((float) width) / picWidth;
+                    float scaleHeight = ((float) length) / picHeight;
+                    Matrix matrix = new Matrix();
+
+                    Log.e("width",String.valueOf(width));
+                    Log.e("length", String.valueOf(length));
+                    Log.e("picWidth",String.valueOf(picWidth));
+                    Log.e("picHeight", String.valueOf(picHeight));
+                    matrix.postScale(scaleWidth, scaleHeight);
+                    // 得到新的圖片
+                    Bitmap newbm = Bitmap.createBitmap(bmp, 0, 0, picWidth, picHeight, matrix, true);
+                    pic.setImageBitmap(newbm);
+                    return true;
+                }
+            });*/
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, length);
             params.leftMargin = minX;
             params.topMargin = minY;

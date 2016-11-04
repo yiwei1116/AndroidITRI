@@ -54,7 +54,7 @@ public class TemplateContext extends Fragment {
     private EditText editText;
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
-    private String templateIndex;
+    private String templateIndex , photoUri;
     private String textBulid ;
     MergeTemplatePic MTP;
     private String StringContext;
@@ -68,11 +68,10 @@ public class TemplateContext extends Fragment {
     private SQLiteDatabase db;
     private Cursor cursor;
     private ArrayList<String> arrayList = new ArrayList<String>();
-    private int dp_minX,dp_minY,dp_maxX,dp_maxY;
     private int minX,minY,maxX,maxY;
     private int width,length;
     private Button btnNextStep;
-    int[] parm;
+
     private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
     private Activity activity;
     public TemplateContext() {
@@ -197,8 +196,9 @@ public class TemplateContext extends Fragment {
         final Bundle bundle = getArguments();
         if (bundle != null) {
             templateIndex = (String)getArguments().get("Template");
+            photoUri = (String)getArguments().get("photoUri");
 
-            Log.e("templateContext", templateIndex);
+            Log.e("photoUri", photoUri);
 
         }
         btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
@@ -310,10 +310,12 @@ public class TemplateContext extends Fragment {
                     bundle1.putString("TemplateNum", templateIndex);
                     bundle1.putString("WriteContext", StringContext);
                     bundle1.putString("BuildContext", textBulid);
+                    bundle1.putString("photoUri", photoUri);
                     bundle1.putString("minX", String.valueOf(minX));
                     bundle1.putString("minY", String.valueOf(minY));
                     bundle1.putString("weight", String.valueOf(width));
                     bundle1.putString("height", String.valueOf(length));
+
                     MTP.setArguments(bundle1);
                     ((MainActivity) getActivity()).replaceFragment(MTP);
                 }

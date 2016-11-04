@@ -6,14 +6,19 @@ package com.uscc.ncku.androiditri.fragment;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 
 import java.io.File;
@@ -21,7 +26,7 @@ import java.util.List;
 
 public class ImageAdapter extends BaseAdapter {
 
-
+     String uri;
      Context context;
      List coll;
      CustomPhoto customPhoto;
@@ -68,28 +73,14 @@ public class ImageAdapter extends BaseAdapter {
 
         Holder.layout.setLayoutParams(new GridView.LayoutParams(newWidth, newWidth));
         Holder.imageView.setId(position);
-        // Bitmap bm = BitmapFactory.decodeFile((String)coll.get(position));
-        // Bitmap newBit = Bitmap.createScaledBitmap(bm, newWidth, newWidth,
-        // true);
-        String uri = customPhoto.imagePaths.get(position);
+
+        uri = customPhoto.imagePaths.get(position);
 
         Picasso.with(context)
                 .load(new File(uri))
                 .fit().centerCrop()
                 .into(Holder.imageView);
-        //點擊照片
-   /*     Holder.imageView.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(context, "index:" + position, Toast.LENGTH_SHORT)
-                        .show();
-
-                ((MainActivity)context).setImageView(position);
-            }
-
-        });*/
 
         return convertView;
     }
@@ -103,13 +94,13 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int arg0) {
-        // TODO Auto-generated method stub
-        return coll.get(arg0);
+           return coll.get(arg0);
     }
 
     @Override
     public long getItemId(int position) {
         // TODO Auto-generated method stub
+
         return position;
     }
 

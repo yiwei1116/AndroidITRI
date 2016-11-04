@@ -45,7 +45,8 @@ public class ChooseTemplate extends Fragment {
     ChooseTemp adapter;
     TemplateContext TC;
     private int viewPageIndex;
-
+    Bundle bundle1;
+    String photoUri;
 
     /**
      * Use this factory method to create a new instance of
@@ -89,7 +90,13 @@ public class ChooseTemplate extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+         bundle1 = getArguments();
+        if (bundle1 != null) {
+            photoUri = (String)getArguments().get("photoUri");
 
+            Log.e("photoUri", photoUri);
+
+        }
         Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +105,7 @@ public class ChooseTemplate extends Fragment {
                 TC = new TemplateContext();
                 Bundle bundle = new Bundle();
                 bundle.putString("Template", String.valueOf(viewPageIndex));
+                bundle.putString("photoUri",photoUri);
                 TC.setArguments(bundle);
                 ((MainActivity) getActivity()).replaceFragment(TC);
 

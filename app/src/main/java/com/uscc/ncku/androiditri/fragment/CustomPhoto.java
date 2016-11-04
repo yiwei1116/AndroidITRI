@@ -1,15 +1,10 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -27,8 +21,10 @@ import android.database.Cursor;
 
 import android.provider.MediaStore;
 
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.uscc.ncku.androiditri.MainActivity;
@@ -39,7 +35,7 @@ import com.uscc.ncku.androiditri.R;
  * Use the {@link CustomPhoto#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CustomPhoto extends Fragment {
+public class CustomPhoto extends Fragment  {
 
     private GridView gridView;
     private ImageView imageView;
@@ -47,7 +43,7 @@ public class CustomPhoto extends Fragment {
     public static List<String> imagePaths ;  //存放圖片的路徑
     private ImageAdapter imageAdapter;  //用來顯示縮圖
     private Toolbar toolbar;
-
+    public String photoUri;
 
     /**
      * Use this factory method to create a new instance of
@@ -89,7 +85,7 @@ public class CustomPhoto extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_nextstep:
                         nextStep();
                         break;
@@ -128,7 +124,7 @@ public class CustomPhoto extends Fragment {
             String filepath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));//抓路徑
 
             imagePaths.add(filepath);
-            Log.i("filepath", filepath);
+
         }
 
         cursor.close();
@@ -136,11 +132,22 @@ public class CustomPhoto extends Fragment {
         imageAdapter = new ImageAdapter(getActivity(), thumbs);
         gridView.setAdapter(imageAdapter);
         imageAdapter.notifyDataSetChanged();
-    }
-    public void nextStep(){
-        ChooseTemplate CT = new ChooseTemplate();
-        ((MainActivity) getActivity()).replaceFragment(CT);
+        gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
 
+                photoUri = imagePaths.get(position);
+            }
+        });
+    }
+
+    public void nextStep(){
+        ChooseTemplate chooseTemplate = new ChooseTemplate();
+        Bundle bundle = new Bundle();
+        bundle.putString("photoUri", photoUri);
+        chooseTemplate.setArguments(bundle);
+        ((MainActivity) getActivity()).replaceFragment(chooseTemplate);
+        Log.e("photoUri", photoUri);
     }
     @Override
     public void onAttach(Context context) {
