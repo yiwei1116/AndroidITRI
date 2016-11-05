@@ -1119,19 +1119,6 @@ public class SurveyActivity extends AppCompatActivity {
                 pageNotice();
             }
         });
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
-//                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//
-//                return true;
-//            }
-//        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.twelve_twelfth);

@@ -256,7 +256,7 @@ public class TemplateContext extends Fragment {
     public void spinnerArea(){
 
 
-        arrayList.add("請選擇");
+        arrayList.add(getResources().getString(R.string.spinner_please_select));
         getZone();
         ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList);
         spinner.setAdapter(adp);

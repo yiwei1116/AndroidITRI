@@ -156,7 +156,7 @@ public class MapFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                FeedbackFragment feedback = new FeedbackFragment();
+                FeedbackFragment feedback = FeedbackFragment.newInstance(currentZone);
                 feedback.feedbackAlertDialog(getActivity(), feedback);
                 return true;
             }

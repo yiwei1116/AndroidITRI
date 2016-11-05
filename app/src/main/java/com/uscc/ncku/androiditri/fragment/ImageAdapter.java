@@ -88,7 +88,6 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return coll.size();
     }
 
@@ -99,7 +98,6 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
 
         return position;
     }

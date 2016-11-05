@@ -168,23 +168,23 @@
     <string name="feedback_fourth_order">Your third choice product purchase is</string>
     <string name="feedback_fifth_order">Your fifth choice product purchase is</string>
     <string name="feedback_next">Next</string>
-    <string name="buildContext1"></string>
-    <string name="buildContext2"></string>
-    <string name="buildContext3"></string>
-    <string name="back_to_main"></string>
-    <string name="build_text"></string>
-    <string name="choose_photo"></string>
-    <string name="choose_template"></string>
+    <string name="back_to_main">Back</string>
+    <string name="build_text">Build in content</string>
+    <string name="choose_photo">Select pictures</string>
+    <string name="choose_template">Select a template</string>
 
     <string name="nextstep">Next</string>
-    <string name="write_text"></string>
-    <string name="text_master"></string>
-    <string name="save_to_phone"></string>
-    <string name="send_mail"></string>
+    <string name="write_text">Write content</string>
+    <string name="text_master">Write content</string>
+    <string name="save_to_phone">Saving</string>
+    <string name="send_mail">Sending email</string>
     <string name="equipment_manufacture_info">Manufacturer Information</string>
     <string name="coach_info">Click the icon to\nsee the map guide</string>
     <string name="coach_question">Click the icon\nto give feedback</string>
     <string name="understand">OK</string>
     <string name="coach_swapup">Swipe up to discover\nmore modes</string>
     <string name="coach_swip_leftright">Slide horizontally to\nchange the equipments</string>
+    <string name="store_sucess">Successful saving</string>
+    <string name="choose_area">Your location</string>
+    <string name="spinner_please_select">Your Selection</string>
 </resources>

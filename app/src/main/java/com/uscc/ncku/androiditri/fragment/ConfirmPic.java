@@ -134,25 +134,13 @@ public class ConfirmPic extends Fragment implements View.OnClickListener {
         return BitmapFactory.decodeFile(picPath, bmOptions);
     }
     public void nextStep(){
-        FragmentManager fm = getFragmentManager();
         ChooseTemplate CT = new ChooseTemplate();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.flayout_fragment_continer, CT );
-        transaction.addToBackStack(null);
-        transaction.commit();
+        ((MainActivity) getActivity()).replaceFragment(CT);
 
     }
     public void ReTake(){
-        FragmentManager fm = getFragmentManager();
         CustomCameras CC = new CustomCameras();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.flayout_fragment_continer, CC );
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-
-
-
+        ((MainActivity) getActivity()).replaceFragment(CC);
     }
 
 

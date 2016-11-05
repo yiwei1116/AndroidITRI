@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -28,13 +30,18 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * use this to call feedback popup dialog
  *
- * FeedbackFragment feedback = new FeedbackFragment();
+ * FeedbackFragment feedback = new FeedbackFragment(currentZone);
  * feedback.feedbackAlertDialog(getActivity(), feedback);
  */
 
@@ -44,25 +51,19 @@ import org.json.JSONException;
  * create an instance of this fragment.
  */
 public class FeedbackFragment extends Fragment {
-    private static final String[] SPINNER_LIEST_2F = {
-            "1.健康綠建材", "2.無線感知及人員定位系統", "22.IP數位影像電話",
-            "25.電動窗簾", "27.辦公室視訊會議系統", "28.智慧圖書室",
-            "29.辦公室休憩區情境模擬系統", "30.CO2及溫濕度環境監測系統"
-    };
-    private static final String[] SPINNER_LIEST_2F_EN = {
-            "1.Healthy green building material", "2.Wireless sensing and personnel location system",
-            "22.IP digital imaging", "25.Electronic curtains",
-            "27.Office video conference meeting system", "28.Smart library",
-            "29.Office resting area scenario simulation system",
-            "30.CO2 and temperature/humidity environmental monitoring system"
-    };
+    private static final String ZONE_ID = "ZONE_ID";
 
-    private String[] SPINNER_LIEST;
     private View view;
     private ScrollView scrollView;
 
+    private ArrayList<String> spinnerList;
+
     private boolean isEnglish;
 
+    private SQLiteDbManager dbManager;
+
+    private int zoneId;
+    private int field;
     private CommunicationWithServer comm;
     private int attitude = 0;
     private int functionality = 0;
@@ -92,14 +93,33 @@ public class FeedbackFragment extends Fragment {
      *
      * @return A new instance of fragment FeedbackFragment.
      */
-    public static FeedbackFragment newInstance() {
+    public static FeedbackFragment newInstance(int zoneId) {
         FeedbackFragment fragment = new FeedbackFragment();
+        Bundle args = new Bundle();
+        args.putInt(ZONE_ID, zoneId);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            zoneId = getArguments().getInt(ZONE_ID);
+            // TODO: zone id = 2
+            if (zoneId == 0)
+                zoneId = 2;
+        }
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        spinnerList = new ArrayList<String>();
+
+        try {
+            JSONObject zone = dbManager.queryZone(zoneId);
+
+            field = zone.getInt("field_id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -136,11 +156,7 @@ public class FeedbackFragment extends Fragment {
         isEnglish = ((MainActivity) getActivity()).isEnglish();
         comm = ((MainActivity) getActivity()).getCommunicationWithServer();
 
-        if (isEnglish) {
-            SPINNER_LIEST = SPINNER_LIEST_2F_EN;
-        } else {
-            SPINNER_LIEST = SPINNER_LIEST_2F;
-        }
+        addSpinnerList();
 
         return view;
     }
@@ -195,6 +211,38 @@ public class FeedbackFragment extends Fragment {
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.getMenu().clear();
         toolbar.setNavigationIcon(R.drawable.btn_back);
+    }
+
+    private void addSpinnerList() {
+        spinnerList.add(getResources().getString(R.string.spinner_please_select));
+
+        try {
+            JSONArray deviceNames = queryDeviceNameByField(field);
+
+            for (int i = 0; i < deviceNames.length(); i++) {
+                JSONObject deviceName = deviceNames.getJSONObject(i);
+
+                int devicd_id = deviceName.getInt("device_id");
+                String name = deviceName.getString("name");
+                name = String.valueOf(devicd_id) + ". " + name;
+                if(isEnglish) {
+                    String name_en = deviceName.getString("name_en");
+                    name_en = String.valueOf(devicd_id) + ". " + name_en;
+                    if (name_en == null)
+                        spinnerList.add(name);
+                    else
+                        spinnerList.add(name_en);
+                } else {
+                    spinnerList.add(name);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < spinnerList.size(); i++) {
+            Log.d("GGGG", spinnerList.get(i));
+        }
     }
 
     private void q1() {
@@ -411,7 +459,7 @@ public class FeedbackFragment extends Fragment {
 
         Spinner spinner_1 = (Spinner) view.findViewById(R.id.feedback_spinner_first_order);
         ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, SPINNER_LIEST);
+                android.R.layout.simple_spinner_item, spinnerList);
         spinner_1.setAdapter(lunchList);
         spinner_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -639,7 +687,7 @@ public class FeedbackFragment extends Fragment {
 
         Spinner spinner1 = (Spinner) view.findViewById(R.id.feedback_spinner_equip_1);
         ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, SPINNER_LIEST);
+                android.R.layout.simple_spinner_item, spinnerList);
         spinner1.setAdapter(lunchList);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -719,7 +767,7 @@ public class FeedbackFragment extends Fragment {
 
         Spinner spinner1 = (Spinner) view.findViewById(R.id.feedback_spinner_free_1);
         ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, SPINNER_LIEST);
+                android.R.layout.simple_spinner_item, spinnerList);
         spinner1.setAdapter(lunchList);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -827,7 +875,7 @@ public class FeedbackFragment extends Fragment {
 
         Spinner spinner1 = (Spinner) view.findViewById(R.id.feedback_spinner_impressed_1);
         ArrayAdapter<String> lunchList = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item, SPINNER_LIEST);
+                android.R.layout.simple_spinner_item, spinnerList);
         spinner1.setAdapter(lunchList);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1006,10 +1054,55 @@ public class FeedbackFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                new FeedbackUpload().execute();
+
+                getActivity().onBackPressed();
             }
         });
 
+    }
+
+    public JSONArray queryDeviceNameByField(int filed) throws JSONException {
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+
+        // get zone id
+        Cursor cursor = db.rawQuery("select zone_id from zone where field_id=" + filed, null);
+        cursor.moveToFirst();
+        ArrayList<Integer> zoneIds_inField = new ArrayList<Integer>();
+        while (cursor.isAfterLast() == false) {
+            zoneIds_inField.add(cursor.getInt(cursor.getColumnIndex("zone_id")));
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        // get mode id
+        ArrayList<Integer> modeIds_inField = new ArrayList<Integer>();
+        for (int i = 0; i < zoneIds_inField.size(); i++) {
+            JSONArray modes = dbManager.queryModeDataWithZoneId(zoneIds_inField.get(i));
+            for (int j = 0; j < modes.length(); j++) {
+                JSONObject mode = modes.getJSONObject(j);
+                modeIds_inField.add(mode.getInt("mode_id"));
+            }
+        }
+
+        // get device id
+        JSONArray filePaths = new JSONArray();
+        for (int i = 0; i < modeIds_inField.size(); i++) {
+            JSONArray devices = dbManager.queryDeviceFilesWithModeId(modeIds_inField.get(i));
+            for (int j = 0; j < devices.length(); j++) {
+                JSONObject device = devices.getJSONObject(j);
+
+                JSONObject file = new JSONObject();
+                int devicd_id = device.getInt("device_id");
+                String name = device.getString("name");
+                String name_en = device.getString("name_en");
+                file.put("device_id", devicd_id);
+                file.put("name", name);
+                file.put("name_en", name_en);
+                filePaths.put(file);
+            }
+        }
+
+        return filePaths;
     }
 
     public void feedbackAlertDialog(final Activity activity, final FeedbackFragment f) {
@@ -1024,7 +1117,7 @@ public class FeedbackFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fm = activity.getFragmentManager();
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.flayout_fragment_continer, f).addToBackStack(null);
+                transaction.replace(R.id.flayout_fragment_continer, f);
                 transaction.commit();
 
                 dialog.dismiss();
@@ -1038,28 +1131,5 @@ public class FeedbackFragment extends Fragment {
         });
 
         dialog.show();
-    }
-
-    class FeedbackUpload extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            getActivity().onBackPressed();
-        }
     }
 }

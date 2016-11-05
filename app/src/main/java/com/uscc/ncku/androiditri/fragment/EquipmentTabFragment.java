@@ -475,7 +475,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.insertEquipPhoto(equip.getString("photo"));
             tab.insertEquipPhoto(equip.getString("photo_vertical"));
 
-            // TODO: set video and photo button
             tab.setVideo(true);
             tab.setPhoto(true);
             tab.setTextContent(equip.getString("introduction"));

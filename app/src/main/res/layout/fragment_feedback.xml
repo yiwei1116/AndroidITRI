@@ -680,6 +680,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_first_order"
                     android:layout_below="@+id/feedback_first_order">
                 </Spinner>
@@ -775,6 +778,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_second_order"
                     android:layout_below="@+id/feedback_second_order">
                 </Spinner>
@@ -870,6 +876,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_third_order"
                     android:layout_below="@+id/feedback_third_order">
                 </Spinner>
@@ -965,6 +974,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_fourth_order"
                     android:layout_below="@+id/feedback_fourth_order">
                 </Spinner>
@@ -1060,6 +1072,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_fifth_order"
                     android:layout_below="@+id/feedback_fifth_order">
                 </Spinner>
@@ -1190,6 +1205,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_equip_1"
                     android:layout_below="@+id/feedback_equip_info">
                 </Spinner>
@@ -1199,6 +1217,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_equip_2"
                     android:layout_below="@+id/feedback_spinner_equip_1">
                 </Spinner>
@@ -1208,6 +1229,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_equip_3"
                     android:layout_below="@+id/feedback_spinner_equip_2">
                 </Spinner>
@@ -1234,6 +1258,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_free_1"
                     android:layout_below="@+id/feedback_free_1">
                 </Spinner>
@@ -1253,6 +1280,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_free_2"
                     android:layout_below="@+id/feedback_free_2">
                 </Spinner>
@@ -1272,6 +1302,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_free_3"
                     android:layout_below="@+id/feedback_free_3">
                 </Spinner>
@@ -1291,6 +1324,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_free_4"
                     android:layout_below="@+id/feedback_free_4">
                 </Spinner>
@@ -1310,6 +1346,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_free_5"
                     android:layout_below="@+id/feedback_free_5">
                 </Spinner>
@@ -1336,6 +1375,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_impressed_1"
                     android:layout_below="@+id/feedback_impressed_1">
                 </Spinner>
@@ -1355,6 +1397,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_impressed_2"
                     android:layout_below="@+id/feedback_impressed_2">
                 </Spinner>
@@ -1374,6 +1419,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_impressed_3"
                     android:layout_below="@+id/feedback_impressed_3">
                 </Spinner>
@@ -1393,6 +1441,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_impressed_4"
                     android:layout_below="@+id/feedback_impressed_4">
                 </Spinner>
@@ -1412,6 +1463,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="25dp"
+                    android:spinnerMode="dropdown"
+                    android:popupBackground="@color/colorWhite"
+                    android:dropDownSelector="@drawable/spinner_select"
                     android:id="@+id/feedback_spinner_impressed_5"
                     android:layout_below="@+id/feedback_impressed_5">
                 </Spinner>

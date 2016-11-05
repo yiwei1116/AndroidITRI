@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
+import com.uscc.ncku.androiditri.fragment.FeedbackFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
@@ -489,6 +490,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
+         *  if current fragment is feedback fragment
+         *  than replace map fragment
+         */
+        if (currentFragment instanceof FeedbackFragment) {
+            replaceFragment(mapFragment);
+            return;
+        }
+
+        /**
          *  normal situation of pressing back button
          *  popping up latest fragment from fragment back stack
          */
@@ -519,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                     !(fragmentBackStack.peekLast() instanceof MapFragment))
                 fragmentBackStack.addLast(f);
 
-            // replace fragment
+            // replace fragment without add it back to back stack
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.flayout_fragment_continer, f, fragmentTag);
             ft.commit();
