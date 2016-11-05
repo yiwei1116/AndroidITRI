@@ -25,7 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="214dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/rm_a1m1e1_photo"
             android:visibility="gone" />
 
         <FrameLayout

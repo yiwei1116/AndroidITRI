@@ -6,6 +6,9 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -75,11 +78,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private ArrayList<EquipmentTabInformation> equipTabs;
     private SeekBar seekBar;
     public MediaPlayer mediaPlayer;
-    private static final int[] rm_images = {
-            R.drawable.rm_grid1_a1m4,
-            R.drawable.rm_grid1_a1m3
-    };
-    private int image_index = 0;
     //private ArrayList<Integer> audioList = new ArrayList<Integer>();
 
     private int[] audioList = {
@@ -138,14 +136,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
 
-        // testing calling files dir: /data/data/package.projectname/files
-//        File fileDir = this.getActivity().getFilesDir();
-//        String fileDirPath = String.valueOf(fileDir);
-//        // get filename --> may need to parse
-//        String finalFile = "test";
-//        Bitmap bitmap = HelperFunctions.readImageBitmap(finalFile);
-//        ImageView image ;
-//        image.setImageBitmap(bitmap);
         try {
             addTabs();
         } catch (JSONException e) {
@@ -372,38 +362,61 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         @Override
         public void onClick(View v) {
+            final int position = mViewPager.getCurrentItem();
+
             final Dialog dialog = new Dialog(getActivity(), R.style.dialog_coach_normal);
             dialog.setContentView(R.layout.item_equipment_zoom_photo);
 
             final ImageView imageView = (ImageView) dialog.findViewById(R.id.zoom_photo_image);
+            final ArrayList<String> photoList = equipTabs.get(position).getEquipPhoto();
 
             ImageButton close = (ImageButton) dialog.findViewById(R.id.zoom_photo_close);
             ImageButton previous = (ImageButton) dialog.findViewById(R.id.zoom_photo_previous);
             ImageButton next = (ImageButton) dialog.findViewById(R.id.zoom_photo_next);
 
-            if (rm_images.length > 1) {
+            if (photoList.size() > 1) {
                 previous.setVisibility(View.VISIBLE);
                 next.setVisibility(View.VISIBLE);
                 previous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int image_index = equipTabs.get(position).getEquipPhotoIndex();
                         image_index--;
-                        image_index = (image_index < 0) ? image_index + rm_images.length : image_index;
-                        imageView.setImageResource(rm_images[image_index]);
+                        image_index = (image_index < 0) ? image_index + photoList.size() : image_index;
+                        equipTabs.get(position).setEquipPhotoIndex(image_index);
+
+                        String name = photoList.get(image_index);
+                        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                        imageView.setImageBitmap(bitmap);
                     }
                 });
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int image_index = equipTabs.get(position).getEquipPhotoIndex();
                         image_index++;
-                        image_index %= rm_images.length;
-                        imageView.setImageResource(rm_images[image_index]);
+                        image_index %= photoList.size();
+                        equipTabs.get(position).setEquipPhotoIndex(image_index);
+
+                        String name = photoList.get(image_index);
+                        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                        imageView.setImageBitmap(bitmap);
                     }
                 });
 
-                imageView.setImageResource(rm_images[image_index]);
-            } else if (rm_images.length == 1) {
-                imageView.setImageResource(rm_images[image_index]);
+                int image_index = equipTabs.get(position).getEquipPhotoIndex();
+                String name = photoList.get(image_index);
+                Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+
+                imageView.setImageBitmap(bitmap);
+
+            } else if (photoList.size() == 1) {
+
+                int image_index = equipTabs.get(position).getEquipPhotoIndex();
+                String name = photoList.get(image_index);
+                Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+
+                imageView.setImageBitmap(bitmap);
             }
 
             close.setOnClickListener(new View.OnClickListener() {
@@ -434,6 +447,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             String name = isEnglish ? equip.getString("name_en") : equip.getString("name");
             tab.setTitle(name);
+
+            // insert photo to array list
+            tab.insertEquipPhoto(equip.getString("photo"));
+            tab.insertEquipPhoto(equip.getString("photo_vertical"));
+
             // TODO: set video and photo button
             tab.setVideo(true);
             tab.setPhoto(true);
@@ -445,7 +463,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             JSONObject company = equip.getJSONObject("company_data");
             // add company information
             tab.setCompanyTitleText(name);
-            tab.setCompanyTitleImage(R.drawable.rm_a1m1e1_infobg);
+            tab.setCompanyTitleImage(equip.getString("photo"));
             tab.setCompanyName(company.getString("name"));
             tab.setCompanyWebsite(company.getString("web"));
             tab.setCompanyPhone(company.getString("tel"));
@@ -461,6 +479,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView title = (TextView) v.findViewById(R.id.equipment_title);
         Log.d("GGG", String.valueOf(position));
         title.setText(equipTabs.get(position).getTitle());
+
+        // set equipment image
+        String imageName = equipTabs.get(position).getEquipPhotoFirst();
+        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), imageName);
+        ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
+        imageView.setImageBitmap(bitmap);
 
         // set vidoe and photo button
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
@@ -517,8 +541,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private void setEquipmentInfo(View v, int position) {
         EquipmentTabInformation currTab = equipTabs.get(position);
 
+        String name = currTab.getCompanyTitleImage();
+        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+        Drawable back = new BitmapDrawable(bitmap);
         ImageView bg = (ImageView) v.findViewById(R.id.equipment_info_title_image);
-        bg.setBackgroundResource(currTab.getCompanyTitleImage());
+        bg.setBackgroundDrawable(back);
 
         TextView title = (TextView) v.findViewById(R.id.equipment_info_title);
         title.setText(currTab.getCompanyTitleText());
