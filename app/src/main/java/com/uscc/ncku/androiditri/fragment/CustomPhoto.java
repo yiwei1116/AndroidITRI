@@ -43,7 +43,7 @@ public class CustomPhoto extends Fragment  {
     public static List<String> imagePaths ;  //存放圖片的路徑
     private ImageAdapter imageAdapter;  //用來顯示縮圖
     private Toolbar toolbar;
-    public String photoUri;
+    public String photoUri,flagSelect;
 
     /**
      * Use this factory method to create a new instance of
@@ -71,7 +71,11 @@ public class CustomPhoto extends Fragment  {
 
 
         ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_photo);
+        Bundle bundle1 = getArguments();
+        if(bundle1 != null) {
+            flagSelect  = (String) getArguments().get("flagSelect");
 
+        }
         toolbar = ((MainActivity) getActivity()).getToolbar();
 
         toolbar.setNavigationIcon(R.drawable.btn_back);
@@ -144,10 +148,11 @@ public class CustomPhoto extends Fragment  {
     public void nextStep(){
         ChooseTemplate chooseTemplate = new ChooseTemplate();
         Bundle bundle = new Bundle();
+        bundle.putString("flagSelect", String.valueOf(flagSelect));
         bundle.putString("photoUri", photoUri);
         chooseTemplate.setArguments(bundle);
         ((MainActivity) getActivity()).replaceFragment(chooseTemplate);
-        Log.e("photoUri", photoUri);
+        Log.e("flagSelect", flagSelect);
     }
     @Override
     public void onAttach(Context context) {

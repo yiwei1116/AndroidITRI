@@ -54,7 +54,7 @@ public class TemplateContext extends Fragment {
     private EditText editText;
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
-    private String templateIndex , photoUri;
+    private String templateIndex , photoUri,picPath;
     private String textBulid ;
     MergeTemplatePic MTP;
     private String StringContext;
@@ -196,9 +196,9 @@ public class TemplateContext extends Fragment {
         final Bundle bundle = getArguments();
         if (bundle != null) {
             templateIndex = (String)getArguments().get("Template");
-            photoUri = (String)getArguments().get("photoUri");
-
-            Log.e("photoUri", photoUri);
+            //photoUri = (String)getArguments().get("photoUri");
+            picPath = (String)getArguments().get("picPath");
+            Log.e("picPath", picPath);
 
         }
         btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
@@ -266,9 +266,6 @@ public class TemplateContext extends Fragment {
                                        int position, long arg3)
             {
 
-                /*String city = "The Area is " + parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), city, Toast.LENGTH_LONG).show();*/
-
             }
 
             @Override
@@ -310,12 +307,11 @@ public class TemplateContext extends Fragment {
                     bundle1.putString("TemplateNum", templateIndex);
                     bundle1.putString("WriteContext", StringContext);
                     bundle1.putString("BuildContext", textBulid);
-                    bundle1.putString("photoUri", photoUri);
                     bundle1.putString("minX", String.valueOf(minX));
                     bundle1.putString("minY", String.valueOf(minY));
                     bundle1.putString("weight", String.valueOf(width));
                     bundle1.putString("height", String.valueOf(length));
-
+                    bundle1.putString("picPath", picPath);
                     MTP.setArguments(bundle1);
                     ((MainActivity) getActivity()).replaceFragment(MTP);
                 }

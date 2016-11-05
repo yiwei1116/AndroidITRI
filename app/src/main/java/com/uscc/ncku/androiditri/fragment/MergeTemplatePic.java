@@ -48,7 +48,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
     private String templateIndex;
     private String WriteContext,BuildContext;
-    private String photoUri;
+    private String photoUri,picPath;
     private ImageView mergeImage,qrcodeImage,pic;
     private TextView textView;
     private Button icDownload,savePhone,sendMail,backTour;
@@ -126,13 +126,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
            mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
            WriteContext = (String) getArguments().get("WriteContext");
            BuildContext = (String) getArguments().get("BuildContext");
-           photoUri = (String) getArguments().get("photoUri");
+           picPath = (String) getArguments().get("picPath");
            minX = Integer.valueOf((String) getArguments().get("minX"));
            minY = Integer.valueOf((String) getArguments().get("minY"));
            width =Integer.valueOf((String) getArguments().get("weight"));
            length = Integer.valueOf((String) getArguments().get("height"));
-
-
 
            if (WriteContext != null) {
                textView.setText(WriteContext);
@@ -295,7 +293,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
        private void init() {
 
            pic = new ImageView(getActivity());
-           pic.setImageURI(Uri.parse(photoUri));
+           pic.setImageURI(Uri.parse(picPath));
 
             /*pic.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override

@@ -39,14 +39,14 @@ import java.util.LinkedList;
  * create an instance of this fragment.
  */
 public class ChooseTemplate extends Fragment {
-    Context mContext;
-    LayoutInflater mLayoutInflater;
-    ViewPager viewPager;
-    ChooseTemp adapter;
-    TemplateContext TC;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private ViewPager viewPager;
+    private ChooseTemp adapter;
+    private TemplateContext TC;
     private int viewPageIndex;
-    Bundle bundle1;
-    String photoUri;
+    private Bundle bundle1;
+    private String photoUri,picPath,flagSelect;
 
     /**
      * Use this factory method to create a new instance of
@@ -93,8 +93,9 @@ public class ChooseTemplate extends Fragment {
          bundle1 = getArguments();
         if (bundle1 != null) {
             photoUri = (String)getArguments().get("photoUri");
+            picPath = (String)getArguments().get("picPath");
+            flagSelect = (String)getArguments().get("flagSelect");
 
-            Log.e("photoUri", photoUri);
 
         }
         Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
@@ -105,7 +106,18 @@ public class ChooseTemplate extends Fragment {
                 TC = new TemplateContext();
                 Bundle bundle = new Bundle();
                 bundle.putString("Template", String.valueOf(viewPageIndex));
-                bundle.putString("photoUri",photoUri);
+                if (flagSelect.equals("true"))
+                {
+
+
+                    bundle.putString("picPath",picPath);
+                }
+                else{
+
+                    bundle.putString("picPath",photoUri);
+
+                }
+
                 TC.setArguments(bundle);
                 ((MainActivity) getActivity()).replaceFragment(TC);
 

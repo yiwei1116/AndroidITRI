@@ -62,6 +62,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
     private String mImageFileLocation = "";
     private ImageView mImg;
     private Button cameraCall,photoCall,nextStep;
+    private Boolean flagSelect;
 
 
 
@@ -121,9 +122,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
         switch(v.getId()) {
             case R.id.camera:
+                flagSelect = true;
+                Log.e("flagSelect",String.valueOf(flagSelect));
                 takePhoto();
                 break;
             case R.id.photo:
+                flagSelect = false;
+                Log.e("flagSelect",String.valueOf(flagSelect));
                 choosePhoto();
                 break;
 
@@ -211,8 +216,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
 
     public void callCamera( ){
 
-        CustomCameras CC = new CustomCameras();
-        ((MainActivity) getActivity()).replaceFragment(CC);
+        CustomCameras customCameras = new CustomCameras();
+        Bundle bundle = new Bundle();
+        bundle.putString("flagSelect", String.valueOf(flagSelect));
+        customCameras.setArguments(bundle);
+        ((MainActivity) getActivity()).replaceFragment(customCameras);
       /*
        Intent cameraIntent = new Intent();
         // sent to have the camera application capture an image and return it.
@@ -279,8 +287,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PHOTO_RESULT);*/
-        CustomPhoto CsP = new CustomPhoto();
-        ((MainActivity) getActivity()).replaceFragment(CsP);
+        CustomPhoto customPhoto = new CustomPhoto();
+        Bundle bundle = new Bundle();
+        bundle.putString("flagSelect", String.valueOf(flagSelect));
+        customPhoto.setArguments(bundle);
+        ((MainActivity) getActivity()).replaceFragment(customPhoto);
     }
 
  /*   @Override
