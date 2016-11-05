@@ -1,24 +1,20 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,12 +23,8 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.StringTokenizer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,14 +87,28 @@ public class ModeHighlightFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_mode_highlight, container, false);
 
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
+        setHasOptionsMenu(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.main_thumbup, menu);
     }
 
     @Override
@@ -132,6 +138,9 @@ public class ModeHighlightFragment extends Fragment {
     }
 
     private void modeHighlight() {
+        // hide toolbar menu
+        ((MainActivity) getActivity()).getToolbar().getMenu().clear();
+
         ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
         ImageView equipHighlight = (ImageView) view.findViewById(R.id.img_equipment_highlight);

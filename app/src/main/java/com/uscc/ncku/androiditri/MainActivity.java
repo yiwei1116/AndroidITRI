@@ -785,9 +785,7 @@ public class MainActivity extends AppCompatActivity {
 
             // set all mode did_read false at the first time
             SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
-            SQLiteDatabase db = dbManager.getReadableDatabase();
-            String sql = "UPDATE mode SET did_read=0";
-            db.execSQL(sql);
+            dbManager.setModeDidReadZero();
 
             isCoachSwipUpFirst = false;
         }

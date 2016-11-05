@@ -18,6 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -122,16 +125,23 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
+        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
+        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
+        setHasOptionsMenu(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
-
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
-        dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
@@ -142,6 +152,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.main_thumbup, menu);
     }
 
     @Override
@@ -188,6 +205,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 ScrollView infoLayout = (ScrollView) currView.findViewById(R.id.scrollview_equipment_info);
                 infoLayout.setVisibility(View.GONE);
 
+                // add current equipment read count
+                dbManager.addReadCount(equipTabs.get(position).getDeviceId());
+
+                // set current position to last position
                 mLastViewPage = position;
             }
 
@@ -444,6 +465,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceIds[i]);
 
             EquipmentTabInformation tab = new EquipmentTabInformation();
+
+            tab.setDeviceId(deviceIds[i]);
 
             String name = isEnglish ? equip.getString("name_en") : equip.getString("name");
             tab.setTitle(name);

@@ -1466,7 +1466,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // set all mode did_read to 0 --> 振哥 to test
     public void setModeDidReadZero() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.rawQuery("UPDATE mode SET did_read=0", null);
+        db.execSQL("UPDATE mode SET did_read=0");
+        db.close();
     }
 
 }

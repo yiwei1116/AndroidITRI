@@ -15,6 +15,9 @@ public class EquipmentTabInformation {
     // current equipment tab view
     private View v;
 
+    // device ID
+    private int deviceId;
+
     // equipment title
     private String title;
 
@@ -52,6 +55,14 @@ public class EquipmentTabInformation {
         // initial photo index at positon one
         this.equipPhotoIndex = 1;
         this.fontSize = 18;
+    }
+
+    public int getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(int deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getCompanyLocation() {
