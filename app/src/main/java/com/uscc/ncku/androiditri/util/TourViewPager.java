@@ -21,6 +21,11 @@ package com.uscc.ncku.androiditri.util;
  *
  * Edit scrollToItem method
  *
+ * This is the viewpager source by Google.
+ * There are some problem while adapting raw viewpager on tour select activity.
+ * The position of the tour picture is in the wrong place.
+ * I modify few lines of code in scrollToItem method to solve the problem.
+ *
  */
 
 import android.content.Context;
