@@ -499,7 +499,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private void setEquipmentTab(View v, int position) {
         // set equipment title
         TextView title = (TextView) v.findViewById(R.id.equipment_title);
-        Log.d("GGG", String.valueOf(position));
         title.setText(equipTabs.get(position).getTitle());
 
         // set equipment image

@@ -239,10 +239,6 @@ public class FeedbackFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        for (int i = 0; i < spinnerList.size(); i++) {
-            Log.d("GGGG", spinnerList.get(i));
-        }
     }
 
     private void q1() {
@@ -464,7 +460,8 @@ public class FeedbackFragment extends Fragment {
         spinner_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                first_choise = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -501,7 +498,8 @@ public class FeedbackFragment extends Fragment {
         spinner_2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                second_choise = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -538,7 +536,8 @@ public class FeedbackFragment extends Fragment {
         spinner_3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                third_choise = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -575,7 +574,8 @@ public class FeedbackFragment extends Fragment {
         spinner_4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                fourth_choise = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -612,7 +612,8 @@ public class FeedbackFragment extends Fragment {
         spinner_5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                fifth_choise = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -692,7 +693,8 @@ public class FeedbackFragment extends Fragment {
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                subscription1 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -706,7 +708,8 @@ public class FeedbackFragment extends Fragment {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                subscription2 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -720,7 +723,8 @@ public class FeedbackFragment extends Fragment {
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                subscription3 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -772,7 +776,8 @@ public class FeedbackFragment extends Fragment {
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                install1 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -786,7 +791,8 @@ public class FeedbackFragment extends Fragment {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                install2 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -800,7 +806,8 @@ public class FeedbackFragment extends Fragment {
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                install3 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -814,7 +821,8 @@ public class FeedbackFragment extends Fragment {
         spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                install4 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -828,7 +836,8 @@ public class FeedbackFragment extends Fragment {
         spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                install5 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -880,7 +889,8 @@ public class FeedbackFragment extends Fragment {
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                impression1 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -894,7 +904,8 @@ public class FeedbackFragment extends Fragment {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                impression2 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -908,7 +919,8 @@ public class FeedbackFragment extends Fragment {
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                impression3 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -922,7 +934,8 @@ public class FeedbackFragment extends Fragment {
         spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                impression4 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -936,7 +949,8 @@ public class FeedbackFragment extends Fragment {
         spinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String device = spinnerList.get(position);
+                impression5 = getDeviceIdFromSpinnerListName(device);
             }
 
             @Override
@@ -1103,6 +1117,22 @@ public class FeedbackFragment extends Fragment {
         }
 
         return filePaths;
+    }
+
+    private int getDeviceIdFromSpinnerListName(String name) {
+        // the device name is [device id]. [device name]
+        // split device with dot than device id will at first place
+        String deviceIdString = name.split("\\.")[0];
+
+        // if device id is not a number return 0;
+        int deviceId;
+        try {
+            deviceId = Integer.parseInt(deviceIdString);
+        } catch (NumberFormatException nfe) {
+            deviceId = 0;
+        }
+
+        return deviceId;
     }
 
     public void feedbackAlertDialog(final Activity activity, final FeedbackFragment f) {
