@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uscc.ncku.androiditri.BuildConfig;
 import com.uscc.ncku.androiditri.JavaScriptInterface;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
@@ -69,7 +70,7 @@ public class MapFragment extends Fragment {
     //test
     TextView address0;
 
-    private int currentZone;
+    private volatile int currentZone;
     private int currentZoneOrder = 0;
     private int pathOrder[] = {1,2,3};
     private int zoneOrder[] = {1,2,3,4 };
@@ -164,13 +165,11 @@ public class MapFragment extends Fragment {
 
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
 
+        // show notice if in debug mode
+        if (BuildConfig.DEBUG) {
+            notice.setVisibility(View.VISIBLE);
+        }
 
-        //notice.setVisibility(View.GONE);
-
-        notice.setVisibility(View.VISIBLE);
-
-
-        notice.setVisibility(View.VISIBLE);
         cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         txtMapArea = (TextView) view.findViewById(R.id.txt_map_area);
