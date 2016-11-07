@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.uscc.ncku.androiditri.util.ITRIObject;
+
 import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class HomeActivity extends AppCompatActivity {
 
         ImageButton btnCht = (ImageButton) findViewById(R.id.btn_cht_home);
         ImageButton btnEng = (ImageButton) findViewById(R.id.btn_eng_home);
+
+        ITRIObject.setIsDownloadDone();
 
         btnCht.setOnClickListener(new View.OnClickListener() {
             @Override

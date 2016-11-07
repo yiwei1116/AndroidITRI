@@ -83,9 +83,8 @@ public class DatabaseUtilizer {
     public static final String PATH_SVG_ID = "svg_id"; // int
     public static final String START = "start"; // start
     public static final String PATH_SN = "Sn"; // Sn
-    public static final String END = "End";
+    public static final String END = "end";
     public static final String PATH_EN = "En"; // En
-
 
     // beacon table
     public static final String BEACON_TABLE = "beacon";
@@ -96,7 +95,7 @@ public class DatabaseUtilizer {
     public static final String BEACON_FIELD_NAME = "field_name";
     public static final String BEACON_FIELD_ID = "field_id";
 
-    // compnay
+    // company
     public static final String COMPANY_TABLE = "company";
     public static final String COMPANY_ID = "company_id";
     public static final String COMPANY_TEL = "tel";
@@ -290,9 +289,12 @@ public class DatabaseUtilizer {
     // path --> path_id is the only primary key, different from database
     public static final String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
             + DatabaseUtilizer.CHOOSE_PATH_ID + " INT NOT NULL UNIQUE, "
+            + DatabaseUtilizer.PATH_ORDER + " INT, "
             + DatabaseUtilizer.PATH_SVG_ID + " INT, "
             + DatabaseUtilizer.START + " INT, "
-            + DatabaseUtilizer.END + " INT"
+            + DatabaseUtilizer.PATH_SN + " TEXT, "
+            + DatabaseUtilizer.END + " INT, "
+            + DatabaseUtilizer.PATH_EN + " TEXT"
             + ")";
     // survey
     public static final String DB_CREATE_TABLE_SURVEY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_TABLE + " ("

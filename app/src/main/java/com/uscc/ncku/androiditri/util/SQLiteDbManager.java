@@ -62,7 +62,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
 
-
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
         //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
         // problem with path
@@ -353,6 +352,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int field_id;
         String field_name;
         String map_svg;
+        int start;
+        int end;
+        String svg_id;
         // fetch all company_id & qrcode
         mac_addr = cursor.getString(cursor.getColumnIndex("mac_addr"));
         beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
@@ -374,7 +376,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
-
+        start = pathCursor.getInt(pathCursor.getColumnIndex("start"));
+        end = pathCursor.getInt(pathCursor.getColumnIndex("end"));
+        svg_id = pathCursor.getString(pathCursor.getColumnIndex("svg_id"));
 
         // add to JSONObject
         file.put("mac_addr", mac_addr);
@@ -388,6 +392,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("field_id", field_id);
         file.put("field_name", field_name);
         file.put("map_svg", svgName);
+        file.put("start", start);
+        file.put("end", end);
+        file.put("svg_id", svg_id);
+        Log.e("everything", String.valueOf(file));
+        // close cursor
         cursor.close();
         fieldMapCursor.close();
         pathCursor.close();
@@ -1095,14 +1104,20 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // path table query and insert
     public boolean insertPath(int choose_path_id,
                               int svg_id,
+                              int path_order,
                               int start,
-                              int end) {
+                              String Sn,
+                              int end,
+                              String En) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("choose_path_id", choose_path_id);
         values.put("svg_id", svg_id);
+        values.put("path_order", path_order);
         values.put("start", start);
+        values.put("Sn", Sn);
         values.put("End", end);
+        values.put("En", En);
         long rowId = db.insertWithOnConflict("path", null, values, 4);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
@@ -1111,7 +1126,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             return false;
         }
     }
-
 
     public Cursor getPath(int path_id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1136,20 +1150,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             choose_path_id = cursor.getInt(cursor.getColumnIndex("choose_path_id"));
-            order = cursor.getInt(cursor.getColumnIndex("order"));
             svg_id = cursor.getInt(cursor.getColumnIndex("svg_id"));
             start = cursor.getInt(cursor.getColumnIndex("start"));
-            Sn = cursor.getInt(cursor.getColumnIndex("Sn"));
-            End = cursor.getInt(cursor.getColumnIndex("End"));
-            En = cursor.getInt(cursor.getColumnIndex("En"));
+            End = cursor.getInt(cursor.getColumnIndex("end"));
             // add to JSONObject
             file.put("choose_path_id", choose_path_id);
-            file.put("path_order", order);
             file.put("svg_id", svg_id);
             file.put("start", start);
-            file.put("Sn", Sn);
-            file.put("End", End);
-            file.put("En", En);
+            file.put("end", End);
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();

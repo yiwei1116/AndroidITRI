@@ -1,15 +1,12 @@
 package com.uscc.ncku.androiditri;
 
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import com.uscc.ncku.androiditri.util.DatabaseUtilizer;
-import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONArray;
@@ -203,8 +200,10 @@ public class CommunicationWithServer {
     }
 
     // UPLOAD to "survey" table
-    public JSONObject packSurveyData (int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+    public JSONObject packSurveyData (int name, int email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
         JSONObject uploadObject = new JSONObject();
+        uploadObject.put("name", name);
+        uploadObject.put("email", email);
         uploadObject.put("gender", gender);
         uploadObject.put("age", age);
         uploadObject.put("education", education);
@@ -219,13 +218,13 @@ public class CommunicationWithServer {
         return uploadObject;
     }
 
-    public void uploadSurveyData(int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
-        JSONObject jsonObject = packSurveyData(gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
+    public void uploadSurveyData(int name, int email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+        JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
         uploadJsonData(jsonObject, this.surveyOneURL);
     }
 
     // UPLOAD to "survey2" table
-    public JSONObject packSurveyTwoData (int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, int first_consider, int second_consider, int third_consider, int fourth_consider, int fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
+    public JSONObject packSurveyTwoData (int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
         JSONObject uploadObject = new JSONObject();
         uploadObject.put("attitude", attitude);
         uploadObject.put("functionality", functionality);
@@ -264,7 +263,7 @@ public class CommunicationWithServer {
         return uploadObject;
     }
 
-    public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, int first_consider, int second_consider, int third_consider, int fourth_consider, int fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
+    public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
         JSONObject jsonObject = packSurveyTwoData( attitude,  functionality,  visual,  operability,  user_friendly,  price,  maintenance,  safety,  energy,  first_choise,  second_choise,  third_choise,  fourth_choise,  fifth_choise,  first_consider,  second_consider,  third_consider,  fourth_consider,  fifth_consider,  subscription1,  subscription2,  subscription3,  install1,  install2,  install3,  install4,  install5,  impression1,  impression2,  impression3,  impression4,  impression5,  buy,  reasonable_price);
         uploadJsonData(jsonObject, this.surveyTwoURL);
     }
@@ -465,9 +464,12 @@ public class CommunicationWithServer {
                         JSONObject json = (JSONObject)jsonArray.get(i);
                         // store each entry into database
                         sqLiteDbManager.insertPath(json.optInt(DatabaseUtilizer.CHOOSE_PATH_ID),
+                                json.optInt(DatabaseUtilizer.PATH_ORDER),
                                 json.optInt(DatabaseUtilizer.PATH_SVG_ID),
                                 json.optInt(DatabaseUtilizer.START),
-                                json.optInt(DatabaseUtilizer.END));
+                                json.optString(DatabaseUtilizer.PATH_SN),
+                                json.optInt(DatabaseUtilizer.END),
+                                json.optString(DatabaseUtilizer.PATH_EN));
                     }
                     break;
                 default:
@@ -652,4 +654,6 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
+
+
 }
