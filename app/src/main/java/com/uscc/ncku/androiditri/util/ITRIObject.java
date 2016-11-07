@@ -9,13 +9,13 @@ import org.json.JSONObject;
  */
 public class ITRIObject {
 
-    public static int isDownloadDone;
+    public static boolean isDownloadDone;
 
     public static void setIsDownloadDone() {
-        isDownloadDone = 0;
+        isDownloadDone = false;
     }
 
-    public static int getIsDownloadDone() {
+    public static boolean getIsDownloadDone() {
         return isDownloadDone;
     }
 
