@@ -364,13 +364,17 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         y = cursor.getInt(cursor.getColumnIndex("y"));
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
+
         Cursor fieldMapCursor = db.rawQuery("select map_svg from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
-
         // parse file name
         String[] paths = map_svg.split("/");
         String svgName = paths[paths.length-1];
+
+        Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
+        pathCursor.moveToFirst();
+
 
         // add to JSONObject
         file.put("mac_addr", mac_addr);
@@ -385,8 +389,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("field_name", field_name);
         file.put("map_svg", svgName);
         cursor.close();
-        return file;
+        fieldMapCursor.close();
+        pathCursor.close();
 
+        return file;
         // P.S.
         // how to parse JSONObject:
         // JSONObject obj = new JSONObject();
@@ -1088,21 +1094,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // path table query and insert
     public boolean insertPath(int choose_path_id,
-                              int path_order,
                               int svg_id,
                               int start,
-                              int sn,
-                              int end,
-                              int en) {
+                              int end) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("choose_path_id", choose_path_id);
-        values.put("path_order", path_order);
         values.put("svg_id", svg_id);
         values.put("start", start);
-        values.put("Sn", sn);
         values.put("End", end);
-        values.put("En", en);
         long rowId = db.insertWithOnConflict("path", null, values, 4);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");

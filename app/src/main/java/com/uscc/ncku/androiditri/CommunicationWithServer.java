@@ -1,6 +1,5 @@
 package com.uscc.ncku.androiditri;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -466,12 +465,9 @@ public class CommunicationWithServer {
                         JSONObject json = (JSONObject)jsonArray.get(i);
                         // store each entry into database
                         sqLiteDbManager.insertPath(json.optInt(DatabaseUtilizer.CHOOSE_PATH_ID),
-                                json.optInt(DatabaseUtilizer.PATH_ORDER),
                                 json.optInt(DatabaseUtilizer.PATH_SVG_ID),
                                 json.optInt(DatabaseUtilizer.START),
-                                json.optInt(DatabaseUtilizer.PATH_SN),
-                                json.optInt(DatabaseUtilizer.END),
-                                json.optInt(DatabaseUtilizer.PATH_EN));
+                                json.optInt(DatabaseUtilizer.END));
                     }
                     break;
                 default:
