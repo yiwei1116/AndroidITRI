@@ -140,7 +140,7 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onStart");
 
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
-        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), photoBg);
+        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg);
         Drawable back = new BitmapDrawable(bitmap);
         background.setBackgroundDrawable(back);
 

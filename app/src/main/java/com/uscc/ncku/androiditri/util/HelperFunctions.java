@@ -1,5 +1,6 @@
 package com.uscc.ncku.androiditri.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -29,6 +30,19 @@ public class HelperFunctions {
         File fileObj = new File(internalImagePath);
         Bitmap bitmap = BitmapFactory.decodeFile(fileObj.getAbsolutePath());
         return bitmap;
+    }
+
+    // ********************** get bitmap from file name ****************
+    public static Bitmap getBitmapFromFile(Context context, String name) {
+        // get file directory
+        File fileDir = context.getFilesDir();
+        String fileDirPath = String.valueOf(fileDir);
+
+        // parse file name
+        String[] paths = name.split("/");
+
+        String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
+        return HelperFunctions.readImageBitmap(finalFile);
     }
 
 }
