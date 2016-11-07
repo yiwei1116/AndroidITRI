@@ -652,21 +652,4 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
-
-
-    // ********************** get bitmap from file name ****************
-    public Bitmap getBitmapFromFile(Context context, String name) {
-        // get file directory
-        File fileDir = context.getFilesDir();
-        String fileDirPath = String.valueOf(fileDir);
-
-        // parse file name
-        String[] paths = name.split("/");
-
-        String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
-        return HelperFunctions.readImageBitmap(finalFile);
-    }
-
-
-
 }

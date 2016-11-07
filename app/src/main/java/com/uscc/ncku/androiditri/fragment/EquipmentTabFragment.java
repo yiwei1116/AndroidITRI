@@ -40,6 +40,7 @@ import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
@@ -407,7 +408,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         equipTabs.get(position).setEquipPhotoIndex(image_index);
 
                         String name = photoList.get(image_index);
-                        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
                         imageView.setImageBitmap(bitmap);
                     }
                 });
@@ -420,14 +421,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         equipTabs.get(position).setEquipPhotoIndex(image_index);
 
                         String name = photoList.get(image_index);
-                        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
                         imageView.setImageBitmap(bitmap);
                     }
                 });
 
                 int image_index = equipTabs.get(position).getEquipPhotoIndex();
                 String name = photoList.get(image_index);
-                Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
 
                 imageView.setImageBitmap(bitmap);
 
@@ -435,7 +436,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
                 int image_index = equipTabs.get(position).getEquipPhotoIndex();
                 String name = photoList.get(image_index);
-                Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
 
                 imageView.setImageBitmap(bitmap);
             }
@@ -503,7 +504,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         // set equipment image
         String imageName = equipTabs.get(position).getEquipPhotoFirst();
-        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), imageName);
+        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), imageName);
         ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
         imageView.setImageBitmap(bitmap);
 
@@ -563,7 +564,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         EquipmentTabInformation currTab = equipTabs.get(position);
 
         String name = currTab.getCompanyTitleImage();
-        Bitmap bitmap = comm.getBitmapFromFile(getActivity(), name);
+        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
         Drawable back = new BitmapDrawable(bitmap);
         ImageView bg = (ImageView) v.findViewById(R.id.equipment_info_title_image);
         bg.setBackgroundDrawable(back);
