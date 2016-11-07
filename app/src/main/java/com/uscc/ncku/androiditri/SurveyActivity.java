@@ -14,12 +14,27 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 public class SurveyActivity extends AppCompatActivity {
     public static SurveyActivity instance = null;
 
     private int tourIndex;
     private boolean isEnglish;
     private boolean menuHide = true;
+
+    private CommunicationWithServer comm;
+    private int gender = 0;
+    private int age = 0;
+    private int education = 0;
+    private int career = 0;
+    private int exp = 0;
+    private int salary = 0;
+    private int location = 0;
+    private int house_type = 0;
+    private int family_type = 0;
+    private int family_member = 0;
+    private int know_way = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +46,8 @@ public class SurveyActivity extends AppCompatActivity {
 
         TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_survey);
         toolBarTxt.setText(R.string.survey_title);
+
+        comm = LoadingActivity.getCommunicationWithServer();
 
 
         Bundle bundle = this.getIntent().getExtras();
@@ -114,6 +131,8 @@ public class SurveyActivity extends AppCompatActivity {
         btnFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gender = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageAge();
             }
@@ -121,6 +140,8 @@ public class SurveyActivity extends AppCompatActivity {
         btnMale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gender = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageAge();
             }
@@ -158,6 +179,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -165,6 +188,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -172,6 +197,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -179,6 +206,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -186,6 +215,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -193,6 +224,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -200,6 +233,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                age = 7;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageEducation();
             }
@@ -236,6 +271,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                education = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageOccupation();
             }
@@ -243,6 +280,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                education = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageOccupation();
             }
@@ -250,6 +289,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                education = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageOccupation();
             }
@@ -257,6 +298,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                education = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageOccupation();
             }
@@ -282,6 +325,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                career = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
                 return true;
@@ -316,6 +361,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -323,6 +370,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -330,6 +379,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -337,6 +388,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -344,6 +397,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -351,6 +406,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 11;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -358,6 +415,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -365,6 +424,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 7;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -372,6 +433,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 8;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -379,6 +442,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 9;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -386,6 +451,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 10;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -393,6 +460,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                career = 12;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageExperiment();
             }
@@ -416,6 +485,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                exp = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
                 return true;
@@ -437,6 +508,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -444,6 +517,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -451,6 +526,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -458,6 +535,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -465,6 +544,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -472,6 +553,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exp = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageIncome();
             }
@@ -495,6 +578,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                salary = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
                 return true;
@@ -517,6 +602,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -524,6 +611,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -531,6 +620,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -538,6 +629,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -545,6 +638,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -552,6 +647,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -559,6 +656,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salary = 7;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageResidence();
             }
@@ -582,6 +681,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                location = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
                 return true;
@@ -603,6 +704,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -610,6 +713,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -617,6 +722,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -624,6 +731,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -631,6 +740,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -638,6 +749,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                location = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageHouse();
             }
@@ -661,6 +774,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                house_type = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
                 return true;
@@ -687,6 +802,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house_type = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
             }
@@ -694,6 +811,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house_type = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
             }
@@ -701,6 +820,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house_type = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
             }
@@ -708,6 +829,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house_type = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
             }
@@ -715,6 +838,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                house_type = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyOrganization();
             }
@@ -738,6 +863,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                family_type = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
                 return true;
@@ -759,6 +886,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -766,6 +895,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -773,6 +904,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -780,6 +913,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -787,6 +922,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -794,6 +931,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_type = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageFamilyMember();
             }
@@ -817,6 +956,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                family_member = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageNotice();
                 return true;
@@ -835,6 +976,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_member = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageNotice();
             }
@@ -842,6 +985,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_member = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageNotice();
             }
@@ -849,6 +994,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                family_member = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pageNotice();
             }
@@ -873,6 +1020,8 @@ public class SurveyActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                know_way = 0;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
                 return true;
@@ -900,6 +1049,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 1;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -907,6 +1058,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 2;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -914,6 +1067,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 3;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -921,6 +1076,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 4;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -928,6 +1085,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 5;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -935,6 +1094,8 @@ public class SurveyActivity extends AppCompatActivity {
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                know_way = 6;
+
                 layout.setVisibility(View.INVISIBLE);
                 pagePersonal();
             }
@@ -958,19 +1119,6 @@ public class SurveyActivity extends AppCompatActivity {
                 pageNotice();
             }
         });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
-                bundle.putInt(MainActivity.GET_TOUR_INDEX, tourIndex);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-                return true;
-            }
-        });
 
         TextView page = (TextView) findViewById(R.id.survey_page_txt);
         page.setText(R.string.twelve_twelfth);
@@ -988,6 +1136,24 @@ public class SurveyActivity extends AppCompatActivity {
                 String name = nameEdtxt.getText().toString();
                 String mail = mailEdtxt.getText().toString();
 
+                // TODO: insert string name and mail
+                // upload to server
+                try {
+                    comm.uploadSurveyData(gender,
+                            age,
+                            education,
+                            career,
+                            exp,
+                            salary,
+                            location,
+                            house_type,
+                            family_type,
+                            family_member,
+                            know_way);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
@@ -999,6 +1165,23 @@ public class SurveyActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // upload to server
+                try {
+                    comm.uploadSurveyData(gender,
+                            age,
+                            education,
+                            career,
+                            exp,
+                            salary,
+                            location,
+                            house_type,
+                            family_type,
+                            family_member,
+                            know_way);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);

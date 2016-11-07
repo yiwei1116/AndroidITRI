@@ -1,7 +1,10 @@
 package com.uscc.ncku.androiditri.util;
 
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.view.View;
+
+import java.util.ArrayList;
 
 /**
  * Created by 振凱 on 10月22日.
@@ -12,6 +15,9 @@ public class EquipmentTabInformation {
     // current equipment tab view
     private View v;
 
+    // device ID
+    private int deviceId;
+
     // equipment title
     private String title;
 
@@ -20,7 +26,7 @@ public class EquipmentTabInformation {
     private boolean isPhoto;
 
     // photo
-    private int[] equipPhoto;
+    private ArrayList<String> equipPhoto;
     private int equipPhotoIndex;
     private String videoID;
 
@@ -35,7 +41,7 @@ public class EquipmentTabInformation {
     private int playLength;
 
     // for company information
-    private int companyTitleImage;
+    private String companyTitleImage;
     private String companyTitleText;
     private String companyName;
     private String companyWebsite;
@@ -45,8 +51,18 @@ public class EquipmentTabInformation {
 
     // constructor
     public EquipmentTabInformation() {
-        this.equipPhotoIndex = 0;
+        this.equipPhoto = new ArrayList<String>();
+        // initial photo index at positon one
+        this.equipPhotoIndex = 1;
         this.fontSize = 18;
+    }
+
+    public int getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(int deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getCompanyLocation() {
@@ -81,11 +97,11 @@ public class EquipmentTabInformation {
         this.companyQRcode = companyQRcode;
     }
 
-    public int getCompanyTitleImage() {
+    public String getCompanyTitleImage() {
         return companyTitleImage;
     }
 
-    public void setCompanyTitleImage(int companyTitleImage) {
+    public void setCompanyTitleImage(String companyTitleImage) {
         this.companyTitleImage = companyTitleImage;
     }
 
@@ -177,12 +193,24 @@ public class EquipmentTabInformation {
         this.v = v;
     }
 
-    public int[] getEquipPhoto() {
+    public ArrayList<String> getEquipPhoto() {
         return equipPhoto;
     }
 
-    public void setEquipPhoto(int[] equipPhoto) {
-        this.equipPhoto = equipPhoto;
+    public String getEquipPhotoFirst() {
+        return equipPhoto.get(0);
+    }
+
+    public void insertEquipPhoto(String name) {
+        equipPhoto.add(name);
+    }
+
+    public int getEquipPhotoIndex() {
+        return equipPhotoIndex;
+    }
+
+    public void setEquipPhotoIndex(int equipPhotoIndex) {
+        this.equipPhotoIndex = equipPhotoIndex;
     }
 
     public String getVideoID() {

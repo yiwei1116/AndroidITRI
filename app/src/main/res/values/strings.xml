@@ -119,7 +119,6 @@
     <string name="name">姓名</string>
     <string name="mail">電子信箱</string>
     <string name="choose_template">選擇版型</string>
-    <string name="context">文字創作</string>
     <string name="nextstep">下一步</string>
     <string name="write_text">寫文字</string>
     <string name="build_text">內建文字</string>
@@ -144,9 +143,9 @@
     <string name="choose_photo">選取照片</string>
     <string name="text_master">文字創作</string>
     <string name="choose_area">您所在的區域</string>
-    <string name="buildContext1">張開雙眼，敞開心胸，你就不會失去任何事物</string>
-    <string name="buildContext2">就繼續往前走吧 !</string>
-    <string name="buildContext3">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>
+    <string name="buildContext1" translatable="false">張開雙眼，敞開心胸，你就不會失去任何事物</string>
+    <string name="buildContext2" translatable="false">就繼續往前走吧 !</string>
+    <string name="buildContext3" translatable="false">盡心完成做你能力所及的事，並面對那些能力所不及的挑戰</string>
     <string name="store_sucess">儲存成功</string>
     <string name="feedback_title_1" translatable="false">Question 1</string>
     <string name="feedback_title_2" translatable="false">Question 2</string>
@@ -223,5 +222,6 @@
     <string name="understand">了解</string>
     <string name="coach_swapup">向上滑動即可\n看到更多模式</string>
     <string name="coach_swip_leftright">向左或向右滑動即可\n變更設備資訊</string>
+    <string name="spinner_please_select">請選擇</string>
 
 </resources>

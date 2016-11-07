@@ -12,7 +12,7 @@ public class JavaScriptInterface {
 
 	public static final int DOCUMENTLOAD = 0;
 	public static final int REGION_CLICKED = 1;
-
+	public static final int SVGLOAD = 2;
 
 //    private Context mContext;
 	private String onRegionChanged;
@@ -59,5 +59,9 @@ public class JavaScriptInterface {
 	@JavascriptInterface
 	public void onDocumentLoadDone(){
 		mapFragment.getJsHandler().obtainMessage(DOCUMENTLOAD).sendToTarget();
+	}
+	@JavascriptInterface
+	public void onSVGLoadDone(){
+		mapFragment.getJsHandler().obtainMessage(SVGLOAD).sendToTarget();
 	}
 }

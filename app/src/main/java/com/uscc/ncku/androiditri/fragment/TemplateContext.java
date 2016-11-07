@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -53,7 +54,7 @@ public class TemplateContext extends Fragment {
     private EditText editText;
     private RadioGroup radiogroup1;
     private FrameLayout write,build;
-    private String templateIndex;
+    private String templateIndex , photoUri,picPath;
     private String textBulid ;
     MergeTemplatePic MTP;
     private String StringContext;
@@ -67,10 +68,12 @@ public class TemplateContext extends Fragment {
     private SQLiteDatabase db;
     private Cursor cursor;
     private ArrayList<String> arrayList = new ArrayList<String>();
-    private int dp_minX,dp_minY,dp_maxX,dp_maxY;
+    private int minX,minY,maxX,maxY;
     private int width,length;
-    int[] parm;
+    private Button btnNextStep;
+
     private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
+    private Activity activity;
     public TemplateContext() {
 
     }
@@ -102,6 +105,12 @@ public class TemplateContext extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -124,15 +133,11 @@ public class TemplateContext extends Fragment {
 
         writeContext = (ToggleButton)view.findViewById(R.id.writeContext) ;
         buildContext = (ToggleButton)view.findViewById(R.id.buildContext) ;
-       /* writeContext = (Button)view.findViewById(R.id.writeContext) ;
-        buildContext = (Button)view.findViewById(R.id.buildContext) ;
-        writeContext.setBackgroundResource(R.drawable.context_btn_write);
-        buildContext.setBackgroundResource(R.drawable.context_btn_write_1);*/
+
         writeContext.setBackgroundResource(R.drawable.btn_left_active);
         buildContext.setBackgroundResource(R.drawable.btn_right_normal);
         editText = (EditText)view.findViewById(R.id.edit);
-    /*        writeContext.setOnClickListener(this);
-            buildContext.setOnClickListener(this);*/
+
         radiogroup1 = (RadioGroup)view.findViewById(R.id.rGroup);
         writeContext.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -191,16 +196,19 @@ public class TemplateContext extends Fragment {
         final Bundle bundle = getArguments();
         if (bundle != null) {
             templateIndex = (String)getArguments().get("Template");
-
-            Log.e("templateContext",templateIndex);
+            //photoUri = (String)getArguments().get("photoUri");
+            picPath = (String)getArguments().get("picPath");
+            Log.e("picPath", picPath);
 
         }
-
-        //writeText();
-
-        Button btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
+        btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
-        btnNextStep.setOnClickListener(new View.OnClickListener() {
+         activity = getActivity();
+        if(activity != null && isAdded()) {
+            new CalcPosition().execute();
+        }
+
+        /*btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -212,16 +220,16 @@ public class TemplateContext extends Fragment {
                 bundle1.putString("TemplateNum", templateIndex);
                 bundle1.putString("WriteContext", StringContext);
                 bundle1.putString("BuildContext", textBulid);
-                bundle1.putString("dp_minX",String.valueOf(dp_minX));
-                bundle1.putString("dp_minY",String.valueOf(dp_minY));
-                bundle1.putString("weight",String.valueOf(width));
-                bundle1.putString("height",String.valueOf(length));
+                bundle1.putString("minX", String.valueOf(minX));
+                bundle1.putString("minY", String.valueOf(minY));
+                bundle1.putString("weight", String.valueOf(width));
+                bundle1.putString("height", String.valueOf(length));
                 MTP.setArguments(bundle1);
                 ((MainActivity) getActivity()).replaceFragment(MTP);
             }
-        });
+        });*/
 
-        new CalcPosition().execute();
+
         return view;
     }
  /*   public void writeText() {
@@ -248,7 +256,7 @@ public class TemplateContext extends Fragment {
     public void spinnerArea(){
 
 
-        arrayList.add("請選擇");
+        arrayList.add(getResources().getString(R.string.spinner_please_select));
         getZone();
         ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList);
         spinner.setAdapter(adp);
@@ -257,9 +265,6 @@ public class TemplateContext extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long arg3)
             {
-
-                /*String city = "The Area is " + parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), city, Toast.LENGTH_LONG).show();*/
 
             }
 
@@ -288,6 +293,32 @@ public class TemplateContext extends Fragment {
     class CalcPosition extends AsyncTask<Void, Void, HashMap> {
 
         @Override
+        protected void onPostExecute(HashMap hashMap) {
+            super.onPostExecute(hashMap);
+            btnNextStep.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    MTP = new MergeTemplatePic();
+                    bundle1 = new Bundle();
+                    StringContext = editText.getText().toString().trim();
+
+                    Log.e("StringContext", StringContext);
+                    bundle1.putString("TemplateNum", templateIndex);
+                    bundle1.putString("WriteContext", StringContext);
+                    bundle1.putString("BuildContext", textBulid);
+                    bundle1.putString("minX", String.valueOf(minX));
+                    bundle1.putString("minY", String.valueOf(minY));
+                    bundle1.putString("weight", String.valueOf(width));
+                    bundle1.putString("height", String.valueOf(length));
+                    bundle1.putString("picPath", picPath);
+                    MTP.setArguments(bundle1);
+                    ((MainActivity) getActivity()).replaceFragment(MTP);
+                }
+            });
+        }
+
+        @Override
         protected HashMap doInBackground(Void... params) {
             /*
                 Important!!!
@@ -297,73 +328,77 @@ public class TemplateContext extends Fragment {
                     R.drawable.template_1,
                     R.drawable.template_2,
             };
-            Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), Template_merge[Integer.valueOf(templateIndex)]);
-            int minX = sourceBitmap.getWidth();
-            int minY = sourceBitmap.getHeight();
-            int maxX = -1;
-            int maxY = -1;
-            int areaY = 2*(sourceBitmap.getHeight())/3;
-            Log.e("getWidth()",String.valueOf(sourceBitmap.getWidth()));
-            Log.e("getHeight()",String.valueOf(sourceBitmap.getHeight()));
-            Log.e("areaY",String.valueOf(areaY));
-            for (int y = 0; y < areaY; y++) {
-                for (int x = 0; x < sourceBitmap.getWidth(); x++) {
 
-                    int alpha = sourceBitmap.getPixel(x, y) >> 24;
 
-                    if (alpha == 0) {
-                        if (x < minX)
-                            minX = x;
-                        if (x > maxX)
-                            maxX = x;
-                        if (y < minY)
-                            minY = y;
-                        if (y > maxY)
-                            maxY = y;
+            if(activity != null && isAdded()) {
+                Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), Template_merge[Integer.valueOf(templateIndex)]);
+                minX = sourceBitmap.getWidth();
+                minY = sourceBitmap.getHeight();
+                maxX = -1;
+                maxY = -1;
+                int areaY = 2 * (sourceBitmap.getHeight()) / 3 ;
+                int startX = (sourceBitmap.getWidth()) /8 ;
+                int startY = (sourceBitmap.getHeight()) /8 ;
+                Log.e("Tem_getWidth()", String.valueOf(sourceBitmap.getWidth()));
+                Log.e("Tem_getHeight()", String.valueOf(sourceBitmap.getHeight()));
+                Log.e("areaY", String.valueOf(areaY));
+                for (int y = startY; y < areaY; y++) {
+                    for (int x = startX; x < sourceBitmap.getWidth(); x++) {
+
+                        int alpha = sourceBitmap.getPixel(x, y) >> 24;
+
+                        if (alpha == 0) {
+                            if (x < minX)
+                                minX = x;
+                            if (x > maxX)
+                                maxX = x;
+                            if (y < minY)
+                                minY = y;
+                            if (y > maxY)
+                                maxY = y;
+                        }
+
                     }
-
                 }
-            }
-            Log.e("px", String.format("minX: %d, minY: %d, maxX: %d, maxY %d", minX, minY, maxX, maxY));
-            dp_minX = Math.round(convertPixelToDp(minX, getActivity()));
+
+
+                minY = minY - getStatusBarHeight();
+          /*  dp_minX = Math.round(convertPixelToDp(minX, getActivity()));
             dp_minY = Math.round(convertPixelToDp(minY-getStatusBarHeight(), getActivity()));
             dp_maxX = Math.round(convertPixelToDp(maxX, getActivity()));
-            dp_maxY = Math.round(convertPixelToDp(maxY, getActivity()));
-            width = Math.round(dp_maxX - dp_minX);
-            length = Math.round(dp_maxY - dp_minY);
-
-
-            Log.e("dp", String.format("dp_minX: %d, dp_minY: %d, dp_maxX: %d, dp_maxY %d,width %d,length %d", dp_minX, dp_minY, dp_maxX, dp_maxY,width,length));
-
-
+            dp_maxY = Math.round(convertPixelToDp(maxY, getActivity()));*/
+                width = Math.round(maxX - minX);
+                length = Math.round(maxY - minY);
+                Log.e("px", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
+            }
 
             return null;
         }
 
     }
 
-    public static float convertPixelToDp(float px, Context context){
+   /* public static float convertPixelToDp(float px, Context context){
         float dp = px / getDensity(context);
         return dp;
     }
-    /**
+    *//**
      * 取得螢幕密度
      * 120dpi = 0.75
      * 160dpi = 1 (default)
      * 240dpi = 1.5
-     * @param context
-     * @return
-     */
+     *//*
     public static float getDensity(Context context){
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return metrics.density;
-    }
+    }*/
     public int getStatusBarHeight() {
         int result = 0;
+         activity = getActivity();
+        if(activity != null && isAdded()){
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = getResources().getDimensionPixelSize(resourceId);
-        }
+        }}
         Log.e("bar", String.valueOf(result));
         return result;
     }

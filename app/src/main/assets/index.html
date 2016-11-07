@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="index.css" type="text/css" />
+    <!--<meta name="viewport" content="height=1000px, initial-scale=1.0">-->
     <script type="text/javascript" src="jquery-1.11.3.min.js" charset="UTF-8"></script>
     <script>
 
@@ -27,6 +28,7 @@
 			$("body").load(svg, function() {
 				// execute after floorplan.svg loaded
 				onRegionChanged(region,next);
+				Android.onSVGLoadDone();
 			});
 		}
 
@@ -50,7 +52,7 @@
 			$("#tag" + currentRegion).attr("class", "");
 
 			//hide path
-			$("#p" + currentRegion + "-p" + nextRegion).css("display", "none");
+			$("#p" + currentRegion + "-" + nextRegion).css("display", "none");
 		}
 
 		function showNewRegion() {
@@ -64,12 +66,12 @@
 			$("#tag" + currentRegion).css("display", "inline").attr("class", "fadeinClass");
 
 			//show path
-			$("#p" + currentRegion + "-p" + nextRegion).css("display", "inline");
+			$("#p" + currentRegion + "-" + nextRegion).css("display", "inline");
 		}
 
 		function onRegionChanged(region,next) {
 
-			if (region >= 0) {
+			if (region > 0) {
 				var regionStr = region + ""
 				if (currentRegion != "") {
 					hideCurrentRegion();
@@ -90,14 +92,11 @@
 			}
 			$("#mn" + next).css("display", "inline")
 		}
-		function onResumeMap() {
-			$('body').fadeIn(1000);
-		}
 
     </script>
 </head>
 
-<body style="margin:0;padding:0;">
+<body background="bg.jpg" style="margin:0;padding:0;">
 
 
 </body>

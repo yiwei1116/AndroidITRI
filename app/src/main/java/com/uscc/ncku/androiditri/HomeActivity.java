@@ -60,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // This button can be remove after release app
         Button rm = (Button) findViewById(R.id.rm_skip);
         rm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +72,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        if (BuildConfig.DEBUG) {
+            rm.setVisibility(View.VISIBLE);
+        }
 
     }
 

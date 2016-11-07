@@ -7,4 +7,5 @@ import android.media.MediaPlayer;
  */
 public interface ISoundInterface {
     public MediaPlayer getCurrentmedia();
+
 }

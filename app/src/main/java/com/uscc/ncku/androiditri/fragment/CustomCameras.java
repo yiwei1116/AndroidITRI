@@ -5,18 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -24,21 +17,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
-import android.graphics.Matrix;
 import android.hardware.Camera;
-import android.hardware.camera2.*;
-import android.media.ExifInterface;
-import android.media.Image;
-import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toolbar;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
@@ -48,19 +31,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import com.uscc.ncku.androiditri.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CustomCameras#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener  {
+public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener {
     private ImageView imageView;
-    private  String picPath;
+    private  String picPath,flagSelect;
     private int   SurfaceViewWidth;
     private int   SurfaceViewHeight;
     private File pictureFile;
@@ -108,6 +89,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         capture.setOnClickListener(this);
         nextStep.setOnClickListener(this);
         reTake.setOnClickListener(this);
+
         ((MainActivity) getActivity()).hideMainBtn();
         ((MainActivity) getActivity()).hideToolbar();
         Button back = (Button) view.findViewById(R.id.btn_camera_back);
@@ -117,7 +99,11 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                 getActivity().onBackPressed();
             }
         });
+        Bundle bundle1 = getArguments();
+        if(bundle1 != null) {
+            flagSelect  = (String) getArguments().get("flagSelect");
 
+        }
 
         initViews();
         return view;
@@ -126,7 +112,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             pictureFile = getOutputMediaFile();
-            picPath =pictureFile.getAbsolutePath();
+
             galleryAddPic();
             if (pictureFile == null) {
 
@@ -436,6 +422,10 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     public void nextStep(){
         setReducedImageSize();
         ChooseTemplate CT = new ChooseTemplate();
+        Bundle bundle = new Bundle();
+        bundle.putString("picPath", picPath);
+        bundle.putString("flagSelect", String.valueOf(flagSelect));
+        CT.setArguments(bundle);
         ((MainActivity) getActivity()).replaceFragment(CT);
 
     }

@@ -4,7 +4,12 @@
     android:layout_height="match_parent"
     android:id="@+id/mergeFramelayout"
     tools:context="com.uscc.ncku.androiditri.fragment.MergeTemplatePic">
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pic_location"
+        >
+    </RelativeLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,7 +93,7 @@
             android:id="@+id/QRcode"
             android:background="@drawable/test_qrcode"
             android:layout_gravity="center_vertical|center"
-            android:layout_marginTop="155sp"
+            android:layout_marginBottom="20dp"
             android:layout_weight="0.15"
             />
 
@@ -100,7 +105,7 @@
             android:layout_below="@+id/QRcode"
             android:layout_gravity="center"
             android:background="@drawable/btn_blue_fill"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
             android:textColor="@drawable/selecter_btn_black_white_txt_color"
             />
 
@@ -127,10 +132,5 @@
 
             />
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pic_location"
-        >
-    </RelativeLayout>
+
 </FrameLayout>
