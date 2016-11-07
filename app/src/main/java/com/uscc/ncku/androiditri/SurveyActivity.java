@@ -1138,21 +1138,21 @@ public class SurveyActivity extends AppCompatActivity {
 
                 // TODO: insert string name and mail
                 // upload to server
-                try {
-                    comm.uploadSurveyData(gender,
-                            age,
-                            education,
-                            career,
-                            exp,
-                            salary,
-                            location,
-                            house_type,
-                            family_type,
-                            family_member,
-                            know_way);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    comm.uploadSurveyData(gender,
+//                            age,
+//                            education,
+//                            career,
+//                            exp,
+//                            salary,
+//                            location,
+//                            house_type,
+//                            family_type,
+//                            family_member,
+//                            know_way);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
@@ -1166,21 +1166,21 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // upload to server
-                try {
-                    comm.uploadSurveyData(gender,
-                            age,
-                            education,
-                            career,
-                            exp,
-                            salary,
-                            location,
-                            house_type,
-                            family_type,
-                            family_member,
-                            know_way);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    comm.uploadSurveyData(gender,
+//                            age,
+//                            education,
+//                            career,
+//                            exp,
+//                            salary,
+//                            location,
+//                            house_type,
+//                            family_type,
+//                            family_member,
+//                            know_way);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();

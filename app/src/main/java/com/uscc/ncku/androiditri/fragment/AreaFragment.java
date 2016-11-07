@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
@@ -47,7 +48,6 @@ public class AreaFragment extends Fragment {
     private View view;
 
     private SQLiteDbManager dbManager;
-    private CommunicationWithServer comm;
 
     private String title;
     private String title_en;
@@ -93,7 +93,6 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
 
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             JSONObject area = dbManager.queryZone(currentZone);

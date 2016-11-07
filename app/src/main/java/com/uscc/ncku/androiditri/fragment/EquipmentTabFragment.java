@@ -96,7 +96,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     };
 
     private SQLiteDbManager dbManager;
-    private CommunicationWithServer comm;
 
     public EquipmentTabFragment() {
     }
@@ -126,7 +125,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();

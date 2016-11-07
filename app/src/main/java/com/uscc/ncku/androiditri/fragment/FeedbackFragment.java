@@ -1055,19 +1055,19 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // update feedback to server
-                try {
-                    comm.uploadSecondSurveyData(attitude,
-                            functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
-                            first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
-                            first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
-                            subscription1, subscription2, subscription3,
-                            install1, install2, install3, install4, install5,
-                            impression1, impression2, impression3, impression4, impression5,
-                            buy,
-                            reasonable_price);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    comm.uploadSecondSurveyData(attitude,
+//                            functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
+//                            first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
+//                            first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
+//                            subscription1, subscription2, subscription3,
+//                            install1, install2, install3, install4, install5,
+//                            impression1, impression2, impression3, impression4, impression5,
+//                            buy,
+//                            reasonable_price);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
                 getActivity().onBackPressed();
             }
