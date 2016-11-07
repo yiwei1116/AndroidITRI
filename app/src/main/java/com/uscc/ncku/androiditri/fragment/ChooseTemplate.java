@@ -25,12 +25,15 @@ import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +50,8 @@ public class ChooseTemplate extends Fragment {
     private int viewPageIndex;
     private Bundle bundle1;
     private String photoUri,picPath,flagSelect;
-
+    private SQLiteDbManager sqliteDbManager;
+    private List<String> imageList = new ArrayList<>();
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -81,7 +85,12 @@ public class ChooseTemplate extends Fragment {
         ((MainActivity) getActivity()).transparateToolbar();
         ((MainActivity) getActivity()).hideMainBtn();
         ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_template);
+        imageList = sqliteDbManager.getHipsterTemplateDownloadFiles();
+        for(int i=0;i<imageList.size();i++){
 
+            Log.e("imageList",imageList.get(i));
+
+        }
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -151,6 +160,8 @@ public class ChooseTemplate extends Fragment {
 
 
     class ChooseTemp extends PagerAdapter {
+
+
         private  final int[] Template_Image = {
                 R.drawable.card_1,
                 R.drawable.card_2,
