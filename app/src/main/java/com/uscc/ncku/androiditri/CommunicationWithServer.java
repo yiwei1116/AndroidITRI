@@ -200,7 +200,7 @@ public class CommunicationWithServer {
     }
 
     // UPLOAD to "survey" table
-    public JSONObject packSurveyData (int name, int email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+    public JSONObject packSurveyData (String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
         JSONObject uploadObject = new JSONObject();
         uploadObject.put("name", name);
         uploadObject.put("email", email);
@@ -218,7 +218,7 @@ public class CommunicationWithServer {
         return uploadObject;
     }
 
-    public void uploadSurveyData(int name, int email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+    public void uploadSurveyData(String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
         JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
         uploadJsonData(jsonObject, this.surveyOneURL);
     }
