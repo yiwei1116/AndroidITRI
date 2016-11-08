@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,11 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import com.uscc.ncku.androiditri.util.TourViewPager;
 
@@ -85,12 +88,8 @@ public class ChooseTemplate extends Fragment {
         ((MainActivity) getActivity()).transparateToolbar();
         ((MainActivity) getActivity()).hideMainBtn();
         ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_template);
+        sqliteDbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         imageList = sqliteDbManager.getHipsterTemplateDownloadFiles();
-        for(int i=0;i<imageList.size();i++){
-
-            Log.e("imageList",imageList.get(i));
-
-        }
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -166,8 +165,9 @@ public class ChooseTemplate extends Fragment {
                 R.drawable.card_1,
                 R.drawable.card_2,
         };
-
+        private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
+
         public ChooseTemp(Context context){
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -175,7 +175,7 @@ public class ChooseTemplate extends Fragment {
         }
         @Override
         public int getCount() {
-            return Template_Image.length;
+            return imageList.size();
         }
 
         @Override
@@ -186,8 +186,16 @@ public class ChooseTemplate extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.item_template, container, false);
+
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
-            imageView.setImageResource(Template_Image[position]);
+
+            ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+            for(int i=0;i<imageList.size();i++){
+                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                Log.e("imageList",imageList.get(i));
+
+            }
+            imageView.setImageBitmap(bitmapArray.get(position));
             container.addView(itemView);
 
             return itemView;
@@ -195,7 +203,7 @@ public class ChooseTemplate extends Fragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((RelativeLayout) object);
+            container.removeView((LinearLayout) object);
         }
 
         @Override
