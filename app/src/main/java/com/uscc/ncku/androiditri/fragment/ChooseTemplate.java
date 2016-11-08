@@ -161,10 +161,7 @@ public class ChooseTemplate extends Fragment {
     class ChooseTemp extends PagerAdapter {
 
 
-        private  final int[] Template_Image = {
-                R.drawable.card_1,
-                R.drawable.card_2,
-        };
+
         private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
 
