@@ -134,6 +134,13 @@ public class AreaFragment extends Fragment {
         super.onStart();
         Log.i("GG", "onStart");
 
+        TextView page = (TextView) view.findViewById(R.id.txt_page_area);
+        page.setText(String.valueOf(currentZone));
+        if (currentZone < 10) {
+            page.setTextSize(29);
+            page.setPadding(0, 0, 0, 0);
+        }
+
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
         Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg);
         Drawable back = new BitmapDrawable(bitmap);

@@ -7,13 +7,19 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/rm_a1m1_bg"/>
+        android:id="@+id/img_mode_highlight_bg"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/img_equipment_highlight"
+        android:id="@+id/img_mode_highlight_fg"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/img_mode_highlight_blur"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -47,8 +53,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/img_mode_intro_bg"
             android:scaleType="centerCrop"
-            android:src="@drawable/rm_a1m1_darkbg"/>
+            android:src="@drawable/rectangle_overlay"/>
 
         <TextView
             android:layout_width="wrap_content"

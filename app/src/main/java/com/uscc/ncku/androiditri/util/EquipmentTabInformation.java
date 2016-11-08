@@ -1,6 +1,5 @@
 package com.uscc.ncku.androiditri.util;
 
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.view.View;
 
@@ -47,7 +46,7 @@ public class EquipmentTabInformation {
     private String companyWebsite;
     private String companyPhone;
     private String companyLocation;
-    private int companyQRcode;
+    private String companyQRcode;
 
     // constructor
     public EquipmentTabInformation() {
@@ -87,14 +86,6 @@ public class EquipmentTabInformation {
 
     public void setCompanyPhone(String companyPhone) {
         this.companyPhone = companyPhone;
-    }
-
-    public int getCompanyQRcode() {
-        return companyQRcode;
-    }
-
-    public void setCompanyQRcode(int companyQRcode) {
-        this.companyQRcode = companyQRcode;
     }
 
     public String getCompanyTitleImage() {
@@ -219,5 +210,13 @@ public class EquipmentTabInformation {
 
     public void setVideoID(String videoID) {
         this.videoID = videoID;
+    }
+
+    public String getCompanyQRcode() {
+        return companyQRcode;
+    }
+
+    public void setCompanyQRcode(String companyQRcode) {
+        this.companyQRcode = companyQRcode;
     }
 }

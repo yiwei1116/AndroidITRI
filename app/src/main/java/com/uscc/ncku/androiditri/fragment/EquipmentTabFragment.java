@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -36,7 +34,6 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
@@ -489,7 +486,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setCompanyWebsite(company.getString("web"));
             tab.setCompanyPhone(company.getString("tel"));
             tab.setCompanyLocation(company.getString("addr"));
-            tab.setCompanyQRcode(R.drawable.rm_a1m1e1_qrcode);
+            tab.setCompanyQRcode(company.getString("qrcode"));
 
             equipTabs.add(tab);
         }
@@ -582,8 +579,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView compLocation = (TextView) v.findViewById(R.id.equipment_info_company_location);
         compLocation.setText(currTab.getCompanyLocation());
 
+        Bitmap qrcode = HelperFunctions.getBitmapFromFile(getActivity(), currTab.getCompanyQRcode());
         ImageView compQRcode = (ImageView) v.findViewById(R.id.equipment_info_company_qrcode);
-        compQRcode.setImageResource(currTab.getCompanyQRcode());
+        compQRcode.setImageBitmap(qrcode);
     }
 
     public View getCurrentTabView() {
