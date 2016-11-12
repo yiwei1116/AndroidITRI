@@ -191,9 +191,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             @Override
             public void onPageSelected(int position) {
                 // normal sound and font size button
-                ((MainActivity) getActivity()).setSoundNormalIfActive();
+                //((MainActivity) getActivity()).setSoundNormalIfActive();
                 ((MainActivity) getActivity()).setFontNormalIfActive();
-                ((MainActivity) getActivity()).audioPause();
+         //     ((MainActivity) getActivity()).audioPause();
+                ((MainActivity) getActivity()).stopTexttoSpeech();
+                ((MainActivity) getActivity()).setSoundNormal();
 
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
@@ -254,7 +256,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).setFontDisabled();
         ((MainActivity) getActivity()).setSoundDisabled();
         ((MainActivity) getActivity()).setInfoDisabled();
-
+        ((MainActivity) getActivity()).shutTexttoSpeech();
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
@@ -609,5 +611,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
     }
 
+    @Override
+    public  String getIntroduction(){
+        String getIntrod = equipTabs.get(mViewPager.getCurrentItem()).getTextContent();
+        Log.e("getIntrod",getIntrod);
 
+        return getIntrod;
+
+    }
 }

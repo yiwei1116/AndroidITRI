@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -47,8 +47,9 @@ import java.util.List;
 public class ChooseTemplate extends Fragment {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ViewPager viewPager;
-    private ChooseTemp adapter;
+    private TourViewPager viewPager;
+
+
     private TemplateContext TC;
     private int viewPageIndex;
     private Bundle bundle1;
@@ -132,8 +133,8 @@ public class ChooseTemplate extends Fragment {
             }
         });
 
-        viewPager = (ViewPager)view.findViewById(R.id.template_choose);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager = (TourViewPager)view.findViewById(R.id.template_choose);
+        viewPager.addOnPageChangeListener(new TourViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -151,24 +152,24 @@ public class ChooseTemplate extends Fragment {
 
             }
         });
+        ChooseTempAdapter chooseTempAdapter = new ChooseTempAdapter(getActivity(),viewPager);
 
-        adapter = new ChooseTemp(getActivity());
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(chooseTempAdapter);
         return view   ;
     }
 
 
-    class ChooseTemp extends PagerAdapter {
+    class ChooseTempAdapter extends PagerAdapter {
 
 
 
         private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
-
-        public ChooseTemp(Context context){
+        private TourViewPager tourViewPager;
+        public ChooseTempAdapter(Context context,TourViewPager tourViewPager){
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+            this.tourViewPager = tourViewPager;
         }
         @Override
         public int getCount() {
