@@ -3,22 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/flayout_area_fragment"
-    tools:context=".fragment.AreaFragment"
-    android:background="@drawable/rm_bg_a1">
+    tools:context=".fragment.AreaFragment">
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/page_area_fragment"
-        android:background="@drawable/rm_page1"
+        android:id="@+id/txt_page_area"
+        android:background="@drawable/area_page_flag"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:paddingTop="1dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title_area_fragment"
-        android:layout_below="@+id/page_area_fragment"
+        android:layout_below="@+id/txt_page_area"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:textColor="@android:color/white"

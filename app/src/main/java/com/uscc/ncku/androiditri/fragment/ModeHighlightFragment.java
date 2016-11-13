@@ -1,6 +1,9 @@
 package com.uscc.ncku.androiditri.fragment;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
@@ -43,6 +47,9 @@ public class ModeHighlightFragment extends Fragment {
     private JSONObject mode;
     private String modeName;
     private String modeIntroduction;
+    private String splash_bg_vertical;
+    private String splash_fg_vertical;
+    private String splash_blur_vertical;
 
     private View view;
 
@@ -76,6 +83,9 @@ public class ModeHighlightFragment extends Fragment {
 
             modeName = isEnglish ? mode.getString("name_en") : mode.getString("name");
             modeIntroduction = mode.getString("introduction");
+            splash_bg_vertical = mode.getString("splash_bg_vertical");
+            splash_fg_vertical = mode.getString("splash_fg_vertical");
+            splash_blur_vertical = mode.getString("splash_blur_vertical");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,6 +124,12 @@ public class ModeHighlightFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        Bitmap bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+        Drawable back = new BitmapDrawable(bg);
+        ImageView modeIntroBg = (ImageView) view.findViewById(R.id.img_mode_intro_bg);
+        modeIntroBg.setBackgroundDrawable(back);
+
         TextView modeIntroTitle = (TextView) view.findViewById(R.id.txt_title_mode_intro);
         modeIntroTitle.setText(modeName);
 
@@ -143,15 +159,39 @@ public class ModeHighlightFragment extends Fragment {
 
         ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
-        ImageView equipHighlight = (ImageView) view.findViewById(R.id.img_equipment_highlight);
-        equipHighlight.setImageResource(R.drawable.rm_a1m1_highlight);
+        Bitmap bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+        final ImageView modeBg = (ImageView) view.findViewById(R.id.img_mode_highlight_bg);
+        modeBg.setImageBitmap(bg);
+
+        Bitmap highlight = HelperFunctions.getBitmapFromFile(getActivity(), splash_fg_vertical);
+        ImageView modeHighlight = (ImageView) view.findViewById(R.id.img_mode_highlight_fg);
+        modeHighlight.setImageBitmap(highlight);
 
         final Animation animation = new AlphaAnimation(1, 0);
         animation.setDuration(HIGHLIGHT_FLIP_DURATION);
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(HIGHLIGHT_FLIP_TIMES);
         animation.setRepeatMode(Animation.REVERSE);
-        equipHighlight.startAnimation(animation);
+        modeHighlight.startAnimation(animation);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Bitmap blur = HelperFunctions.getBitmapFromFile(getActivity(), splash_blur_vertical);
+                ImageView modeBlur = (ImageView) view.findViewById(R.id.img_mode_highlight_blur);
+                modeBlur.setImageBitmap(blur);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         Button next = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
         next.setOnClickListener(new View.OnClickListener() {
@@ -166,79 +206,4 @@ public class ModeHighlightFragment extends Fragment {
 
     }
 
-//    private void setTitlePosition(HashMap cor) {
-//        Resources resources = view.getContext().getResources();
-//        DisplayMetrics metrics = resources.getDisplayMetrics();
-//
-//        // convert pixel position to dp positon
-////        float dpX = (float) cor.get("leftMargin") / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-////        float dpY = (float) cor.get("topMargin") / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-//
-//        TextView equip = (TextView) view.findViewById(R.id.txt_equipment_highlight);
-//        equip.setVisibility(View.VISIBLE);
-//        equip.setText("互動資訊牆");
-//
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-//                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-//        params.leftMargin = (int) cor.get("leftMargin");
-//        params.topMargin = (int) cor.get("topMargin");
-//        equip.setLayoutParams(params);
-//    }
-//
-//    class CalcPosition extends AsyncTask<Void, Void, HashMap> {
-//
-//        @Override
-//        protected HashMap doInBackground(Void... params) {
-//            /*
-//                Important!!!
-//                this drawable must put in drawable-nodpi, or there might be a wrong calculation.
-//            */
-//            Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rm_a1m1_highlight);
-//
-//            int minX = sourceBitmap.getWidth();
-//            int minY = sourceBitmap.getHeight();
-//            int maxX = -1;
-//            int maxY = -1;
-//            for(int y = 0; y < sourceBitmap.getHeight(); y++) {
-//                for(int x = 0; x < sourceBitmap.getWidth(); x++) {
-//                    int alpha = sourceBitmap.getPixel(x, y) >> 24;
-//                    if(alpha > 0) {
-//                        if(x < minX)
-//                            minX = x;
-//                        if(x > maxX)
-//                            maxX = x;
-//                        if(y < minY)
-//                            minY = y;
-//                        if(y > maxY)
-//                            maxY = y;
-//                    }
-//                }
-//            }
-//
-//            Log.i(TAG, String.format("minX: %d, minY: %d, maxX: %d, maxY %d", minX, minY, maxX, maxY));
-//
-//            int leftMargin;
-//            int topMargin;
-//
-//            if((maxX < minX) || (maxY < minY)) {
-//                leftMargin = sourceBitmap.getWidth() >> 1;
-//                topMargin = sourceBitmap.getHeight() >> 1;
-//            } else {
-//                leftMargin = (maxX + minX) >> 1;
-//                topMargin = ((maxY + minY) >> 1) - ((maxY - minY));
-//            }
-//
-//            HashMap coordinate = new HashMap();
-//            coordinate.put("leftMargin", leftMargin);
-//            coordinate.put("topMargin", topMargin);
-//
-//            return coordinate;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(HashMap hashMap) {
-//            super.onPostExecute(hashMap);
-//            setTitlePosition(hashMap);
-//        }
-//    }
 }

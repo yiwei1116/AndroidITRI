@@ -48,7 +48,6 @@ public class AreaFragment extends Fragment {
     private View view;
 
     private SQLiteDbManager dbManager;
-    private CommunicationWithServer comm;
 
     private String title;
     private String title_en;
@@ -94,7 +93,6 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onCreat");
         Log.i("GG", currentZone+"");
 
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             JSONObject area = dbManager.queryZone(currentZone);
@@ -135,6 +133,13 @@ public class AreaFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i("GG", "onStart");
+
+        TextView page = (TextView) view.findViewById(R.id.txt_page_area);
+        page.setText(String.valueOf(currentZone));
+        if (currentZone < 10) {
+            page.setTextSize(29);
+            page.setPadding(0, 0, 0, 0);
+        }
 
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
         Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg);

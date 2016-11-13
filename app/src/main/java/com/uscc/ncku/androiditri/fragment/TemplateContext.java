@@ -35,6 +35,7 @@ import android.widget.ToggleButton;
 import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import android.database.Cursor;
@@ -42,6 +43,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -64,16 +66,21 @@ public class TemplateContext extends Fragment {
     private int selectedId;
     public String db_name = "android_itri_1.db";
     public String table_name_zone = "zone";
+    public String table_name_hipster_text = "hipster_text";
     private SQLiteDbManager dbManager;
     private SQLiteDatabase db;
-    private Cursor cursor;
-    private ArrayList<String> arrayList = new ArrayList<String>();
+    private Cursor cursor_zone;
+    private Cursor cursor_hipster_text;
+    private ArrayList<String> arrayList_zone_name = new ArrayList<String>();
+    private ArrayList<String> arrayList_hipster_text = new ArrayList<String>();
     private int minX,minY,maxX,maxY;
     private int width,length;
     private Button btnNextStep;
-
+    private List<String> imageList = new ArrayList<>();
     private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
+    private HelperFunctions helperFunctions = new HelperFunctions();
     private Activity activity;
+    private ArrayList<Bitmap> bitmapArray;
     public TemplateContext() {
 
     }
@@ -94,7 +101,9 @@ public class TemplateContext extends Fragment {
         super.onCreate(savedInstanceState);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
         db = dbManager.getReadableDatabase();
-        cursor = db.query(table_name_zone,null,null,null,null,null,null);
+        cursor_zone = db.query(table_name_zone,null,null,null,null,null,null);
+        cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
+
     }
 
 
@@ -129,7 +138,13 @@ public class TemplateContext extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        imageList = dbManager.getHipsterTemplateDownloadFiles();
+        bitmapArray = new ArrayList<Bitmap>();
+        for(int i=0;i<imageList.size();i++){
+            bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+            Log.e("imageList",imageList.get(i));
 
+        }
 
         writeContext = (ToggleButton)view.findViewById(R.id.writeContext) ;
         buildContext = (ToggleButton)view.findViewById(R.id.buildContext) ;
@@ -178,7 +193,7 @@ public class TemplateContext extends Fragment {
                 }
             }
         });
-
+        getTemplateContext();
         radiogroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
                 for (int i = 0; i < rg.getChildCount(); i++) {
@@ -256,9 +271,9 @@ public class TemplateContext extends Fragment {
     public void spinnerArea(){
 
 
-        arrayList.add(getResources().getString(R.string.spinner_please_select));
+        arrayList_zone_name.add(getResources().getString(R.string.spinner_please_select));
         getZone();
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList_zone_name);
         spinner.setAdapter(adp);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -279,14 +294,32 @@ public class TemplateContext extends Fragment {
     }
 
     public void getZone() {
-        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+        for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
 
-            arrayList.add(cursor.getString(cursor.getColumnIndex("name_en")));
+            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name_en")));
 
 
         }
 
-        cursor.close();
+        cursor_zone.close();
+
+    }
+    public void getTemplateContext(){
+
+
+        for (cursor_hipster_text.moveToFirst(); !cursor_hipster_text.isAfterLast(); cursor_hipster_text.moveToNext()) {
+                RadioButton radioButton = new RadioButton(getActivity());
+                radioButton.setText(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content")));
+                radioButton.setTextSize(20);
+                radiogroup1.addView(radioButton);
+            //arrayList_hipster_text.add(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content")));
+
+               // Log.e("hipster_text",arrayList_hipster_text.get(cursor_hipster_text.getPosition()));
+        }
+
+        cursor_hipster_text.close();
+
+
 
     }
 
@@ -324,14 +357,10 @@ public class TemplateContext extends Fragment {
                 Important!!!
                 this drawable must put in drawable-nodpi, or there might be a wrong calculation.
             */
-            final int[] Template_merge = {
-                    R.drawable.template_1,
-                    R.drawable.template_2,
-            };
 
 
             if(activity != null && isAdded()) {
-                Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), Template_merge[Integer.valueOf(templateIndex)]);
+                Bitmap sourceBitmap = bitmapArray.get((Integer.valueOf(templateIndex)));
                 minX = sourceBitmap.getWidth();
                 minY = sourceBitmap.getHeight();
                 maxX = -1;

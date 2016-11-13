@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -36,7 +34,6 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.EquipmentTabInformation;
@@ -96,7 +93,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     };
 
     private SQLiteDbManager dbManager;
-    private CommunicationWithServer comm;
 
     public EquipmentTabFragment() {
     }
@@ -126,7 +122,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         }
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
@@ -196,9 +191,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             @Override
             public void onPageSelected(int position) {
                 // normal sound and font size button
-                ((MainActivity) getActivity()).setSoundNormalIfActive();
+                //((MainActivity) getActivity()).setSoundNormalIfActive();
                 ((MainActivity) getActivity()).setFontNormalIfActive();
-                ((MainActivity) getActivity()).audioPause();
+         //     ((MainActivity) getActivity()).audioPause();
+                ((MainActivity) getActivity()).stopTexttoSpeech();
+                ((MainActivity) getActivity()).setSoundNormal();
 
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
@@ -259,7 +256,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).setFontDisabled();
         ((MainActivity) getActivity()).setSoundDisabled();
         ((MainActivity) getActivity()).setInfoDisabled();
-
+        ((MainActivity) getActivity()).shutTexttoSpeech();
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
@@ -491,7 +488,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setCompanyWebsite(company.getString("web"));
             tab.setCompanyPhone(company.getString("tel"));
             tab.setCompanyLocation(company.getString("addr"));
-            tab.setCompanyQRcode(R.drawable.rm_a1m1e1_qrcode);
+            tab.setCompanyQRcode(company.getString("qrcode"));
 
             equipTabs.add(tab);
         }
@@ -584,8 +581,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView compLocation = (TextView) v.findViewById(R.id.equipment_info_company_location);
         compLocation.setText(currTab.getCompanyLocation());
 
+        Bitmap qrcode = HelperFunctions.getBitmapFromFile(getActivity(), currTab.getCompanyQRcode());
         ImageView compQRcode = (ImageView) v.findViewById(R.id.equipment_info_company_qrcode);
-        compQRcode.setImageResource(currTab.getCompanyQRcode());
+        compQRcode.setImageBitmap(qrcode);
     }
 
     public View getCurrentTabView() {
@@ -613,5 +611,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
     }
 
+    @Override
+    public  String getIntroduction(){
+        String getIntrod = equipTabs.get(mViewPager.getCurrentItem()).getTextContent();
+        Log.e("getIntrod",getIntrod);
 
+        return getIntrod;
+
+    }
 }

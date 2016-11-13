@@ -1138,6 +1138,7 @@ public class SurveyActivity extends AppCompatActivity {
 
                 // TODO: insert string name and mail
                 // upload to server
+<<<<<<< HEAD
                 try {
                     comm.uploadSurveyData(name, mail, gender,
                             age,
@@ -1153,6 +1154,23 @@ public class SurveyActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+=======
+//                try {
+//                    comm.uploadSurveyData(gender,
+//                            age,
+//                            education,
+//                            career,
+//                            exp,
+//                            salary,
+//                            location,
+//                            house_type,
+//                            family_type,
+//                            family_member,
+//                            know_way);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+>>>>>>> 51f39fec146c7f1b97494999b556014cfd51b435
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();

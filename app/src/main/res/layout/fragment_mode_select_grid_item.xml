@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/grid_item_bg"
-        android:background="@drawable/rm_grid1_a1m1"/>
+        android:scaleType="fitXY" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -6,12 +6,13 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,17 +21,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,13 +47,15 @@ import java.util.LinkedList;
 public class ChooseTemplate extends Fragment {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ViewPager viewPager;
-    private ChooseTemp adapter;
+    private TourViewPager viewPager;
+
+
     private TemplateContext TC;
     private int viewPageIndex;
     private Bundle bundle1;
     private String photoUri,picPath,flagSelect;
-
+    private SQLiteDbManager sqliteDbManager;
+    private List<String> imageList = new ArrayList<>();
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -81,7 +89,8 @@ public class ChooseTemplate extends Fragment {
         ((MainActivity) getActivity()).transparateToolbar();
         ((MainActivity) getActivity()).hideMainBtn();
         ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_template);
-
+        sqliteDbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        imageList = sqliteDbManager.getHipsterTemplateDownloadFiles();
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -124,8 +133,8 @@ public class ChooseTemplate extends Fragment {
             }
         });
 
-        viewPager = (ViewPager)view.findViewById(R.id.template_choose);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager = (TourViewPager)view.findViewById(R.id.template_choose);
+        viewPager.addOnPageChangeListener(new TourViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -143,28 +152,28 @@ public class ChooseTemplate extends Fragment {
 
             }
         });
+        ChooseTempAdapter chooseTempAdapter = new ChooseTempAdapter(getActivity(),viewPager);
 
-        adapter = new ChooseTemp(getActivity());
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(chooseTempAdapter);
         return view   ;
     }
 
 
-    class ChooseTemp extends PagerAdapter {
-        private  final int[] Template_Image = {
-                R.drawable.card_1,
-                R.drawable.card_2,
-        };
+    class ChooseTempAdapter extends PagerAdapter {
 
+
+
+        private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
-        public ChooseTemp(Context context){
+        private TourViewPager tourViewPager;
+        public ChooseTempAdapter(Context context,TourViewPager tourViewPager){
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+            this.tourViewPager = tourViewPager;
         }
         @Override
         public int getCount() {
-            return Template_Image.length;
+            return imageList.size();
         }
 
         @Override
@@ -175,8 +184,16 @@ public class ChooseTemplate extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = mLayoutInflater.inflate(R.layout.item_template, container, false);
+
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
-            imageView.setImageResource(Template_Image[position]);
+
+            ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+            for(int i=0;i<imageList.size();i++){
+                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                Log.e("imageList",imageList.get(i));
+
+            }
+            imageView.setImageBitmap(bitmapArray.get(position));
             container.addView(itemView);
 
             return itemView;
@@ -184,7 +201,7 @@ public class ChooseTemplate extends Fragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((RelativeLayout) object);
+            container.removeView((LinearLayout) object);
         }
 
         @Override

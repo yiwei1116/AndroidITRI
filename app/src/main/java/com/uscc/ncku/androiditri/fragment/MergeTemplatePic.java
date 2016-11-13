@@ -3,6 +3,7 @@ package com.uscc.ncku.androiditri.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -32,9 +33,12 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
+import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,12 +62,13 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private File imageFile;
     private  int minX,minY,picWidth,picHeight;
     private RelativeLayout layout;
+    public String db_name = "android_itri_1.db";
+    private SQLiteDbManager dbManager;
+    private Cursor cursor_template;
+    private HelperFunctions helperFunctions = new HelperFunctions();
     int width,length;
     Bundle bundle1;
-    private static final int[] Template_Image = {
-            R.drawable.template_1,
-            R.drawable.template_2,
-    };
+    private List<String> imageList = new ArrayList<>();
     public MergeTemplatePic() {
 
     }
@@ -120,10 +125,17 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         backTour.setOnClickListener(this);
         icDownload.setOnClickListener(this);
 
+        dbManager = new SQLiteDbManager(getActivity(), db_name);
+        imageList = dbManager.getHipsterTemplateDownloadFiles();
+        ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+        for(int i=0;i<imageList.size();i++){
+            bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+
+        }
          bundle1 = getArguments();
        if(bundle1 != null) {
            templateIndex = (String) getArguments().get("TemplateNum");
-           mergeImage.setImageResource(Template_Image[Integer.valueOf(templateIndex).intValue()]);
+           mergeImage.setImageBitmap(bitmapArray.get(Integer.valueOf(templateIndex)));
            WriteContext = (String) getArguments().get("WriteContext");
            BuildContext = (String) getArguments().get("BuildContext");
            picPath = (String) getArguments().get("picPath");

@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
@@ -43,6 +45,9 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
+
+
+
     public static final String GET_IS_ENGLISH = "GET_IS_ENGLISH";
 
     private int tourIndex;
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout soundRL;
 
     private CommunicationWithServer communicationWithServer;
-
+    private EquipmentTabFragment equipmentTabFragment;
     private MapFragment mapFragment;
     private DiaryFragment diaryFragment;
 
@@ -82,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     private Handler soundUpdateUIHandler;
     private TextView currentTime,completeTime;
     private TimeUtilities utils;
+
+    private TextToSpeech textToSpeech;
 
     private boolean isCoachInfoFirst = true;
     private boolean isCoachSwipUpFirst = true;
@@ -170,11 +177,22 @@ public class MainActivity extends AppCompatActivity {
         fragmentBackStack = new LinkedList<Fragment>();
 
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
-
+        createLanguageTTS();
         initFragment();
 
     }
+    @Override
+    protected void onPause() {
 
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+
+        super.onDestroy();
+    }
     class ButtonListener implements View.OnClickListener {
 
         public ButtonListener() {}
@@ -262,24 +280,27 @@ public class MainActivity extends AppCompatActivity {
                     setFontNormalIfActive();
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
-
+                        final ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
                         setSoundActive();
-                        ISoundInterface iSoundInterface =
+                        textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
+
+
+                     /*   ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
                         soundPlayer = iSoundInterface.getCurrentmedia();
-
-                       // soundPlayer = MediaPlayer.create(getBaseContext(),R.raw.test);
                         soundThread = new Thread(mUpdateTimeTask);
                         soundThread.start();
 
 
 
-                        audioPlay();
+                        audioPlay();*/
 
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
-                        setSoundStop();
+                        textToSpeech.stop();
+                        //setSoundStop();
                     }
                     break;
                 /**
@@ -669,12 +690,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSoundActive() {
         soundBtn.setActive(R.drawable.btn_main_sound_active);
-        soundRL.setVisibility(View.VISIBLE);
+       // soundRL.setVisibility(View.VISIBLE);
     }
 
     public void setSoundNormal() {
         soundBtn.setNormal(R.drawable.btn_main_sound_normal);
-        soundRL.setVisibility(View.GONE);
+       // soundRL.setVisibility(View.GONE);
     }
 
     public void setSoundDisabled() {
@@ -819,12 +840,51 @@ public class MainActivity extends AppCompatActivity {
             isCoachSlideLeftFirst = false;
         }
     }
+    public void shutTexttoSpeech(){
+        if( textToSpeech != null )
+            textToSpeech.stop();
+        textToSpeech.shutdown();
+    }
+
+    public void stopTexttoSpeech(){
+            textToSpeech.stop();
+    }
+
+    private void createLanguageTTS()
+    {
+
+        if( textToSpeech == null )
+        {
+            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
+                @Override
+                public void onInit(int status)
+                {
+
+                    if( status == TextToSpeech.SUCCESS ) {
+
+                        l = Locale.CHINESE;
+                        // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
+                        if( textToSpeech.isLanguageAvailable( l ) == TextToSpeech.LANG_COUNTRY_AVAILABLE )
+                        {
+                            textToSpeech.setLanguage( l );
+                        }
+                    }
+                    else{
+
+                        Toast.makeText(MainActivity.this,"語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
+
+                    }
 
 
 
+                }}
+            );
 
 
 
 
 
 }
+
+
+    }}

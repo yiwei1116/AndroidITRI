@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mergeImage"
-        android:background="@drawable/template_1"
 
         />
     <TextView
