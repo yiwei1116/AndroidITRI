@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
+import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
