@@ -87,12 +87,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String name_en,
                                 String introduction,
                                 String guide_voice,
+                                String guide_voice_en,
                                 String photo,
                                 String photo_vertical,
                                 String hint,
                                 int mode_id,
                                 int company_id,
-                                int read_count) {
+                                int read_count,
+                                int like_count) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("device_id", device_id);
@@ -100,12 +102,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name_en", name_en);
         values.put("introduction", introduction);
         values.put("guide_voice", guide_voice);
+        values.put("guide_voice_en", guide_voice_en);
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("hint", hint);
         values.put("mode_id", mode_id);
         values.put("company_id", company_id);
         values.put("read_count", read_count);
+        values.put("like count", like_count);
 
         long rowId = db.insertWithOnConflict("device", null, values, 4);
         if (rowId != -1) {
@@ -126,32 +130,35 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, guide_voice, photo, photo_vertical, hint, company_id, read_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, guide_voice, guide_voice_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         int device_id;
         String name;
         String name_en;
         String introduction;
         String guide_voice;
+        String guide_voice_en;
         String photo;
         String photo_vertical;
         String hint;
         int company_id;
         int read_count;
+        int like_count;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             JSONObject file = new JSONObject();
-
             device_id = cursor.getInt(cursor.getColumnIndex("device_id"));
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             hint = cursor.getString(cursor.getColumnIndex("hint"));
             company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
             // add to JSONObject
             file.put("device_id", device_id);
@@ -159,12 +166,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name_en", name_en);
             file.put("introduction", introduction);
             file.put("guide_voice", guide_voice);
+            file.put("guide_voice_en", guide_voice_en);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             file.put("hint", hint);
             file.put("mode_id", mode_id);
             file.put("company_id", company_id);
             file.put("read_count", read_count);
+            file.put("like_count", like_count);
             filePaths.put(file);
             cursor.moveToNext();
         }
@@ -176,30 +185,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONObject queryDeviceAndCompanyData(int device_id) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name, name_en, introduction, guide_voice, photo, photo_vertical, hint, mode_id, company_id, read_count from device where device_id=" + device_id, null);
+        Cursor cursor = db.rawQuery("select name, name_en, introduction, guide_voice, guide_voice_en, photo, photo_vertical, hint, mode_id, company_id, read_count, like_count from device where device_id=" + device_id, null);
         cursor.moveToFirst();
         String name;
         String name_en;
         String introduction;
         String guide_voice;
+        String guide_voice_en;
         String photo;
         String photo_vertical;
         String hint;
         int mode_id;
         int company_id;
         int read_count;
+        int like_count;
 
         // fetch all company_id & qrcode
         name = cursor.getString(cursor.getColumnIndex("name"));
         name_en = cursor.getString(cursor.getColumnIndex("name_en"));
         introduction = cursor.getString(cursor.getColumnIndex("introduction"));
         guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+        guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         photo = cursor.getString(cursor.getColumnIndex("photo"));
         photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
         hint = cursor.getString(cursor.getColumnIndex("hint"));
         mode_id = cursor.getInt(cursor.getColumnIndex("mode_id"));
         company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
         read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
         // add to JSONObject
         file.put("device_id", device_id);
@@ -207,12 +220,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("name_en", name_en);
         file.put("introduction", introduction);
         file.put("guide_voice", guide_voice);
+        file.put("guide_voice_en", guide_voice_en);
         file.put("photo", photo);
         file.put("photo_vertical", photo_vertical);
         file.put("hint", hint);
         file.put("mode_id", mode_id);
         file.put("company_id", company_id);
         file.put("read_count", read_count);
+        file.put("like_count", like_count);
         file.put("company_data", getCompanyJSONObject(company_id));
 
         cursor.moveToNext();
@@ -352,6 +367,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int field_id;
         String field_name;
         String map_svg;
+        String map_svg_en;
+        String map_bg;
         int start;
         int end;
         String svg_id;
@@ -367,12 +384,20 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
-        Cursor fieldMapCursor = db.rawQuery("select map_svg from field_map where field_map_id=" + field_id, null);
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
+        map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
+        map_bg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_bg"));
         // parse file name
         String[] paths = map_svg.split("/");
         String svgName = paths[paths.length-1];
+
+        String[] paths_en = map_svg_en.split("/");
+        String svgNameEn = paths_en[paths_en.length - 1];
+
+        String[] pathsBg = map_bg.split("/");
+        String svgNameBg = pathsBg[pathsBg.length-1];
 
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
@@ -392,6 +417,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("field_id", field_id);
         file.put("field_name", field_name);
         file.put("map_svg", svgName);
+        file.put("map_svg_en", svgNameEn);
+        file.put("map_bg", svgNameBg);
         file.put("start", start);
         file.put("end", end);
         file.put("svg_id", svg_id);
@@ -497,10 +524,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                   String name_en,
                                   int project_id,
                                   String introduction,
-                                  String guide_voice,
                                   String photo,
                                   String photo_vertical,
-                                  String map_svg) {
+                                  String map_svg,
+                                  String map_svg_en,
+                                  String map_bg) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("field_map_id", field_map_id);
@@ -508,10 +536,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name_en", name_en);
         values.put("project_id", project_id);
         values.put("introduction", introduction);
-        values.put("guide_voice", guide_voice);
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("map_svg", map_svg);
+        values.put("map_svg_en", map_svg_en);
+        values.put("map_bg", map_bg);
         long rowId = db.insertWithOnConflict("field_map", null, values, 4);
         if (rowId != -1) {
             Log.i("field_map", "insert field_map_id=" + field_map_id + " success.");
@@ -519,8 +548,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-//        db.insert("field_map", null, values);
-//        return true;
     }
 
     public Cursor getFieldMap(int field_map_id) {
@@ -534,26 +561,33 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select field_map_id, guide_voice, photo, photo_vertical, map_svg from field_map", null);
+        Cursor cursor = db.rawQuery("select field_map_id, photo, photo_vertical, map_svg, map_svg_en, map_bg from field_map", null);
         cursor.moveToFirst();
         String field_map_id;
         String guide_voice;
+        String guide_voice_en;
         String photo;
         String photo_vertical;
         String map_svg;
+        String map_svg_en;
+        String map_bg;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             field_map_id = cursor.getString(cursor.getColumnIndex("device_id"));
-            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+            map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
+            map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+
             // add to JSONObject
             file.put("device_id", field_map_id);
-            file.put("guide_voice", guide_voice);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             file.put("map_svg", map_svg);
+            file.put("map_svg_en", map_svg_en);
+            file.put("map_bg", map_bg);
+
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();
@@ -644,11 +678,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // hipster text table query and insert
     public boolean insertHipsterText(int hipster_text_id,
-                                     String content) {
+                                     String content,
+                                     String content_en) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("hipster_text_id", hipster_text_id);
         values.put("content", content);
+        values.put("content_en", content_en);
         long rowId = db.insertWithOnConflict("hipster_text", null, values, 4);
         if (rowId != -1) {
             Log.i("hipster_text", "insert hipster_text_id=" + hipster_text_id + " success.");
@@ -669,17 +705,20 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select hipster_text_id, content from hipster_text", null);
+        Cursor cursor = db.rawQuery("select hipster_text_id, content, content_en from hipster_text", null);
         cursor.moveToFirst();
         String hipster_text_id;
         String content;
+        String content_en;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             hipster_text_id = cursor.getString(cursor.getColumnIndex("hipster_text_id"));
             content = cursor.getString(cursor.getColumnIndex("content"));
+            content_en = cursor.getString(cursor.getColumnIndex("content_en"));
             // add to JSONObject
             file.put("hipster_text_id", hipster_text_id);
             file.put("content", content);
+            file.put("content_en", content_en);
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();
@@ -726,6 +765,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                               String name_en,
                               String introduction,
                               String guide_voice,
+                              String guide_voice_en,
                               String video,
                               String splash_bg_vertical,
                               String splash_fg_vertical,
@@ -742,6 +782,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name_en", name_en);
         values.put("introduction", introduction);
         values.put("guide_voice", guide_voice);
+        values.put("guide_voice_en", guide_voice_en);
         values.put("video", video);
         values.put("splash_bg_vertical", splash_bg_vertical);
         values.put("splash_fg_vertical", splash_fg_vertical);
@@ -777,6 +818,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String name_en;
         String introduction;
         String guide_voice;
+        String guide_voice_en;
         String video;
         String splash_bg_vertical;
         String splash_fg_vertical;
@@ -792,6 +834,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
             splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
@@ -807,6 +850,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name_en", name_en);
             file.put("introduction", introduction);
             file.put("guide_voice", guide_voice);
+            file.put("guide_voice_en", guide_voice_en);
             file.put("video", video);
             file.put("splash_bg_vertical", splash_bg_vertical);
             file.put("splash_fg_vertical", splash_fg_vertical);
@@ -844,6 +888,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String name_en;
         String introduction;
         String guide_voice;
+        String guide_voice_en;
         String video;
         String splash_bg_vertical;
         String splash_fg_vertical;
@@ -859,6 +904,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
             splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
@@ -873,6 +919,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name_en", name_en);
             file.put("introduction", introduction);
             file.put("guide_voice", guide_voice);
+            file.put("guide_voice_en", guide_voice_en);
             file.put("video", video);
             file.put("splash_bg_vertical", splash_bg_vertical);
             file.put("splash_fg_vertical", splash_fg_vertical);
@@ -893,7 +940,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, company_id, read_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         String device_id;
         String name;
@@ -904,6 +951,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String hint;
         int company_id;
         int read_count;
+        int like_count;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             device_id = cursor.getString(cursor.getColumnIndex("device_id"));
@@ -915,6 +963,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             hint = cursor.getString(cursor.getColumnIndex("hint"));
             company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
             // add to JSONObject
             file.put("device_id", device_id);
@@ -926,6 +975,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("hint", hint);
             file.put("company_id", company_id);
             file.put("read_count", read_count);
+            file.put("like_count", like_count);
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();
@@ -1050,10 +1100,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String name_en,
                                 String introduction,
                                 String guide_voice,
+                                String guide_voice_en,
                                 String hint,
                                 String photo,
                                 String photo_vertical,
-                                int field_id) {
+                                int field_id,
+                                int like_count) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("zone_id", zone_id);
@@ -1061,10 +1113,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name_en", name_en);
         values.put("introduction", introduction);
         values.put("guide_voice", guide_voice);
+        values.put("guide_voice_en", guide_voice_en);
         values.put("hint", hint);
         values.put("photo", photo);
         values.put("photo_vertical", photo_vertical);
         values.put("field_id", field_id);
+        values.put("like_count", like_count);
         long rowId = db.insertWithOnConflict("zone", null, values, 4);
         if (rowId != -1) {
             Log.i("zone", "insert zone_id=" + zone_id + " success.");
@@ -1078,24 +1132,28 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from zone where zone_id=" + zone_id + "", null);
-        cursor .moveToFirst();
+        cursor.moveToFirst();
         String name = cursor.getString(cursor.getColumnIndex("name"));
         String name_en = cursor.getString(cursor.getColumnIndex("name_en"));
         String introduction = cursor.getString(cursor.getColumnIndex("introduction"));
         String guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+        String guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         String hint = cursor.getString(cursor.getColumnIndex("hint"));
         String photo = cursor.getString(cursor.getColumnIndex("photo"));
         String photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
         int field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
+        int like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
         file.put("name", name);
         file.put("name_en", name_en);
         file.put("introduction", introduction);
         file.put("guide_voice", guide_voice);
+        file.put("guide_voice_en", guide_voice_en);
         file.put("hint", hint);
         file.put("photo", photo);
         file.put("photo_vertical", photo_vertical);
         file.put("field_id", field_id);
+        file.put("like_count", like_count);
 
         cursor.close();
         return file;
@@ -1209,25 +1267,29 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public List<String> getDeviceDownloadFiles() {
         List<String> deviceFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical from device", null);
+        Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, photo, photo_vertical from device", null);
 
         cursor.moveToFirst();
         String guide_voice = null;
+        String guide_voice_en = null;
         String photo = null;
         String photo_vertical = null;
         // fetch all guide_voice, photo, photo_vertical
         while (cursor.isAfterLast() == false) {
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-
+            // add to List
             if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
                 deviceFiles.add(guide_voice);
+            }
+            if (guide_voice_en.length() != 0 && guide_voice_en != null && guide_voice_en != "null") {
+                deviceFiles.add(guide_voice_en);
             }
             if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
                 deviceFiles.add(photo_vertical);
             }
-            // add to List
             deviceFiles.add(photo);
             cursor.moveToNext();
         }
@@ -1238,7 +1300,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public List<String> getFieldMapDownloadFiles() {
         List<String> fieldMapFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical, map_svg from field_map", null);
+        Cursor cursor = db.rawQuery("select photo, photo_vertical, map_svg, map_svg_en, map_bg from field_map", null);
 
         cursor.moveToFirst();
         String guide_voice = null;
@@ -1247,7 +1309,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String map_svg = null;
         // fetch all guide_voice, photo, photo_vertical & svg
         while (cursor.isAfterLast() == false) {
-            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
@@ -1288,22 +1349,27 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public List<String> getModeDownloadFiles() {
         List<String> modeFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select guide_voice, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
+        Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
 
         cursor.moveToFirst();
         String guide_voice = null;
+        String guide_voice_en = null;
         String bg = null;
         String fg = null;
         String blur = null;
         // fetch all guide_voice, video, bg, fg, blur img
         while (cursor.isAfterLast() == false) {
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             bg = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
             fg = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
             blur = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
             // check empty or not
             if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
                 modeFiles.add(guide_voice);
+            }
+            if (guide_voice_en.length() != 0 && guide_voice_en != null && guide_voice_en != "null") {
+                modeFiles.add(guide_voice_en);
             }
             if (bg.length() != 0 && bg != null && bg != "null") {
                 modeFiles.add(bg);
@@ -1324,19 +1390,24 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public List<String> getZoneDownloadFiles() {
         List<String> zoneFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select guide_voice, photo, photo_vertical from zone", null);
+        Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, photo, photo_vertical from zone", null);
 
         cursor.moveToFirst();
         String guide_voice = null;
+        String guide_voice_en = null;
         String photo = null;
         String photo_vertical = null;
         // fetch all guide_voice, photo, photo_vertical
         while (cursor.isAfterLast() == false) {
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
                 zoneFiles.add(guide_voice);
+            }
+            if (guide_voice_en.length() != 0 && guide_voice_en != null && guide_voice_en != "null") {
+                zoneFiles.add(guide_voice_en);
             }
             if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
                 zoneFiles.add(photo_vertical);
@@ -1412,21 +1483,24 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, guide_voice, photo, photo_vertical from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, guide_voice, guide_voice_en, photo, photo_vertical from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
-        String device_id;
+        int device_id;
         String guide_voice;
+        String guide_voice_en;
         String photo;
         String photo_vertical;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            device_id = cursor.getInt(cursor.getColumnIndex("device_id"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             // add to JSONObject
             file.put("device_id", device_id);
             file.put("guide_voice", guide_voice);
+            file.put("guide_voice_en", guide_voice_en);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             filePaths.put(file);
@@ -1476,6 +1550,32 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE mode SET did_read=0");
         db.close();
+    }
+
+    // only device table
+    public JSONObject getAllLikeCounts() throws JSONException {
+        JSONArray array = new JSONArray();
+        JSONObject obj = new JSONObject();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // query device like count and read count
+        Cursor deviceCursor = db.rawQuery("select device_id, read_count, like_count from device", null);
+        deviceCursor.moveToFirst();
+        int device_id;
+        int read_count;
+        int like_count;
+        while (deviceCursor.isAfterLast() == false) {
+            device_id = deviceCursor.getInt(deviceCursor.getColumnIndex("device_id"));
+            read_count = deviceCursor.getInt(deviceCursor.getColumnIndex("read_count"));
+            like_count = deviceCursor.getInt(deviceCursor.getColumnIndex("like_count"));
+            obj.put("device_id", device_id);
+            obj.put("read_count", read_count);
+            obj.put("like_count", like_count);
+            array.put(obj);
+            obj = new JSONObject();
+            deviceCursor.moveToNext();
+        }
+        deviceCursor.close();
+        return obj;
     }
 
 }

@@ -37,6 +37,7 @@ public class DatabaseUtilizer {
     public static final String NAME_EN = "name_en";
     public static final String INTRODUCTION = "introduction";
     public static final String GUIDE_VOICE = "guide_voice";
+    public static final String GUIDE_VOICE_EN = "guide_voice_en";
     public static final String VIDEO = "video";
     public static final String READ_COUNT = "read_count";
     public static final String LIKE_COUNT = "like_count";
@@ -108,6 +109,8 @@ public class DatabaseUtilizer {
     public static final String FIELD_MAP_TABLE = "field_map";
     public static final String FIELD_MAP_ID = "field_map_id";
     public static final String MAP_SVG = "map_svg";
+    public static final String MAP_SVG_EN = "map_svg_en";
+    public static final String MAP_BG = "map_bg";
 
     // hipster content table
     public static final String HIPSTER_CONTENT_TABLE = "hipster_content";
@@ -124,6 +127,7 @@ public class DatabaseUtilizer {
     public static final String HIPSTER_TEXT_TABLE = "hipster_text";
     public static final String HIPSTER_TEXT_ID = "hipster_text_id";
     public static final String CONTENT = "content";
+    public static final String CONTENT_EN = "content_en";
 
     // lease table
     public static final String LEASE_TABLE = "lease";
@@ -189,12 +193,14 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
+            + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO_VER + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_MODE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.DEVICE_COMPANY_ID + " INT DEFAULT NULL, "
-            + DatabaseUtilizer.READ_COUNT + " INT DEFAULT 0"
+            + DatabaseUtilizer.READ_COUNT + " INT DEFAULT 0, "
+            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0"
             + ")";
     // project
     public static final String DB_CREATE_TABLE_PROJECT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PROJECT_TABLE + " ("
@@ -234,10 +240,11 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.PROJECT_ID + " INT NOT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT NOT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO_VER + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.MAP_SVG + " TEXT NOT NULL"
+            + DatabaseUtilizer.MAP_SVG + " TEXT NOT NULL, "
+            + DatabaseUtilizer.MAP_SVG_EN + " TEXT NOT NULL, "
+            + DatabaseUtilizer.MAP_BG + " TEXT NOT NULL"
             + ")";
     // hipster content
     public static final String DB_CREATE_TABLE_HIPSTER_CONTENT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_CONTENT_TABLE + " ("
@@ -258,7 +265,8 @@ public class DatabaseUtilizer {
     // hipster text
     public static final String DB_CREATE_TABLE_HIPSTER_TEXT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_TEXT_TABLE + " ("
             + DatabaseUtilizer.HIPSTER_TEXT_ID + " INT NOT NULL UNIQUE, "
-            + DatabaseUtilizer.CONTENT + " TEXT NOT NULL"
+            + DatabaseUtilizer.CONTENT + " TEXT NOT NULL, "
+            + DatabaseUtilizer.CONTENT_EN + " TEXT NOT NULL"
             + ")";
     // lease
     public static final String DB_CREATE_TABLE_LEASE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.LEASE_TABLE + " ("
@@ -276,6 +284,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
+            + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.VIDEO + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.MODE_SPLASH_BG + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.MODE_SPLASH_FG + " TEXT DEFAULT NULL, "
@@ -355,10 +364,12 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT, "
+            + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT, "
             + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT NOT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO_VER + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.FIELD_ID + " INT NOT NULL"
+            + DatabaseUtilizer.FIELD_ID + " INT NOT NULL, "
+            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0"
             + ")";
 
 }

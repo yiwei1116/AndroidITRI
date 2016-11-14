@@ -268,9 +268,18 @@ public class CommunicationWithServer {
         uploadJsonData(jsonObject, this.surveyTwoURL);
     }
 
+    public void uploadLikeCount() {
+        SQLiteDatabase db = sqLiteDbManager.getReadableDatabase();
+
+    }
+    public void uploadReadCount() {
+
+    }
+
+
+
 
     // ********************** download all tables start **********************
-
     // Starting point: call this method to download all tables
     public void downloadAllTables() {
         downloadProjectData("device");
@@ -347,12 +356,14 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.NAME_EN),
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
                                 json.optString(DatabaseUtilizer.DEVICE_HINT),
                                 json.optInt(DatabaseUtilizer.DEVICE_MODE_ID),
                                 json.optInt(DatabaseUtilizer.DEVICE_COMPANY_ID),
-                                json.optInt(DatabaseUtilizer.READ_COUNT));
+                                json.optInt(DatabaseUtilizer.READ_COUNT),
+                                json.optInt(DatabaseUtilizer.LIKE_COUNT));
                     }
                     break;
                 case "company":
@@ -396,10 +407,11 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.NAME_EN),
                                 json.optInt(DatabaseUtilizer.PROJECT_ID),
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
-                                json.optString(DatabaseUtilizer.GUIDE_VOICE),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
-                                json.optString(DatabaseUtilizer.MAP_SVG));
+                                json.optString(DatabaseUtilizer.MAP_SVG),
+                                json.optString(DatabaseUtilizer.MAP_SVG_EN),
+                                json.optString(DatabaseUtilizer.MAP_BG));
                     }
                     break;
                 case "hipster_template":
@@ -418,7 +430,8 @@ public class CommunicationWithServer {
                         JSONObject json = (JSONObject)jsonArray.get(i);
                         // store each entry into database
                         sqLiteDbManager.insertHipsterText(json.optInt(DatabaseUtilizer.HIPSTER_TEXT_ID),
-                                json.optString(DatabaseUtilizer.CONTENT));
+                                json.optString(DatabaseUtilizer.CONTENT),
+                                json.optString(DatabaseUtilizer.CONTENT_EN));
                     }
                     break;
                 case "mode":
@@ -431,6 +444,7 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.NAME_EN),
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
                                 json.optString(DatabaseUtilizer.VIDEO),
                                 json.optString(DatabaseUtilizer.MODE_SPLASH_BG),
                                 json.optString(DatabaseUtilizer.MODE_SPLASH_FG),
@@ -452,10 +466,12 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.NAME_EN),
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
                                 json.optString(DatabaseUtilizer.DEVICE_HINT),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
-                                json.optInt(DatabaseUtilizer.FIELD_ID));
+                                json.optInt(DatabaseUtilizer.FIELD_ID),
+                                json.optInt(DatabaseUtilizer.LIKE_COUNT));
                     }
                     break;
                 case "path":
@@ -525,7 +541,6 @@ public class CommunicationWithServer {
 
 
     // ********************** download files start **********************
-
     /*
         **** DOWNLOAD CLASS : download all files
      */
@@ -654,6 +669,4 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
-
-
 }
