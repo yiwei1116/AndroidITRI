@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -333,9 +335,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 }
             });*/
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, length);
+
             params.leftMargin = minX;
             params.topMargin = minY;
-            layout.addView(pic, params);
 
+            layout.addView(pic, params);
         }
+
 }

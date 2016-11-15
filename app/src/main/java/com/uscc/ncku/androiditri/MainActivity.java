@@ -28,10 +28,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uscc.ncku.androiditri.fragment.AreaFragment;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.FeedbackFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.fragment.ModeHighlightFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
@@ -205,9 +207,10 @@ public class MainActivity extends AppCompatActivity {
                  *  Company Information Button
                  */
                 case R.id.btn_info_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundNormal();
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
 
@@ -255,9 +258,10 @@ public class MainActivity extends AppCompatActivity {
                  * Diary Button
                  */
                 case R.id.btn_diary_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         replaceFragment(diaryFragment);
                     }
@@ -266,9 +270,10 @@ public class MainActivity extends AppCompatActivity {
                  *  Map Button
                  */
                 case R.id.btn_map_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundDisabled();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         replaceFragment(mapFragment);
                     }
@@ -299,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
-                        textToSpeech.stop();
+                        stopTexttoSpeech();
                         //setSoundStop();
                     }
                     break;
@@ -307,8 +312,9 @@ public class MainActivity extends AppCompatActivity {
                  *  Font Size Button
                  */
                 case R.id.btn_font_main:
-                    setSoundNormalIfActive();
-
+                    //setSoundNormalIfActive();
+                    stopTexttoSpeech();
+                    setSoundNormal();
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         setFontActive();
 
@@ -507,7 +513,8 @@ public class MainActivity extends AppCompatActivity {
             if (soundPlayer != null)
                 soundPlayer.release();
             setFontNormalIfActive();
-            setSoundNormalIfActive();
+            //setSoundNormalIfActive();
+            textToSpeech.stop();
         }
 
         /**
@@ -516,6 +523,16 @@ public class MainActivity extends AppCompatActivity {
          */
         if (currentFragment instanceof FeedbackFragment) {
             replaceFragment(mapFragment);
+            return;
+        }
+        if (currentFragment instanceof ModeHighlightFragment) {
+            textToSpeech.stop();
+            setSoundNormal();
+            return;
+        }
+        if (currentFragment instanceof AreaFragment) {
+            textToSpeech.stop();
+            setSoundNormal();
             return;
         }
 
@@ -717,7 +734,7 @@ public class MainActivity extends AppCompatActivity {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
         fontSizeRL.setVisibility(View.GONE);
     }
-
+    //For audioplayer
     public void setSoundNormalIfActive() {
         if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
             setSoundNormal();

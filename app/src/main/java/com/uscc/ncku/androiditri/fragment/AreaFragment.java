@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
@@ -23,6 +24,7 @@ import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * Use the {@link AreaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AreaFragment extends Fragment {
+public class AreaFragment extends Fragment implements ISoundInterface{
     private static final String TOUR_INDEX = "TOUR_INDEX";
     private static final String ZONE = "ZONE";
     private static final int[] TOUR_GUIDE = {
@@ -125,7 +127,7 @@ public class AreaFragment extends Fragment {
             }
         });
         view = inflater.inflate(R.layout.fragment_area, container, false);
-
+        ((MainActivity) getActivity()).setSoundNormal();
         return view;
     }
 
@@ -172,6 +174,8 @@ public class AreaFragment extends Fragment {
                 String currentZonename = isEnglish ? title_en : title;
                 ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone, currentZonename);
                 ((MainActivity) getActivity()).replaceFragment(modeSelectFragment);
+                ((MainActivity)getActivity()).stopTexttoSpeech();
+                ((MainActivity)getActivity()).setSoundDisabled();
             }
         });
 
@@ -214,4 +218,14 @@ public class AreaFragment extends Fragment {
         Log.i("GG", "onDetach");
     }
 
+    @Override
+    public MediaPlayer getCurrentmedia() {
+        return null;
+    }
+
+    @Override
+    public String getIntroduction() {
+        String getIntrod =introduction;
+        return getIntrod;
+    }
 }
