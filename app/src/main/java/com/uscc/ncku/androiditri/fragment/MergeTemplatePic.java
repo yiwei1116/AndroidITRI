@@ -298,7 +298,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
 
         icDownload.setVisibility(View.GONE);
-        //textView.setVisibility(View.GONE);
+        textView.setVisibility(View.GONE);
         mask.setVisibility(View.VISIBLE);
         Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
