@@ -35,6 +35,8 @@ public class SurveyActivity extends AppCompatActivity {
     private int family_type = 0;
     private int family_member = 0;
     private int know_way = 0;
+    private String name = "0";
+    private String mail = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1133,14 +1135,15 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText nameEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_name);
                 EditText mailEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_mail) ;
-                String name = nameEdtxt.getText().toString();
-                String mail = mailEdtxt.getText().toString();
+                name = nameEdtxt.getText().toString();
+                mail = mailEdtxt.getText().toString();
 
-                // TODO: insert string name and mail
                 // upload to server
-<<<<<<< HEAD
                 try {
-                    comm.uploadSurveyData(name, mail, gender,
+                    comm.uploadSurveyData(
+                            name,
+                            mail,
+                            gender,
                             age,
                             education,
                             career,
@@ -1154,23 +1157,6 @@ public class SurveyActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-=======
-//                try {
-//                    comm.uploadSurveyData(gender,
-//                            age,
-//                            education,
-//                            career,
-//                            exp,
-//                            salary,
-//                            location,
-//                            house_type,
-//                            family_type,
-//                            family_member,
-//                            know_way);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
->>>>>>> 51f39fec146c7f1b97494999b556014cfd51b435
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
@@ -1184,21 +1170,24 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // upload to server
-//                try {
-//                    comm.uploadSurveyData(gender,
-//                            age,
-//                            education,
-//                            career,
-//                            exp,
-//                            salary,
-//                            location,
-//                            house_type,
-//                            family_type,
-//                            family_member,
-//                            know_way);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    comm.uploadSurveyData(
+                            name,
+                            mail,
+                            gender,
+                            age,
+                            education,
+                            career,
+                            exp,
+                            salary,
+                            location,
+                            house_type,
+                            family_type,
+                            family_member,
+                            know_way);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
