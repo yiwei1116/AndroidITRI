@@ -109,8 +109,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("mode_id", mode_id);
         values.put("company_id", company_id);
         values.put("read_count", read_count);
-        values.put("like count", like_count);
-
+        values.put("like_count", like_count);
+        // error
         long rowId = db.insertWithOnConflict("device", null, values, 4);
         if (rowId != -1) {
             Log.i("device", "insert device_id=" + device_id + " success.");
