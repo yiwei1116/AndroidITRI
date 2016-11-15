@@ -7,14 +7,16 @@
     android:background="@drawable/tour_select_background"
     tools:context="com.uscc.ncku.androiditri.fragment.ChooseTemplate">
 
-    <com.uscc.ncku.androiditri.util.TourViewPager
+    <android.support.v4.view.ViewPager
 
         android:id="@+id/template_choose"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_above="@+id/btn_next_step">
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
 
-    </com.uscc.ncku.androiditri.util.TourViewPager>
+</android.support.v4.view.ViewPager>
 
     <Button
         android:layout_width="wrap_content"
