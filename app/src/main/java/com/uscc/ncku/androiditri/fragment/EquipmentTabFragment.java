@@ -200,10 +200,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
 
-                // set font size seek bar progress
-                int progress = equipTabs.get(mViewPager.getCurrentItem()).getFontSize();
-                ((MainActivity) getActivity()).setFontSizeSeekBar(progress);
-
                 View currView = equipTabs.get(mLastViewPage).getView();
                 ScrollView infoLayout = (ScrollView) currView.findViewById(R.id.scrollview_equipment_info);
                 infoLayout.setVisibility(View.GONE);
@@ -601,6 +597,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView tvRecord = (TextView) mViewPager.findViewWithTag(tag);
         tvRecord.setTextSize(size);
         equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);
+    }
+
+    @Override
+    public int getFontSize() {
+        return equipTabs.get(mViewPager.getCurrentItem()).getFontSize();
     }
 
     @Override

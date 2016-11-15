@@ -325,8 +325,11 @@ public class MainActivity extends AppCompatActivity {
                         final IFontSize currentFontSize =
                                 (IFontSize) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
+                        int size = currentFontSize.getFontSize();
+
                         SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
                         assert seekBar != null;
+                        seekBar.setProgress(size*5-75);
                         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -474,7 +477,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /** if current fragment is equipment fragment and the info btn is actived
+        /**
+         * if current fragment is equipment fragment and the info btn is actived
          *  than hide info page while pressing back button
          */
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -508,33 +512,18 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return;
             }
-
-            // FIXME: if soundPlayr != null
-            if (soundPlayer != null)
-                soundPlayer.release();
-            setFontNormalIfActive();
-            //setSoundNormalIfActive();
-            textToSpeech.stop();
         }
 
-        /**
-         *  if current fragment is feedback fragment
-         *  than replace map fragment
-         */
-        if (currentFragment instanceof FeedbackFragment) {
-            replaceFragment(mapFragment);
-            return;
-        }
-        if (currentFragment instanceof ModeHighlightFragment) {
-            textToSpeech.stop();
-            setSoundNormal();
-            return;
-        }
-        if (currentFragment instanceof AreaFragment) {
-            textToSpeech.stop();
-            setSoundNormal();
-            return;
-        }
+//        /**
+//         *  if current fragment implements ISoundInterface
+//         *  than stop text to speech
+//         */
+//        if (currentFragment instanceof ISoundInterface) {
+//            if (soundPlayer != null)
+//                soundPlayer.release();
+//            textToSpeech.stop();
+//            setSoundNormal();
+//        }
 
         /**
          *  normal situation of pressing back button
@@ -546,8 +535,6 @@ public class MainActivity extends AppCompatActivity {
             // get last fragment
             Fragment f = fragmentBackStack.pop();
             String fragmentTag = f.getClass().getSimpleName();
-
-            Log.d(TAG, String.valueOf(fragmentBackStack.size()));
 
             // if current fragment is mapFragment and previous is diaryFragment
             // then pop next fragment in back stack.
@@ -647,10 +634,6 @@ public class MainActivity extends AppCompatActivity {
         return communicationWithServer;
     }
 
-    public LinkedList<Fragment> getFragmentBackStack() {
-        return fragmentBackStack;
-    }
-
     public void setToolbarTitle(int stringID) {
         toolbarTitle.setText(stringID);
     }
@@ -733,10 +716,8 @@ public class MainActivity extends AppCompatActivity {
     public void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
         fontSizeRL.setVisibility(View.GONE);
-
-        // set default seek bar
-        setFontSizeSeekBarDefault();
     }
+
     //For audioplayer
     public void setSoundNormalIfActive() {
         if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
@@ -762,26 +743,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finishOtherActivity() {
-        if(AboutActivity.instance != null) {
-            try {
+        try {
+            if (AboutActivity.instance != null) {
                 AboutActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(HomeActivity.instance != null) {
-            try {
+            }
+            if (HomeActivity.instance != null) {
                 HomeActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(SurveyActivity.instance != null) {
-            try {
+            }
+            if (SurveyActivity.instance != null) {
                 SurveyActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(TourSelectActivity.instance != null) {
-            try {
+            }
+            if (TourSelectActivity.instance != null) {
                 TourSelectActivity.instance.finish();
-            } catch (Exception e) {}
-        }
+            }
+        } catch (Exception e) {}
     }
 
     public void showMapCoachInfo() {
@@ -867,17 +842,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stopTexttoSpeech(){
-            textToSpeech.stop();
-    }
-
-    public void setFontSizeSeekBarDefault() {
-        SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
-        seekBar.setProgress(15);
-    }
-
-    public void setFontSizeSeekBar(int progress) {
-        SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
-        seekBar.setProgress(progress);
+        textToSpeech.stop();
     }
 
     private void createLanguageTTS() {

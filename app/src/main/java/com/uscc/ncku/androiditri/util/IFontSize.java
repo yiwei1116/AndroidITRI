@@ -7,4 +7,5 @@ import android.media.MediaPlayer;
  */
 public interface IFontSize {
     public void setFontSize(int size);
+    public int getFontSize();
 }

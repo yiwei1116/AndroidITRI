@@ -99,8 +99,6 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_highlight, container, false);
 
-        ((MainActivity) getActivity()).setFontNormal();
-
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         setHasOptionsMenu(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -117,6 +115,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         });
        // ((MainActivity) getActivity()).stopTexttoSpeech();
         ((MainActivity) getActivity()).setSoundNormal();
+        ((MainActivity) getActivity()).setFontNormal();
 
         return view;
     }
@@ -153,8 +152,6 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
                 Button highlightBtn = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
                 highlightBtn.setVisibility(View.VISIBLE);
-                ((MainActivity) getActivity()).stopTexttoSpeech();
-                ((MainActivity)getActivity()).setSoundDisabled();
                 modeHighlight();
             }
         });
@@ -165,6 +162,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         // hide toolbar menu
         ((MainActivity) getActivity()).getToolbar().getMenu().clear();
         ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity) getActivity()).setSoundDisabled();
+        ((MainActivity) getActivity()).stopTexttoSpeech();
 
         ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
@@ -220,12 +219,21 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity)getActivity()).setSoundDisabled();
+
+        ((MainActivity) getActivity()).stopTexttoSpeech();
     }
 
     @Override
     public void setFontSize(int size) {
         TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
         modeIntroContent.setTextSize(size);
+    }
+
+    @Override
+    public int getFontSize() {
+        TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
+        return (int) modeIntroContent.getTextSize() / 3;
     }
 
     @Override

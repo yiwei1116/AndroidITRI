@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
@@ -118,6 +117,7 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
 
         ((MainActivity) getActivity()).hideToolbar();
         ((MainActivity) getActivity()).setFontNormal();
+        ((MainActivity) getActivity()).setSoundNormal();
 
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
             }
         });
         view = inflater.inflate(R.layout.fragment_area, container, false);
-        ((MainActivity) getActivity()).setSoundNormal();
+
         return view;
     }
 
@@ -173,8 +173,6 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
                 String currentZonename = isEnglish ? title_en : title;
                 ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone, currentZonename);
                 ((MainActivity) getActivity()).replaceFragment(modeSelectFragment);
-                ((MainActivity)getActivity()).stopTexttoSpeech();
-                ((MainActivity)getActivity()).setSoundDisabled();
             }
         });
 
@@ -183,14 +181,25 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // disable main ui
         ((MainActivity) getActivity()).showDefaultToolbar();
         ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity)getActivity()).setSoundDisabled();
+
+        // stop text to speech
+        ((MainActivity)getActivity()).stopTexttoSpeech();
     }
 
     @Override
     public void setFontSize(int size) {
         TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
         areaContent.setTextSize(size);
+    }
+
+    @Override
+    public int getFontSize() {
+        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
+        return (int) areaContent.getTextSize() / 3;
     }
 
     @Override
