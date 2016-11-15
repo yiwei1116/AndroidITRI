@@ -199,6 +199,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
+
+                // set font size seek bar progress
+                int progress = equipTabs.get(mViewPager.getCurrentItem()).getFontSize();
+                ((MainActivity) getActivity()).setFontSizeSeekBar(progress);
+
                 View currView = equipTabs.get(mLastViewPage).getView();
                 ScrollView infoLayout = (ScrollView) currView.findViewById(R.id.scrollview_equipment_info);
                 infoLayout.setVisibility(View.GONE);
@@ -322,7 +327,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             setEquipmentTab(v, position);
 
-            setEquipmentInfo(v, position);
+            setCompanyInfo(v, position);
 
             container.addView(v);
 
@@ -337,14 +342,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             container.removeView((View) object);
         }
 
-//        @Override
-//        public int getItemPosition(Object object) {
-//            return POSITION_NONE;
-//        }
-//
-//        public void renew() {
-//            this.notifyDataSetChanged();
-//        }
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
 
     }
 
@@ -470,8 +471,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setTitle(name);
 
             // insert photo to array list
-            tab.insertEquipPhoto(equip.getString("photo"));
             tab.insertEquipPhoto(equip.getString("photo_vertical"));
+            // insert second photo to photo array list, temporary useless
+//            tab.insertEquipPhoto(equip.getString("photo"));
 
             tab.setVideo(true);
             tab.setPhoto(true);
@@ -557,7 +559,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
     }
 
-    private void setEquipmentInfo(View v, int position) {
+    private void setCompanyInfo(View v, int position) {
         EquipmentTabInformation currTab = equipTabs.get(position);
 
         String name = currTab.getCompanyTitleImage();

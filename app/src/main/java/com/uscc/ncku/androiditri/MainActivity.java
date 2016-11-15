@@ -716,12 +716,15 @@ public class MainActivity extends AppCompatActivity {
     public void setFontDisabled() {
         fontBtn.setDisable(R.drawable.btn_main_font_disabled);
         fontSizeRL.setVisibility(View.GONE);
+
+        // set default seek bar
+        setFontSizeSeekBarDefault();
     }
 
     public void setSoundNormalIfActive() {
         if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
             setSoundNormal();
-            setSoundStop();
+//            setSoundStop();
         }
     }
 
@@ -850,41 +853,36 @@ public class MainActivity extends AppCompatActivity {
             textToSpeech.stop();
     }
 
-    private void createLanguageTTS()
-    {
+    public void setFontSizeSeekBarDefault() {
+        SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
+        seekBar.setProgress(15);
+    }
 
-        if( textToSpeech == null )
-        {
-            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
+    public void setFontSizeSeekBar(int progress) {
+        SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
+        seekBar.setProgress(progress);
+    }
+
+    private void createLanguageTTS() {
+
+        if (textToSpeech == null) {
+            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
                 @Override
-                public void onInit(int status)
-                {
+                public void onInit(int status) {
 
-                    if( status == TextToSpeech.SUCCESS ) {
+                    if (status == TextToSpeech.SUCCESS) {
 
                         l = Locale.CHINESE;
                         // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
-                        if( textToSpeech.isLanguageAvailable( l ) == TextToSpeech.LANG_COUNTRY_AVAILABLE )
-                        {
-                            textToSpeech.setLanguage( l );
+                        if (textToSpeech.isLanguageAvailable(l) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                            textToSpeech.setLanguage(l);
                         }
+                    } else {
+                        Toast.makeText(MainActivity.this, "語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-
-                        Toast.makeText(MainActivity.this,"語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-
-                }}
+                }
+            }
             );
-
-
-
-
-
+        }
+    }
 }
-
-
-    }}

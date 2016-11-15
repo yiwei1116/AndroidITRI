@@ -52,7 +52,7 @@ public class EquipmentTabInformation {
     public EquipmentTabInformation() {
         this.equipPhoto = new ArrayList<String>();
         // initial photo index at positon one
-        this.equipPhotoIndex = 1;
+        this.equipPhotoIndex = 0;
         this.fontSize = 18;
     }
 

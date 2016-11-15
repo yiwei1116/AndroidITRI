@@ -33,11 +33,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_area_fragment"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
+        android:paddingBottom="4dp"
         android:paddingLeft="@dimen/content_padding_rl"
         android:paddingRight="@dimen/content_padding_rl"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/edtxt_hint_font_size" />
+        android:textSize="@dimen/edtxt_hint_font_size"
+        android:layout_above="@+id/btn_next_area_fragment" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

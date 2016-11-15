@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
+import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * Use the {@link ModeHighlightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModeHighlightFragment extends Fragment {
+public class ModeHighlightFragment extends Fragment implements IFontSize {
     private static final String TAG = "DEGUB";
     private static final int HIGHLIGHT_FLIP_TIMES = 4;
     private static final int HIGHLIGHT_FLIP_DURATION = 300;
@@ -95,6 +96,8 @@ public class ModeHighlightFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mode_highlight, container, false);
+
+        ((MainActivity) getActivity()).setFontNormal();
 
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         setHasOptionsMenu(true);
@@ -156,6 +159,7 @@ public class ModeHighlightFragment extends Fragment {
     private void modeHighlight() {
         // hide toolbar menu
         ((MainActivity) getActivity()).getToolbar().getMenu().clear();
+        ((MainActivity) getActivity()).setFontDisabled();
 
         ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
@@ -206,4 +210,15 @@ public class ModeHighlightFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((MainActivity) getActivity()).setFontDisabled();
+    }
+
+    @Override
+    public void setFontSize(int size) {
+        TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
+        modeIntroContent.setTextSize(size);
+    }
 }
