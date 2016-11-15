@@ -4,26 +4,27 @@
     android:layout_height="match_parent"
     android:id="@+id/mergeFramelayout"
     tools:context="com.uscc.ncku.androiditri.fragment.MergeTemplatePic">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pic_location"
-        >
-    </RelativeLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mergeImage"
 
         />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pic_location"
+        >
+    </RelativeLayout>
     <TextView
         android:id="@+id/context"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center|left"
-        android:layout_marginTop="350sp"
-        android:layout_marginLeft="60sp"
-        android:textSize="20dp"
+        android:layout_marginTop="420dp"
+        android:layout_marginLeft="60dp"
+        android:textSize="20sp"
         android:textColor="@color/survey_page_color"
         android:visibility="invisible"
         android:elevation="20dp"

@@ -261,7 +261,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).setFontDisabled();
         ((MainActivity) getActivity()).setSoundDisabled();
         ((MainActivity) getActivity()).setInfoDisabled();
-        ((MainActivity) getActivity()).shutTexttoSpeech();
+        ((MainActivity) getActivity()).stopTexttoSpeech();
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();

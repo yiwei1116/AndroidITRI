@@ -4,6 +4,7 @@ package com.uscc.ncku.androiditri.fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,7 @@ import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.IFontSize;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
@@ -36,7 +38,7 @@ import org.json.JSONObject;
  * Use the {@link ModeHighlightFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModeHighlightFragment extends Fragment implements IFontSize {
+public class ModeHighlightFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String TAG = "DEGUB";
     private static final int HIGHLIGHT_FLIP_TIMES = 4;
     private static final int HIGHLIGHT_FLIP_DURATION = 300;
@@ -113,6 +115,8 @@ public class ModeHighlightFragment extends Fragment implements IFontSize {
                 return true;
             }
         });
+       // ((MainActivity) getActivity()).stopTexttoSpeech();
+        ((MainActivity) getActivity()).setSoundNormal();
 
         return view;
     }
@@ -149,7 +153,8 @@ public class ModeHighlightFragment extends Fragment implements IFontSize {
 
                 Button highlightBtn = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
                 highlightBtn.setVisibility(View.VISIBLE);
-
+                ((MainActivity) getActivity()).stopTexttoSpeech();
+                ((MainActivity)getActivity()).setSoundDisabled();
                 modeHighlight();
             }
         });
@@ -205,6 +210,7 @@ public class ModeHighlightFragment extends Fragment implements IFontSize {
 
                 EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(numberOfDevices, modeId);
                 ((MainActivity) getActivity()).replaceFragment(equipTabFragment);
+
             }
         });
 
@@ -220,5 +226,16 @@ public class ModeHighlightFragment extends Fragment implements IFontSize {
     public void setFontSize(int size) {
         TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
         modeIntroContent.setTextSize(size);
+    }
+
+    @Override
+    public MediaPlayer getCurrentmedia() {
+        return null;
+    }
+
+    @Override
+    public String getIntroduction() {
+        String getIntrod =  modeIntroduction;
+        return getIntrod;
     }
 }
