@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -56,6 +57,7 @@ public class ChooseTemplate extends Fragment {
     private String photoUri,picPath,flagSelect;
     private SQLiteDbManager sqliteDbManager;
     private List<String> imageList = new ArrayList<>();
+    private ArrayList<Bitmap> bitmapArray;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -91,6 +93,27 @@ public class ChooseTemplate extends Fragment {
         ((MainActivity) getActivity()).setToolbarTitle(R.string.choose_template);
         sqliteDbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         imageList = sqliteDbManager.getHipsterTemplateDownloadFiles();
+
+        double x =0.5;
+        double y = 0.5;
+        float xx = (float) x;
+        float yy = (float) y;
+         bitmapArray = new ArrayList<Bitmap>();
+
+        for(int i=0;i<imageList.size();i++){
+            try {
+                Matrix matrix = new Matrix();
+
+                matrix.postScale(xx, yy);
+                Bitmap resizedBitmap = Bitmap.createBitmap(HelperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)), 0, 0, 1080,1920, matrix, true);
+                bitmapArray.add(resizedBitmap);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Log.e("imageList",String.valueOf(imageList.size()));
+
+        }
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationIcon(R.drawable.btn_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -187,16 +210,7 @@ public class ChooseTemplate extends Fragment {
 
             ImageView imageView = (ImageView) itemView.findViewById(R.id.templateview);
 
-            ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-            for(int i=0;i<imageList.size();i++){
-                try {
-                    bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Log.e("imageList",imageList.get(i));
 
-            }
             imageView.setImageBitmap(bitmapArray.get(position));
             container.addView(itemView);
 
@@ -232,6 +246,29 @@ public class ChooseTemplate extends Fragment {
     }
 
 
+    private static int calculateInSampleSize(BitmapFactory.Options options,
+                                             int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
 
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and
+            // width
+            final int heightRatio = Math.round((float) height
+                    / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will
+            // guarantee
+            // a final image with both dimensions larger than or equal to the
+            // requested height and width.
+            inSampleSize = heightRatio < widthRatio ? widthRatio : heightRatio;
+        }
+
+        return inSampleSize;
+    }
 
 }
