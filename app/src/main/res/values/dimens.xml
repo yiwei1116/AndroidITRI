@@ -25,4 +25,5 @@
     <dimen name="feedback_rbtn_font_size">16sp</dimen>
     <dimen name="feedback_rbtn_margin">8dp</dimen>
     <dimen name="feedback_subtitle_font_size">18sp</dimen>
+    <dimen name="viewpager_dis">20dp</dimen>
 </resources>

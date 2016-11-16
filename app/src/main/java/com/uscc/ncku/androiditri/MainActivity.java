@@ -28,10 +28,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uscc.ncku.androiditri.fragment.AreaFragment;
 import com.uscc.ncku.androiditri.fragment.DiaryFragment;
 import com.uscc.ncku.androiditri.fragment.EquipmentTabFragment;
 import com.uscc.ncku.androiditri.fragment.FeedbackFragment;
 import com.uscc.ncku.androiditri.fragment.MapFragment;
+import com.uscc.ncku.androiditri.fragment.ModeHighlightFragment;
 import com.uscc.ncku.androiditri.util.IFontSize;
 import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.ITRIObject;
@@ -205,9 +207,10 @@ public class MainActivity extends AppCompatActivity {
                  *  Company Information Button
                  */
                 case R.id.btn_info_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundNormal();
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
 
@@ -255,9 +258,10 @@ public class MainActivity extends AppCompatActivity {
                  * Diary Button
                  */
                 case R.id.btn_diary_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         replaceFragment(diaryFragment);
                     }
@@ -266,9 +270,10 @@ public class MainActivity extends AppCompatActivity {
                  *  Map Button
                  */
                 case R.id.btn_map_main:
-                    setSoundNormalIfActive();
+                    //setSoundNormalIfActive();
                     setFontNormalIfActive();
-
+                    stopTexttoSpeech();
+                    setSoundDisabled();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         replaceFragment(mapFragment);
                     }
@@ -299,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
                         setSoundNormal();
-                        textToSpeech.stop();
+                        stopTexttoSpeech();
                         //setSoundStop();
                     }
                     break;
@@ -307,8 +312,9 @@ public class MainActivity extends AppCompatActivity {
                  *  Font Size Button
                  */
                 case R.id.btn_font_main:
-                    setSoundNormalIfActive();
-
+                    //setSoundNormalIfActive();
+                    stopTexttoSpeech();
+                    setSoundNormal();
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         setFontActive();
 
@@ -319,8 +325,11 @@ public class MainActivity extends AppCompatActivity {
                         final IFontSize currentFontSize =
                                 (IFontSize) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
 
+                        int size = currentFontSize.getFontSize();
+
                         SeekBar seekBar = (SeekBar) findViewById(R.id.textBar);
                         assert seekBar != null;
+                        seekBar.setProgress(size*5-75);
                         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -468,7 +477,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        /** if current fragment is equipment fragment and the info btn is actived
+        /**
+         * if current fragment is equipment fragment and the info btn is actived
          *  than hide info page while pressing back button
          */
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -502,22 +512,18 @@ public class MainActivity extends AppCompatActivity {
                 });
                 return;
             }
-
-            // FIXME: if soundPlayr != null
-            if (soundPlayer != null)
-                soundPlayer.release();
-            setFontNormalIfActive();
-            setSoundNormalIfActive();
         }
 
-        /**
-         *  if current fragment is feedback fragment
-         *  than replace map fragment
-         */
-        if (currentFragment instanceof FeedbackFragment) {
-            replaceFragment(mapFragment);
-            return;
-        }
+//        /**
+//         *  if current fragment implements ISoundInterface
+//         *  than stop text to speech
+//         */
+//        if (currentFragment instanceof ISoundInterface) {
+//            if (soundPlayer != null)
+//                soundPlayer.release();
+//            textToSpeech.stop();
+//            setSoundNormal();
+//        }
 
         /**
          *  normal situation of pressing back button
@@ -529,8 +535,6 @@ public class MainActivity extends AppCompatActivity {
             // get last fragment
             Fragment f = fragmentBackStack.pop();
             String fragmentTag = f.getClass().getSimpleName();
-
-            Log.d(TAG, String.valueOf(fragmentBackStack.size()));
 
             // if current fragment is mapFragment and previous is diaryFragment
             // then pop next fragment in back stack.
@@ -630,10 +634,6 @@ public class MainActivity extends AppCompatActivity {
         return communicationWithServer;
     }
 
-    public LinkedList<Fragment> getFragmentBackStack() {
-        return fragmentBackStack;
-    }
-
     public void setToolbarTitle(int stringID) {
         toolbarTitle.setText(stringID);
     }
@@ -718,10 +718,11 @@ public class MainActivity extends AppCompatActivity {
         fontSizeRL.setVisibility(View.GONE);
     }
 
+    //For audioplayer
     public void setSoundNormalIfActive() {
         if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
             setSoundNormal();
-            setSoundStop();
+//            setSoundStop();
         }
     }
 
@@ -742,26 +743,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finishOtherActivity() {
-        if(AboutActivity.instance != null) {
-            try {
+        try {
+            if (AboutActivity.instance != null) {
                 AboutActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(HomeActivity.instance != null) {
-            try {
+            }
+            if (HomeActivity.instance != null) {
                 HomeActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(SurveyActivity.instance != null) {
-            try {
+            }
+            if (SurveyActivity.instance != null) {
                 SurveyActivity.instance.finish();
-            } catch (Exception e) {}
-        }
-        if(TourSelectActivity.instance != null) {
-            try {
+            }
+            if (TourSelectActivity.instance != null) {
                 TourSelectActivity.instance.finish();
-            } catch (Exception e) {}
-        }
+            }
+        } catch (Exception e) {}
     }
 
     public void showMapCoachInfo() {
@@ -847,44 +842,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stopTexttoSpeech(){
-            textToSpeech.stop();
+        textToSpeech.stop();
     }
 
-    private void createLanguageTTS()
-    {
+    private void createLanguageTTS() {
 
-        if( textToSpeech == null )
-        {
-            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener(){
+        if (textToSpeech == null) {
+            textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
                 @Override
-                public void onInit(int status)
-                {
+                public void onInit(int status) {
 
-                    if( status == TextToSpeech.SUCCESS ) {
+                    if (status == TextToSpeech.SUCCESS) {
 
                         l = Locale.CHINESE;
                         // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
-                        if( textToSpeech.isLanguageAvailable( l ) == TextToSpeech.LANG_COUNTRY_AVAILABLE )
-                        {
-                            textToSpeech.setLanguage( l );
+                        if (textToSpeech.isLanguageAvailable(l) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                            textToSpeech.setLanguage(l);
                         }
+                    } else {
+                        Toast.makeText(MainActivity.this, "語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-
-                        Toast.makeText(MainActivity.this,"語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
-
-                    }
-
-
-
-                }}
+                }
+            }
             );
-
-
-
-
-
+        }
+    }
 }
-
-
-    }}

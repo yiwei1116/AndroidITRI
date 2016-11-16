@@ -65,7 +65,7 @@
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/big_title_font_size"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="26dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,8 +73,10 @@
             android:id="@+id/txt_content_mode_intro"
             android:textColor="@android:color/white"
             android:layout_below="@+id/txt_title_mode_intro"
+            android:layout_above="@+id/btn_next_mode_intro"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/edtxt_hint_font_size"
+            android:paddingBottom="4dp"
             android:paddingLeft="@dimen/content_padding_rl"
             android:paddingRight="@dimen/content_padding_rl"/>
 

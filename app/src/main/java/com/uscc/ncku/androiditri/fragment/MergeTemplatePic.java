@@ -1,6 +1,7 @@
 package com.uscc.ncku.androiditri.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +39,7 @@ import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,7 +132,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         imageList = dbManager.getHipsterTemplateDownloadFiles();
         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
         for(int i=0;i<imageList.size();i++){
-            bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+            try {
+                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
         }
          bundle1 = getArguments();
@@ -296,7 +303,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
 
         icDownload.setVisibility(View.GONE);
-        //textView.setVisibility(View.GONE);
+        textView.setVisibility(View.GONE);
         mask.setVisibility(View.VISIBLE);
         Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
@@ -333,9 +340,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 }
             });*/
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, length);
+
             params.leftMargin = minX;
             params.topMargin = minY;
-            layout.addView(pic, params);
 
+            layout.addView(pic, params);
         }
+
 }

@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory;
 import com.uscc.ncku.androiditri.CommunicationWithServer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Created by Oslo on 10/14/16.
@@ -18,14 +21,17 @@ public class HelperFunctions extends Application{
     private static Context context;
     private static SQLiteDbManager manager;
 
-    public static Bitmap readImageBitmap(String internalImagePath) {
+    public static Bitmap readImageBitmap(String internalImagePath) throws FileNotFoundException {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
         File fileObj = new File(internalImagePath);
-        Bitmap bitmap = BitmapFactory.decodeFile(fileObj.getAbsolutePath());
-        return bitmap;
+        /*Bitmap bitmap = BitmapFactory.decodeFile(fileObj.getAbsolutePath());
+        return bitmap;*/
+        InputStream inputStream = new FileInputStream(fileObj.getAbsolutePath());
+        return BitmapFactory.decodeStream(inputStream, null, opt);
     }
 
     // ********************** get bitmap from file name ****************
-    public static Bitmap getBitmapFromFile(Context context, String name) {
+    public static Bitmap getBitmapFromFile(Context context, String name) throws FileNotFoundException {
         // get file directory
         File fileDir = context.getFilesDir();
         String fileDirPath = String.valueOf(fileDir);
@@ -36,4 +42,5 @@ public class HelperFunctions extends Application{
         String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
         return HelperFunctions.readImageBitmap(finalFile);
     }
+
 }

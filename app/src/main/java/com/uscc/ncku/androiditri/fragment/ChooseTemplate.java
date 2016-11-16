@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,6 +33,7 @@ import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -47,9 +48,8 @@ import java.util.List;
 public class ChooseTemplate extends Fragment {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private TourViewPager viewPager;
-
-
+    private ViewPager viewPager;
+    private ChooseTemp adapter;
     private TemplateContext TC;
     private int viewPageIndex;
     private Bundle bundle1;
@@ -99,7 +99,7 @@ public class ChooseTemplate extends Fragment {
                 getActivity().onBackPressed();
             }
         });
-         bundle1 = getArguments();
+        bundle1 = getArguments();
         if (bundle1 != null) {
             photoUri = (String)getArguments().get("photoUri");
             picPath = (String)getArguments().get("picPath");
@@ -115,15 +115,13 @@ public class ChooseTemplate extends Fragment {
                 TC = new TemplateContext();
                 Bundle bundle = new Bundle();
                 bundle.putString("Template", String.valueOf(viewPageIndex));
-                if (flagSelect.equals("true"))
-                {
+                if (flagSelect.equals("true")) {
 
 
-                    bundle.putString("picPath",picPath);
-                }
-                else{
+                    bundle.putString("picPath", picPath);
+                } else {
 
-                    bundle.putString("picPath",photoUri);
+                    bundle.putString("picPath", photoUri);
 
                 }
 
@@ -133,8 +131,8 @@ public class ChooseTemplate extends Fragment {
             }
         });
 
-        viewPager = (TourViewPager)view.findViewById(R.id.template_choose);
-        viewPager.addOnPageChangeListener(new TourViewPager.OnPageChangeListener() {
+        viewPager = (ViewPager)view.findViewById(R.id.template_choose);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -152,24 +150,26 @@ public class ChooseTemplate extends Fragment {
 
             }
         });
-        ChooseTempAdapter chooseTempAdapter = new ChooseTempAdapter(getActivity(),viewPager);
 
-        viewPager.setAdapter(chooseTempAdapter);
+        adapter = new ChooseTemp(getActivity());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setPageMargin((int)getResources().getDimensionPixelOffset(R.dimen.viewpager_dis));
         return view   ;
     }
 
 
-    class ChooseTempAdapter extends PagerAdapter {
+    class ChooseTemp extends PagerAdapter {
 
 
 
         private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
-        private TourViewPager tourViewPager;
-        public ChooseTempAdapter(Context context,TourViewPager tourViewPager){
+
+        public ChooseTemp(Context context){
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.tourViewPager = tourViewPager;
+
         }
         @Override
         public int getCount() {
@@ -189,7 +189,11 @@ public class ChooseTemplate extends Fragment {
 
             ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
             for(int i=0;i<imageList.size();i++){
-                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                try {
+                    bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Log.e("imageList",imageList.get(i));
 
             }

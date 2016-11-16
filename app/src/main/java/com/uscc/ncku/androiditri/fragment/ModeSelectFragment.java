@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -197,7 +198,12 @@ public class ModeSelectFragment extends Fragment {
                 convertView = inflate.inflate(R.layout.fragment_mode_select_grid_item, null);
             }
 
-            Bitmap bg = HelperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
+            Bitmap bg = null;
+            try {
+                bg = HelperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             ImageView gridBg = (ImageView) convertView.findViewById(R.id.grid_item_bg);
             gridBg.setImageBitmap(bg);
 

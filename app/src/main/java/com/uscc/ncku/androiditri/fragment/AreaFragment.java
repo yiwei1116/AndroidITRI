@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
@@ -19,14 +20,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uscc.ncku.androiditri.CommunicationWithServer;
 import com.uscc.ncku.androiditri.MainActivity;
 import com.uscc.ncku.androiditri.R;
 import com.uscc.ncku.androiditri.util.HelperFunctions;
+import com.uscc.ncku.androiditri.util.IFontSize;
+import com.uscc.ncku.androiditri.util.ISoundInterface;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 
 
 /**
@@ -34,7 +38,7 @@ import org.json.JSONObject;
  * Use the {@link AreaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AreaFragment extends Fragment {
+public class AreaFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String TOUR_INDEX = "TOUR_INDEX";
     private static final String ZONE = "ZONE";
     private static final int[] TOUR_GUIDE = {
@@ -90,8 +94,6 @@ public class AreaFragment extends Fragment {
             if (currentZone == 0)
                 currentZone = 2;
         }
-        Log.i("GG", "onCreat");
-        Log.i("GG", currentZone+"");
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
@@ -114,9 +116,11 @@ public class AreaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("GG", "onCreatView");
 
         ((MainActivity) getActivity()).hideToolbar();
+        ((MainActivity) getActivity()).setFontNormal();
+        ((MainActivity) getActivity()).setSoundNormal();
+
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +136,6 @@ public class AreaFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i("GG", "onStart");
 
         TextView page = (TextView) view.findViewById(R.id.txt_page_area);
         page.setText(String.valueOf(currentZone));
@@ -142,7 +145,12 @@ public class AreaFragment extends Fragment {
         }
 
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
-        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg);
+        Bitmap bitmap = null;
+        try {
+            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg_vertical);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         Drawable back = new BitmapDrawable(bitmap);
         background.setBackgroundDrawable(back);
 
@@ -178,40 +186,37 @@ public class AreaFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.i("GG", "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i("GG", "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i("GG", "onStop");
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // disable main ui
         ((MainActivity) getActivity()).showDefaultToolbar();
-        Log.i("GG", "onDestoryView");
+        ((MainActivity) getActivity()).setFontDisabled();
+        ((MainActivity)getActivity()).setSoundDisabled();
+
+        // stop text to speech
+        ((MainActivity)getActivity()).stopTexttoSpeech();
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i("GG", "onDestory");
+    public void setFontSize(int size) {
+        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
+        areaContent.setTextSize(size);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.i("GG", "onDetach");
+    public int getFontSize() {
+        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
+        return (int) areaContent.getTextSize() / 3;
     }
 
+    @Override
+    public MediaPlayer getCurrentmedia() {
+        return null;
+    }
+
+    @Override
+    public String getIntroduction() {
+        String getIntrod =introduction;
+        return getIntrod;
+    }
 }
