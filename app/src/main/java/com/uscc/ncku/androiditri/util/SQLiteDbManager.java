@@ -596,6 +596,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
+    // give jiang
     public JSONObject queryFieldMapWithFieldMapId(int field_map_id) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_map_id, null);
@@ -1316,28 +1317,38 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return deviceFiles;
     }
 
+    // jiang
     public List<String> getFieldMapDownloadFiles() {
         List<String> fieldMapFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select photo, photo_vertical, map_svg, map_svg_en, map_bg from field_map", null);
 
         cursor.moveToFirst();
-        String guide_voice = null;
         String photo = null;
         String photo_vertical = null;
         String map_svg = null;
+        String map_svg_en = null;
+        String map_bg = null;
         // fetch all guide_voice, photo, photo_vertical & svg
         while (cursor.isAfterLast() == false) {
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
-            if (guide_voice.length() != 0 && guide_voice != null && guide_voice != "null") {
-                fieldMapFiles.add(guide_voice);
-            }
+            map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
+            map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+
             if (photo_vertical.length() != 0 && photo_vertical != null && photo_vertical != "null") {
                 fieldMapFiles.add(photo_vertical);
             }
-            fieldMapFiles.add(map_svg);
+            if (map_svg.length() != 0 && map_svg != null && map_svg != "null") {
+                fieldMapFiles.add(map_svg);
+            }
+            if (map_svg_en.length() != 0 && map_svg_en != null && map_svg_en != "null") {
+                fieldMapFiles.add(map_svg_en);
+            }
+            if (map_bg.length() != 0 && map_bg != null && map_bg != "null") {
+                fieldMapFiles.add(map_bg);
+            }
             // add to List
             fieldMapFiles.add(photo);
             cursor.moveToNext();
