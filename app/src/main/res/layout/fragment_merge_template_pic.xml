@@ -25,6 +25,7 @@
         android:gravity="center|left"
         android:layout_marginTop="420dp"
         android:layout_marginLeft="60dp"
+        android:layout_marginRight="20dp"
         android:textSize="20sp"
         android:textColor="@color/survey_page_color"
         android:visibility="invisible"

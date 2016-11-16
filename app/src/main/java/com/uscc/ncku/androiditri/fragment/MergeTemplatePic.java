@@ -290,6 +290,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             case R.id.sendMail:
                 savetoPhone();
                 sendEmail();
+                break;
+            case R.id.backtoMain:
+
+                hideStoreLayout();
+                break;
         }
 
     }
@@ -310,6 +315,15 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
         function.setAnimation(fadeIn);
+    }
+    private void hideStoreLayout(){
+
+
+        icDownload.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.VISIBLE);
+        mask.setVisibility(View.GONE);
+        function.setVisibility(View.GONE);
+
     }
        private void init() {
 
