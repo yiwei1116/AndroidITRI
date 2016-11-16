@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -83,6 +84,14 @@ public class TemplateContext extends Fragment {
     private HelperFunctions helperFunctions = new HelperFunctions();
     private Activity activity;
     private ArrayList<Bitmap> bitmapArray;
+    private SharedPreferences settings;
+    private static final String sIndex = "sIndex";
+    private static final String sMinX = "sMinX";
+    private static final String sMinY = "sMinY";
+    private static final String sLength = "sLength";
+    private static final String sWidth = "sWidth";
+    private DisplayMetrics metrics;
+    private Bitmap sourceBitmap;
     public TemplateContext() {
 
     }
@@ -103,7 +112,7 @@ public class TemplateContext extends Fragment {
         super.onCreate(savedInstanceState);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
         db = dbManager.getReadableDatabase();
-        cursor_zone = db.query(table_name_zone,null,null,null,null,null,null);
+        cursor_zone = db.query(table_name_zone, null, null, null, null, null, null);
         cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
 
     }
@@ -279,13 +288,11 @@ public class TemplateContext extends Fragment {
 
         arrayList_zone_name.add(getResources().getString(R.string.spinner_please_select));
         getZone();
-        ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,arrayList_zone_name);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item, arrayList_zone_name);
         spinner.setAdapter(adp);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long arg3)
-            {
+                                       int position, long arg3) {
 
             }
 
@@ -366,7 +373,7 @@ public class TemplateContext extends Fragment {
 
 
             if(activity != null && isAdded()) {
-                Bitmap sourceBitmap = bitmapArray.get((Integer.valueOf(templateIndex)));
+                sourceBitmap = bitmapArray.get((Integer.valueOf(templateIndex)));
                 minX = sourceBitmap.getWidth();
                 minY = sourceBitmap.getHeight();
                 maxX = -1;
@@ -374,6 +381,14 @@ public class TemplateContext extends Fragment {
                 int areaY = 2 * (sourceBitmap.getHeight()) / 3 ;
                 int startX = (sourceBitmap.getWidth()) /8 ;
                 int startY = (sourceBitmap.getHeight()) /8 ;
+                metrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                Log.e("widthPixels", String.valueOf(metrics.widthPixels));
+                Log.e("heightPixels",String.valueOf(metrics.heightPixels));
+                float scaleX = pxComputing(metrics.widthPixels,sourceBitmap.getWidth());
+                float scaleY = pxComputing(metrics.heightPixels,sourceBitmap.getHeight());
+
+                Log.e("scale",String.format("scaleX %f,scaleY %f", scaleX, scaleY));
                 Log.e("Tem_getWidth()", String.valueOf(sourceBitmap.getWidth()));
                 Log.e("Tem_getHeight()", String.valueOf(sourceBitmap.getHeight()));
                 Log.e("areaY", String.valueOf(areaY));
@@ -395,16 +410,14 @@ public class TemplateContext extends Fragment {
 
                     }
                 }
-
-
-                minY = minY - getStatusBarHeight();
-          /*  dp_minX = Math.round(convertPixelToDp(minX, getActivity()));
-            dp_minY = Math.round(convertPixelToDp(minY-getStatusBarHeight(), getActivity()));
-            dp_maxX = Math.round(convertPixelToDp(maxX, getActivity()));
-            dp_maxY = Math.round(convertPixelToDp(maxY, getActivity()));*/
-                width = Math.round(maxX - minX);
-                length = Math.round(maxY - minY);
-                Log.e("px", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
+                Log.e("px_old", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
+                minX = (int) Math.round(minX*0.66666);
+                minY = (int) Math.round(minY*0.66666 - getStatusBarHeight());
+                maxX = (int) Math.round(maxX*0.66666);
+                maxY = (int) Math.round(maxY*0.66666 -getStatusBarHeight());
+                width = maxX - minX ;
+                length = maxY - minY ;
+                Log.e("px_new", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
             }
 
             return null;
@@ -431,11 +444,35 @@ public class TemplateContext extends Fragment {
          activity = getActivity();
         if(activity != null && isAdded()){
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
+            if (resourceId > 0) {
+                result = getResources().getDimensionPixelSize(resourceId);
         }}
         Log.e("bar", String.valueOf(result));
         return result;
+    }
+    public void saveData(){
+        settings = getActivity().getSharedPreferences(sIndex, 0);
+        settings.edit()
+                .putString(sMinX,String.valueOf(minX))
+                .putString(sMinY, String.valueOf(minY))
+                .putString(sWidth, String.valueOf(width))
+                .putString(sLength,String.valueOf(length))
+                .apply();
+    }
+  /*  public void readData(){
+        settings = getActivity().getSharedPreferences(sIndex,0);
+        settings.getString(sMinX, ""));
+        settings.getString(sMinY, ""));
+        settings.getString(sWidth, ""));
+        settings.getString(sLength, ""));
+
+    }*/
+    //tempX=手機螢幕尺寸 tempY=圖片尺寸
+    public float pxComputing(int tempX,int tempY ){
+
+        float scale = (tempX/tempY);
+        Log.e("test",String.format("tempX %d , tempY %d , scale %f",tempX,tempY,scale));
+        return scale;
     }
 
 }
