@@ -93,7 +93,7 @@ public class TemplateContext extends Fragment {
     private static final String sLength = "sLength";
     private static final String sWidth = "sWidth";
     private static final String data = "DATA";
-
+    private boolean flag;
     private DisplayMetrics metrics;
     private Bitmap sourceBitmap;
     public TemplateContext() {
@@ -189,7 +189,8 @@ public class TemplateContext extends Fragment {
                     build.setVisibility(View.GONE);
                     writeContext.setBackgroundResource(R.drawable.btn_left_active);
                     buildContext.setBackgroundResource(R.drawable.btn_right_normal);
-                    textBulid = null;
+                    flag = false;
+
                     Log.e("textBulid", String.valueOf(isChecked));
 
 
@@ -206,7 +207,8 @@ public class TemplateContext extends Fragment {
                     build.setVisibility(View.VISIBLE);
                     writeContext.setBackgroundResource(R.drawable.btn_left_normal);
                     buildContext.setBackgroundResource(R.drawable.btn_right_active);
-                    StringContext = null;
+                    flag = true;
+
                     Log.e("buildtext", String.valueOf(isChecked));
 
 
@@ -276,7 +278,7 @@ public class TemplateContext extends Fragment {
     public void getZone() {
         for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
 
-            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name_en")));
+            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name")));
 
 
         }
@@ -314,12 +316,17 @@ public class TemplateContext extends Fragment {
 
                     MTP = new MergeTemplatePic();
                     bundle1 = new Bundle();
+                    if(!flag){
                     StringContext = editText.getText().toString().trim();
-
-                    Log.e("StringContext", StringContext);
+                    }
+                    else{
+                        StringContext = textBulid;
+                    }
+                    if(StringContext==null){
+                        StringContext = "";
+                    }
                     bundle1.putString("TemplateNum", templateIndex);
-                    bundle1.putString("WriteContext", StringContext);
-                    bundle1.putString("BuildContext", textBulid);
+                    bundle1.putString("StringContext", StringContext);
                     bundle1.putString("minX", String.valueOf(minX));
                     bundle1.putString("minY", String.valueOf(minY));
                     bundle1.putString("weight", String.valueOf(width));
