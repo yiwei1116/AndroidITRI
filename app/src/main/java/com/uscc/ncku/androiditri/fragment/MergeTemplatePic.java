@@ -3,6 +3,7 @@ package com.uscc.ncku.androiditri.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -72,6 +73,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     int width,length;
     Bundle bundle1;
     private List<String> imageList = new ArrayList<>();
+
     public MergeTemplatePic() {
 
     }
