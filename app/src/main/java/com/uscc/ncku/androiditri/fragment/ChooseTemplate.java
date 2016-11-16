@@ -33,6 +33,7 @@ import com.uscc.ncku.androiditri.util.TourViewPager;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -188,7 +189,11 @@ public class ChooseTemplate extends Fragment {
 
             ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
             for(int i=0;i<imageList.size();i++){
-                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                try {
+                    bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Log.e("imageList",imageList.get(i));
 
             }

@@ -33,6 +33,8 @@ import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ModeHighlightFragment#newInstance} factory method to
@@ -131,7 +133,12 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     public void onStart() {
         super.onStart();
 
-        Bitmap bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+        Bitmap bg = null;
+        try {
+            bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         Drawable back = new BitmapDrawable(bg);
         ImageView modeIntroBg = (ImageView) view.findViewById(R.id.img_mode_intro_bg);
         modeIntroBg.setBackgroundDrawable(back);
@@ -152,13 +159,17 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
                 Button highlightBtn = (Button) view.findViewById(R.id.btn_next_equipment_highlight);
                 highlightBtn.setVisibility(View.VISIBLE);
-                modeHighlight();
+                try {
+                    modeHighlight();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
     }
 
-    private void modeHighlight() {
+    private void modeHighlight() throws FileNotFoundException {
         // hide toolbar menu
         ((MainActivity) getActivity()).getToolbar().getMenu().clear();
         ((MainActivity) getActivity()).setFontDisabled();
@@ -190,7 +201,12 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Bitmap blur = HelperFunctions.getBitmapFromFile(getActivity(), splash_blur_vertical);
+                Bitmap blur = null;
+                try {
+                    blur = HelperFunctions.getBitmapFromFile(getActivity(), splash_blur_vertical);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 ImageView modeBlur = (ImageView) view.findViewById(R.id.img_mode_highlight_blur);
                 modeBlur.setImageBitmap(blur);
             }

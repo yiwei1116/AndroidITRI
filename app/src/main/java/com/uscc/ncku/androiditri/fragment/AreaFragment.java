@@ -30,6 +30,8 @@ import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -143,7 +145,12 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
         }
 
         RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
-        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg_vertical);
+        Bitmap bitmap = null;
+        try {
+            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg_vertical);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         Drawable back = new BitmapDrawable(bitmap);
         background.setBackgroundDrawable(back);
 

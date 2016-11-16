@@ -46,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -321,9 +322,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             View v = LayoutInflater.from(view.getContext()).inflate(R.layout.item_equipment,
                     container, false);
 
-            setEquipmentTab(v, position);
+            try {
+                setEquipmentTab(v, position);
+                setCompanyInfo(v, position);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
-            setCompanyInfo(v, position);
+
 
             container.addView(v);
 
@@ -402,7 +408,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         equipTabs.get(position).setEquipPhotoIndex(image_index);
 
                         String name = photoList.get(image_index);
-                        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         imageView.setImageBitmap(bitmap);
                     }
                 });
@@ -415,14 +426,24 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         equipTabs.get(position).setEquipPhotoIndex(image_index);
 
                         String name = photoList.get(image_index);
-                        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         imageView.setImageBitmap(bitmap);
                     }
                 });
 
                 int image_index = equipTabs.get(position).getEquipPhotoIndex();
                 String name = photoList.get(image_index);
-                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 imageView.setImageBitmap(bitmap);
 
@@ -430,7 +451,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
                 int image_index = equipTabs.get(position).getEquipPhotoIndex();
                 String name = photoList.get(image_index);
-                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 imageView.setImageBitmap(bitmap);
             }
@@ -492,7 +518,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         }
     }
 
-    private void setEquipmentTab(View v, int position) {
+    private void setEquipmentTab(View v, int position) throws FileNotFoundException {
         // set equipment title
         TextView title = (TextView) v.findViewById(R.id.equipment_title);
         title.setText(equipTabs.get(position).getTitle());
@@ -555,7 +581,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
     }
 
-    private void setCompanyInfo(View v, int position) {
+    private void setCompanyInfo(View v, int position) throws FileNotFoundException {
         EquipmentTabInformation currTab = equipTabs.get(position);
 
         String name = currTab.getCompanyTitleImage();

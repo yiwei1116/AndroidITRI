@@ -39,6 +39,7 @@ import com.uscc.ncku.androiditri.util.HelperFunctions;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,7 +132,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         imageList = dbManager.getHipsterTemplateDownloadFiles();
         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
         for(int i=0;i<imageList.size();i++){
-            bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+            try {
+                bitmapArray.add(helperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
         }
          bundle1 = getArguments();
