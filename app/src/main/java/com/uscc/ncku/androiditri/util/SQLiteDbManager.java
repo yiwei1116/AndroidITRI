@@ -596,6 +596,25 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
+    public JSONObject queryFieldMapWithFieldMapId(int field_map_id) throws JSONException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_map_id, null);
+        JSONObject object = new JSONObject();
+        cursor.moveToFirst();
+        String map_svg = "";
+        String map_svg_en = "";
+        String map_bg = "";
+        map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+        map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
+        map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+        object.put("map_svg", map_svg);
+        object.put("map_svg_en", map_svg_en);
+        object.put("map_bg", map_bg);
+        cursor.close();
+        return object;
+    }
+
+
     // hipster content table query and insert
     public boolean insertHipsterContent(int hipster_content_id,
                                         String content,
