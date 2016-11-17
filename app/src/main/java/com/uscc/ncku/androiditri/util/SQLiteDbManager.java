@@ -435,6 +435,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // int number = obj.optInt("column");
     }
 
+
+    
+
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,
