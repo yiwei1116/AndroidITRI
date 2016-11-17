@@ -318,17 +318,18 @@ public class MapFragment extends Fragment {
                         if (beacon == null) {
                             return;
                         }
-                        currentZone = beacon.optInt("zone");        //紀錄當前Zone
-                        if (currentZone != zoneOrder[currentZoneOrder])
+
+                        if (beacon.optInt("zone") != zoneOrder[currentZoneOrder])
                         {
                             //不是該到的地方
                             return;
                         }
                         if(currentZoneOrder == zoneOrder.length-1)      //已到最後一個點
                             return;
+
                         enterNextZone(beacon);
 
-                        mLastSacnBeacon = beacon;
+
                         break;
                     case BLEModule.BLE_LOW_POWER_WARNING:
 
@@ -341,6 +342,7 @@ public class MapFragment extends Fragment {
     };
     public void enterNextZone(JSONObject beacon) throws JSONException
     {
+        currentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
 
         String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
@@ -367,6 +369,7 @@ public class MapFragment extends Fragment {
                 Log.e(TAG,url);
             }
         }
+        mLastSacnBeacon = beacon;
     }
     public Handler getJsHandler() {
         return jsHandler;
@@ -414,7 +417,10 @@ public class MapFragment extends Fragment {
                             break;
                         case JavaScriptInterface.MNREGION_CLICKED:
                             try {
-                                enterNextZone(null);
+                                Log.e("aaaaa",msg.arg1+"");
+                                JSONObject beacon = dbManager.queryBeaconFileWithZoneId(msg.arg1);
+
+                                enterNextZone(beacon);
                             }catch (JSONException e){}
                             //int reg =  msg.arg1+1;
                             //mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + reg + ")");
