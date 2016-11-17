@@ -435,6 +435,87 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // int number = obj.optInt("column");
     }
 
+    // same function as above, ** query with ZoneId **
+    public JSONObject queryBeaconFileWithZoneId(int zoneId) throws JSONException{
+        JSONObject file = new JSONObject();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from beacon where zone=" + zoneId, null);
+        cursor.moveToFirst();
+        String beacon_id;
+        String name;
+        String mac_addr;
+        int power;
+        int status;
+        int zone;
+        int x;
+        int y;
+        int field_id;
+        String field_name;
+        String map_svg;
+        String map_svg_en;
+        String map_bg;
+        int start;
+        int end;
+        String svg_id;
+        // fetch all company_id & qrcode
+        mac_addr = cursor.getString(cursor.getColumnIndex("mac_addr"));
+        beacon_id = cursor.getString(cursor.getColumnIndex("beacon_id"));
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        power = cursor.getInt(cursor.getColumnIndex("power"));
+        status = cursor.getInt(cursor.getColumnIndex("status"));
+        zone = cursor.getInt(cursor.getColumnIndex("zone"));
+        x = cursor.getInt(cursor.getColumnIndex("x"));
+        y = cursor.getInt(cursor.getColumnIndex("y"));
+        field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
+        field_name = cursor.getString(cursor.getColumnIndex("field_name"));
+
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_id, null);
+        fieldMapCursor.moveToFirst();
+        map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
+        map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
+        map_bg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_bg"));
+        // parse file name
+        String[] paths = map_svg.split("/");
+        String svgName = paths[paths.length-1];
+
+        String[] paths_en = map_svg_en.split("/");
+        String svgNameEn = paths_en[paths_en.length - 1];
+
+        String[] pathsBg = map_bg.split("/");
+        String svgNameBg = pathsBg[pathsBg.length-1];
+
+        Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
+        pathCursor.moveToFirst();
+        start = pathCursor.getInt(pathCursor.getColumnIndex("start"));
+        end = pathCursor.getInt(pathCursor.getColumnIndex("end"));
+        svg_id = pathCursor.getString(pathCursor.getColumnIndex("svg_id"));
+
+        // add to JSONObject
+        file.put("mac_addr", mac_addr);
+        file.put("device_id", beacon_id);
+        file.put("name", name);
+        file.put("power", power);
+        file.put("status", status);
+        file.put("zone", zone);
+        file.put("x", x);
+        file.put("y", y);
+        file.put("field_id", field_id);
+        file.put("field_name", field_name);
+        file.put("map_svg", svgName);
+        file.put("map_svg_en", svgNameEn);
+        file.put("map_bg", svgNameBg);
+        file.put("start", start);
+        file.put("end", end);
+        file.put("svg_id", svg_id);
+        Log.e("everything", String.valueOf(file));
+        // close cursor
+        cursor.close();
+        fieldMapCursor.close();
+        pathCursor.close();
+
+        return file;
+    }
+
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,

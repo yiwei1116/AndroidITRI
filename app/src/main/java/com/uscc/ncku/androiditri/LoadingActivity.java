@@ -125,9 +125,6 @@ public class LoadingActivity extends AppCompatActivity {
             }
         };
 
-        // call asyntask to animate
-        SQLiteDatabase db = manager.getReadableDatabase();
-
         // download all tables from server and save into SQLite
         communicationWithServer.downloadAllTables();
         // get all paths that require downloading files from server
@@ -135,8 +132,6 @@ public class LoadingActivity extends AppCompatActivity {
 
         // download files
         communicationWithServer.DownloadFiles(pathList, this, handler);
-
-//        startNextActivity();
     }
 
     public void startNextActivity() {
