@@ -95,7 +95,6 @@
             android:id="@+id/QRcode"
             android:background="@drawable/test_qrcode"
             android:layout_gravity="center_vertical|center"
-            android:layout_marginBottom="20dp"
             android:layout_weight="0.15"
             />
 
