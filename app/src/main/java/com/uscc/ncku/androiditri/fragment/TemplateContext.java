@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -397,9 +398,11 @@ public class TemplateContext extends Fragment {
 
                         }
                     }
-                    minY = minY - getStatusBarHeight();
+
                     width = Math.round(maxX - minX);
                     length = Math.round(maxY - minY);
+                    minY = minY - 20;
+                    //.minY = minY - getStatusBarHeight();
                     Log.e("px_new", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
                     saveData();
                     Log.e("iii","123");
@@ -432,9 +435,12 @@ public class TemplateContext extends Fragment {
             if (resourceId > 0) {
                 result = getResources().getDimensionPixelSize(resourceId);
         }}
-        Log.e("bar", String.valueOf(result));
+        Log.e("status_bar_height", String.valueOf(result));
         return result;
     }
+
+
+
     public void saveData(){
 
         settings.edit()
