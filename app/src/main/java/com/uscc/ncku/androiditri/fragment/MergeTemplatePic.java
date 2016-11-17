@@ -55,7 +55,7 @@ import java.util.List;
 public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
     private String templateIndex;
-    private String WriteContext,BuildContext;
+    private String StringContext;
     private String photoUri,picPath;
     private ImageView mergeImage,qrcodeImage,pic;
     private TextView textView;
@@ -109,11 +109,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 getActivity().onBackPressed();
             }
         });
-        /**
-         * 下面OOM Failed to allocate a 8294412 byte allocation with 7047616 free bytes and 6MB until OOM
-         */
+
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
-        //FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.mergeFramelayout);
         layout = (RelativeLayout)view.findViewById(R.id.pic_location);
         mask = (LinearLayout)view.findViewById(R.id.mask);
         function = (LinearLayout)view.findViewById(R.id.function);
@@ -145,22 +142,20 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
        if(bundle1 != null) {
            templateIndex = (String) getArguments().get("TemplateNum");
            mergeImage.setImageBitmap(bitmapArray.get(Integer.valueOf(templateIndex)));
-           WriteContext = (String) getArguments().get("WriteContext");
-           BuildContext = (String) getArguments().get("BuildContext");
+           StringContext = (String) getArguments().get("StringContext");
            picPath = (String) getArguments().get("picPath");
            minX = Integer.valueOf((String) getArguments().get("minX"));
            minY = Integer.valueOf((String) getArguments().get("minY"));
            width =Integer.valueOf((String) getArguments().get("weight"));
            length = Integer.valueOf((String) getArguments().get("height"));
 
-           if (WriteContext != null) {
-               textView.setText(WriteContext);
-           }
-           Log.e("textview1",textView.getText().toString());
-           if (BuildContext != null) {
-               textView.setText(BuildContext);
-           }
-           Log.e("textview2",textView.getText().toString());
+
+               textView.setText(StringContext);
+
+
+
+
+           Log.e("textview",textView.getText().toString());
        }
         textView.setVisibility(View.VISIBLE);
         init();
@@ -290,6 +285,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             case R.id.sendMail:
                 savetoPhone();
                 sendEmail();
+                break;
+            case R.id.backtoMain:
+
+                hideStoreLayout();
+                break;
         }
 
     }
@@ -310,6 +310,15 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
         function.setAnimation(fadeIn);
+    }
+    private void hideStoreLayout(){
+
+
+        icDownload.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.VISIBLE);
+        mask.setVisibility(View.GONE);
+        function.setVisibility(View.GONE);
+
     }
        private void init() {
 

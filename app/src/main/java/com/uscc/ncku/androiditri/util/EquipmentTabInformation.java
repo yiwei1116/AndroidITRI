@@ -3,6 +3,8 @@ package com.uscc.ncku.androiditri.util;
 import android.media.MediaPlayer;
 import android.view.View;
 
+import com.google.android.youtube.player.YouTubePlayerFragment;
+
 import java.util.ArrayList;
 
 /**
@@ -38,6 +40,9 @@ public class EquipmentTabInformation {
     private MediaPlayer mediaPlayer;
     private int playList;
     private int playLength;
+
+    // youtube fragment
+    private YouTubePlayerFragment youTubePlayerFragment;
 
     // for company information
     private String companyTitleImage;
@@ -218,5 +223,13 @@ public class EquipmentTabInformation {
 
     public void setCompanyQRcode(String companyQRcode) {
         this.companyQRcode = companyQRcode;
+    }
+
+    public YouTubePlayerFragment getYouTubePlayerFragment() {
+        return youTubePlayerFragment;
+    }
+
+    public void setYouTubePlayerFragment(YouTubePlayerFragment youTubePlayerFragment) {
+        this.youTubePlayerFragment = youTubePlayerFragment;
     }
 }

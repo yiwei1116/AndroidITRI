@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -90,6 +92,8 @@ public class TemplateContext extends Fragment {
     private static final String sMinY = "sMinY";
     private static final String sLength = "sLength";
     private static final String sWidth = "sWidth";
+    private static final String data = "DATA";
+    private boolean flag;
     private DisplayMetrics metrics;
     private Bitmap sourceBitmap;
     public TemplateContext() {
@@ -114,6 +118,7 @@ public class TemplateContext extends Fragment {
         db = dbManager.getReadableDatabase();
         cursor_zone = db.query(table_name_zone, null, null, null, null, null, null);
         cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
+
 
     }
 
@@ -184,7 +189,8 @@ public class TemplateContext extends Fragment {
                     build.setVisibility(View.GONE);
                     writeContext.setBackgroundResource(R.drawable.btn_left_active);
                     buildContext.setBackgroundResource(R.drawable.btn_right_normal);
-                    textBulid = null;
+                    flag = false;
+
                     Log.e("textBulid", String.valueOf(isChecked));
 
 
@@ -201,7 +207,8 @@ public class TemplateContext extends Fragment {
                     build.setVisibility(View.VISIBLE);
                     writeContext.setBackgroundResource(R.drawable.btn_left_normal);
                     buildContext.setBackgroundResource(R.drawable.btn_right_active);
-                    StringContext = null;
+                    flag = true;
+
                     Log.e("buildtext", String.valueOf(isChecked));
 
 
@@ -228,61 +235,23 @@ public class TemplateContext extends Fragment {
             templateIndex = (String)getArguments().get("Template");
             //photoUri = (String)getArguments().get("photoUri");
             picPath = (String)getArguments().get("picPath");
-            Log.e("picPath", picPath);
+
 
         }
+        settings = getActivity().getSharedPreferences(templateIndex,Context.MODE_APPEND);
         btnNextStep = (Button)view.findViewById(R.id.btn_next_step);
         btnNextStep.setBackgroundResource(R.drawable.camera_btn_select);
          activity = getActivity();
         if(activity != null && isAdded()) {
-            new CalcPosition().execute();
+                new CalcPosition().execute();
         }
 
-        /*btnNextStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                MTP = new MergeTemplatePic();
-                bundle1 = new Bundle();
-                StringContext = editText.getText().toString().trim();
-
-                Log.e("StringContext", StringContext);
-                bundle1.putString("TemplateNum", templateIndex);
-                bundle1.putString("WriteContext", StringContext);
-                bundle1.putString("BuildContext", textBulid);
-                bundle1.putString("minX", String.valueOf(minX));
-                bundle1.putString("minY", String.valueOf(minY));
-                bundle1.putString("weight", String.valueOf(width));
-                bundle1.putString("height", String.valueOf(length));
-                MTP.setArguments(bundle1);
-                ((MainActivity) getActivity()).replaceFragment(MTP);
-            }
-        });*/
 
 
         return view;
     }
- /*   public void writeText() {
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText.setHint(null);
-            }
-        });
-        write.setVisibility(View.VISIBLE);
-        build.setVisibility(View.GONE);
-        writeContext.setBackgroundResource(R.drawable.btn_left_active);
-        buildContext.setBackgroundResource(R.drawable.btn_right_normal);
 
-
-    }
-    public void buildText(){
-        write.setVisibility(View.GONE);
-        build.setVisibility(View.VISIBLE);
-        writeContext.setBackgroundResource(R.drawable.btn_left_normal);
-        buildContext.setBackgroundResource(R.drawable.btn_right_active);
-
-    }*/
     public void spinnerArea(){
 
 
@@ -309,7 +278,7 @@ public class TemplateContext extends Fragment {
     public void getZone() {
         for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
 
-            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name_en")));
+            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name")));
 
 
         }
@@ -347,12 +316,17 @@ public class TemplateContext extends Fragment {
 
                     MTP = new MergeTemplatePic();
                     bundle1 = new Bundle();
+                    if(!flag){
                     StringContext = editText.getText().toString().trim();
-
-                    Log.e("StringContext", StringContext);
+                    }
+                    else{
+                        StringContext = textBulid;
+                    }
+                    if(StringContext==null){
+                        StringContext = "";
+                    }
                     bundle1.putString("TemplateNum", templateIndex);
-                    bundle1.putString("WriteContext", StringContext);
-                    bundle1.putString("BuildContext", textBulid);
+                    bundle1.putString("StringContext", StringContext);
                     bundle1.putString("minX", String.valueOf(minX));
                     bundle1.putString("minY", String.valueOf(minY));
                     bundle1.putString("weight", String.valueOf(width));
@@ -370,56 +344,67 @@ public class TemplateContext extends Fragment {
                 Important!!!
                 this drawable must put in drawable-nodpi, or there might be a wrong calculation.
             */
-
-
-            if(activity != null && isAdded()) {
-                sourceBitmap = bitmapArray.get((Integer.valueOf(templateIndex)));
-                minX = sourceBitmap.getWidth();
-                minY = sourceBitmap.getHeight();
-                maxX = -1;
-                maxY = -1;
-                int areaY = 2 * (sourceBitmap.getHeight()) / 3 ;
-                int startX = (sourceBitmap.getWidth()) /8 ;
-                int startY = (sourceBitmap.getHeight()) /8 ;
-                metrics = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                Log.e("widthPixels", String.valueOf(metrics.widthPixels));
-                Log.e("heightPixels",String.valueOf(metrics.heightPixels));
-                float scaleX = pxComputing(metrics.widthPixels,sourceBitmap.getWidth());
-                float scaleY = pxComputing(metrics.heightPixels,sourceBitmap.getHeight());
-
-                Log.e("scale",String.format("scaleX %f,scaleY %f", scaleX, scaleY));
-                Log.e("Tem_getWidth()", String.valueOf(sourceBitmap.getWidth()));
-                Log.e("Tem_getHeight()", String.valueOf(sourceBitmap.getHeight()));
-                Log.e("areaY", String.valueOf(areaY));
-                for (int y = startY; y < areaY; y++) {
-                    for (int x = startX; x < sourceBitmap.getWidth(); x++) {
-
-                        int alpha = sourceBitmap.getPixel(x, y) >> 24;
-
-                        if (alpha == 0) {
-                            if (x < minX)
-                                minX = x;
-                            if (x > maxX)
-                                maxX = x;
-                            if (y < minY)
-                                minY = y;
-                            if (y > maxY)
-                                maxY = y;
-                        }
-
-                    }
-                }
-                Log.e("px_old", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
-                minX = (int) Math.round(minX*0.66666);
-                minY = (int) Math.round(minY*0.66666 - getStatusBarHeight());
-                maxX = (int) Math.round(maxX*0.66666);
-                maxY = (int) Math.round(maxY*0.66666 -getStatusBarHeight());
-                width = maxX - minX ;
-                length = maxY - minY ;
-                Log.e("px_new", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
+            Log.e("templateIndex",String.valueOf(templateIndex));
+            Log.e("sIndex",settings.getString(sIndex, ""));
+            if(String.valueOf(templateIndex).equals(settings.getString(sIndex, ""))){
+                readData();
             }
+            else {
+                if (activity != null && isAdded()) {
+                    metrics = new DisplayMetrics();
+                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                    sourceBitmap = bitmapArray.get((Integer.valueOf(templateIndex)));
+                    float scaleX = pxComputing(metrics.widthPixels, sourceBitmap.getWidth());
+                    float scaleY = pxComputing(metrics.heightPixels, sourceBitmap.getHeight());
 
+
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(scaleX, scaleY);
+                    // 得到新的圖片
+                    Bitmap scaleBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0, sourceBitmap.getWidth(), sourceBitmap.getHeight(), matrix, true);
+                    minX = scaleBitmap.getWidth();
+                    minY = scaleBitmap.getHeight();
+                    maxX = -1;
+                    maxY = -1;
+                    int areaY = 2 * (scaleBitmap.getHeight()) / 3;
+                    int startX = (scaleBitmap.getWidth()) / 8;
+                    int startY = (scaleBitmap.getHeight()) / 8;
+
+                    Log.e("widthPixels", String.valueOf(metrics.widthPixels));
+                    Log.e("heightPixels", String.valueOf(metrics.heightPixels));
+
+
+            /*    Log.e("scaleX",df.format(c));
+               Log.e("scaleY",Float.toString(scaleY));*/
+                    Log.e("Tem_getWidth()", String.valueOf(scaleBitmap.getWidth()));
+                    Log.e("Tem_getHeight()", String.valueOf(scaleBitmap.getHeight()));
+                    Log.e("areaY", String.valueOf(areaY));
+                    for (int y = startY; y < areaY; y++) {
+                        for (int x = startX; x < scaleBitmap.getWidth(); x++) {
+
+                            int alpha = scaleBitmap.getPixel(x, y) >> 24;
+
+                            if (alpha == 0) {
+                                if (x < minX)
+                                    minX = x;
+                                if (x > maxX)
+                                    maxX = x;
+                                if (y < minY)
+                                    minY = y;
+                                if (y > maxY)
+                                    maxY = y;
+                            }
+
+                        }
+                    }
+                    minY = minY - getStatusBarHeight();
+                    width = Math.round(maxX - minX);
+                    length = Math.round(maxY - minY);
+                    Log.e("px_new", String.format("minX: %d, minY: %d, maxX: %d, maxY %d,width %d,length %d", minX, minY, maxX, maxY, width, length));
+                    saveData();
+                    Log.e("iii","123");
+                }
+            }
             return null;
         }
 
@@ -451,28 +436,34 @@ public class TemplateContext extends Fragment {
         return result;
     }
     public void saveData(){
-        settings = getActivity().getSharedPreferences(sIndex, 0);
+
         settings.edit()
+                .putString(sIndex,templateIndex)
                 .putString(sMinX,String.valueOf(minX))
                 .putString(sMinY, String.valueOf(minY))
                 .putString(sWidth, String.valueOf(width))
                 .putString(sLength,String.valueOf(length))
                 .apply();
     }
-  /*  public void readData(){
-        settings = getActivity().getSharedPreferences(sIndex,0);
-        settings.getString(sMinX, ""));
-        settings.getString(sMinY, ""));
-        settings.getString(sWidth, ""));
-        settings.getString(sLength, ""));
+    public void readData(){
 
-    }*/
+
+        {
+            minX = Integer.parseInt(settings.getString(sMinX, ""));
+            minY = Integer.parseInt(settings.getString(sMinY, ""));
+            width = Integer.parseInt(settings.getString(sWidth, ""));
+            length = Integer.parseInt(settings.getString(sLength, ""));
+        }
+    }
     //tempX=手機螢幕尺寸 tempY=圖片尺寸
-    public float pxComputing(int tempX,int tempY ){
-
-        float scale = (tempX/tempY);
-        Log.e("test",String.format("tempX %d , tempY %d , scale %f",tempX,tempY,scale));
+    public float pxComputing(float tempX,float tempY ){
+        DecimalFormat df=new DecimalFormat("#.###");
+        float scale;
+        scale = (tempX/tempY);
+        Log.e("test",String.format("tempX %s , tempY %s , scale %s",df.format(tempX),df.format(tempY),df.format(scale)));
         return scale;
     }
+
+
 
 }

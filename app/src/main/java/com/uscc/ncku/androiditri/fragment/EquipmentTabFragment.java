@@ -497,6 +497,29 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             // insert second photo to photo array list, temporary useless
 //            tab.insertEquipPhoto(equip.getString("photo"));
 
+            // youtube
+            YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
+            youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+                    if (!wasRestored) {
+                        player.cueVideo(VIDEO_ID);
+
+                    }
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+                    // YouTube error
+                    String errorMessage = error.toString();
+                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                    Log.d("errorMessage:", errorMessage);
+                }
+            });
+            tab.setYouTubePlayerFragment(youTubePlayerFragment);
+
             tab.setVideo(true);
             tab.setPhoto(true);
             tab.setTextContent(equip.getString("introduction"));
@@ -557,28 +580,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         txtContent.setMovementMethod(new ScrollingMovementMethod());
 
         // set youtube player
-        YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
-        youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                if (!wasRestored) {
-                    player.cueVideo(VIDEO_ID);
-
-                }
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-                // YouTube error
-                String errorMessage = error.toString();
-                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                Log.d("errorMessage:", errorMessage);
-            }
-        });
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.equip_item_youtube, youTubePlayerFragment).commit();
+        transaction.replace(R.id.equip_item_youtube, equipTabs.get(position).getYouTubePlayerFragment()).commit();
     }
 
     private void setCompanyInfo(View v, int position) throws FileNotFoundException {
