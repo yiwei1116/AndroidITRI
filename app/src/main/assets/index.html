@@ -9,6 +9,8 @@
         var isAndroid = false;
 		var currentRegion = "";
         var nextRegion = "";
+        var oldPath = "";
+        var nextPath = "";
 		// on document ready
 		$(function() {
 			// reset opacity
@@ -16,22 +18,93 @@
 			if (typeof Android != 'undefined') {
 				isAndroid = true;
 			}
-
 			if (isAndroid) {
 				// register function to Android JavascriptInterface.java
 				Android.setOnBleChanged("onRegionChanged");
 				Android.onDocumentLoadDone();
 			}
 		});
-
-		function setSVGLoad(svg, region, next) {
+        function setBG(url) {
+			$("body").css('background-image',url);
+		}
+		function setSVGLoad(svg, region, next, oP,nP) {
 			$("body").load(svg, function() {
 				// execute after floorplan.svg loaded
-				onRegionChanged(region,next);
-				Android.onSVGLoadDone();
+				onRegionChanged(region,next,oP,nP);
+				setTimeout('Android.onSVGLoadDone()', 100);
 			});
 		}
+        function setTestClick()
+        {
+            $( "#ma1" ).bind( "click", function() {
+              Android.onMARegionClick(1);
+            });
+            $( "#ma2" ).bind( "click", function() {
+              Android.onMARegionClick(2);
+            });
+            $( "#ma3" ).bind( "click", function() {
+              Android.onMARegionClick(3);
+            });
+            $( "#ma4" ).bind( "click", function() {
+              Android.onMARegionClick(4);
+            });
+            $( "#ma5" ).bind( "click", function() {
+              Android.onMARegionClick(5);
+            });
+            $( "#ma6" ).bind( "click", function() {
+              Android.onMARegionClick(6);
+            });
+            $( "#ma7" ).bind( "click", function() {
+              Android.onMARegionClick(7);
+            });
+            $( "#ma8" ).bind( "click", function() {
+              Android.onMARegionClick(8);
+            });
+            $( "#ma9" ).bind( "click", function() {
+              Android.onMARegionClick(9);
+            });
+            $( "#ma10" ).bind( "click", function() {
+              Android.onMARegionClick(10);
+            });
+            $( "#ma11" ).bind( "click", function() {
+              Android.onMARegionClick(11);
+            });
+            $( "#mn1" ).bind( "click", function() {
+              Android.onMNRegionClick(1);
+            });
+            $( "#mn2" ).bind( "click", function() {
+              Android.onMNRegionClick(2);
+            });
+            $( "#mn3" ).bind( "click", function() {
+              Android.onMNRegionClick(3);
+            });
+            $( "#mn4" ).bind( "click", function() {
+              Android.onMNRegionClick(4);
+            });
+            $( "#mn5" ).bind( "click", function() {
+              Android.onMNRegionClick(5);
+            });
+            $( "#mn6" ).bind( "click", function() {
+              Android.onMNRegionClick(6);
+            });
+            $( "#mn7" ).bind( "click", function() {
+              Android.onMNRegionClick(7);
+            });
+            $( "#mn8" ).bind( "click", function() {
+              Android.onMNRegionClick(8);
+            });
+            $( "#mn9" ).bind( "click", function() {
+              Android.onMNRegionClick(9);
+            });
+            $( "#mn10" ).bind( "click", function() {
+              Android.onMNRegionClick(10);
+            });
+            $( "#mn11" ).bind( "click", function() {
+              Android.onMNRegionClick(11);
+            });
 
+            alert("444");
+        }
 		function loadSVGLater()
 		{
 			setTimeout('Android.onDocumentLoadDone()', 100);
@@ -52,7 +125,7 @@
 			$("#tag" + currentRegion).attr("class", "");
 
 			//hide path
-			$("#p" + currentRegion + "-" + nextRegion).css("display", "none");
+			$("#"+oldPath).css("display", "none");
 		}
 
 		function showNewRegion() {
@@ -66,12 +139,14 @@
 			$("#tag" + currentRegion).css("display", "inline").attr("class", "fadeinClass");
 
 			//show path
-			$("#p" + currentRegion + "-" + nextRegion).css("display", "inline");
+			$("#"+nextPath).css("display", "inline");
 		}
 
-		function onRegionChanged(region,next) {
+		function onRegionChanged(region,next,oP,nP) {
 
 			if (region > 0) {
+			    oldPath = oP;
+			    nextPath = nP;
 				var regionStr = region + ""
 				if (currentRegion != "") {
 					hideCurrentRegion();
@@ -80,7 +155,7 @@
 				// update current region
 				currentRegion = regionStr;
 				showNewRegion();
-
+                /*
 				$("#r" + regionStr + ", #tag" + regionStr).click(function() {
 					$('body').fadeOut(1000, function() {
 						// fadeout completion
@@ -89,6 +164,7 @@
 						}
 					});
 				});
+				*/
 			}
 			$("#mn" + next).css("display", "inline")
 		}
@@ -96,7 +172,7 @@
     </script>
 </head>
 
-<body background="bg.jpg" style="margin:0;padding:0;">
+<body style="margin:0;padding:0;">
 
 
 </body>
