@@ -707,9 +707,19 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
         map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
         map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
-        object.put("map_svg", map_svg);
-        object.put("map_svg_en", map_svg_en);
-        object.put("map_bg", map_bg);
+        // parse file name
+        String[] paths = map_svg.split("/");
+        String svgName = paths[paths.length-1];
+
+        String[] paths_en = map_svg_en.split("/");
+        String svgNameEn = paths_en[paths_en.length - 1];
+
+        String[] pathsBg = map_bg.split("/");
+        String svgNameBg = pathsBg[pathsBg.length-1];
+
+        object.put("map_svg", svgName);
+        object.put("map_svg_en", svgNameEn);
+        object.put("map_bg", svgNameBg);
         cursor.close();
         return object;
     }

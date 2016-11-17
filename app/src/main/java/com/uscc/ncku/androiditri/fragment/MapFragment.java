@@ -36,6 +36,7 @@ import com.uscc.ncku.androiditri.ble.BLEModule;
 import com.uscc.ncku.androiditri.ble.BLEScannerWrapper;
 import com.uscc.ncku.androiditri.util.SQLiteDbManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -60,8 +61,10 @@ public class MapFragment extends Fragment {
     private Button enter;
     private TextView txtMapArea;
     private String mSvgFile = "";
+    private String mBGFile = "";
     private BLEScannerWrapper mBLEScannerWrapper;
     private JSONObject mLastSacnBeacon = null;
+    private JSONObject mCurrentField = null;
     private View view;
     private SQLiteDbManager dbManager;
     private String fileDirPath;
@@ -72,8 +75,8 @@ public class MapFragment extends Fragment {
 
     private volatile int currentZone;
     private int currentZoneOrder = 0;
-    private int pathOrder[] = {1,2,3};
-    private int zoneOrder[] = {1,2,3,4 };
+    private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11};
+    private String pathOrder[] = {"p1-2","p2-3","p3-4","p4-5","p5-6","p6-7","p7-8","p8-9","p9-10","p10-11","p11-2f"};
 
     ///
 
@@ -122,9 +125,14 @@ public class MapFragment extends Fragment {
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
         address0 = (TextView)view.findViewById(R.id.device_address0);
 
-        //test
-        mSvgFile = "Living3_Map_1F_no_bg_20161020.svg";
-
+        //initial img file path
+        try {
+            mCurrentField = dbManager.queryFieldMapWithFieldMapId(1);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        mSvgFile = mCurrentField.optString("map_svg");
+        mBGFile = mCurrentField.optString("map_bg");
         //
 
         buildBLEScannerWrapper();
@@ -134,7 +142,7 @@ public class MapFragment extends Fragment {
         String scriptHtml = "<script>document.location =\"" + aURL + "\";</script>";
         mWebViewMap.loadDataWithBaseURL(aURL, scriptHtml, "text/html", "utf-8", null);
 
-
+        //ask for permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android M Permission check
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -183,15 +191,18 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 notice.setVisibility(View.GONE);
-
-                ((MainActivity) getActivity()).setMapNormal();
-
-                AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
-                ((MainActivity) getActivity()).replaceFragment(areaFragment);
+                enterZone();
             }
         });
 
         return view;
+    }
+    public void enterZone()
+    {
+        ((MainActivity) getActivity()).setMapNormal();
+
+        AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
+        ((MainActivity) getActivity()).replaceFragment(areaFragment);
     }
 
     @Override
@@ -298,70 +309,25 @@ public class MapFragment extends Fragment {
                                 return;
                             }
                         }
-                        ///////////////////////////////
-
-                        //address0.setText("\n\n\n當前偵測到的address: "+(mac.equals("")?"無":mac));
-                        //DEBUG用
-                        ///
-
-                        ///
-                        ////////////////////////////////
                         // query region id from database
                         if(mac.equals(""))
                             return;
                         JSONObject beacon = dbManager.queryBeaconFileWithMacAddr(mac);
-                        /*
-                        Log.e("test mac  ", beacon.optString("mac_addr"));
-                        Log.e("test bid  ", beacon.optString("device_id"));
-                        Log.e("test name  ", beacon.optString("name"));
-                        Log.e("test zone  ", beacon.optString("zone"));
-                        */
+                        Log.e("ttttttttt",String.valueOf(beacon));
+
                         if (beacon == null) {
                             return;
                         }
                         currentZone = beacon.optInt("zone");        //紀錄當前Zone
                         if (currentZone != zoneOrder[currentZoneOrder])
                         {
-                            //不是下一步該去的地方
+                            //不是該到的地方
                             return;
                         }
-                        if(currentZoneOrder != zoneOrder.length-1)
-                            currentZoneOrder++;
+                        if(currentZoneOrder == zoneOrder.length-1)      //已到最後一個點
+                            return;
+                        enterNextZone(beacon);
 
-                        notice.setVisibility(View.VISIBLE);
-                        txtMapArea.setText("   "+beacon.optString("name"));     //進入導覽顯示名稱
-
-                        if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
-                            //Change field
-
-                            String loadfile =  "file:///android_asset/" +  beacon.optString("field_name") +".svg";
-                            //loadfile =  "file:///android_asset/" + mSvgFile;
-                            mSvgFile = beacon.getString("map_svg");
-                            loadfile = fileDirPath + mSvgFile;
-                            //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
-                            mWebViewMap.loadUrl("javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
-                            isSVGLOADED = false;
-
-
-                        } else {
-                            if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                                mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
-                                Log.e(TAG,currentZone+"    "+zoneOrder[currentZoneOrder]);
-                            }
-                        }
-
-                        // change map button status
-                        /*
-                        if (mCurrentViewMode != ViewMode.MAP) {
-                            if (mSelectZone.zone_num != b.zone_num) {
-                                ivMap.setBackgroundResource(R.mipmap.map_btn_flash);
-                                ivMap.startAnimation(mapAnimation);
-                            } else {
-                                ivMap.clearAnimation();
-                                ivMap.setBackgroundResource(R.mipmap.map_btn_inactive);
-                            }
-                        }
-                        */
                         mLastSacnBeacon = beacon;
                         break;
                     case BLEModule.BLE_LOW_POWER_WARNING:
@@ -373,6 +339,35 @@ public class MapFragment extends Fragment {
             }
         }
     };
+    public void enterNextZone(JSONObject beacon) throws JSONException
+    {
+        currentZoneOrder++;     //更新下一個該到的順序
+
+        String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
+        String nextPath = pathOrder[currentZoneOrder-1];
+        notice.setVisibility(View.VISIBLE);
+        txtMapArea.setText("   "+beacon.optString("name"));     //"進入導覽"顯示名稱
+
+        if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
+            //Change field
+
+            mSvgFile = beacon.getString("map_svg");
+            String loadfile = fileDirPath + mSvgFile;
+            //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
+            //svg,currentZone,nextZone,currentPath(to hide),nextPath(to appear)
+            String url = "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+"')";
+            mWebViewMap.loadUrl(url);
+            isSVGLOADED = false;
+
+
+        } else {
+            if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
+                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + currentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+ "')";
+                mWebViewMap.loadUrl(url);
+                Log.e(TAG,url);
+            }
+        }
+    }
     public Handler getJsHandler() {
         return jsHandler;
     }
@@ -389,9 +384,13 @@ public class MapFragment extends Fragment {
                                 mWebViewMap.loadUrl(js);
                             }else{
 
-                                //String loadfile =  "file:///android_asset/" + mSvgFile ;
-                                String loadfile =  fileDirPath + mSvgFile ;
-                                js = "javascript: setSVGLoad('" + loadfile + "',-1,1)";
+                                //String loadfile =  "file:///android_asset/" + mBGFile ;
+                                String loadfile =  fileDirPath + mBGFile ;
+                                js = "javascript: setBG('url(" + loadfile + ")')";
+                                mWebViewMap.loadUrl(js);
+
+                                loadfile =  fileDirPath + mSvgFile ;
+                                js = "javascript: setSVGLoad('" + loadfile + "',-1,1,'','')";
                                 isSVGLOADED = false;
                                 mWebViewMap.loadUrl(js);
                             }
@@ -399,20 +398,30 @@ public class MapFragment extends Fragment {
                             break;
                         case JavaScriptInterface.SVGLOAD:
                             isSVGLOADED = true;
+                            mWebViewMap.loadUrl("javascript: setTestClick()");
+                            String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
+                            String nextPath = (currentZoneOrder<=0)?"":pathOrder[currentZoneOrder-1];
+                            Log.e("svgload",currentPath);
+                            Log.e("svgload",nextPath);
                             for(int i = 0; i<currentZoneOrder;i++)
                             {
                                 if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
 
-                                    mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + zoneOrder[i] + "," + zoneOrder[i+1] + ")");
+                                    mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + zoneOrder[i] + "," + zoneOrder[i+1] + ",'"+currentPath+"','"+nextPath+ "')");
                                 }
                             }
+                            //mWebViewMap.loadUrl("javascript: onRegionChanged(1,2)");
                             break;
-                        case JavaScriptInterface.REGION_CLICKED:
-                            //buildZoneView(msg.arg1);
-                            //switchViewMode(ViewMode.ZONE);
-
+                        case JavaScriptInterface.MNREGION_CLICKED:
+                            try {
+                                enterNextZone(null);
+                            }catch (JSONException e){}
                             //int reg =  msg.arg1+1;
                             //mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + reg + ")");
+                            break;
+                        case JavaScriptInterface.MAREGION_CLICKED:
+                            currentZone = msg.arg1;
+                            enterZone();
                             break;
                     }
                 }
