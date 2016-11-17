@@ -481,7 +481,7 @@ public class CommunicationWithServer {
                         // store each entry into database
                         sqLiteDbManager.insertPath(json.optInt(DatabaseUtilizer.CHOOSE_PATH_ID),
                                 json.optInt(DatabaseUtilizer.PATH_ORDER),
-                                json.optInt(DatabaseUtilizer.PATH_SVG_ID),
+                                json.optString(DatabaseUtilizer.PATH_SVG_ID),
                                 json.optInt(DatabaseUtilizer.START),
                                 json.optString(DatabaseUtilizer.PATH_SN),
                                 json.optInt(DatabaseUtilizer.END),

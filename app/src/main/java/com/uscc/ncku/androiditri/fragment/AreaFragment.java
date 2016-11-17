@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,9 +105,12 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
             introduction = area.getString("introduction");
             hint = area.getString("hint");
             guide_voice = area.getString("guide_voice");
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         isEnglish = ((MainActivity) getActivity()).isEnglish();
     }

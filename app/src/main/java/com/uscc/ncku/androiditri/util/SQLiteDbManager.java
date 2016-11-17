@@ -516,6 +516,24 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return file;
     }
 
+    public ArrayList<String> querySvgId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select svg_id from path", null);
+        cursor.moveToFirst();
+        ArrayList<String> pths = new ArrayList<String>();
+        String svg_id = "";
+        // int i = 1;
+        while(cursor.isAfterLast() == false) {
+            svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
+            pths.add(svg_id);
+            cursor.moveToNext();
+            Log.e("pths", svg_id);
+        }
+        cursor.close();
+        //Log.e("pthssssssss", String.valueOf(pths));
+        return pths;
+    }
+
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,
@@ -1262,8 +1280,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // path table query and insert
     public boolean insertPath(int choose_path_id,
-                              int svg_id,
                               int path_order,
+                              String svg_id,
                               int start,
                               String Sn,
                               int end,
@@ -1277,7 +1295,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("Sn", Sn);
         values.put("End", end);
         values.put("En", En);
-        long rowId = db.insertWithOnConflict("path", null, values, 4);
+        Log.e("vvvvvvvv", String.valueOf(values));
+        long rowId = db.insert("path", null, values);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
             return true;
@@ -1301,7 +1320,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.moveToFirst();
         int choose_path_id;
         int order;
-        int svg_id;
+        String svg_id;
         int start;
         int Sn;
         int End;
@@ -1309,7 +1328,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             choose_path_id = cursor.getInt(cursor.getColumnIndex("choose_path_id"));
-            svg_id = cursor.getInt(cursor.getColumnIndex("svg_id"));
+            svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
             start = cursor.getInt(cursor.getColumnIndex("start"));
             End = cursor.getInt(cursor.getColumnIndex("end"));
             // add to JSONObject
