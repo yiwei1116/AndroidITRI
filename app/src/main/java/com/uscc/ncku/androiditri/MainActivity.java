@@ -514,6 +514,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        if (currentFragment instanceof FeedbackFragment) {
+            replaceFragment(mapFragment);
+            return;
+        }
+
 //        /**
 //         *  if current fragment implements ISoundInterface
 //         *  than stop text to speech

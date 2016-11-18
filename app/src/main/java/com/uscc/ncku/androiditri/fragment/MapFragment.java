@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -135,6 +136,10 @@ public class MapFragment extends Fragment {
         mBGFile = mCurrentField.optString("map_bg");
         //
 
+        // set toolbar title
+        String field_name = getFieldName(1);
+        ((MainActivity) getActivity()).setToolbarTitle(field_name);
+
         buildBLEScannerWrapper();
         initWebView();
 
@@ -174,9 +179,9 @@ public class MapFragment extends Fragment {
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
 
         // show notice if in debug mode
-        if (BuildConfig.DEBUG) {
-            notice.setVisibility(View.VISIBLE);
-        }
+//        if (BuildConfig.DEBUG) {
+//            notice.setVisibility(View.VISIBLE);
+//        }
 
         cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         enter = (Button) view.findViewById(R.id.btn_enter_map_area);
@@ -203,6 +208,12 @@ public class MapFragment extends Fragment {
 
         AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
         ((MainActivity) getActivity()).replaceFragment(areaFragment);
+    }
+
+    private String getFieldName(int field_id) {
+        Cursor cursor = dbManager.getFieldMap(field_id);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("name_en"));
     }
 
     @Override

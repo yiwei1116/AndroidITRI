@@ -2,6 +2,7 @@ package com.uscc.ncku.androiditri.fragment;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.support.v7.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
@@ -200,7 +201,10 @@ public class ModeSelectFragment extends Fragment {
 
             Bitmap bg = null;
             try {
-                bg = HelperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
+                Matrix matrix = new Matrix();
+                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
+                matrix.postScale((float) 0.25, (float) 0.25);
+                bg = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),bitmap.getHeight(), matrix, true);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
