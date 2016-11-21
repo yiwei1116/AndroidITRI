@@ -50,7 +50,6 @@ public class CommunicationWithServer {
     public CommunicationWithServer() {
         this.totalCount = 0;
         this.partialCount = 0;
-//        sqLiteDbManager = new SQLiteDbManager();
     }
 
     public CommunicationWithServer(LoadingActivity loadingActivity) {
