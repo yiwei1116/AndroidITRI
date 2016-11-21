@@ -1,5 +1,6 @@
 package com.uscc.ncku.androiditri;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -76,9 +77,9 @@ public class CommunicationWithServer {
     /*
         **** UPLOAD CLASS ****
      */
-    public void uploadJsonData(JSONObject uploadObject, String uploadURL) {
+    public void uploadJsonData(String uploadType, JSONObject uploadObject, String uploadURL) {
         // call async method to execute upload task
-        new SendData(uploadObject, uploadURL).execute();
+        new SendData(uploadType, uploadObject, uploadURL).execute();
     }
 
     // UPLOAD DATA TO SERVER
@@ -89,6 +90,7 @@ public class CommunicationWithServer {
         private JSONArray jsonArray;
         private JSONObject json_string;
         private String uploadURL;
+        private String uploadType;
 
         public SendData(int project_id) {
             this.project_id = project_id;
@@ -98,7 +100,8 @@ public class CommunicationWithServer {
             this.jsonArray = jsonArray;
         }
 
-        public SendData(JSONObject json_string, String uploadURL) {
+        public SendData(String type, JSONObject json_string, String uploadURL) {
+            this.uploadType = type;
             this.json_string = json_string;
             this.uploadURL = uploadURL;
         }
@@ -148,7 +151,7 @@ public class CommunicationWithServer {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
 
-                String jsonString = "json_string=" + json_string.toString();
+                String jsonString = this.uploadType + "=" + json_string.toString();
                 Log.i("json", jsonString);
 
                 // write to server
@@ -192,13 +195,6 @@ public class CommunicationWithServer {
         return uploadObject;
     }
 
-    // 奕崴呼叫此函數 should call this function
-    // 文字內容，照片檔名，版型id，罐頭文字id，zoneid
-    public void uploadHipsterContent(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
-        JSONObject jsonObject = packHipsterContentData(textContent, picture, hipsterTemplateId, hipsterTextId, zoneId);
-        uploadJsonData(jsonObject, this.hipsterContentURL);
-    }
-
     // UPLOAD to "survey" table
     public JSONObject packSurveyData (String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
         JSONObject uploadObject = new JSONObject();
@@ -216,11 +212,6 @@ public class CommunicationWithServer {
         uploadObject.put("fimily_member", fimily_member);
         uploadObject.put("know_way", know_way);
         return uploadObject;
-    }
-
-    public void uploadSurveyData(String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
-        JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
-        uploadJsonData(jsonObject, this.surveyOneURL);
     }
 
     // UPLOAD to "survey2" table
@@ -263,21 +254,107 @@ public class CommunicationWithServer {
         return uploadObject;
     }
 
+    // type 1, 2, 3 ; id = type id
+    public JSONObject packLikeReadCount(int type, int typeId, int types[]) throws JSONException{
+        SQLiteDatabase db = sqLiteDbManager.getReadableDatabase();
+        JSONObject object = new JSONObject();
+        switch (type) {
+            case 1:
+                JSONArray array = new JSONArray();
+                // device packing
+                for (int i = 0 ; i < types.length; i++) {
+                    int tempId = types[i];
+                    JSONObject tempObj = new JSONObject();
+                    Cursor bcursor = db.rawQuery("select like_count, read_count from device where device_id=" + tempId, null);
+                    bcursor.moveToFirst();
+                    int like_count = bcursor.getInt(bcursor.getColumnIndex("like_count"));
+                    int read_count = bcursor.getInt(bcursor.getColumnIndex("read_count"));
+                    tempObj.put("id", tempId);
+                    tempObj.put("like_count", like_count);
+                    tempObj.put("read_count", read_count);
+                    array.put(tempObj);
+                }
+                object.put("devices", array);
+                break;
+            case 2:
+                // mode packing
+                Cursor cursor = db.rawQuery("select like_count, read_count from mode where mode_id=" + typeId, null);
+                cursor.moveToFirst();
+                int like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+                int read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+                object.put("like_count", like_count);
+                object.put("read_count", read_count);
+                cursor.close();
+                break;
+            case 3:
+                // zone packing
+                Cursor acursor = db.rawQuery("select like_count from zone where zone_id=" + typeId, null);
+                acursor.moveToFirst();
+                int alike_count = acursor.getInt(acursor.getColumnIndex("like_count"));
+                object.put("like_count", alike_count);
+                acursor.close();
+                break;
+            default:
+                break;
+        }
+        return object;
+    }
+
+    // 奕崴呼叫此函數 should call this function
+    // 文字內容，照片檔名，版型id，罐頭文字id，zoneid
+    public void uploadHipsterContent(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+        JSONObject jsonObject = packHipsterContentData(textContent, picture, hipsterTemplateId, hipsterTextId, zoneId);
+        uploadJsonData("hipster_content", jsonObject, this.hipsterContentURL);
+    }
+
+    public void uploadSurveyData(String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
+        JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
+        uploadJsonData("survey", jsonObject, this.surveyOneURL);
+    }
+
     public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
         JSONObject jsonObject = packSurveyTwoData( attitude,  functionality,  visual,  operability,  user_friendly,  price,  maintenance,  safety,  energy,  first_choise,  second_choise,  third_choise,  fourth_choise,  fifth_choise,  first_consider,  second_consider,  third_consider,  fourth_consider,  fifth_consider,  subscription1,  subscription2,  subscription3,  install1,  install2,  install3,  install4,  install5,  impression1,  impression2,  impression3,  impression4,  impression5,  buy,  reasonable_price);
-        uploadJsonData(jsonObject, this.surveyTwoURL);
+        uploadJsonData("survey_two", jsonObject, this.surveyTwoURL);
     }
 
-    public void uploadLikeCount() {
-        SQLiteDatabase db = sqLiteDbManager.getReadableDatabase();
+    // type 1
+    public void uploadDeviceLikeAndReadCount(int typeId, int types[]) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = packLikeReadCount(1, typeId, types);
 
+            // TODO: not sure about the server url
+            uploadJsonData("device_counts", jsonObject, this.counterURL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-    public void uploadReadCount() {
 
+    // type 2
+    public void uploadModeLikeAndReadCount(int typeId, int types[]) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = packLikeReadCount(2, typeId, types);
+
+            // TODO: not sure about the server url
+            uploadJsonData("mode_counts", jsonObject, this.counterURL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
+    // type 3
+    public void uploadZoneLikeAndReadCount(int typeId, int types[]) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = packLikeReadCount(3, typeId, types);
 
-
+            // TODO: not sure about the server url
+            uploadJsonData("zone_counts", jsonObject, this.counterURL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // ********************** download all tables start **********************
     // Starting point: call this method to download all tables
