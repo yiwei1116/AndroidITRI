@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
+import org.tabc.living3.util.ICoach;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.ITRIObject;
@@ -40,7 +42,7 @@ import org.tabc.living3.util.TimeUtilities;
 import java.util.LinkedList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ICoach {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
 
@@ -87,10 +89,6 @@ public class MainActivity extends AppCompatActivity {
     private TimeUtilities utils;
 
     private TextToSpeech textToSpeech;
-
-    private boolean isCoachInfoFirst = true;
-    private boolean isCoachSwipUpFirst = true;
-    private boolean isCoachSlideLeftFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -761,7 +759,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showMapCoachInfo() {
-        if (isCoachInfoFirst) {
+        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoach.MAP_INFO_COACH, false);
+
+        if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_info);
             dialog.setContentView(R.layout.alertdialog_coach_info);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -771,12 +772,15 @@ public class MainActivity extends AppCompatActivity {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean(ICoach.MAP_INFO_COACH, true);
+                    editor.apply();
+
                     showMapCoachQuestion();
                     dialog.dismiss();
                 }
             });
-
-            isCoachInfoFirst = false;
         }
     }
 
@@ -796,7 +800,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showModeCoachSwapUp() {
-        if (isCoachSwipUpFirst) {
+        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoach.MODE_SELECT_COACH, false);
+
+        if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
             dialog.setContentView(R.layout.alertdialog_coach_mode_swapup);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -806,6 +813,11 @@ public class MainActivity extends AppCompatActivity {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean(ICoach.MODE_SELECT_COACH, true);
+                    editor.apply();
+
                     dialog.dismiss();
                 }
             });
@@ -813,13 +825,14 @@ public class MainActivity extends AppCompatActivity {
             // set all mode did_read false at the first time
             SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
             dbManager.setModeDidReadZero();
-
-            isCoachSwipUpFirst = false;
         }
     }
 
     public void showEquipCoachSlide() {
-        if (isCoachSlideLeftFirst) {
+        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoach.DEVICE_COACH, false);
+
+        if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
             dialog.setContentView(R.layout.alertdialog_coach_equip_slide);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -829,11 +842,14 @@ public class MainActivity extends AppCompatActivity {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean(ICoach.DEVICE_COACH, true);
+                    editor.apply();
+
                     dialog.dismiss();
                 }
             });
-
-            isCoachSlideLeftFirst = false;
         }
     }
     public void shutTexttoSpeech(){

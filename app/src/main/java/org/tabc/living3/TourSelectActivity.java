@@ -1,10 +1,14 @@
 package org.tabc.living3;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 
+import org.tabc.living3.util.ICoach;
 import org.tabc.living3.util.TourViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TourSelectActivity extends AppCompatActivity {
+public class TourSelectActivity extends AppCompatActivity implements ICoach {
     public static TourSelectActivity instance = null;
 
     private boolean isEnglish;
@@ -54,21 +58,46 @@ public class TourSelectActivity extends AppCompatActivity {
             }
         });
 
-        TextView toolBarTxt = (TextView) findViewById(R.id.txt_toolbar_tour_select);
-        toolBarTxt.setText(R.string.tour_title);
+        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoach.TOUR_SELECT_COACH, false);
 
-        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour_select);
-        btnUnderstand.setBackgroundResource(R.drawable.selecter_btn_black_white);
-        btnUnderstand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
-                confirmBtn.setVisibility(View.VISIBLE);
+        if (!isNotFirst) {
+            Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
+            confirmBtn.setVisibility(View.INVISIBLE);
 
-                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour_select);
-                frameLayout.setVisibility(View.INVISIBLE);
-            }
-        });
+            final Dialog dialog = new Dialog(TourSelectActivity.this, R.style.dialog_coach_normal);
+            dialog.setContentView(R.layout.alertdialog_coach_tour_select);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.show();
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_understand_tour_select);
+            understand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
+                    confirmBtn.setVisibility(View.VISIBLE);
+
+                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean(ICoach.TOUR_SELECT_COACH, true);
+                    editor.apply();
+
+                    dialog.dismiss();
+                }
+            });
+        }
+
+//        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour_select);
+//        btnUnderstand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
+//                confirmBtn.setVisibility(View.VISIBLE);
+
+//                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour_select);
+//                frameLayout.setVisibility(View.INVISIBLE);
+//            }
+//        });
 
         tourSelect();
     }
