@@ -76,9 +76,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if (BuildConfig.DEBUG) {
-            rm.setVisibility(View.VISIBLE);
-        }
+//        if (BuildConfig.DEBUG) {
+//            rm.setVisibility(View.VISIBLE);
+//        }
 
     }
 

@@ -99,13 +99,13 @@ public class ChooseTemplate extends Fragment {
         float xx = (float) x;
         float yy = (float) y;
          bitmapArray = new ArrayList<Bitmap>();
-
+        Bitmap bitmap;
         for(int i=0;i<imageList.size();i++){
             try {
                 Matrix matrix = new Matrix();
-
+                bitmap = HelperFunctions.getBitmapFromFile(getActivity(),imageList.get(i));
                 matrix.postScale(xx, yy);
-                Bitmap resizedBitmap = Bitmap.createBitmap(HelperFunctions.getBitmapFromFile(getActivity(),imageList.get(i)), 0, 0, 1080,1920, matrix, true);
+                Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),bitmap.getHeight(), matrix, true);
                 bitmapArray.add(resizedBitmap);
 
             } catch (FileNotFoundException e) {
@@ -246,29 +246,6 @@ public class ChooseTemplate extends Fragment {
     }
 
 
-    private static int calculateInSampleSize(BitmapFactory.Options options,
-                                             int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
 
-        if (height > reqHeight || width > reqWidth) {
-
-            // Calculate ratios of height and width to requested height and
-            // width
-            final int heightRatio = Math.round((float) height
-                    / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will
-            // guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? widthRatio : heightRatio;
-        }
-
-        return inSampleSize;
-    }
 
 }

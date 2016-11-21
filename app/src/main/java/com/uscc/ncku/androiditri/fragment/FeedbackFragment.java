@@ -73,7 +73,7 @@ public class FeedbackFragment extends Fragment {
     private int safety = 0;
     private int energy = 0;
     private int first_choise = 0, second_choise = 0, third_choise = 0, fourth_choise = 0, fifth_choise = 0;
-    private int first_consider = 0, second_consider = 0, third_consider = 0, fourth_consider = 0, fifth_consider = 0;
+    private String first_consider = "", second_consider = "", third_consider = "", fourth_consider = "", fifth_consider = "";
     private int subscription1 = 0;
     private int subscription2 = 0;
     private int subscription3 = 0;
@@ -474,19 +474,19 @@ public class FeedbackFragment extends Fragment {
         CheckBox humility_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_humility);
         CheckBox maintainence_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_maintainence);
         if (function_1.isChecked()) {
-
+            first_consider += "1";
         }
         if (beauty_1.isChecked()) {
-
+            first_consider += "2";
         }
         if (operation_1.isChecked()) {
-
+            first_consider += "3";
         }
         if (humility_1.isChecked()) {
-
+            first_consider += "4";
         }
         if (maintainence_1.isChecked()) {
-
+            first_consider += "5";
         }
 
 
@@ -512,19 +512,19 @@ public class FeedbackFragment extends Fragment {
         CheckBox humility_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_humility);
         CheckBox maintainence_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_maintainence);
         if (function_2.isChecked()) {
-
+            second_consider += "1";
         }
         if (beauty_2.isChecked()) {
-
+            second_consider += "2";
         }
         if (operation_2.isChecked()) {
-
+            second_consider += "3";
         }
         if (humility_2.isChecked()) {
-
+            second_consider += "4";
         }
         if (maintainence_2.isChecked()) {
-
+            second_consider += "5";
         }
 
 
@@ -550,19 +550,19 @@ public class FeedbackFragment extends Fragment {
         CheckBox humility_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_humility);
         CheckBox maintainence_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_maintainence);
         if (function_3.isChecked()) {
-
+            third_consider += "1";
         }
         if (beauty_3.isChecked()) {
-
+            third_consider += "2";
         }
         if (operation_3.isChecked()) {
-
+            third_consider += "3";
         }
         if (humility_3.isChecked()) {
-
+            third_consider += "4";
         }
         if (maintainence_3.isChecked()) {
-
+            third_consider += "5";
         }
 
 
@@ -588,19 +588,19 @@ public class FeedbackFragment extends Fragment {
         CheckBox humility_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_humility);
         CheckBox maintainence_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_maintainence);
         if (function_4.isChecked()) {
-
+            fourth_consider += "1";
         }
         if (beauty_4.isChecked()) {
-
+            fourth_consider += "2";
         }
         if (operation_4.isChecked()) {
-
+            fourth_consider += "3";
         }
         if (humility_4.isChecked()) {
-
+            fourth_consider += "4";
         }
         if (maintainence_4.isChecked()) {
-
+            fourth_consider += "5";
         }
 
 
@@ -626,19 +626,19 @@ public class FeedbackFragment extends Fragment {
         CheckBox humility_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_humility);
         CheckBox maintainence_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_maintainence);
         if (function_5.isChecked()) {
-
+            fifth_consider += "1";
         }
         if (beauty_5.isChecked()) {
-
+            fifth_consider += "2";
         }
         if (operation_5.isChecked()) {
-
+            fifth_consider += "3";
         }
         if (humility_5.isChecked()) {
-
+            fifth_consider += "4";
         }
         if (maintainence_5.isChecked()) {
-
+            fifth_consider += "5";
         }
 
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
@@ -1052,20 +1052,31 @@ public class FeedbackFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (first_consider == "")
+                    first_consider = "0";
+                if (second_consider == "")
+                    second_consider = "0";
+                if (third_consider == "")
+                    third_consider = "0";
+                if (fourth_consider == "")
+                    fourth_consider = "0";
+                if (fifth_consider == "")
+                    fifth_consider = "0";
+
                 // update feedback to server
-//                try {
-//                    comm.uploadSecondSurveyData(attitude,
-//                            functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
-//                            first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
-//                            first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
-//                            subscription1, subscription2, subscription3,
-//                            install1, install2, install3, install4, install5,
-//                            impression1, impression2, impression3, impression4, impression5,
-//                            buy,
-//                            reasonable_price);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    comm.uploadSecondSurveyData(attitude,
+                            functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
+                            first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
+                            first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
+                            subscription1, subscription2, subscription3,
+                            install1, install2, install3, install4, install5,
+                            impression1, impression2, impression3, impression4, impression5,
+                            buy,
+                            reasonable_price);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 getActivity().onBackPressed();
             }
