@@ -58,13 +58,4 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/device_address0"
-
-        android:layout_marginLeft="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_gravity="left|center_vertical" />
-
 </FrameLayout>

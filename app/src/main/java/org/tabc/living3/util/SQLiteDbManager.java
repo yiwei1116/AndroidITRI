@@ -527,7 +527,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
             pths.add(svg_id);
             cursor.moveToNext();
-            Log.e("pths", svg_id);
+            //Log.e("pths", svg_id);
         }
         cursor.close();
         //Log.e("pthssssssss", String.valueOf(pths));

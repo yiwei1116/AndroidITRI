@@ -29,7 +29,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.tabc.living3.BuildConfig;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tabc.living3.JavaScriptInterface;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
@@ -37,8 +38,7 @@ import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
 import org.tabc.living3.util.SQLiteDbManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 
 /**
@@ -57,27 +57,23 @@ public class MapFragment extends Fragment {
 
     JavaScriptInterface mJavaScriptInterface;
     private WebView mWebViewMap;
-    private RelativeLayout notice;
-    private Button cancel;
-    private Button enter;
-    private TextView txtMapArea;
+    private RelativeLayout notice;      //進入導覽
+    private TextView txtMapArea;        //顯示當前區域名稱
+    private BLEScannerWrapper mBLEScannerWrapper;
+    private SQLiteDbManager dbManager;
+    private JSONObject mLastSacnBeacon = null;      //紀錄上一個偵測到的beacon
+    private JSONObject mCurrentFieldMap = null;     //紀錄SVG檔
     private String mSvgFile = "";
     private String mBGFile = "";
-    private BLEScannerWrapper mBLEScannerWrapper;
-    private JSONObject mLastSacnBeacon = null;
-    private JSONObject mCurrentField = null;
-    private View view;
-    private SQLiteDbManager dbManager;
-    private String fileDirPath;
+    private String mFileDirPath;
     private Boolean isSVGLOADED = false;
 
     //test
-    TextView address0;
-
-    private volatile int currentZone;
+    private int mCurrentField = 1;
+    private int mCurrentZone;
     private int currentZoneOrder = 0;
-    private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11};
-    private String pathOrder[] = {"p1-2","p2-3","p3-4","p4-5","p5-6","p6-7","p7-8","p8-9","p9-10","p10-11","p11-2f"};
+    private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
+    private String pathOrder[] = {"p1-2","p2-3","p3-4","p4-5","p5-6","p6-7","p7-8","p8-9","p9-10","p10-11","p11-2f","p12-13","p13-14","p14-15","p15-16","p16-17","p17-18","p18-19"};
 
     ///
 
@@ -110,7 +106,9 @@ public class MapFragment extends Fragment {
         ((MainActivity) getActivity()).showMapCoachInfo();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        fileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
+        mFileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
+        ArrayList<String> path = dbManager.querySvgId();
+        Log.e("tedrtgedrfg",String.valueOf(path));
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -118,22 +116,22 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         ((MainActivity) getActivity()).setMapActive();
         ((MainActivity) getActivity()).setToolbarTitle(R.string.nothing);
 
         mWebViewMap = (WebView) view.findViewById(R.id.webview_map);
-        address0 = (TextView)view.findViewById(R.id.device_address0);
+
 
         //initial img file path
         try {
-            mCurrentField = dbManager.queryFieldMapWithFieldMapId(1);
+            mCurrentFieldMap = dbManager.queryFieldMapWithFieldMapId(mCurrentField);
         }catch (JSONException e){
             e.printStackTrace();
         }
-        mSvgFile = mCurrentField.optString("map_svg");
-        mBGFile = mCurrentField.optString("map_bg");
+        mSvgFile = mCurrentFieldMap.optString("map_svg");
+        mBGFile = mCurrentFieldMap.optString("map_bg");
         //
 
         // set toolbar title
@@ -170,7 +168,7 @@ public class MapFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                FeedbackFragment feedback = FeedbackFragment.newInstance(currentZone);
+                FeedbackFragment feedback = FeedbackFragment.newInstance(mCurrentZone);
                 feedback.feedbackAlertDialog(getActivity(), feedback);
                 return true;
             }
@@ -183,8 +181,8 @@ public class MapFragment extends Fragment {
 //            notice.setVisibility(View.VISIBLE);
 //        }
 
-        cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
-        enter = (Button) view.findViewById(R.id.btn_enter_map_area);
+        Button cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
+        Button enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         txtMapArea = (TextView) view.findViewById(R.id.txt_map_area);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +204,7 @@ public class MapFragment extends Fragment {
     {
         ((MainActivity) getActivity()).setMapNormal();
 
-        AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,currentZone);
+        AreaFragment areaFragment = AreaFragment.newInstance(tourIndex,mCurrentZone);
         ((MainActivity) getActivity()).replaceFragment(areaFragment);
     }
 
@@ -353,7 +351,7 @@ public class MapFragment extends Fragment {
     };
     public void enterNextZone(JSONObject beacon) throws JSONException
     {
-        currentZone = beacon.optInt("zone");
+        mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
 
         String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
@@ -363,19 +361,19 @@ public class MapFragment extends Fragment {
 
         if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
             //Change field
-
+            mCurrentField = beacon.optInt("field_id");
             mSvgFile = beacon.getString("map_svg");
-            String loadfile = fileDirPath + mSvgFile;
+            String loadfile = mFileDirPath + mSvgFile;
             //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
             //svg,currentZone,nextZone,currentPath(to hide),nextPath(to appear)
-            String url = "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+"')";
+            String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+"')";
             mWebViewMap.loadUrl(url);
             isSVGLOADED = false;
 
 
         } else {
             if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + currentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+ "')";
+                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + mCurrentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+ "')";
                 mWebViewMap.loadUrl(url);
                 Log.e(TAG,url);
             }
@@ -399,11 +397,11 @@ public class MapFragment extends Fragment {
                             }else{
 
                                 //String loadfile =  "file:///android_asset/" + mBGFile ;
-                                String loadfile =  fileDirPath + mBGFile ;
+                                String loadfile =  mFileDirPath + mBGFile ;
                                 js = "javascript: setBG('url(" + loadfile + ")')";
                                 mWebViewMap.loadUrl(js);
 
-                                loadfile =  fileDirPath + mSvgFile ;
+                                loadfile =  mFileDirPath + mSvgFile ;
                                 js = "javascript: setSVGLoad('" + loadfile + "',-1,1,'','')";
                                 isSVGLOADED = false;
                                 mWebViewMap.loadUrl(js);
@@ -428,16 +426,25 @@ public class MapFragment extends Fragment {
                             break;
                         case JavaScriptInterface.MNREGION_CLICKED:
                             try {
-                                Log.e("aaaaa",msg.arg1+"");
-                                JSONObject beacon = dbManager.queryBeaconFileWithZoneId(msg.arg1);
-
+                                //Log.e("aaaaa",msg.arg1+"");
+                                JSONObject beacon;
+                                if(msg.arg1 == 11)      //for click demo
+                                {
+                                    currentZoneOrder++;
+                                    beacon = dbManager.queryBeaconFileWithZoneId(12);
+                                }else if(msg.arg1 == 19)      //for click demo
+                                {
+                                    currentZoneOrder = 0;
+                                    beacon = dbManager.queryBeaconFileWithZoneId(1);
+                                }else
+                                    beacon = dbManager.queryBeaconFileWithZoneId(msg.arg1);
                                 enterNextZone(beacon);
                             }catch (JSONException e){}
                             //int reg =  msg.arg1+1;
                             //mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + reg + ")");
                             break;
                         case JavaScriptInterface.MAREGION_CLICKED:
-                            currentZone = msg.arg1;
+                            mCurrentZone = msg.arg1;
                             enterZone();
                             break;
                     }
