@@ -133,5 +133,38 @@
 
             />
     </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/black_overlay_80"
+        android:id="@+id/show_success"
+        android:visibility="gone"
+        >
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_check_circle"
+            android:layout_gravity="center"
+            android:layout_marginTop="250dp"
+            android:id="@+id/check"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/store_sucess"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite"
+
+
+            />
+
+
+    </LinearLayout>
 
 </FrameLayout>

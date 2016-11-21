@@ -54,10 +54,10 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String photoUri,picPath;
     private ImageView mergeImage,qrcodeImage,pic;
     private TextView textView;
-    private Button icDownload,savePhone,sendMail,backTour;
+    private Button icDownload,savePhone,sendMail,backTour,btnShowSucess;
     private Toolbar toolbar;
     private Bitmap mBitmap;
-    private LinearLayout mask,function;
+    private LinearLayout mask,function,showSuccess;
     private File imageFile;
     private  int minX,minY,picWidth,picHeight;
     private RelativeLayout layout;
@@ -108,6 +108,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         View view =  inflater.inflate(R.layout.fragment_merge_template_pic, container, false);
         layout = (RelativeLayout)view.findViewById(R.id.pic_location);
         mask = (LinearLayout)view.findViewById(R.id.mask);
+        showSuccess = (LinearLayout)view.findViewById(R.id.show_success);
         function = (LinearLayout)view.findViewById(R.id.function);
         textView = (TextView)view.findViewById(R.id.context);
         mergeImage = (ImageView)view.findViewById(R.id.mergeImage);
@@ -116,12 +117,12 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         savePhone = (Button)view.findViewById(R.id.savetoPhone);
         sendMail = (Button)view.findViewById(R.id.sendMail);
         backTour = (Button)view.findViewById(R.id.backtoMain);
-
+        btnShowSucess = (Button)view.findViewById(R.id.check);
         savePhone.setOnClickListener(this);
         sendMail.setOnClickListener(this);
         backTour.setOnClickListener(this);
         icDownload.setOnClickListener(this);
-
+        btnShowSucess.setOnClickListener(this);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
         imageList = dbManager.getHipsterTemplateDownloadFiles();
         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
@@ -274,19 +275,21 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
+                showSuccess.setVisibility(View.VISIBLE);
                 //openScreenshot(imageFile);
-                showStoreSuccess();
+                //showStoreSuccess();
                 break;
             case R.id.sendMail:
                 savetoPhone();
                 sendEmail();
                 break;
             case R.id.backtoMain:
-
                 hideStoreLayout();
                 break;
-        }
-
+            case R.id.check:
+                getActivity().onBackPressed();
+                break;
+            }
     }
     private void showStoreSuccess(){
 
