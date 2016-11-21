@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.uscc.ncku.androiditri.SurveyActivity">
+    tools:context="org.tabc.living3.SurveyActivity">
 
     <include layout="@layout/content_survey" />
 

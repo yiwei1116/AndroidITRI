@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:background="@drawable/tour_select_background"
-    tools:context="com.uscc.ncku.androiditri.fragment.ChooseTemplate">
+    tools:context="org.tabc.living3.fragment.ChooseTemplate">
 
     <android.support.v4.view.ViewPager
 

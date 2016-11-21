@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mergeFramelayout"
-    tools:context="com.uscc.ncku.androiditri.fragment.MergeTemplatePic">
+    tools:context="org.tabc.living3.fragment.MergeTemplatePic">
 
     <ImageView
         android:layout_width="match_parent"

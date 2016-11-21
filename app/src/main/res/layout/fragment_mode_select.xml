@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tour_select_background"
-    tools:context=".fragment.ModeSelectFragment">
+    tools:context="org.tabc.living3.fragment.ModeSelectFragment">
 
     <TextView
         android:layout_width="match_parent"

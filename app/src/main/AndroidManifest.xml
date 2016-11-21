@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.uscc.ncku.androiditri">
+    package="org.tabc.living3">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -34,7 +34,7 @@
         >
         <activity
             android:screenOrientation="portrait"
-            android:name=".LoadingActivity"
+            android:name="org.tabc.living3.LoadingActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,40 +44,40 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name=".HomeActivity"
+            android:name="org.tabc.living3.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".AboutActivity"
+            android:name="org.tabc.living3.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".TourSelectActivity"
+            android:name="org.tabc.living3.TourSelectActivity"
             android:label="@string/title_activity_tour"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".SurveyActivity"
+            android:name="org.tabc.living3.SurveyActivity"
             android:label="@string/title_activity_survey"
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".MainActivity"
+            android:name="org.tabc.living3.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar.NoFull"
 
             />
 
         <service
-            android:name=".FeedbackIntentService"
+            android:name="org.tabc.living3.FeedbackIntentService"
             android:exported="false" />
         <service
-            android:name=".MyFeedbackService"
+            android:name="org.tabc.living3.MyFeedbackService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".CounterActivity"></activity>
+        <activity android:name="org.tabc.living3.CounterActivity"></activity>
     </application>
 
 </manifest>

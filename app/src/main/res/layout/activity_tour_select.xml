@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@drawable/tour_select_background"
-    tools:context=".TourSelectActivity">
+    tools:context="org.tabc.living3.TourSelectActivity">
 
     <include layout="@layout/content_tour_select" />
 

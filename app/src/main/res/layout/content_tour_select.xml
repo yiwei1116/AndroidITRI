@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".TourSelectActivity"
+    tools:context="org.tabc.living3.TourSelectActivity"
     tools:showIn="@layout/activity_tour_select"
     android:orientation="vertical">
 
-    <com.uscc.ncku.androiditri.util.TourViewPager
+    <org.tabc.living3.util.TourViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/viewpager_tour_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="99">
-    </com.uscc.ncku.androiditri.util.TourViewPager>
+    </org.tabc.living3.util.TourViewPager>
 
     <Button
         android:layout_width="wrap_content"

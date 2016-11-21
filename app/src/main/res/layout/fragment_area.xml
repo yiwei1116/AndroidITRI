@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/flayout_area_fragment"
-    tools:context=".fragment.AreaFragment">
+    tools:context="org.tabc.living3.fragment.AreaFragment">
 
     <TextView
         android:layout_width="wrap_content"

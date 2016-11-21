@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.uscc.ncku.androiditri.MainActivity">
+    tools:context="org.tabc.living3.MainActivity">
 
     <include layout="@layout/content_main" />
 

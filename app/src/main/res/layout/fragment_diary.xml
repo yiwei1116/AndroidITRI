@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:addStatesFromChildren="true"
-    tools:context=".fragment.DiaryFragment">
+    tools:context="org.tabc.living3.fragment.DiaryFragment">
 
     <ImageView
         android:id="@+id/img"

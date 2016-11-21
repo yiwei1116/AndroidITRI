@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.uscc.ncku.androiditri.fragment.EquipmentTabFragment">
+    tools:context="org.tabc.living3.fragment.EquipmentTabFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs_equipments"

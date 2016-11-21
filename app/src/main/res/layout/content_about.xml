@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/toolbar_content_paddingTop"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.uscc.ncku.androiditri.AboutActivity"
+    tools:context="org.tabc.living3.AboutActivity"
     tools:showIn="@layout/activity_about"
     android:orientation="vertical"
     android:gravity="center_vertical"

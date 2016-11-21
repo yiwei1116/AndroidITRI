@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/home_background"
-    tools:context="com.uscc.ncku.androiditri.HomeActivity"
+    tools:context="org.tabc.living3.HomeActivity"
     android:gravity="center_horizontal">
 
     <Button

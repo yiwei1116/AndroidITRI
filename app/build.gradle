@@ -6,7 +6,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.uscc.ncku.androiditri"
+        applicationId "org.tabc.living3"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
