@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.tabc.living3.BuildConfig;
 import org.tabc.living3.JavaScriptInterface;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;

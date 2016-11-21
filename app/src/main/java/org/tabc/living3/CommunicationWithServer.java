@@ -41,6 +41,14 @@ public class CommunicationWithServer {
     private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
     private String counterURL = "http://140.116.82.48/interface/deviceadd.php"; // counter
     private final String filePathURLPrefix = "http://140.116.82.48/web/";
+//    private String serverURL = "http://60.251.33.54:98/interface/jsondecode.php";
+//    private String downloadURL = "http://60.251.33.54:98/interface/getfile.php";
+//    private String hipsterContentURL = "http://60.251.33.54:98/interface/hipster.php"; // hipster content
+//    private String surveyOneURL = "http://60.251.33.54:98/interface/survey.php"; // first survey
+//    private String surveyTwoURL = "http://60.251.33.54:98/interface/surveytwo.php";
+//    private String counterURL = "http://60.251.33.54:98/interface/deviceadd.php"; // counter
+//    private final String filePathURLPrefix = "http://60.251.33.54:98/web/";
+
     public int totalCount;
     public int partialCount;
     public SQLiteDbManager sqLiteDbManager;
