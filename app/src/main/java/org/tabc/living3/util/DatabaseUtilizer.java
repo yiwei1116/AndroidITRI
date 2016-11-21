@@ -300,7 +300,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.CHOOSE_PATH_ID + " INT NOT NULL, "
             + DatabaseUtilizer.PATH_ORDER + " INT, "
             + DatabaseUtilizer.PATH_SVG_ID + " TEXT, "
-            + DatabaseUtilizer.START + " INT, "
+            + DatabaseUtilizer.START + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.PATH_SN + " TEXT, "
             + DatabaseUtilizer.END + " INT, "
             + DatabaseUtilizer.PATH_EN + " TEXT"
@@ -326,7 +326,6 @@ public class DatabaseUtilizer {
     public static final String DB_CREATE_TABLE_SURVEY_RESULT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.SURVEY_RESULT_TABLE + " ("
             + DatabaseUtilizer.SURVEY_RESULT_ID + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.SURVEY_QUESTION + " INT NOT NULL, "
-            + DatabaseUtilizer.SURVEY_ANSWER + " INT NOT NULL, "
             + DatabaseUtilizer.TOTAL + " INT NOT NULL"
             + ")";
     // users
