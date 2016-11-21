@@ -87,18 +87,6 @@ public class TourSelectActivity extends AppCompatActivity implements ICoach {
             });
         }
 
-//        Button btnUnderstand = (Button) findViewById(R.id.btn_understand_tour_select);
-//        btnUnderstand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
-//                confirmBtn.setVisibility(View.VISIBLE);
-
-//                FrameLayout frameLayout = (FrameLayout) findViewById(R.id.flayout_tour_select);
-//                frameLayout.setVisibility(View.INVISIBLE);
-//            }
-//        });
-
         tourSelect();
     }
 
