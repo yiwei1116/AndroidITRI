@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.tabc.living3.CommunicationWithServer;
 
@@ -40,6 +41,17 @@ public class HelperFunctions extends Application{
         String[] paths = name.split("/");
 
         String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
+
+//        File directory = new File(fileDirPath);
+//        File[] files = directory.listFiles();
+//        Log.d("Files", "Size: "+ files.length);
+//        for (int i = 0; i < files.length; i++)
+//        {
+//            Log.d("Files", fileDirPath);
+//            Log.d("Files", "FileName:" + files[i].getName());
+//        }
+//        Log.d("Files", finalFile);
+
         return HelperFunctions.readImageBitmap(finalFile);
     }
 

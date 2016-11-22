@@ -25,46 +25,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_toolbar_tour_select"
+            android:text="@string/tour_title"
             android:layout_gravity="center"
             android:textColor="@android:color/white"
             android:textSize="@dimen/title_font_size" />
 
     </android.support.v7.widget.Toolbar>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/flayout_tour_select"
-        android:clickable="true"
-        android:layout_centerHorizontal="true">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/img_coach_tour_select"
-            android:background="@drawable/tour_select_coachmarks"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_understand_tour_select"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="@dimen/btn_layout_marginbutton"
-            android:text="@string/ok"
-            android:textColor="@drawable/selecter_btn_black_white_txt_color"
-            android:textSize="@dimen/btn_font_size"
-            android:background="@drawable/selecter_btn_black_white"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tour_select_guide"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="310dp"
-            android:textSize="@dimen/abc_text_size_title_material" />
-
-    </FrameLayout>
 
 </RelativeLayout>

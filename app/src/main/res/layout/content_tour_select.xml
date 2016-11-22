@@ -29,8 +29,7 @@
         android:background="@drawable/selecter_btn_confirm"
         android:text="@string/confirm"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/btn_font_size"
-        android:visibility="invisible"/>
+        android:textSize="@dimen/btn_font_size"/>
 
 
 
