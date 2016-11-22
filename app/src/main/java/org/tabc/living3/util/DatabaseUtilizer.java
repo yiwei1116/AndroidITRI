@@ -9,8 +9,8 @@ public class DatabaseUtilizer {
         declare useful strings for downloading & uploading data
      */
     //public static String serverURL = "http://60.251.33.54:98/phpmyadmin/index.php";
-    public static String queryPhp = "http://60.251.33.54:98/interface/deviceadd.php";
-//    public static String queryPhp = "http://140.116.82.48/interface/deviceadd.php";
+//    public static String queryPhp = "http://60.251.33.54:98/interface/deviceadd.php";
+    public static String queryPhp = "http://140.116.82.48/interface/deviceadd.php";
 
     public static String dbProject = "project";
     public static String dbFieldMap = "field_map";
