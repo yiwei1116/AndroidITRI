@@ -299,9 +299,9 @@ public class DatabaseUtilizer {
     // path --> path_id is the only primary key, different from database
     public static final String DB_CREATE_TABLE_PATH = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PATH_TABLE + " ("
             + DatabaseUtilizer.CHOOSE_PATH_ID + " INT NOT NULL, "
-            + DatabaseUtilizer.PATH_ORDER + " INT, "
+            + DatabaseUtilizer.PATH_ORDER + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.PATH_SVG_ID + " TEXT, "
-            + DatabaseUtilizer.START + " INT NOT NULL UNIQUE, "
+            + DatabaseUtilizer.START + " INT, "
             + DatabaseUtilizer.PATH_SN + " TEXT, "
             + DatabaseUtilizer.END + " INT, "
             + DatabaseUtilizer.PATH_EN + " TEXT"
