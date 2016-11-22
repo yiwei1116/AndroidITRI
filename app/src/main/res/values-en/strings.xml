@@ -187,4 +187,7 @@
     <string name="store_sucess">Successful saving</string>
     <string name="choose_area">Your location</string>
     <string name="spinner_please_select">Your Selection</string>
+    <string name="custom_camera_redo">REDO</string>
+    <string name="diary_camera">Camera</string>
+    <string name="diary_photo">Album</string>
 </resources>
