@@ -14,12 +14,12 @@ import android.content.Context;
 public class FeedbackIntentService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.uscc.ncku.androiditri.action.FOO";
-    private static final String ACTION_BAZ = "com.uscc.ncku.androiditri.action.BAZ";
+    private static final String ACTION_FOO = "org.tabc.living3.action.FOO";
+    private static final String ACTION_BAZ = "org.tabc.living3.action.BAZ";
 
     // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.uscc.ncku.androiditri.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.uscc.ncku.androiditri.extra.PARAM2";
+    private static final String EXTRA_PARAM1 = "org.tabc.living3.extra.PARAM1";
+    private static final String EXTRA_PARAM2 = "org.tabc.living3.extra.PARAM2";
 
     public FeedbackIntentService() {
         super("FeedbackIntentService");
