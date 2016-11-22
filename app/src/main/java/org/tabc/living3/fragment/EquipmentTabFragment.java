@@ -64,7 +64,8 @@ import java.util.ArrayList;
 public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
     private static final String MODE_ID = "MODE_ID";
-    private static final String TXTTAG = "txtContentTag";
+    private static final String TXT_TAG = "txtContentTag";
+    private static final String YOUTUBE_TAG = "YOUTUBE_TAG";
 
     public int equipNumber, currentIndex ;
     private int modeId;
@@ -182,6 +183,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
         mViewPager.setAdapter(new SamplePagerAdapter());
+        mViewPager.setOffscreenPageLimit(equipNumber);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -192,21 +194,34 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             @Override
             public void onPageSelected(int position) {
                 // normal sound and font size button
-                //((MainActivity) getActivity()).setSoundNormalIfActive();
+//                ((MainActivity) getActivity()).setSoundNormalIfActive();
+//                ((MainActivity) getActivity()).audioPause();
                 ((MainActivity) getActivity()).setFontNormalIfActive();
-         //     ((MainActivity) getActivity()).audioPause();
                 ((MainActivity) getActivity()).stopTexttoSpeech();
                 ((MainActivity) getActivity()).setSoundNormal();
 
                 // normal information button and hide previous company information
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
 
+                // close company info if change page
                 View currView = equipTabs.get(mLastViewPage).getView();
                 ScrollView infoLayout = (ScrollView) currView.findViewById(R.id.scrollview_equipment_info);
                 infoLayout.setVisibility(View.GONE);
 
                 // add current equipment read count
                 dbManager.addReadCount(equipTabs.get(position).getDeviceId());
+
+//                String tag = YOUTUBE_TAG + String.valueOf(mLastViewPage);
+//                Fragment preFragment = getFragmentManager().findFragmentByTag(tag);
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                transaction.detach(preFragment).commit();
+
+//                tag = YOUTUBE_TAG + String.valueOf(position);
+//                currView = equipTabs.get(position).getView();
+//                FrameLayout youtubeLayout = (FrameLayout) currView.findViewById(R.id.equip_item_youtube);
+//                FragmentTransaction t = getFragmentManager().beginTransaction();
+//                t.replace(youtubeLayout.getId(), equipTabs.get(position).getYouTubePlayerFragment());
+//                t.commit();
 
                 // set current position to last position
                 mLastViewPage = position;
@@ -217,6 +232,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             }
         });
+
         mTabs.setupWithViewPager(mViewPager);
        /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
@@ -266,35 +282,35 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-
-                @Override
-                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                    if (!wasRestored) {
-                        player.cueVideo(VIDEO_ID);
-
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-                    // YouTube error
-                    String errorMessage = error.toString();
-                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-                    Log.d("errorMessage:", errorMessage);
-                }
-            });
-        }
-    }
-
-    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-        return (YouTubePlayerFragment) getFragmentManager().findFragmentByTag(YouTubePlayerFragment.class.getSimpleName());
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == 1) {
+//            // Retry initialization if user performed a recovery action
+//            getYouTubePlayerProvider().initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
+//
+//
+//                @Override
+//                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+//                    if (!wasRestored) {
+//                        player.cueVideo(VIDEO_ID);
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+//                    // YouTube error
+//                    String errorMessage = error.toString();
+//                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+//                    Log.d("errorMessage:", errorMessage);
+//                }
+//            });
+//        }
+//    }
+//
+//    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
+//        return (YouTubePlayerFragment) getFragmentManager().findFragmentByTag(YouTubePlayerFragment.class.getSimpleName());
+//    }
 
     private class SamplePagerAdapter extends PagerAdapter {
 
@@ -497,10 +513,16 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             // insert second photo to photo array list, temporary useless
 //            tab.insertEquipPhoto(equip.getString("photo"));
 
+            tab.setVideo(true);
+            tab.setPhoto(true);
+            tab.setTextContent(equip.getString("introduction"));
+            // add sound to each tab
+            tab.setPlayList(audioList[i]);
+            tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
+
             // youtube
             YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
             youTubePlayerFragment.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-
 
                 @Override
                 public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
@@ -520,12 +542,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             });
             tab.setYouTubePlayerFragment(youTubePlayerFragment);
 
-            tab.setVideo(true);
-            tab.setPhoto(true);
-            tab.setTextContent(equip.getString("introduction"));
-            // add sound to each tab
-            tab.setPlayList(audioList[i]);
-            tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
             JSONObject company = equip.getJSONObject("company_data");
             // add company information
@@ -571,7 +587,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         }
 
         // set equipment content text
-        String txtContentTag = TXTTAG + String.valueOf(position);
+        String txtContentTag = TXT_TAG + String.valueOf(position);
         TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
         // set text content tag for font size later
         txtContent.setTag(txtContentTag);
@@ -580,8 +596,17 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         txtContent.setMovementMethod(new ScrollingMovementMethod());
 
         // set youtube player
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.equip_item_youtube, equipTabs.get(position).getYouTubePlayerFragment()).commit();
+        String tag = YOUTUBE_TAG + String.valueOf(position);
+        FrameLayout youtubeLayout = (FrameLayout) v.findViewById(R.id.equip_item_youtube);
+        youtubeLayout.setTag(tag);
+        if (position == 0) {
+            YouTubePlayerFragment youTubePlayerFragment = equipTabs.get(position).getYouTubePlayerFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.equip_item_youtube, youTubePlayerFragment, tag);
+            transaction.commit();
+
+        }
+        Log.d("GGGG", String.valueOf(position));
     }
 
     private void setCompanyInfo(View v, int position) throws FileNotFoundException {
@@ -622,7 +647,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
      */
     @Override
     public void setFontSize(int size) {
-        String tag = TXTTAG + String.valueOf(mViewPager.getCurrentItem());
+        String tag = TXT_TAG + String.valueOf(mViewPager.getCurrentItem());
         TextView tvRecord = (TextView) mViewPager.findViewWithTag(tag);
         tvRecord.setTextSize(size);
         equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);

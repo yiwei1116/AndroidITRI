@@ -91,7 +91,7 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
 
             // FIXME: if there are no beacon nearby, than currentZone set to 2
             if (currentZone == 0)
-                currentZone = 6;
+                currentZone = 2;
         }
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
