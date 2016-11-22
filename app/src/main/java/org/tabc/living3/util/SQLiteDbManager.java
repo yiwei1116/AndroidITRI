@@ -1299,13 +1299,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("choose_path_id", choose_path_id);
-        values.put("svg_id", svg_id);
         values.put("path_order", path_order);
+        values.put("svg_id", svg_id);
         values.put("start", start);
         values.put("Sn", Sn);
         values.put("End", end);
         values.put("En", En);
-        Log.e("vvvvvvvv", String.valueOf(values));
+        Log.e("vvvvvvvv", String.valueOf(path_order));
         long rowId = db.insert("path", null, values);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
@@ -1346,6 +1346,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("svg_id", svg_id);
             file.put("start", start);
             file.put("end", End);
+            Log.e("pathhhhhhhh", String.valueOf(file));
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();
