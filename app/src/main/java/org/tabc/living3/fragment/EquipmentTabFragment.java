@@ -204,18 +204,22 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 ((MainActivity) getActivity()).setInfoNormalIfActive();
 
                 ////////////////////////////// set youtube fragment while changing page
+                // remove previous tab's youtube fragment immediately
                 String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mLastViewPage);
                 Fragment preFragment = getFragmentManager().findFragmentById(getYoutubeLayoutId(preYoutubeId));
                 if (preFragment != null)
                     getFragmentManager().beginTransaction().remove(preFragment).commit();
 
-                String idName = YOUTUBE_LAYOUT_ID_ + String.valueOf(position);
-                FrameLayout frameLayout = (FrameLayout) mViewPager.findViewById(getYoutubeLayoutId(idName));
-                YouTubePlayerFragment youTubePlayerFragment = equipTabs.get(position).getYouTubePlayerFragment();
-                youTubePlayerFragment = initYoutubeFragment(youTubePlayerFragment, equipTabs.get(position).getVideoID());
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(frameLayout.getId(), youTubePlayerFragment);
-                transaction.commit();
+                // if there are youtube video in this tab, set youtube video
+                if (equipTabs.get(position).isVideo()) {
+                    String idName = YOUTUBE_LAYOUT_ID_ + String.valueOf(position);
+                    FrameLayout frameLayout = (FrameLayout) mViewPager.findViewById(getYoutubeLayoutId(idName));
+                    YouTubePlayerFragment youTubePlayerFragment = equipTabs.get(position).getYouTubePlayerFragment();
+                    youTubePlayerFragment = initYoutubeFragment(youTubePlayerFragment, equipTabs.get(position).getVideoID());
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(frameLayout.getId(), youTubePlayerFragment);
+                    transaction.commit();
+                }
                 //////////////////////////////
 
                 // close company info if change page
@@ -373,17 +377,21 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
-            FrameLayout youtubeLayout = (FrameLayout) v.findViewById(R.id.equip_item_youtube);
             ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
+
+            String idName = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());
+            FrameLayout youtubeLayout = (FrameLayout) mViewPager.findViewById(getYoutubeLayoutId(idName));
 
             switch (checkedId) {
                 case R.id.btn_equip_video:
-                    youtubeLayout.setVisibility(View.VISIBLE);
+                    if (youtubeLayout != null)
+                        youtubeLayout.setVisibility(View.VISIBLE);
                     imageView.setVisibility(View.GONE);
                     zoom.setVisibility(View.GONE);
                     break;
                 case R.id.btn_equip_photo:
-                    youtubeLayout.setVisibility(View.GONE);
+                    if (youtubeLayout != null)
+                        youtubeLayout.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
                     zoom.setVisibility(View.VISIBLE);
                     break;
@@ -537,22 +545,20 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         imageView.setImageBitmap(bitmap);
 
         // set vidoe and photo button
+        boolean isVideo = equipTabs.get(position).isVideo();
+        boolean isPhoto = equipTabs.get(position).isPhoto();
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
         RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
         RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
-        video.setChecked(true);
+        if (isVideo)
+            video.setChecked(true);
+        else if (isPhoto)
+            photo.setChecked(true);
 
         // set zoom button in photo button
         ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
         zoom.setOnClickListener(new ZoomButtonListener());
-
-        // if there is no photo button or no video button
-        if (!equipTabs.get(position).isVideo()) {
-            video.setVisibility(View.GONE);
-        } else if (!equipTabs.get(position).isPhoto()) {
-            photo.setVisibility(View.GONE);
-        }
 
         // set equipment content text
         String txtContentTag = TXT_TAG + String.valueOf(position);
@@ -568,8 +574,18 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         FrameLayout youtubeLayout = (FrameLayout) v.findViewById(R.id.equip_item_youtube);
         youtubeLayout.setId(getYoutubeLayoutId(idName));
 
+        // if there is no photo button or no video button
+        if (!isVideo) {
+            video.setVisibility(View.GONE);
+            youtubeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.VISIBLE);
+            zoom.setVisibility(View.VISIBLE);
+        } else if (!isPhoto) {
+            photo.setVisibility(View.GONE);
+        }
+
         // replace first youtube layout in prevent Youtube API overlapping
-        if (position == mViewPager.getCurrentItem()) {
+        if (isVideo && position == mViewPager.getCurrentItem()) {
             YouTubePlayerFragment youTubePlayerFragment = equipTabs.get(position).getYouTubePlayerFragment();
             youTubePlayerFragment = initYoutubeFragment(youTubePlayerFragment, equipTabs.get(position).getVideoID());
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
