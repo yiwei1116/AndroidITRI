@@ -72,7 +72,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private View view;
 
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
-    private static String VIDEO_ID = "tYA6TSTBjQ0";
 
     private android.support.design.widget.TabLayout mTabs;
     private ViewPager mViewPager;
@@ -507,6 +506,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
             // youtube
+            String VIDEO_ID = "tYA6TSTBjQ0";
             tab.setVideoID(VIDEO_ID);
             YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
             tab.setYouTubePlayerFragment(youTubePlayerFragment);
