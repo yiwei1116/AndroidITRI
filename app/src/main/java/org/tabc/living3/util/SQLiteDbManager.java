@@ -1305,8 +1305,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("Sn", Sn);
         values.put("End", end);
         values.put("En", En);
-        Log.e("vvvvvvvv", String.valueOf(path_order));
-        long rowId = db.insert("path", null, values);
+        //Log.e("vvvvvvvv", String.valueOf(path_order));
+        long rowId = db.insertWithOnConflict("path", null, values, 4);
         if (rowId != -1) {
             Log.i("path", "insert choose_path_id=" + choose_path_id + " success.");
             return true;
