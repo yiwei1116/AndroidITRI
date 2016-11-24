@@ -45,9 +45,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements ICoach {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
-
-
-
     public static final String GET_IS_ENGLISH = "GET_IS_ENGLISH";
 
     private int tourIndex;
@@ -146,9 +143,9 @@ public class MainActivity extends AppCompatActivity implements ICoach {
         utils = new TimeUtilities();
         setupListeners();
 
-
-
-
+        // set all mode did_read false at the first time
+        SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
+        dbManager.setModeDidReadZero();
 
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
@@ -161,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements ICoach {
         mapBtn.setOnClickListener(new ButtonListener());
         soundBtn.setOnClickListener(new ButtonListener());
         fontBtn.setOnClickListener(new ButtonListener());
-
 
 
         containerSoundFontSize = (FrameLayout) findViewById(R.id.flayout_sound_font_container);
@@ -455,9 +451,6 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             mapFragment = MapFragment.newInstance(tourIndex);
         }
 
-//        // add mapFragment to back stack
-//        fragmentBackStack.addFirst(mapFragment);
-
         if (diaryFragment == null) {
             diaryFragment = DiaryFragment.newInstance();
         }
@@ -512,17 +505,6 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             replaceFragment(mapFragment);
             return;
         }
-
-//        /**
-//         *  if current fragment implements ISoundInterface
-//         *  than stop text to speech
-//         */
-//        if (currentFragment instanceof ISoundInterface) {
-//            if (soundPlayer != null)
-//                soundPlayer.release();
-//            textToSpeech.stop();
-//            setSoundNormal();
-//        }
 
         /**
          *  normal situation of pressing back button
@@ -821,10 +803,6 @@ public class MainActivity extends AppCompatActivity implements ICoach {
                     dialog.dismiss();
                 }
             });
-
-            // set all mode did_read false at the first time
-            SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
-            dbManager.setModeDidReadZero();
         }
     }
 

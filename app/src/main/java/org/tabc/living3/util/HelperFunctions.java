@@ -42,16 +42,27 @@ public class HelperFunctions extends Application{
 
         String finalFile = fileDirPath + "/itri/" + paths[paths.length-1];
 
+//        fileDirPath = "/data/data/org.tabc.living3/files/itri";
 //        File directory = new File(fileDirPath);
 //        File[] files = directory.listFiles();
-//        Log.d("Files", "Size: "+ files.length);
 //        for (int i = 0; i < files.length; i++)
 //        {
-//            Log.d("Files", fileDirPath);
-//            Log.d("Files", "FileName:" + files[i].getName());
+//            if (files[i].exists())
+//                Log.d("Files", "FileName:" + files[i].getName());
 //        }
 //        Log.d("Files", finalFile);
-
+//
+//        File imgFile = new  File(fileDirPath + "/itri", paths[paths.length-1]);
+//        Bitmap b = null;
+//        if(imgFile.isFile()) {
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//            b = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), options);
+//            if (b == null)
+//                Log.d("files", "GGGGGGGGGGGGGG");
+//        }
+//
+//        return b;
         return HelperFunctions.readImageBitmap(finalFile);
     }
 

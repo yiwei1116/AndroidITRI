@@ -1,16 +1,18 @@
 package org.tabc.living3.util;
 
+import org.tabc.living3.CommunicationWithServer;
+
 /**
  * Created by Oslo on 9/27/16.
  */
 public class DatabaseUtilizer {
+    private static String IP = CommunicationWithServer.IP;
 
     /*
         declare useful strings for downloading & uploading data
      */
     //public static String serverURL = "http://60.251.33.54:98/phpmyadmin/index.php";
-//    public static String queryPhp = "http://60.251.33.54:98/interface/deviceadd.php";
-    public static String queryPhp = "http://140.116.82.48/interface/deviceadd.php";
+    public static String queryPhp = "http://" + IP + "/interface/deviceadd.php";
 
     public static String dbProject = "project";
     public static String dbFieldMap = "field_map";

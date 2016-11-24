@@ -28,10 +28,11 @@
             android:visibility="gone" />
 
         <FrameLayout
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
             android:id="@+id/equip_item_youtube"
             android:layout_width="match_parent"
             android:layout_height="214dp"
-            android:visibility="visible"></FrameLayout>
+            android:visibility="visible"/>
 
 
         <ImageButton

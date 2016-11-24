@@ -49,7 +49,7 @@
         <Button
             android:layout_width="140dp"
             android:layout_height="40dp"
-            android:text="重拍"
+            android:text="@string/custom_camera_redo"
             android:id="@+id/retake"
             android:onClick="ReTake"
             android:layout_gravity="left|bottom"

@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,12 +16,14 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.tabc.living3.BuildConfig;
 import org.tabc.living3.JavaScriptInterface;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
@@ -135,7 +139,7 @@ public class MapFragment extends Fragment {
         //
 
         // set toolbar title
-        String field_name = getFieldName(1);
+        String field_name = getFieldName(mCurrentField);
         ((MainActivity) getActivity()).setToolbarTitle(field_name);
 
         buildBLEScannerWrapper();
@@ -161,6 +165,12 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
                 Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
                 dialog.setContentView(R.layout.alertdialog_map_info);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                dialog.getWindow().setGravity(Gravity.TOP | Gravity.LEFT);
+                dialog.getWindow().getAttributes().x = 30;
+                dialog.getWindow().getAttributes().y = 140;
+                dialog.getWindow().setDimAmount(0.6f);
 
                 dialog.show();
             }
@@ -177,9 +187,9 @@ public class MapFragment extends Fragment {
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
 
         // show notice if in debug mode
-//        if (BuildConfig.DEBUG) {
-//            notice.setVisibility(View.VISIBLE);
-//        }
+        if (BuildConfig.DEBUG) {
+            notice.setVisibility(View.VISIBLE);
+        }
 
         Button cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         Button enter = (Button) view.findViewById(R.id.btn_enter_map_area);
@@ -364,6 +374,11 @@ public class MapFragment extends Fragment {
             mCurrentField = beacon.optInt("field_id");
             mSvgFile = beacon.getString("map_svg");
             String loadfile = mFileDirPath + mSvgFile;
+
+            // set toolbar title
+            String field_name = getFieldName(mCurrentField);
+            ((MainActivity) getActivity()).setToolbarTitle(field_name);
+
             //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
             //svg,currentZone,nextZone,currentPath(to hide),nextPath(to appear)
             String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+"')";

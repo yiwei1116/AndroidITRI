@@ -72,6 +72,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
         cameraCall.setOnClickListener(this);
         photoCall.setOnClickListener(this);
 
+        if (((MainActivity) getActivity()).isEnglish()) {
+            ImageView title = (ImageView) view.findViewById(R.id.diary_title);
+            title.setBackgroundResource(R.drawable.title_english);
+        }
+
         ((MainActivity) getActivity()).hideToolbar();
         ((MainActivity) getActivity()).setDiaryActive();
 

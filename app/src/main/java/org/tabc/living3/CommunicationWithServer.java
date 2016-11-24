@@ -33,21 +33,16 @@ import java.util.List;
  * Created by Oslo on 10/18/16.
  */
 public class CommunicationWithServer {
+    public static final String IP = "140.116.82.48";
+//    public static final String IP = "60.251.33.54:98";
 
-    private String serverURL = "http://140.116.82.48/interface/jsondecode.php";
-    private String downloadURL = "http://140.116.82.48/interface/getfile.php";
-    private String hipsterContentURL = "http://140.116.82.48/interface/hipster.php"; // hipster content
-    private String surveyOneURL = "http://140.116.82.48/interface/survey.php"; // first survey
-    private String surveyTwoURL = "http://140.116.82.48/interface/surveytwo.php";
-    private String counterURL = "http://140.116.82.48/interface/deviceadd.php"; // counter
-    private final String filePathURLPrefix = "http://140.116.82.48/web/";
-//    private String serverURL = "http://60.251.33.54:98/interface/jsondecode.php";
-//    private String downloadURL = "http://60.251.33.54:98/interface/getfile.php";
-//    private String hipsterContentURL = "http://60.251.33.54:98/interface/hipster.php"; // hipster content
-//    private String surveyOneURL = "http://60.251.33.54:98/interface/survey.php"; // first survey
-//    private String surveyTwoURL = "http://60.251.33.54:98/interface/surveytwo.php";
-//    private String counterURL = "http://60.251.33.54:98/interface/deviceadd.php"; // counter
-//    private final String filePathURLPrefix = "http://60.251.33.54:98/web/";
+    private String serverURL = "http://" + IP + "/interface/jsondecode.php";
+    private String downloadURL = "http://" + IP + "/interface/getfile.php";
+    private String hipsterContentURL = "http://" + IP + "/interface/hipster.php"; // hipster content
+    private String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
+    private String surveyTwoURL = "http://" + IP + "/interface/surveytwo.php";
+    private String counterURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    private final String filePathURLPrefix = "http://" + IP + "/web/";
 
     public int totalCount;
     public int partialCount;

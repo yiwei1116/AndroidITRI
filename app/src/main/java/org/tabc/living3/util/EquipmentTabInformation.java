@@ -29,7 +29,6 @@ public class EquipmentTabInformation {
     // photo
     private ArrayList<String> equipPhoto;
     private int equipPhotoIndex;
-    private String videoID;
 
     // equipment information
     private String textContent;
@@ -43,6 +42,7 @@ public class EquipmentTabInformation {
 
     // youtube fragment
     private YouTubePlayerFragment youTubePlayerFragment;
+    private String videoID;
 
     // for company information
     private String companyTitleImage;
