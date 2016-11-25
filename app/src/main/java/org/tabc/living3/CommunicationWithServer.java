@@ -405,10 +405,12 @@ public class CommunicationWithServer {
                 });
                 // log http response code
                 // fetch as json array
+                Log.e("server_resp", String.valueOf(downloadResponse));
                 JSONArray responseJSON = new JSONArray(downloadResponse);
                 saveToSQLite(responseJSON);
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("json_error", String.valueOf(e));
             }
             return null;
         }
