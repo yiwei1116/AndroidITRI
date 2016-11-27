@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -35,6 +37,7 @@ import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.ITRIObject;
+import org.tabc.living3.util.IYoutube;
 import org.tabc.living3.util.MainButton;
 import org.tabc.living3.util.SQLiteDbManager;
 import org.tabc.living3.util.TimeUtilities;
@@ -181,9 +184,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
     @Override
     protected void onDestroy() {
-
-
         super.onDestroy();
+        shutTexttoSpeech();
     }
     class ButtonListener implements View.OnClickListener {
 
@@ -271,9 +273,9 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
+                        setSoundActive();
                         final ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        setSoundActive();
                         textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
 
 
@@ -466,6 +468,16 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
          */
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
         if (currentFragment instanceof EquipmentTabFragment) {
+            // if youtube is full screen than close it
+            final IYoutube iYoutube =
+                    (IYoutube) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+            if (iYoutube.getFullScreenStatus()) {
+                iYoutube.setScreenStatus(false);
+                Log.e("123","123");
+                return;
+            }
+
+            // if company information is active than close it
             if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                 setInfoNormal();
 
@@ -826,9 +838,10 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         }
     }
     public void shutTexttoSpeech(){
-        if( textToSpeech != null )
+        if( textToSpeech != null ) {
             textToSpeech.stop();
-        textToSpeech.shutdown();
+            textToSpeech.shutdown();
+        }
     }
 
     public void stopTexttoSpeech(){
