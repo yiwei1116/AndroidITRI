@@ -44,6 +44,7 @@ public class ModeSelectFragment extends Fragment {
 
     private int modeNumber;
     private int currentZone;
+    private String zoneName;
     private JSONArray modesArray;
 
     private View view;
@@ -77,6 +78,7 @@ public class ModeSelectFragment extends Fragment {
         if (getArguments() != null) {
             modeNumber = getArguments().getInt(MODE_NUMBER);
             currentZone = getArguments().getInt(CURRENT_ZONE);
+            zoneName = getArguments().getString(CURRENT_NAME);
         }
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
@@ -114,7 +116,7 @@ public class ModeSelectFragment extends Fragment {
             }
         });
 
-        ((MainActivity) getActivity()).setToolbarTitle(getArguments().getString(CURRENT_NAME));
+        ((MainActivity) getActivity()).setToolbarTitle(zoneName);
         ((MainActivity) getActivity()).showModeCoachSwapUp();
 
         return view;
@@ -186,7 +188,7 @@ public class ModeSelectFragment extends Fragment {
             // renew grid view
             this.notifyDataSetInvalidated();
 
-            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(selectModeId);
+            ModeHighlightFragment modeHighlight = ModeHighlightFragment.newInstance(selectModeId, zoneName);
             ((MainActivity) getActivity()).replaceFragment(modeHighlight);
 
             return position;

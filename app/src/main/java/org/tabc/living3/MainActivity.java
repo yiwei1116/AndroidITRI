@@ -31,7 +31,7 @@ import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
-import org.tabc.living3.util.ICoach;
+import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.ITRIObject;
@@ -42,7 +42,7 @@ import org.tabc.living3.util.TimeUtilities;
 import java.util.LinkedList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements ICoach {
+public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     public static final String TAG = "LOG_TAG";
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
     public static final String GET_IS_ENGLISH = "GET_IS_ENGLISH";
@@ -201,12 +201,12 @@ public class MainActivity extends AppCompatActivity implements ICoach {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     setSoundNormal();
+
+                    EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                    final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
+
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
-
-                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        View infoView = currentInfo.getCurrentTabView();
-                        ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
 
                         Animation fadeIn = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_in);
@@ -216,10 +216,6 @@ public class MainActivity extends AppCompatActivity implements ICoach {
 
                     } else if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                         setInfoNormal();
-
-                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        View infoView = currentInfo.getCurrentTabView();
-                        final ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
 
                         Animation fadeOut = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_out);
@@ -473,8 +469,7 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                 setInfoNormal();
 
-                View infoView = ((EquipmentTabFragment) currentFragment).getCurrentTabView();
-                final ScrollView infoLayout = (ScrollView) infoView.findViewById(R.id.scrollview_equipment_info);
+                final ScrollView infoLayout = ((EquipmentTabFragment) currentFragment).getCurrentCompanyView();
 
                 Animation fadeOut = AnimationUtils.loadAnimation(
                         currentFragment.getActivity(), R.anim.info_fade_out);
@@ -741,8 +736,8 @@ public class MainActivity extends AppCompatActivity implements ICoach {
     }
 
     public void showMapCoachInfo() {
-        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
-        boolean isNotFirst = settings.getBoolean(ICoach.MAP_INFO_COACH, false);
+        SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoachProtocol.MAP_INFO_COACH, false);
 
         if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_info);
@@ -754,9 +749,9 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean(ICoach.MAP_INFO_COACH, true);
+                    editor.putBoolean(ICoachProtocol.MAP_INFO_COACH, true);
                     editor.apply();
 
                     showMapCoachQuestion();
@@ -782,8 +777,8 @@ public class MainActivity extends AppCompatActivity implements ICoach {
     }
 
     public void showModeCoachSwapUp() {
-        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
-        boolean isNotFirst = settings.getBoolean(ICoach.MODE_SELECT_COACH, false);
+        SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoachProtocol.MODE_SELECT_COACH, false);
 
         if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
@@ -795,9 +790,9 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean(ICoach.MODE_SELECT_COACH, true);
+                    editor.putBoolean(ICoachProtocol.MODE_SELECT_COACH, true);
                     editor.apply();
 
                     dialog.dismiss();
@@ -807,8 +802,8 @@ public class MainActivity extends AppCompatActivity implements ICoach {
     }
 
     public void showEquipCoachSlide() {
-        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
-        boolean isNotFirst = settings.getBoolean(ICoach.DEVICE_COACH, false);
+        SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoachProtocol.DEVICE_COACH, false);
 
         if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
@@ -820,9 +815,9 @@ public class MainActivity extends AppCompatActivity implements ICoach {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean(ICoach.DEVICE_COACH, true);
+                    editor.putBoolean(ICoachProtocol.DEVICE_COACH, true);
                     editor.apply();
 
                     dialog.dismiss();

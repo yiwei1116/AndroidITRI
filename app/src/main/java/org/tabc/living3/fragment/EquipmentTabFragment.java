@@ -3,7 +3,6 @@ package org.tabc.living3.fragment;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -51,8 +50,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
- *  equipment number can not be over 10,
- *  if equipment number over 10, than must add more id in res/values/ids.xml
+ *  equipment number can not be over 20,
+ *  if equipment number over 20, than must add more id in res/values/ids.xml
  */
 
 /*
@@ -62,11 +61,14 @@ import java.util.ArrayList;
 public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
     private static final String MODE_ID = "MODE_ID";
+    private static final String MODE_NAME = "MODE_NAME";
     private static final String TXT_TAG = "txtContentTag";
+    private static final String SCROLLVIEW_TAG = "SCROLLVIEW_TAG";
     private static final String YOUTUBE_LAYOUT_ID_ = "equipment_youtube_";
 
     public int equipNumber, currentIndex ;
     private int modeId;
+    private String modeName;
     private boolean isEnglish;
 
     private View view;
@@ -104,11 +106,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
      * @param param1 Parameter 1.
      * @return A new instance of fragment EquipmentTabFragment.
      */
-    public static EquipmentTabFragment newInstance(int param1, int param2) {
+    public static EquipmentTabFragment newInstance(int param1, int param2, String param3) {
         EquipmentTabFragment fragment = new EquipmentTabFragment();
         Bundle args = new Bundle();
         args.putInt(EQUIP_NUMBER, param1);
         args.putInt(MODE_ID, param2);
+        args.putString(MODE_NAME, param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -118,11 +121,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
-            if (equipNumber > 10)
-                equipNumber = 10;
+            if (equipNumber > 20)
+                equipNumber = 20;
             modeId = getArguments().getInt(MODE_ID);
+            modeName = getArguments().getString(MODE_NAME);
         }
-        equipTabs = new ArrayList<EquipmentTabInformation>();
+        equipTabs = new ArrayList<>();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
@@ -168,22 +172,26 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         ((MainActivity) getActivity()).setInfoNormal();
 
-        return view;
-    }
+        ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
+        mViewPager.setAdapter(new SamplePagerAdapter());
+        mViewPager.setOffscreenPageLimit(equipNumber);
 
         mTabs = (android.support.design.widget.TabLayout) view.findViewById(R.id.tabs_equipments);
         for (int i = 0; i < equipNumber; i++) {
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(i + 1);
             mTabs.addTab(mTabs.newTab().setText(equipTitle));
         }
+        mTabs.setupWithViewPager(mViewPager);
 
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_equipment_content);
-        mViewPager.setAdapter(new SamplePagerAdapter());
-        mViewPager.setOffscreenPageLimit(equipNumber);
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // set view pager page change listener
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabs));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -223,8 +231,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 //////////////////////////////
 
                 // close company info if change page
-                View preView = equipTabs.get(mLastViewPage).getView();
-                ScrollView infoLayout = (ScrollView) preView.findViewById(R.id.scrollview_equipment_info);
+                ScrollView infoLayout = getCurrentCompanyView();
                 infoLayout.setVisibility(View.GONE);
 
                 // add current equipment read count
@@ -239,8 +246,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             }
         });
-
-        mTabs.setupWithViewPager(mViewPager);
        /* view.findViewById(R.id.pause_audio).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -280,39 +285,18 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).setSoundDisabled();
         ((MainActivity) getActivity()).setInfoDisabled();
         ((MainActivity) getActivity()).stopTexttoSpeech();
+
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
         }
-    }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == 1) {
-//            // Retry initialization if user performed a recovery action
-//            getYouTubePlayerProvider().initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
-//
-//                @Override
-//                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-//                    if (!wasRestored) {
-//                        player.cueVideo(VIDEO_ID);
-//                    }
-//                }
-//
-//                @Override
-//                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-//                    // YouTube error
-//                    String errorMessage = error.toString();
-//                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
-//                    Log.d("errorMessage:", errorMessage);
-//                }
-//            });
-//        }
-//    }
-//
-//    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-//        return (YouTubePlayerFragment) getFragmentManager().findFragmentByTag(YouTubePlayerFragment.class.getSimpleName());
-//    }
+        // remove current tab's youtube fragment immediately
+        String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());
+        Fragment preFragment = getFragmentManager().findFragmentById(getYoutubeLayoutId(preYoutubeId));
+        if (preFragment != null)
+            getFragmentManager().beginTransaction().remove(preFragment).commit();
+    }
 
     private class SamplePagerAdapter extends PagerAdapter {
 
@@ -329,8 +313,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
-            return equipTitle;
+            return getResources().getString(R.string.equip) + " " + String.valueOf(position + 1);
         }
 
         // 初始化position位置的界面 類似於baseAdapter的 getView方法
@@ -348,9 +331,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
 
             container.addView(v);
-
-            // set current view to equipment tab
-            equipTabs.get(position).setView(v);
 
             return v;
         }
@@ -416,6 +396,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             ImageButton previous = (ImageButton) dialog.findViewById(R.id.zoom_photo_previous);
             ImageButton next = (ImageButton) dialog.findViewById(R.id.zoom_photo_next);
 
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
             // if there are more than 1 image, than set the next and previous button
             if (photoList.size() > 1) {
                 previous.setVisibility(View.VISIBLE);
@@ -423,10 +410,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 previous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int image_index = equipTabs.get(position).getEquipPhotoIndex();
-                        image_index--;
-                        image_index = (image_index < 0) ? image_index + photoList.size() : image_index;
-                        equipTabs.get(position).setEquipPhotoIndex(image_index);
+                        int image_index = equipTabs.get(position).predecessorPhotoIndex();
 
                         String name = photoList.get(image_index);
                         Bitmap bitmap = null;
@@ -441,10 +425,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int image_index = equipTabs.get(position).getEquipPhotoIndex();
-                        image_index++;
-                        image_index %= photoList.size();
-                        equipTabs.get(position).setEquipPhotoIndex(image_index);
+                        int image_index = equipTabs.get(position).sucessorPhotoIndex();
 
                         String name = photoList.get(image_index);
                         Bitmap bitmap = null;
@@ -459,7 +440,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
 
             // set first image to show
-            if (photoList.size() >= 0) {
+            if (photoList.size() > 0) {
                 int image_index = equipTabs.get(position).getEquipPhotoIndex();
                 String name = photoList.get(image_index);
                 Bitmap bitmap = null;
@@ -471,13 +452,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 imageView.setImageBitmap(bitmap);
             }
 
-            close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
             dialog.show();
         }
     }
@@ -485,26 +459,24 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     //cursor
     private void addTabs() throws JSONException {
         JSONArray devicesArray = dbManager.queryDeviceFilesByMode(modeId);
-        int[] deviceIds = new int[equipNumber];
-        for (int i = 0; i < equipNumber; i++) {
-            JSONObject d = devicesArray.getJSONObject(i);
-            deviceIds[i] = d.getInt("device_id");
-        }
 
         for (int i = 0; i < equipNumber; i++) {
-            JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceIds[i]);
+            JSONObject d = devicesArray.getJSONObject(i);
+            int deviceId = d.getInt("device_id");
+
+            JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceId);
 
             EquipmentTabInformation tab = new EquipmentTabInformation();
 
-            tab.setDeviceId(deviceIds[i]);
+            tab.setDeviceId(deviceId);
 
             String name = isEnglish ? equip.getString("name_en") : equip.getString("name");
             tab.setTitle(name);
 
             // insert photo to array list
             tab.insertEquipPhoto(equip.getString("photo_vertical"));
-            // insert second photo to photo array list, temporary useless
-//            tab.insertEquipPhoto(equip.getString("photo"));
+            // insert second photo to photo array list
+            tab.insertEquipPhoto(equip.getString("photo"));
 
             tab.setVideo(true);
             tab.setPhoto(true);
@@ -534,27 +506,26 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     }
 
     private void setEquipmentTab(View v, int position) throws FileNotFoundException {
+        EquipmentTabInformation currTab = equipTabs.get(position);
+
         // set equipment title
         TextView title = (TextView) v.findViewById(R.id.equipment_title);
-        title.setText(equipTabs.get(position).getTitle());
+        title.setText(currTab.getTitle());
 
         // set equipment image
-        String imageName = equipTabs.get(position).getEquipPhotoFirst();
+        String imageName = currTab.getEquipPhotoFirst();
         Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), imageName);
         ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
         imageView.setImageBitmap(bitmap);
 
         // set vidoe and photo button
-        boolean isVideo = equipTabs.get(position).isVideo();
-        boolean isPhoto = equipTabs.get(position).isPhoto();
+        boolean isVideo = currTab.isVideo();
+        boolean isPhoto = currTab.isPhoto();
         RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.equip_item_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioButtonListener(v));
         RadioButton video = (RadioButton) v.findViewById(R.id.btn_equip_video);
         RadioButton photo = (RadioButton) v.findViewById(R.id.btn_equip_photo);
-        if (isVideo)
-            video.setChecked(true);
-        else if (isPhoto)
-            photo.setChecked(true);
+        video.setChecked(isVideo);
 
         // set zoom button in photo button
         ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
@@ -565,8 +536,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
         // set text content tag for font size later
         txtContent.setTag(txtContentTag);
-        txtContent.setText(equipTabs.get(position).getTextContent());
-        txtContent.setTextSize(equipTabs.get(position).getFontSize());
+        txtContent.setText(currTab.getTextContent());
+        txtContent.setTextSize(currTab.getFontSize());
         txtContent.setMovementMethod(new ScrollingMovementMethod());
 
         // set each youtube frame layout a specific ID in tabs.
@@ -586,8 +557,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         // replace first youtube layout in prevent Youtube API overlapping
         if (isVideo && position == mViewPager.getCurrentItem()) {
-            YouTubePlayerFragment youTubePlayerFragment = equipTabs.get(position).getYouTubePlayerFragment();
-            youTubePlayerFragment = initYoutubeFragment(youTubePlayerFragment, equipTabs.get(position).getVideoID());
+            YouTubePlayerFragment youTubePlayerFragment = currTab.getYouTubePlayerFragment();
+            youTubePlayerFragment = initYoutubeFragment(youTubePlayerFragment, currTab.getVideoID());
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.add(youtubeLayout.getId(), youTubePlayerFragment);
             transaction.commit();
@@ -596,6 +567,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
     private void setCompanyInfo(View v, int position) throws FileNotFoundException {
         EquipmentTabInformation currTab = equipTabs.get(position);
+
+        String tag = SCROLLVIEW_TAG + String.valueOf(position);
+        ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollview_equipment_info);
+        scrollView.setTag(tag);
 
         String name = currTab.getCompanyTitleImage();
         Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
@@ -647,8 +622,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         return f;
     }
 
-    public View getCurrentTabView() {
-        return equipTabs.get(mViewPager.getCurrentItem()).getView();
+    public ScrollView getCurrentCompanyView() {
+        String tag = SCROLLVIEW_TAG + mViewPager.getCurrentItem();
+        return (ScrollView) mViewPager.findViewWithTag(tag);
     }
 
     /*

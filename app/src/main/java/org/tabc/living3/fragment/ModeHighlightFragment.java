@@ -45,11 +45,11 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     private static final int HIGHLIGHT_FLIP_TIMES = 4;
     private static final int HIGHLIGHT_FLIP_DURATION = 300;
     private static final String MODE_ID = "MODE_ID";
+    private static final String ZONE_NAME = "ZONE_NAME";
 
-    private boolean isEnglish;
     private int modeId;
+    private String zoneName;
     private SQLiteDbManager dbManager;
-    private JSONObject mode;
     private String modeName;
     private String modeIntroduction;
     private String splash_bg_vertical;
@@ -67,10 +67,11 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
      *
      * @return A new instance of fragment ModeHighlightFragment.
      */
-    public static ModeHighlightFragment newInstance(int param2) {
+    public static ModeHighlightFragment newInstance(int param2, String param3) {
         ModeHighlightFragment fragment = new ModeHighlightFragment();
         Bundle args = new Bundle();
         args.putInt(MODE_ID, param2);
+        args.putString(ZONE_NAME, param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,11 +81,14 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             modeId = getArguments().getInt(MODE_ID);
+            zoneName = getArguments().getString(ZONE_NAME);
         }
-        isEnglish = ((MainActivity) getActivity()).isEnglish();
+
+        boolean isEnglish = ((MainActivity) getActivity()).isEnglish();
+
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
-            mode = dbManager.queryModeFiles(modeId);
+            JSONObject mode = dbManager.queryModeFiles(modeId);
 
             modeName = isEnglish ? mode.getString("name_en") : mode.getString("name");
             modeIntroduction = mode.getString("introduction");
@@ -118,6 +122,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
        // ((MainActivity) getActivity()).stopTexttoSpeech();
         ((MainActivity) getActivity()).setSoundNormal();
         ((MainActivity) getActivity()).setFontNormal();
+
+        ((MainActivity) getActivity()).setToolbarTitle(zoneName);
 
         return view;
     }
@@ -223,7 +229,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
             public void onClick(View v) {
                 int numberOfDevices = dbManager.getNumbersOfDevicesFromMode(modeId);
 
-                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(numberOfDevices, modeId);
+                EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(numberOfDevices, modeId, modeName);
                 ((MainActivity) getActivity()).replaceFragment(equipTabFragment);
 
             }
@@ -259,7 +265,6 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
     @Override
     public String getIntroduction() {
-        String getIntrod =  modeIntroduction;
-        return getIntrod;
+        return modeIntroduction;
     }
 }

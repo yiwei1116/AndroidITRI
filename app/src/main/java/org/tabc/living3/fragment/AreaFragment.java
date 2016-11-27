@@ -218,7 +218,6 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
 
     @Override
     public String getIntroduction() {
-        String getIntrod =introduction;
-        return getIntrod;
+        return introduction;
     }
 }

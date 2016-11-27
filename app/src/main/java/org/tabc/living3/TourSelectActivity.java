@@ -8,7 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 
-import org.tabc.living3.util.ICoach;
+import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.TourViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,12 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TourSelectActivity extends AppCompatActivity implements ICoach {
+public class TourSelectActivity extends AppCompatActivity implements ICoachProtocol {
     public static TourSelectActivity instance = null;
 
     private boolean isEnglish;
@@ -58,8 +57,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoach {
             }
         });
 
-        SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
-        boolean isNotFirst = settings.getBoolean(ICoach.TOUR_SELECT_COACH, false);
+        SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
+        boolean isNotFirst = settings.getBoolean(ICoachProtocol.TOUR_SELECT_COACH, false);
 
         if (!isNotFirst) {
             Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
@@ -77,9 +76,9 @@ public class TourSelectActivity extends AppCompatActivity implements ICoach {
                     Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
                     confirmBtn.setVisibility(View.VISIBLE);
 
-                    SharedPreferences settings = getSharedPreferences(ICoach.PREFS_NAME, 0);
+                    SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.putBoolean(ICoach.TOUR_SELECT_COACH, true);
+                    editor.putBoolean(ICoachProtocol.TOUR_SELECT_COACH, true);
                     editor.apply();
 
                     dialog.dismiss();
