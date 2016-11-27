@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -63,6 +64,7 @@
             android:theme="@style/AppTheme.NoActionBar.NoFull" />
         <activity
             android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:name="org.tabc.living3.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar.NoFull"

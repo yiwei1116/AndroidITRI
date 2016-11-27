@@ -27,14 +27,6 @@
             android:scaleType="centerCrop"
             android:visibility="gone" />
 
-        <FrameLayout
-            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-            android:id="@+id/equip_item_youtube"
-            android:layout_width="match_parent"
-            android:layout_height="214dp"
-            android:visibility="visible"/>
-
-
         <ImageButton
             android:id="@+id/btn_equip_photo_zoom"
             android:layout_width="wrap_content"
@@ -45,6 +37,13 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_zoom_in"
             android:visibility="gone" />
+
+        <FrameLayout
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+            android:id="@+id/equip_item_youtube"
+            android:layout_width="match_parent"
+            android:layout_height="214dp"
+            android:visibility="visible"/>
 
 
     </FrameLayout>

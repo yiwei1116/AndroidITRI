@@ -1,7 +1,6 @@
 package org.tabc.living3.util;
 
 import android.media.MediaPlayer;
-import android.view.View;
 
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
@@ -13,9 +12,6 @@ import java.util.ArrayList;
  * This class store each equipment information in Equipment fragment
  */
 public class EquipmentTabInformation {
-    // current equipment tab view
-    private View v;
-
     // device ID
     private int deviceId;
 
@@ -55,8 +51,8 @@ public class EquipmentTabInformation {
 
     // constructor
     public EquipmentTabInformation() {
-        this.equipPhoto = new ArrayList<String>();
-        // initial photo index at positon one
+        this.equipPhoto = new ArrayList<>();
+        // initial photo index at specific position
         this.equipPhotoIndex = 0;
         this.fontSize = 18;
     }
@@ -181,14 +177,6 @@ public class EquipmentTabInformation {
         this.title = title;
     }
 
-    public View getView() {
-        return v;
-    }
-
-    public void setView(View v) {
-        this.v = v;
-    }
-
     public ArrayList<String> getEquipPhoto() {
         return equipPhoto;
     }
@@ -207,6 +195,18 @@ public class EquipmentTabInformation {
 
     public void setEquipPhotoIndex(int equipPhotoIndex) {
         this.equipPhotoIndex = equipPhotoIndex;
+    }
+
+    public int predecessorPhotoIndex() {
+        equipPhotoIndex--;
+        equipPhotoIndex = (equipPhotoIndex < 0) ? equipPhotoIndex + equipPhoto.size() : equipPhotoIndex;
+        return equipPhotoIndex;
+    }
+
+    public int sucessorPhotoIndex() {
+        equipPhotoIndex++;
+        equipPhotoIndex %= equipPhoto.size();
+        return equipPhotoIndex;
     }
 
     public String getVideoID() {

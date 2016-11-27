@@ -7,7 +7,8 @@
     android:id="@+id/rlayout_loading"
     android:orientation="vertical"
     tools:context="org.tabc.living3.LoadingActivity"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:keepScreenOn="true" >
     
     <ImageView
         android:layout_width="wrap_content"
