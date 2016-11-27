@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -35,6 +37,7 @@ import org.tabc.living3.util.ICoach;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.ITRIObject;
+import org.tabc.living3.util.IYoutube;
 import org.tabc.living3.util.MainButton;
 import org.tabc.living3.util.SQLiteDbManager;
 import org.tabc.living3.util.TimeUtilities;
@@ -182,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements ICoach {
     @Override
     protected void onDestroy() {
 
-
+        shutTexttoSpeech();
         super.onDestroy();
     }
     class ButtonListener implements View.OnClickListener {
@@ -275,9 +278,10 @@ public class MainActivity extends AppCompatActivity implements ICoach {
                     setFontNormalIfActive();
 
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
-                        final ISoundInterface iSoundInterface =
-                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+
                         setSoundActive();
+                         final ISoundInterface iSoundInterface =
+                                (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
                         textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
 
 
@@ -468,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements ICoach {
          * if current fragment is equipment fragment and the info btn is actived
          *  than hide info page while pressing back button
          */
+
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
         if (currentFragment instanceof EquipmentTabFragment) {
             if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
@@ -498,6 +503,19 @@ public class MainActivity extends AppCompatActivity implements ICoach {
                     }
                 });
                 return;
+            }
+            final IYoutube iYoutube =
+                    (IYoutube) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+            if(iYoutube.getFullScreenStatus()){
+                iYoutube.setScreenStatus(false);
+
+                Log.e("123","123");
+
+            }
+            else{
+
+                Log.e("321","321");
+
             }
         }
 
@@ -831,9 +849,9 @@ public class MainActivity extends AppCompatActivity implements ICoach {
         }
     }
     public void shutTexttoSpeech(){
-        if( textToSpeech != null )
+        if( textToSpeech != null ){
             textToSpeech.stop();
-        textToSpeech.shutdown();
+        textToSpeech.shutdown();}
     }
 
     public void stopTexttoSpeech(){

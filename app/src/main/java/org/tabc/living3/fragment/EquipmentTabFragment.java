@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,6 +43,7 @@ import org.tabc.living3.util.EquipmentTabInformation;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
+import org.tabc.living3.util.IYoutube;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import org.json.JSONArray;
@@ -59,7 +62,7 @@ import java.util.ArrayList;
     設備欄位 的 layout
  */
 
-public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize {
+public class EquipmentTabFragment extends Fragment implements ISoundInterface, IFontSize,IYoutube {
     private static final String EQUIP_NUMBER = "EQUIPMENT_NUMBER";
     private static final String MODE_ID = "MODE_ID";
     private static final String TXT_TAG = "txtContentTag";
@@ -70,7 +73,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private boolean isEnglish;
 
     private View view;
-
+    private Toolbar toolbar;
     private static final String API_KEY = "AIzaSyAK8nxWNAqa9y1iCQIWpEyKl9F_1WzdUTU";
 
     private android.support.design.widget.TabLayout mTabs;
@@ -79,8 +82,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private ArrayList<EquipmentTabInformation> equipTabs;
     private SeekBar seekBar;
     public MediaPlayer mediaPlayer;
-    //private ArrayList<Integer> audioList = new ArrayList<Integer>();
-
+    private Boolean fullScreen = false;
+    private YouTubePlayer youtubePlayer;
+    private Configuration config;
     private int[] audioList = {
             R.raw.test,
             R.raw.test1,
@@ -112,34 +116,32 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         fragment.setArguments(args);
         return fragment;
     }
+//就是如果配置了這個屬性，當我們橫豎屏切換的時候會直接調用onCreate方法中的onConfigurationChanged方法，
+// 而不會重新執行onCreate方法，那當然如果不配置這個屬性的話就會重新調用onCreate方法了
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
 
+
+}
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.e("onCreate","onCreate");
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
             if (equipNumber > 10)
                 equipNumber = 10;
             modeId = getArguments().getInt(MODE_ID);
         }
+        config = getResources().getConfiguration();
+
         equipTabs = new ArrayList<EquipmentTabInformation>();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
 
-        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
-        setHasOptionsMenu(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return true;
-            }
-        });
+
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
@@ -163,18 +165,33 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_equipment_tab, container, false);
+        Log.e("onCreateView","onCreateView");
         ((MainActivity) getActivity()).setFontNormal();
         ((MainActivity) getActivity()).setSoundNormal();
-
+        config = getResources().getConfiguration();
         ((MainActivity) getActivity()).setInfoNormal();
-
+        toolbar = ((MainActivity) getActivity()).getToolbar();
+        setHasOptionsMenu(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            }
+        });
         return view;
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-
+        Log.e("onStart","onStart");
         mTabs = (android.support.design.widget.TabLayout) view.findViewById(R.id.tabs_equipments);
         for (int i = 0; i < equipNumber; i++) {
             String equipTitle = getResources().getString(R.string.equip) + " " + String.valueOf(i + 1);
@@ -276,10 +293,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.e("onDestroyView","onDestroyView");
         ((MainActivity) getActivity()).setFontDisabled();
         ((MainActivity) getActivity()).setSoundDisabled();
         ((MainActivity) getActivity()).setInfoDisabled();
         ((MainActivity) getActivity()).stopTexttoSpeech();
+        youtubePlayer.release();
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
@@ -631,9 +650,33 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private YouTubePlayerFragment initYoutubeFragment(YouTubePlayerFragment f, final String VIDEO_ID) {
         f.initialize(API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer uTubePlayer, boolean wasRestored) {
+                //This flag tells the player to switch to landscape when in fullscreen, it will also return to portrait
+                //when leaving fullscreen
+                uTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
+
+                final int landScape = config.ORIENTATION_LANDSCAPE;
                 if (!wasRestored) {
-                    youTubePlayer.cueVideo(VIDEO_ID);
+                    youtubePlayer = uTubePlayer;
+                    youtubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
+                        @Override
+                        public void onFullscreen(boolean _isFullScreen) {
+
+                            fullScreen = _isFullScreen;
+                            Log.e("fullScreen",String.valueOf(fullScreen));
+                          /*  // 如果不是全螢幕且目前螢幕方向等於橫向
+                            if (!fullScreen && config.orientation==landScape)
+
+                            {
+                                Log.e("SCREEN_PORTRAIT","SCREEN_PORTRAIT");
+                                getActivity().setRequestedOrientation(
+                                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+                            }*/
+                        }
+                    });
+                    youtubePlayer.cueVideo(VIDEO_ID);
                 }
             }
             @Override
@@ -645,6 +688,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             }
         });
         return f;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     public View getCurrentTabView() {
@@ -683,6 +731,24 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         Log.e("getIntrod",getIntrod);
 
         return getIntrod;
+
+    }
+    @Override
+    public Boolean getFullScreenStatus(){
+
+
+        return fullScreen;
+    }
+    @Override
+    public void setScreenStatus(Boolean screenStatus){
+
+
+        youtubePlayer.setFullscreen(screenStatus);
+        Log.e("screenStatus",String.valueOf(screenStatus));
+    }
+    public void releaseYoutube(){
+
+        youtubePlayer.release();
 
     }
 }
