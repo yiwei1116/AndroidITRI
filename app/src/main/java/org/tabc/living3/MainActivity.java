@@ -203,13 +203,11 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     setSoundNormal();
-
-                    EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                    final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
-
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
 
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
                         Animation fadeIn = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_in);
 
@@ -219,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     } else if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                         setInfoNormal();
 
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
                         Animation fadeOut = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_out);
 
