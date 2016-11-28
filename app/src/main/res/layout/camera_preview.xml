@@ -34,6 +34,12 @@
         android:background="@drawable/btn_back"
         android:stateListAnimator="@null" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/test"
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/btn_capture"
@@ -46,6 +52,7 @@
         android:gravity="center"
         android:onClick="capture"
         android:stateListAnimator="@null" />
+
         <Button
             android:layout_width="140dp"
             android:layout_height="40dp"

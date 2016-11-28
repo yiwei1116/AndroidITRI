@@ -1,9 +1,12 @@
 package org.tabc.living3.fragment;
 
 
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +45,7 @@ import java.util.Locale;
 public class CustomCameras extends Fragment implements SurfaceHolder.Callback,View.OnClickListener {
     private ImageView imageView;
     private  String picPath,flagSelect;
-    private int   SurfaceViewWidth;
+    private int   SurfaceViewWidth, orientation;
     private int   SurfaceViewHeight;
     private File pictureFile;
     private SurfaceView mCameraPreview;
@@ -79,7 +82,9 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.camera_preview, container, false);
+
         layout = (FrameLayout)view.findViewById(R.id.custom_camera_container);
+        imageView = (ImageView)view.findViewById(R.id.test);
         nextStep = (Button)view.findViewById(R.id.next_step);
         reTake = (Button)view.findViewById(R.id.retake);
         mCameraPreview = (SurfaceView) view.findViewById(R.id.sv_camera);
@@ -135,53 +140,57 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             }
         }
     };
- /*   @Override
-    public void onCreateOptionsMenu(
-            Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.camera_menu, menu);
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle item selection
-        switch (item.getItemId()) {
-            case R.id.ic_swith_camera:
-                switchCamera();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
 
 
 
-/*
- private void rotateImage(Bitmap bitmap) {
-     ExifInterface exifInterface = null;
+
+ private Bitmap rotateImage(Bitmap bitmap,String picPath) {
+     ExifInterface exifInterface ;
      try {
          exifInterface = new ExifInterface(picPath);
+         orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
+         Log.e("orientation",String.valueOf(orientation));
      } catch (IOException e) {
          e.printStackTrace();
      }
-     int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+
      Matrix matrix = new Matrix();
-     matrix.setRotate(90);
      switch (orientation) {
-         case ExifInterface.ORIENTATION_ROTATE_90:
-             matrix.setRotate(90);
+         case ExifInterface.ORIENTATION_NORMAL:
+             return bitmap;
+         case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+             matrix.setScale(-1, 1);
              break;
          case ExifInterface.ORIENTATION_ROTATE_180:
              matrix.setRotate(180);
              break;
+         case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+             matrix.setRotate(180);
+             matrix.postScale(-1, 1);
+             break;
+         case ExifInterface.ORIENTATION_TRANSPOSE:
+             matrix.setRotate(90);
+             matrix.postScale(-1, 1);
+             break;
+         case ExifInterface.ORIENTATION_ROTATE_90:
+             matrix.setRotate(90);
+             break;
+         case ExifInterface.ORIENTATION_TRANSVERSE:
+             matrix.setRotate(-90);
+             matrix.postScale(-1, 1);
+             break;
          case ExifInterface.ORIENTATION_ROTATE_270:
-             matrix.setRotate(270);
+             matrix.setRotate(-90);
              break;
          default:
+             return bitmap;
      }
      Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+     bitmap.recycle();
 
-     imageView.setImageBitmap(rotatedBitmap);
- }*/
+  return rotatedBitmap;
+ }
     public Bitmap setReducedImageSize() {
 
         ViewTreeObserver vto = layout.getViewTreeObserver();
@@ -420,14 +429,17 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         releaseCamera();
     }
     public void nextStep(){
-        setReducedImageSize();
-        ChooseTemplate CT = new ChooseTemplate();
+        //setReducedImageSize();
+
+        imageView.setImageBitmap(rotateImage(setReducedImageSize(),pictureFile.getAbsolutePath()));
+        imageView.setVisibility(View.VISIBLE);
+      /*  ChooseTemplate CT = new ChooseTemplate();
         Bundle bundle = new Bundle();
         bundle.putString("picPath", picPath);
         bundle.putString("flagSelect", String.valueOf(flagSelect));
         CT.setArguments(bundle);
         ((MainActivity) getActivity()).replaceFragment(CT);
-
+*/
     }
 
 }
