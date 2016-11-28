@@ -86,6 +86,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String name,
                                 String name_en,
                                 String introduction,
+                                String introduction_en,
                                 String guide_voice,
                                 String guide_voice_en,
                                 String photo,
@@ -101,6 +102,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name", name);
         values.put("name_en", name_en);
         values.put("introduction", introduction);
+        values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
         values.put("guide_voice_en", guide_voice_en);
         values.put("photo", photo);
@@ -130,12 +132,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, guide_voice, guide_voice_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         int device_id;
         String name;
         String name_en;
         String introduction;
+        String introduction_en;
         String guide_voice;
         String guide_voice_en;
         String photo;
@@ -151,6 +154,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
@@ -165,6 +169,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name", name);
             file.put("name_en", name_en);
             file.put("introduction", introduction);
+            file.put("introduction_en", introduction_en);
             file.put("guide_voice", guide_voice);
             file.put("guide_voice_en", guide_voice_en);
             file.put("photo", photo);
@@ -185,11 +190,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONObject queryDeviceAndCompanyData(int device_id) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name, name_en, introduction, guide_voice, guide_voice_en, photo, photo_vertical, hint, mode_id, company_id, read_count, like_count from device where device_id=" + device_id, null);
+        Cursor cursor = db.rawQuery("select name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_vertical, hint, mode_id, company_id, read_count, like_count from device where device_id=" + device_id, null);
         cursor.moveToFirst();
         String name;
         String name_en;
         String introduction;
+        String introduction_en;
         String guide_voice;
         String guide_voice_en;
         String photo;
@@ -204,6 +210,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         name = cursor.getString(cursor.getColumnIndex("name"));
         name_en = cursor.getString(cursor.getColumnIndex("name_en"));
         introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+        introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
         guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
         guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         photo = cursor.getString(cursor.getColumnIndex("photo"));
@@ -219,6 +226,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("name", name);
         file.put("name_en", name_en);
         file.put("introduction", introduction);
+        file.put("introduction_en", introduction_en);
         file.put("guide_voice", guide_voice);
         file.put("guide_voice_en", guide_voice_en);
         file.put("photo", photo);
@@ -893,6 +901,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                               String name,
                               String name_en,
                               String introduction,
+                              String introduction_en,
                               String guide_voice,
                               String guide_voice_en,
                               String video,
@@ -910,6 +919,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name", name);
         values.put("name_en", name_en);
         values.put("introduction", introduction);
+        values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
         values.put("guide_voice_en", guide_voice_en);
         values.put("video", video);
@@ -946,6 +956,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String name;
         String name_en;
         String introduction;
+        String introduction_en;
         String guide_voice;
         String guide_voice_en;
         String video;
@@ -962,6 +973,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             video = cursor.getString(cursor.getColumnIndex("video"));
@@ -978,6 +990,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name", name);
             file.put("name_en", name_en);
             file.put("introduction", introduction);
+            file.put("introduction_en", introduction_en);
             file.put("guide_voice", guide_voice);
             file.put("guide_voice_en", guide_voice_en);
             file.put("video", video);
@@ -1016,6 +1029,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String name;
         String name_en;
         String introduction;
+        String introduction_en;
         String guide_voice;
         String guide_voice_en;
         String video;
@@ -1032,6 +1046,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             video = cursor.getString(cursor.getColumnIndex("video"));
@@ -1047,6 +1062,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name", name);
             file.put("name_en", name_en);
             file.put("introduction", introduction);
+            file.put("introduction_en", introduction_en);
             file.put("guide_voice", guide_voice);
             file.put("guide_voice_en", guide_voice_en);
             file.put("video", video);
@@ -1069,12 +1085,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         String device_id;
         String name;
         String name_en;
         String introduction;
+        String introduction_en;
         String photo;
         String photo_vertical;
         String hint;
@@ -1087,6 +1104,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             name = cursor.getString(cursor.getColumnIndex("name"));
             name_en = cursor.getString(cursor.getColumnIndex("name_en"));
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             hint = cursor.getString(cursor.getColumnIndex("hint"));
@@ -1099,6 +1117,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("name", name);
             file.put("name_en", name_en);
             file.put("introduction", introduction);
+            file.put("introduction_en", introduction_en);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             file.put("hint", hint);
@@ -1228,6 +1247,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String name,
                                 String name_en,
                                 String introduction,
+                                String introduction_en,
                                 String guide_voice,
                                 String guide_voice_en,
                                 String hint,
@@ -1241,6 +1261,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("name", name);
         values.put("name_en", name_en);
         values.put("introduction", introduction);
+        values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
         values.put("guide_voice_en", guide_voice_en);
         values.put("hint", hint);
@@ -1265,6 +1286,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String name = cursor.getString(cursor.getColumnIndex("name"));
         String name_en = cursor.getString(cursor.getColumnIndex("name_en"));
         String introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+        String introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
         String guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
         String guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         String hint = cursor.getString(cursor.getColumnIndex("hint"));
@@ -1276,6 +1298,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("name", name);
         file.put("name_en", name_en);
         file.put("introduction", introduction);
+        file.put("introduction_en", introduction_en);
         file.put("guide_voice", guide_voice);
         file.put("guide_voice_en", guide_voice_en);
         file.put("hint", hint);

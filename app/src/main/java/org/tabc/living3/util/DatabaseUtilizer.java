@@ -39,6 +39,7 @@ public class DatabaseUtilizer {
     public static final String NAME = "name";
     public static final String NAME_EN = "name_en";
     public static final String INTRODUCTION = "introduction";
+    public static final String INTRODUCTION_EN = "introduction_en";
     public static final String GUIDE_VOICE = "guide_voice";
     public static final String GUIDE_VOICE_EN = "guide_voice_en";
     public static final String VIDEO = "video";
@@ -195,6 +196,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
+            + DatabaseUtilizer.INTRODUCTION_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT DEFAULT NULL, "
@@ -286,6 +288,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.MODE_NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
+            + DatabaseUtilizer.INTRODUCTION_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.VIDEO + " TEXT DEFAULT NULL, "
@@ -365,6 +368,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
             + DatabaseUtilizer.NAME_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
+            + DatabaseUtilizer.INTRODUCTION_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT, "
             + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL, "
