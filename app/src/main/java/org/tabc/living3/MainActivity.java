@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,6 +43,7 @@ import org.tabc.living3.util.MainButton;
 import org.tabc.living3.util.SQLiteDbManager;
 import org.tabc.living3.util.TimeUtilities;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     private TimeUtilities utils;
 
     private TextToSpeech textToSpeech;
+    private HashMap<String, String> ttsMap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,17 +202,13 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                  *  Company Information Button
                  */
                 case R.id.btn_info_main:
-                    //setSoundNormalIfActive();
+                    // close font button and let text to speech keep going while press info button
                     setFontNormalIfActive();
-                    stopTexttoSpeech();
-                    setSoundNormal();
-
-                    EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                    final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
-
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
                         setInfoActive();
 
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
                         Animation fadeIn = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_in);
 
@@ -219,6 +218,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     } else if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                         setInfoNormal();
 
+                        EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
+                        final ScrollView infoLayout = currentInfo.getCurrentCompanyView();
                         Animation fadeOut = AnimationUtils.loadAnimation(
                                 currentInfo.getActivity(), R.anim.info_fade_out);
 
@@ -246,10 +247,10 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                  * Diary Button
                  */
                 case R.id.btn_diary_main:
-                    //setSoundNormalIfActive();
+                    // close sound and font button while go to diary fragment
+                    setSoundNormalIfActive();
                     setFontNormalIfActive();
                     stopTexttoSpeech();
-                    setSoundDisabled();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
                         replaceFragment(diaryFragment);
                     }
@@ -258,10 +259,10 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                  *  Map Button
                  */
                 case R.id.btn_map_main:
-                    //setSoundNormalIfActive();
+                    // close sound and font button while go to map fragment
+                    setSoundNormalIfActive();
                     setFontNormalIfActive();
                     stopTexttoSpeech();
-                    setSoundDisabled();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
                         replaceFragment(mapFragment);
                     }
@@ -270,14 +271,14 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                  *  Sound Button
                  */
                 case R.id.btn_sound_main:
+                    // close font button while press the sound button
                     setFontNormalIfActive();
-
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
                         setSoundActive();
                         final ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, null);
-
+                        // FIXME: speak method with HashMap parameter may not be supported in the future
+                        textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, ttsMap);
 
                      /*   ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -300,9 +301,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                  *  Font Size Button
                  */
                 case R.id.btn_font_main:
-                    //setSoundNormalIfActive();
-                    stopTexttoSpeech();
-                    setSoundNormal();
+                    // continue text to speech while press the font button
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
                         setFontActive();
 
@@ -473,7 +472,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     (IYoutube) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
             if (iYoutube.getFullScreenStatus()) {
                 iYoutube.setScreenStatus(false);
-                Log.e("123","123");
                 return;
             }
 
@@ -683,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
     public void setSoundNormal() {
         soundBtn.setNormal(R.drawable.btn_main_sound_normal);
-       // soundRL.setVisibility(View.GONE);
+        soundRL.setVisibility(View.GONE);
     }
 
     public void setSoundDisabled() {
@@ -710,7 +708,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     public void setSoundNormalIfActive() {
         if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_active)) {
             setSoundNormal();
-//            setSoundStop();
         }
     }
 
@@ -849,6 +846,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     }
 
     private void createLanguageTTS() {
+        ttsMap.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "");
 
         if (textToSpeech == null) {
             textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -862,6 +860,23 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                         if (textToSpeech.isLanguageAvailable(l) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
                             textToSpeech.setLanguage(l);
                         }
+
+                        textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                            @Override
+                            public void onStart(String utteranceId) {
+
+                            }
+
+                            @Override
+                            public void onDone(String utteranceId) {
+                                setSoundNormalIfActive();
+                            }
+
+                            @Override
+                            public void onError(String utteranceId) {
+
+                            }
+                        });
                     } else {
                         Toast.makeText(MainActivity.this, "語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
                     }

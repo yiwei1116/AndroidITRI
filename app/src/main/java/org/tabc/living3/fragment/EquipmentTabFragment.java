@@ -627,21 +627,12 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 //when leaving fullscreen
                 uTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION);
 
-//                final int landScape = config.ORIENTATION_LANDSCAPE;
-
                 if (!wasRestored) {
                     youtubePlayer = uTubePlayer;
                     youtubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
                         @Override
                         public void onFullscreen(boolean _isFullScreen) {
                             fullScreen = _isFullScreen;
-                            /*  // 如果不是全螢幕且目前螢幕方向等於橫向
-                            if (!fullScreen && config.orientation==landScape)
-                            {
-                                Log.e("SCREEN_PORTRAIT","SCREEN_PORTRAIT");
-                                getActivity().setRequestedOrientation(
-                                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            }*/
                         }
                     });
                     youtubePlayer.cueVideo(VIDEO_ID);
@@ -695,12 +686,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     }
 
     @Override
-    public  String getIntroduction(){
-        String getIntrod = equipTabs.get(mViewPager.getCurrentItem()).getTextContent();
-        Log.e("getIntrod",getIntrod);
-
-        return getIntrod;
-
+    public String getIntroduction(){
+        return equipTabs.get(mViewPager.getCurrentItem()).getTextContent();
     }
 
     @Override
