@@ -103,6 +103,8 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
             photoBg = area.getString("photo");
             photoBg_vertical = area.getString("photo_vertical");
             introduction = area.getString("introduction");
+            if (isEnglish && area.getString("introduction_en") != null)
+                introduction = area.getString("introduction_en");
             hint = area.getString("hint");
             guide_voice = area.getString("guide_voice");
 

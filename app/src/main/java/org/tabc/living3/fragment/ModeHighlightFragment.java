@@ -92,6 +92,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
             modeName = isEnglish ? mode.getString("name_en") : mode.getString("name");
             modeIntroduction = mode.getString("introduction");
+            if (isEnglish && mode.getString("introduction_en") != null)
+                modeIntroduction = mode.getString("introduction_en");
             splash_bg_vertical = mode.getString("splash_bg_vertical");
             splash_fg_vertical = mode.getString("splash_fg_vertical");
             splash_blur_vertical = mode.getString("splash_blur_vertical");

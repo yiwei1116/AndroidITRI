@@ -496,7 +496,10 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             tab.setVideo(true);
             tab.setPhoto(true);
-            tab.setTextContent(equip.getString("introduction"));
+            String introduction = equip.getString("introduction");
+            if (isEnglish && equip.getString("introduction_en") != null)
+                introduction = equip.getString("introduction_en");
+            tab.setTextContent(introduction);
             // add sound to each tab
             tab.setPlayList(audioList[i]);
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
