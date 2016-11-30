@@ -76,7 +76,6 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
 
 
 
-
         return view;
     }
 
