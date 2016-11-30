@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
@@ -29,12 +30,15 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
     private String picPath,flagSelect;
     private FrameLayout frameLayout;
     private Button nextStep,backStep,reTake;
+    private ImageView diplayPic;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_camera_display, container, false);
+
         frameLayout = (FrameLayout)view.findViewById(R.id.frame_layout);
+        diplayPic = (ImageView) view.findViewById(R.id.display_pic);
         nextStep = (Button)view.findViewById(R.id.next_step);
         nextStep.setBackgroundResource(R.drawable.camera_btn_select_1);
         reTake = (Button)view.findViewById(R.id.retake);
@@ -60,10 +64,10 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
         }
 
         Bitmap myBitmap = BitmapFactory.decodeFile(picPath);
-        frameLayout.setDrawingCacheEnabled(true);
+       /* frameLayout.setDrawingCacheEnabled(true);
         frameLayout.buildDrawingCache();
-        frameLayout.setBackground(new BitmapDrawable(myBitmap));
-
+        frameLayout.setBackground(new BitmapDrawable(myBitmap));*/
+        diplayPic.setImageBitmap(myBitmap);
 
 
 
