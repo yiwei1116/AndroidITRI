@@ -75,6 +75,9 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
         frameLayout.buildDrawingCache();
         frameLayout.setBackground(new BitmapDrawable(myBitmap));*/
         diplayPic.setImageBitmap(myBitmap);
+<<<<<<< HEAD
+>>>>>>> 8fe6112... Display origin or fill Screen ??
+=======
 >>>>>>> 8fe6112... Display origin or fill Screen ??
 
 
