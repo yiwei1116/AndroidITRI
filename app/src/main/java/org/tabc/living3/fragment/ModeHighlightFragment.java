@@ -96,7 +96,6 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
             modeIntroduction = mode.getString(DatabaseUtilizer.INTRODUCTION);
             if (isEnglish) {
                 String introduction_en = mode.getString(DatabaseUtilizer.INTRODUCTION_EN);
-                Log.d("GGG", introduction_en);
                 if (introduction_en == null || introduction_en.equals("null"))
                     modeIntroduction = "";
                 else
