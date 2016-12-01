@@ -38,6 +38,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.EquipmentTabInformation;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
@@ -478,7 +479,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         for (int i = 0; i < equipNumber; i++) {
             JSONObject d = devicesArray.getJSONObject(i);
-            int deviceId = d.getInt("device_id");
+            int deviceId = d.getInt(DatabaseUtilizer.DEVICE_ID);
 
             JSONObject equip = dbManager.queryDeviceAndCompanyData(deviceId);
 
@@ -486,19 +487,24 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
             tab.setDeviceId(deviceId);
 
-            String name = isEnglish ? equip.getString("name_en") : equip.getString("name");
+            String name = isEnglish ? equip.getString(DatabaseUtilizer.NAME_EN) : equip.getString(DatabaseUtilizer.NAME);
             tab.setTitle(name);
 
             // insert photo to array list
-            tab.insertEquipPhoto(equip.getString("photo_vertical"));
+            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
             // insert second photo to photo array list
-            tab.insertEquipPhoto(equip.getString("photo"));
+            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO));
 
             tab.setVideo(true);
             tab.setPhoto(true);
-            String introduction = equip.getString("introduction");
-            if (isEnglish && equip.getString("introduction_en") != null)
-                introduction = equip.getString("introduction_en");
+            String introduction = equip.getString(DatabaseUtilizer.INTRODUCTION);
+            if (isEnglish) {
+                String introduction_en = equip.getString(DatabaseUtilizer.INTRODUCTION_EN);
+                if (introduction_en == null || introduction_en.equals("null"))
+                    introduction = "";
+                else
+                    introduction = introduction_en;
+            }
             tab.setTextContent(introduction);
             // add sound to each tab
             tab.setPlayList(audioList[i]);

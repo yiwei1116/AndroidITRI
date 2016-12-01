@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.tabc.living3.fragment.CameraDisplay"
+    android:id="@+id/frame_layout"
+    android:background="@color/colorBlack"
+    >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_pic"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+
+        />
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/btn_camera_back"
+        android:background="@drawable/btn_back"
+        android:stateListAnimator="@null" />
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:text="@string/custom_camera_redo"
+        android:id="@+id/retake"
+        android:onClick="ReTake"
+        android:layout_gravity="left|bottom"
+        android:background="@drawable/btn_retake_normal"
+        android:textColor="@color/btn_font_color_blue"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:text="@string/nextstep"
+        android:id="@+id/next_step"
+        android:layout_gravity="right|bottom"
+        android:onClick="nextStep"
+        android:background="@drawable/btn_nextstep_normal_1"
+        android:textColor="@color/colorWhite"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp" />
+
+
+</FrameLayout>
