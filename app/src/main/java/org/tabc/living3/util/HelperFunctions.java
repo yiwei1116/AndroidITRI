@@ -7,7 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +29,7 @@ import org.tabc.living3.fragment.FeedbackFragment;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +41,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Created by Oslo on 10/14/16.
@@ -382,5 +395,55 @@ public class HelperFunctions extends Application{
     }
 
 
+    // second method
+    /////// upload using android Volley
+    public void uploadImage() throws FileNotFoundException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        File rootDir = Environment.getExternalStorageDirectory();
+        File f = new File(rootDir.getAbsolutePath() + "/itri", "photofds.png");
+        Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(f));
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        byte[] imageBytes = outputStream.toByteArray();
+        final String encodeImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CommunicationWithServer.hipsterContentURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e("response", s);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        //Showing toast
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                String image = encodeImage;
+
+                //Getting Image Name
+                String name = "abc.jpeg";
+
+                //Creating parameters
+                Map<String,String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put("picture_data", image);
+                params.put("picture_name", name);
+
+                //returning parameters
+                return params;
+            }
+        };
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
 
 }
