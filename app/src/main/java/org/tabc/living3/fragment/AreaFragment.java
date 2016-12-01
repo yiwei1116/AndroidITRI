@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
@@ -94,27 +96,29 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
                 currentZone = 2;
         }
 
+        isEnglish = ((MainActivity) getActivity()).isEnglish();
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         try {
             JSONObject area = dbManager.queryZone(currentZone);
 
-            title = area.getString("name");
-            title_en = area.getString("name_en");
+            title = area.getString(DatabaseUtilizer.NAME);
+            title_en = area.getString(DatabaseUtilizer.NAME_EN);
             photoBg = area.getString("photo");
             photoBg_vertical = area.getString("photo_vertical");
-            introduction = area.getString("introduction");
-            if (isEnglish && area.getString("introduction_en") != null)
-                introduction = area.getString("introduction_en");
+            introduction = area.getString(DatabaseUtilizer.INTRODUCTION);
+            if (isEnglish) {
+                String introduction_en = area.getString(DatabaseUtilizer.INTRODUCTION_EN);
+                if (introduction_en == null || introduction_en.equals("null"))
+                    introduction = "";
+                else
+                    introduction = introduction_en;
+            }
             hint = area.getString("hint");
-            guide_voice = area.getString("guide_voice");
-
+            guide_voice = area.getString(DatabaseUtilizer.GUIDE_VOICE);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        isEnglish = ((MainActivity) getActivity()).isEnglish();
     }
 
     @Override

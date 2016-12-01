@@ -293,6 +293,8 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                     onClickOrientation = mOrientation;
                     capture();
                 }catch (Exception e){
+                    // if excpetion occur, then the parameter might be not be support by HTC
+                    mCamera.takePicture(null, null, mPictureCallback);
                     Log.e("Tag","Error taking picture : " + e.getMessage());
                 }
 
@@ -360,7 +362,6 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             // preview surface does not exist
             return;
         }
-
         // stop preview before making changes
         try {
             mCamera.stopPreview();
@@ -368,7 +369,6 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             // ignore: tried to stop a non-existent preview
             e.printStackTrace();
         }
-
         // set preview size and make any resize, rotate or
         // reformatting changes here
 
@@ -376,7 +376,6 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         try {
             mCamera.setPreviewDisplay(mSurfaceHolder);
             mCamera.startPreview();
-
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -399,7 +398,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         Camera.Size ps = previewSizes.get(0);
         params.setPictureFormat(ImageFormat.JPEG);
         params.setPreviewSize(ps.width, ps.height);
-
+        Log.e("ps",String.valueOf(ps.width));
         params.set("jpeg-quality", 100);
 
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
