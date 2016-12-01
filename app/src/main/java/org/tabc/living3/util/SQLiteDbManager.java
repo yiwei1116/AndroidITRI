@@ -1678,7 +1678,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // ******************** counter part ********************
 
     // 每次經過一個device，揪呼叫此函數進行拜訪次數的+1
-    public void addReadCount(int device_id) {
+    public void addDeviceReadCount(int device_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select read_count from device where device_id=" + device_id, null);
         int read_count = 0;
@@ -1693,8 +1693,23 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
     }
 
+    public void addModeReadCount(int mode_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select read_count from mode where mode_id=" + mode_id, null);
+        int read_count = 0;
+        cursor.moveToFirst();
+        read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+        read_count++;
+        SQLiteDatabase writeDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("read_count",read_count);
+        cursor.close();
+        // update to the same field
+        writeDB.update(DatabaseUtilizer.MODE_TABLE, cv, "mode_id=" + mode_id, null);
+    }
+
     // 按讚就加1
-    public void addLikeCount(int device_id) {
+    public void addDeviceLikeCount(int device_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select like_count from device where device_id=" + device_id, null);
         int like_count = 0;
@@ -1707,6 +1722,36 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
+    }
+
+    public void addModeLikeCount(int mode_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from mode where mode_id=" + mode_id, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        like_count++;
+        SQLiteDatabase writeDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("like_count",like_count);
+        cursor.close();
+        // update to the same field
+        writeDB.update(DatabaseUtilizer.MODE_TABLE, cv, "mode_id=" + mode_id, null);
+    }
+
+    public void addZoneLikeCount(int zone_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from zone where zone_id=" + zone_id, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        like_count++;
+        SQLiteDatabase writeDB = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("like_count",like_count);
+        cursor.close();
+        // update to the same field
+        writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "zone_id=" + zone_id, null);
     }
 
     // set all mode did_read to 0 --> 振哥 to test
