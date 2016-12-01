@@ -23,7 +23,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -72,14 +71,14 @@ public class MapFragment extends Fragment {
     private String mFileDirPath;
     private Boolean isSVGLOADED = false;
 
-    //test
     private int mCurrentField = 1;
     private int mCurrentZone;
     private int currentZoneOrder = 0;
-    private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
-    private String pathOrder[] = {"p1-2","p2-3","p3-4","p4-5","p5-6","p6-7","p7-8","p8-9","p9-10","p10-11","p11-2f","p12-13","p13-14","p14-15","p15-16","p16-17","p17-18","p18-19"};
+    //private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
+    private ArrayList<Integer> zoneOrder2 = new ArrayList<>();
+    private ArrayList<String> pathOrder;
+    private boolean isEnglish;
 
-    ///
 
     public MapFragment() {
     }
@@ -111,8 +110,8 @@ public class MapFragment extends Fragment {
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         mFileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
-        ArrayList<String> path = dbManager.querySvgId();
-        Log.e("tedrtgedrfg",String.valueOf(path));
+        pathOrder = dbManager.querySvgId();
+        isEnglish = ((MainActivity) getActivity()).isEnglish();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -135,8 +134,21 @@ public class MapFragment extends Fragment {
             e.printStackTrace();
         }
         mSvgFile = mCurrentFieldMap.optString("map_svg");
+        if (isEnglish && mCurrentFieldMap.optString("map_svg_en") != null)
+            mSvgFile = mCurrentFieldMap.optString("map_svg_en");
+
         mBGFile = mCurrentFieldMap.optString("map_bg");
-        //
+        //initial zone order
+        try{
+            zoneOrder2.add(dbManager.queryBeaconFileWithZoneId(1).optInt("start"));
+            for(int i=1 ;  ;i++) {
+                zoneOrder2.add(dbManager.queryBeaconFileWithZoneId(i).optInt("end"));
+                if (zoneOrder2.get(i) == 19)           //討論終點end條件
+                    break;
+            }
+            for(int i = 0;i<zoneOrder2.size();i++)
+                Log.e("dfsgsrg",zoneOrder2.get(i)+"");
+        }catch(JSONException e){}
 
         // set toolbar title
         String field_name = getFieldName(mCurrentField);
@@ -332,18 +344,17 @@ public class MapFragment extends Fragment {
                         if(mac.equals(""))
                             return;
                         JSONObject beacon = dbManager.queryBeaconFileWithMacAddr(mac);
-                        Log.e("ttttttttt",String.valueOf(beacon));
 
                         if (beacon == null) {
                             return;
                         }
 
-                        if (beacon.optInt("zone") != zoneOrder[currentZoneOrder])
+                        if (beacon.optInt("zone") != zoneOrder2.get(currentZoneOrder))
                         {
                             //不是該到的地方
                             return;
                         }
-                        if(currentZoneOrder == zoneOrder.length-1)      //已到最後一個點
+                        if(currentZoneOrder == zoneOrder2.size()-1)      //已到最後一個點
                             return;
 
                         enterNextZone(beacon);
@@ -364,8 +375,8 @@ public class MapFragment extends Fragment {
         mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
 
-        String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
-        String nextPath = pathOrder[currentZoneOrder-1];
+        String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
+        String nextPath = pathOrder.get(currentZoneOrder-1);
         notice.setVisibility(View.VISIBLE);
         txtMapArea.setText("   "+beacon.optString("name"));     //"進入導覽"顯示名稱
 
@@ -381,19 +392,19 @@ public class MapFragment extends Fragment {
 
             //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
             //svg,currentZone,nextZone,currentPath(to hide),nextPath(to appear)
-            String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+"')";
+            String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + zoneOrder2.get(currentZoneOrder) + ",'"+currentPath+"','"+nextPath+"')";
             mWebViewMap.loadUrl(url);
             isSVGLOADED = false;
 
 
         } else {
             if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + mCurrentZone + "," + zoneOrder[currentZoneOrder] + ",'"+currentPath+"','"+nextPath+ "')";
+                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + mCurrentZone + "," + zoneOrder2.get(currentZoneOrder) + ",'"+currentPath+"','"+nextPath+ "')";
                 mWebViewMap.loadUrl(url);
-                Log.e(TAG,url);
             }
         }
         mLastSacnBeacon = beacon;
+        Log.e("tgftdfhfdgh","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
     }
     public Handler getJsHandler() {
         return jsHandler;
@@ -426,15 +437,13 @@ public class MapFragment extends Fragment {
                         case JavaScriptInterface.SVGLOAD:
                             isSVGLOADED = true;
                             mWebViewMap.loadUrl("javascript: setTestClick()");
-                            String currentPath = (currentZoneOrder<=1)?"":pathOrder[currentZoneOrder-2];
-                            String nextPath = (currentZoneOrder<=0)?"":pathOrder[currentZoneOrder-1];
-                            Log.e("svgload",currentPath);
-                            Log.e("svgload",nextPath);
+                            String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
+                            String nextPath = (currentZoneOrder<=0)?"":pathOrder.get(currentZoneOrder-1);
                             for(int i = 0; i<currentZoneOrder;i++)
                             {
                                 if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
 
-                                    mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + zoneOrder[i] + "," + zoneOrder[i+1] + ",'"+currentPath+"','"+nextPath+ "')");
+                                    mWebViewMap.loadUrl("javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + zoneOrder2.get(i) + "," + zoneOrder2.get(i+1) + ",'"+currentPath+"','"+nextPath+ "')");
                                 }
                             }
                             //mWebViewMap.loadUrl("javascript: onRegionChanged(1,2)");
