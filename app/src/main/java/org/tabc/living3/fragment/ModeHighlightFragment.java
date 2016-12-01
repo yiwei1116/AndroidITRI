@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
@@ -90,13 +92,19 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         try {
             JSONObject mode = dbManager.queryModeFiles(modeId);
 
-            modeName = isEnglish ? mode.getString("name_en") : mode.getString("name");
-            modeIntroduction = mode.getString("introduction");
-            if (isEnglish && mode.getString("introduction_en") != null)
-                modeIntroduction = mode.getString("introduction_en");
-            splash_bg_vertical = mode.getString("splash_bg_vertical");
-            splash_fg_vertical = mode.getString("splash_fg_vertical");
-            splash_blur_vertical = mode.getString("splash_blur_vertical");
+            modeName = isEnglish ? mode.getString(DatabaseUtilizer.NAME_EN) : mode.getString(DatabaseUtilizer.NAME);
+            modeIntroduction = mode.getString(DatabaseUtilizer.INTRODUCTION);
+            if (isEnglish) {
+                String introduction_en = mode.getString(DatabaseUtilizer.INTRODUCTION_EN);
+                Log.d("GGG", introduction_en);
+                if (introduction_en == null || introduction_en.equals("null"))
+                    modeIntroduction = "";
+                else
+                    modeIntroduction = introduction_en;
+            }
+            splash_bg_vertical = mode.getString(DatabaseUtilizer.MODE_SPLASH_BG);
+            splash_fg_vertical = mode.getString(DatabaseUtilizer.MODE_SPLASH_FG);
+            splash_blur_vertical = mode.getString(DatabaseUtilizer.MODE_SPLASH_BLUR);
         } catch (JSONException e) {
             e.printStackTrace();
         }

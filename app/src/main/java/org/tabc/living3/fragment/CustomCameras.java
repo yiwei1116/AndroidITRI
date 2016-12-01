@@ -293,6 +293,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                     onClickOrientation = mOrientation;
                     capture();
                 }catch (Exception e){
+                    // if excpetion occur, then the parameter might be not be support by HTC
                     mCamera.takePicture(null, null, mPictureCallback);
                     Log.e("Tag","Error taking picture : " + e.getMessage());
                 }
