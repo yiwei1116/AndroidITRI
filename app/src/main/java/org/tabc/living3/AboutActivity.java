@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.tabc.living3.util.ButtonSound;
+
 
 public class AboutActivity extends AppCompatActivity {
     public static AboutActivity instance = null;
@@ -43,6 +45,8 @@ public class AboutActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 onBackPressed();
             }
         });
@@ -59,6 +63,8 @@ public class AboutActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 guidePage();
             }
         });
@@ -75,6 +81,8 @@ public class AboutActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 originPage();
             }
         });
@@ -91,6 +99,8 @@ public class AboutActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 rulePage();
             }
         });
@@ -107,6 +117,8 @@ public class AboutActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 guidePage();
             }
         });
@@ -123,6 +135,8 @@ public class AboutActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 Intent intent = new Intent(AboutActivity.this, TourSelectActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);

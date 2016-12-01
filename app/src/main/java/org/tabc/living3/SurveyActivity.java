@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.tabc.living3.R;
 
 import org.json.JSONException;
+import org.tabc.living3.util.ButtonSound;
 
 public class SurveyActivity extends AppCompatActivity {
     public static SurveyActivity instance = null;
@@ -78,6 +79,8 @@ public class SurveyActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 pageGender();
                 dialog.dismiss();
             }
@@ -85,6 +88,8 @@ public class SurveyActivity extends AppCompatActivity {
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);

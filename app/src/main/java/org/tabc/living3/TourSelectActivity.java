@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.TourViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 onBackPressed();
             }
         });
@@ -73,6 +76,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
                     confirmBtn.setVisibility(View.VISIBLE);
 
@@ -136,6 +141,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     Intent intent = new Intent(TourSelectActivity.this, SurveyActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);

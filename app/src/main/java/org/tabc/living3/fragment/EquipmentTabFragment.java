@@ -38,6 +38,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.EquipmentTabInformation;
 import org.tabc.living3.util.HelperFunctions;
@@ -176,6 +177,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 getActivity().onBackPressed();
             }
         });
@@ -373,6 +376,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            ButtonSound.play(getActivity());
+
             ImageButton zoom = (ImageButton) v.findViewById(R.id.btn_equip_photo_zoom);
             ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
 
@@ -401,6 +406,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         @Override
         public void onClick(View v) {
+            ButtonSound.play(getActivity());
             final int position = mViewPager.getCurrentItem();
 
             final Dialog dialog = new Dialog(getActivity(), R.style.dialog_coach_normal);
@@ -416,6 +422,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getActivity());
                     dialog.dismiss();
                 }
             });
@@ -427,6 +434,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 previous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ButtonSound.play(getActivity());
+
                         int image_index = equipTabs.get(position).predecessorPhotoIndex();
 
                         String name = photoList.get(image_index);
@@ -442,6 +451,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 next.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ButtonSound.play(getActivity());
+
                         int image_index = equipTabs.get(position).sucessorPhotoIndex();
 
                         String name = photoList.get(image_index);

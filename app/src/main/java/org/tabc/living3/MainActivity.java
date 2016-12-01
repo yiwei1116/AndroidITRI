@@ -34,6 +34,7 @@ import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 onBackPressed();
             }
         });
@@ -196,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
         @Override
         public void onClick(View v) {
+            boolean isButtonPlaySound = false;
 
             switch (v.getId()) {
                 /**
@@ -205,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     // close font button and let text to speech keep going while press info button
                     setFontNormalIfActive();
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
+                        isButtonPlaySound = true;
                         setInfoActive();
 
                         EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -252,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
+                        isButtonPlaySound = true;
                         replaceFragment(diaryFragment);
                     }
                     break;
@@ -264,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
+                        isButtonPlaySound = true;
                         replaceFragment(mapFragment);
                     }
                     break;
@@ -274,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     // close font button while press the sound button
                     setFontNormalIfActive();
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
+                        isButtonPlaySound = true;
                         setSoundActive();
                         final ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -303,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                 case R.id.btn_font_main:
                     // continue text to speech while press the font button
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
+                        isButtonPlaySound = true;
                         setFontActive();
 
                         Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.sound_font_in);
@@ -342,6 +351,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     break;
 
             }
+            if (isButtonPlaySound)
+                ButtonSound.play(getApplication());
         }
     }
 
@@ -758,6 +769,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.MAP_INFO_COACH, true);
@@ -780,6 +793,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         understand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 dialog.dismiss();
             }
         });
@@ -799,6 +814,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.MODE_SELECT_COACH, true);
@@ -824,6 +841,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.DEVICE_COACH, true);

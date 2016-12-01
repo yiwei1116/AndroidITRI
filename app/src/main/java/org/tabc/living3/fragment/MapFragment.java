@@ -40,6 +40,7 @@ import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import java.util.ArrayList;
@@ -163,6 +164,7 @@ public class MapFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
                 dialog.setContentView(R.layout.alertdialog_map_info);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -197,12 +199,14 @@ public class MapFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 notice.setVisibility(View.GONE);
             }
         });
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 notice.setVisibility(View.GONE);
                 enterZone();
             }

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +50,7 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
         backStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 getActivity().onBackPressed();
             }
         });
@@ -90,10 +92,7 @@ public class CameraDisplay extends Fragment implements View.OnClickListener{
             case R.id.retake:
                 reTake.setTextColor(Color.WHITE);
                 getActivity().onBackPressed();
-
-
-
-
         }
+        ButtonSound.play(getActivity());
     }
 }

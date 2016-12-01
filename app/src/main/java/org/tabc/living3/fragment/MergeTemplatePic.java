@@ -31,6 +31,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
@@ -101,6 +102,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 getActivity().onBackPressed();
             }
         });
@@ -266,7 +268,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+        ButtonSound.play(getActivity());
         switch(v.getId()) {
             case R.id.ic_download:
                 takeScreenshot();

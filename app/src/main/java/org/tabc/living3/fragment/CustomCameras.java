@@ -35,6 +35,7 @@ import android.widget.ImageView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -120,6 +121,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 getActivity().onBackPressed();
             }
         });
@@ -297,9 +299,9 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                     mCamera.takePicture(null, null, mPictureCallback);
                     Log.e("Tag","Error taking picture : " + e.getMessage());
                 }
-
-
-        }}
+        }
+        ButtonSound.play(getActivity());
+    }
 
     public View switchCamera() {
 

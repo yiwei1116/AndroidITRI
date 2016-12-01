@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ITRIObject;
 
 import java.util.Locale;
@@ -31,6 +32,8 @@ public class HomeActivity extends AppCompatActivity {
         btnCht.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 Locale locale = new Locale("default");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();
@@ -49,6 +52,8 @@ public class HomeActivity extends AppCompatActivity {
         btnEng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 Locale locale = new Locale("en");
                 Resources res = getResources();
                 DisplayMetrics dm = res.getDisplayMetrics();

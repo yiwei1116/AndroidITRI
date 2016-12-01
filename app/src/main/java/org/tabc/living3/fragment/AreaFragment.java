@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
@@ -133,6 +134,8 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 getActivity().onBackPressed();
             }
         });
@@ -184,6 +187,8 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 int modeNumber = dbManager.getNumbersOfModeFromZone(currentZone);
                 String currentZonename = isEnglish ? title_en : title;
                 ModeSelectFragment modeSelectFragment = ModeSelectFragment.newInstance(modeNumber, currentZone, currentZonename);
