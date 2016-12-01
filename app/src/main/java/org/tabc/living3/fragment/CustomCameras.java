@@ -291,8 +291,9 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
             case R.id.btn_capture:
                 try {
                     onClickOrientation = mOrientation;
-                    mCamera.takePicture(null, null, mPictureCallback);
+                    capture();
                 }catch (Exception e){
+                    mCamera.takePicture(null, null, mPictureCallback);
                     Log.e("Tag","Error taking picture : " + e.getMessage());
                 }
 
