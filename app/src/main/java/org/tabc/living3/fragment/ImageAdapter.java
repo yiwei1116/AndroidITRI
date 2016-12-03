@@ -48,26 +48,7 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ImageAdapterHolder Holder ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Log.e("position",String.valueOf(position));
-        Log.e("convertView",String.valueOf(convertView==null));
-        if(convertView == null){
-            // if it's not recycled, initialize some attributes
-            Holder = new ImageAdapterHolder();
-            convertView = inflater.inflate(R.layout.item_photo,null);
-            /*         convertView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT,
-                    GridView.LayoutParams.MATCH_PARENT));*/
-            Holder.layout = (ViewGroup) convertView.findViewById(R.id.rl_item_photo);
-            Holder.imageView = (ImageView) convertView.findViewById(R.id.imageView1);
 
-            Holder.layout.setTag(Holder);
-            Log.e("if","if");
-        }
-
-        else
-        {
-            Log.e("else","else");
-            Holder = (ImageAdapterHolder)convertView.getTag();
-        }
 
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
@@ -75,14 +56,35 @@ public class ImageAdapter extends BaseAdapter {
         float px = 25 * dd;
         float screenWidth = dm.widthPixels;
         int newWidth = (int) (screenWidth - px) / 4; // 一行顯示四個縮圖
-        Log.e("newWidth",String.valueOf(newWidth));
 
-        Holder.layout.setLayoutParams(new GridView.LayoutParams(newWidth, newWidth));
+
+        if(convertView == null){
+            // if it's not recycled, initialize some attributes
+            Holder = new ImageAdapterHolder();
+            convertView = inflater.inflate(R.layout.item_photo,null);
+            /*         convertView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT,
+                    GridView.LayoutParams.MATCH_PARENT));*/
+
+            Holder.layout = (ViewGroup) convertView.findViewById(R.id.rl_item_photo);
+            Holder.imageView = (ImageView) convertView.findViewById(R.id.imageView1);
+            Holder.layout.setLayoutParams(new GridView.LayoutParams(newWidth, newWidth));
+            Holder.layout.setTag(Holder);
+
+        }
+
+        else
+        {
+
+            Holder = (ImageAdapterHolder)convertView.getTag();
+        }
+
+
+
 
         Holder.imageView.setId(position);
 
         uri = CustomPhoto.imagePaths.get(position);
-        Log.e("uri",uri);
+
 
         Picasso.with(context)
                 .load(new File(uri))
