@@ -68,11 +68,18 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
             confirmBtn.setVisibility(View.INVISIBLE);
 
             final Dialog dialog = new Dialog(TourSelectActivity.this, R.style.dialog_coach_normal);
-            dialog.setContentView(R.layout.alertdialog_coach_tour_select);
+            dialog.setContentView(R.layout.alertdialog_coach);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
 
-            Button understand = (Button) dialog.findViewById(R.id.btn_understand_tour_select);
+            ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+            bg.setBackgroundResource(R.drawable.tour_select_coachmarks);
+
+            TextView text = (TextView) dialog.findViewById(R.id.txt_coach_button);
+            text.setVisibility(View.VISIBLE);
+            text.setText(R.string.tour_select_guide);
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach);
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

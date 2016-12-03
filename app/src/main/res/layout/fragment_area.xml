@@ -5,6 +5,14 @@
     android:id="@+id/flayout_area_fragment"
     tools:context="org.tabc.living3.fragment.AreaFragment">
 
+    <ImageView
+        android:id="@+id/img_area_bg"
+        android:src="@drawable/black_overlay_80"
+        android:alpha="0.97"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

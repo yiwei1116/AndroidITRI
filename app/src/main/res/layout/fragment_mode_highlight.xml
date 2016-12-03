@@ -55,7 +55,8 @@
             android:layout_height="match_parent"
             android:id="@+id/img_mode_intro_bg"
             android:scaleType="centerCrop"
-            android:src="@drawable/rectangle_overlay"/>
+            android:alpha="0.97"
+            android:src="@drawable/black_overlay_80"/>
 
         <TextView
             android:layout_width="wrap_content"

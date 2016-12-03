@@ -2,30 +2,43 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <ImageView
+        android:id="@+id/bg_coach"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/coachmark_question"/>
+        android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/txt_coach_question"
+        android:id="@+id/txt_coach_middle"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/coach_question"
         android:textColor="@android:color/white"
         android:textAlignment="center"
         android:textSize="16sp"
         android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/btn_coach_question"
+        android:layout_above="@+id/btn_coach"
         android:layout_marginBottom="190dp" />
+
+    <TextView
+        android:id="@+id/txt_coach_button"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btn_coach"
+        android:layout_marginBottom="90dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_coach_question"
+        android:id="@+id/btn_coach"
         android:text="@string/understand"
         android:textColor="@drawable/selecter_btn_black_white_txt_color"
         android:textSize="@dimen/btn_font_size"

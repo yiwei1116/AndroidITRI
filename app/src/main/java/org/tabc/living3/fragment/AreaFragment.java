@@ -155,7 +155,8 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
             page.setPadding(0, 0, 0, 0);
         }
 
-        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
+//        RelativeLayout background = (RelativeLayout) view.findViewById(R.id.flayout_area_fragment);
+        ImageView background = (ImageView) view.findViewById(R.id.img_area_bg);
         Bitmap bitmap = null;
         try {
             bitmap = HelperFunctions.getBitmapFromFile(getActivity(), photoBg_vertical);
