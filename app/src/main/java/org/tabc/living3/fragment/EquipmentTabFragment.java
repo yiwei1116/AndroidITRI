@@ -253,7 +253,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 infoLayout.setVisibility(View.GONE);
 
                 // add current equipment read count
-                dbManager.addReadCount(equipTabs.get(position).getDeviceId());
+                dbManager.addDeviceReadCount(equipTabs.get(position).getDeviceId());
 
                 // set current position to last position
                 mLastViewPage = position;

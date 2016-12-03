@@ -28,6 +28,7 @@ import android.widget.TextView;
 import org.tabc.living3.CommunicationWithServer;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import org.json.JSONArray;
@@ -63,6 +64,7 @@ public class FeedbackFragment extends Fragment {
     private int zoneId;
     private int field;
     private CommunicationWithServer comm;
+    private HelperFunctions helpFunc;
     private int attitude = 0;
     private int functionality = 0;
     private int visual = 0;
@@ -1065,7 +1067,7 @@ public class FeedbackFragment extends Fragment {
 
                 // update feedback to server
                 try {
-                    comm.uploadSecondSurveyData(attitude,
+                    helpFunc.uploadSecondSurveyData(attitude,
                             functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
                             first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
                             first_consider, second_consider, third_consider, fourth_consider, fifth_consider,

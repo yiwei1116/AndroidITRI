@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import org.tabc.living3.MainActivity;
@@ -90,7 +91,12 @@ public class CustomPhoto extends Fragment  {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_nextstep:
+                        if(photoUri==null){
+                            Toast.makeText(getActivity(),R.string.please_select_the_picture, Toast.LENGTH_LONG).show();
+                        }
+                        else{
                         nextStep();
+                        }
                         break;
                 }
                 return false;
