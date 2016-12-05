@@ -1,12 +1,19 @@
 package org.tabc.living3.util;
 
-import org.tabc.living3.CommunicationWithServer;
-
 /**
  * Created by Oslo on 9/27/16.
  */
 public class DatabaseUtilizer {
-    private static String IP = CommunicationWithServer.IP;
+    public static final String IP = "140.116.82.48";
+//    public static final String IP = "60.251.33.54:98";
+
+    public static final String serverURL = "http://" + IP + "/interface/jsondecode.php";
+    public static final String downloadURL = "http://" + IP + "/interface/getfile.php";
+    public static final String hipsterContentURL = "http://" + IP + "/interface/hipster.php"; // hipster content
+    public static final String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
+    public static final String surveyTwoURL = "http://" + IP + "/interface/surveytwo.php";
+    public static final String counterURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    public static final String filePathURLPrefix = "http://" + IP + "/web/";
 
     /*
         declare useful strings for downloading & uploading data

@@ -52,6 +52,7 @@ public class HelperFunctions extends Application{
     private static CommunicationWithServer commServer;
     private Context context;
     private SQLiteDbManager manager;
+    public static final String uploadUrlForHipsterContentSuffix = "http://";
 
     public HelperFunctions(FeedbackFragment feedbackFragment) {
         this.context = feedbackFragment.getActivity().getApplicationContext();
@@ -342,17 +343,17 @@ public class HelperFunctions extends Application{
     // 文字內容，照片檔名，版型id，罐頭文字id，zoneid
     public void uploadHipsterContent(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
         JSONObject jsonObject = packHipsterContentData(textContent, picture, hipsterTemplateId, hipsterTextId, zoneId);
-        uploadJsonData("hipster_content", jsonObject, CommunicationWithServer.hipsterContentURL);
+        uploadJsonData("hipster_content", jsonObject, DatabaseUtilizer.hipsterContentURL);
     }
 
     public void uploadSurveyData(String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
         JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
-        uploadJsonData("survey", jsonObject, CommunicationWithServer.surveyOneURL);
+        uploadJsonData("survey", jsonObject, DatabaseUtilizer.surveyOneURL);
     }
 
     public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
         JSONObject jsonObject = packSurveyTwoData( attitude,  functionality,  visual,  operability,  user_friendly,  price,  maintenance,  safety,  energy,  first_choise,  second_choise,  third_choise,  fourth_choise,  fifth_choise,  first_consider,  second_consider,  third_consider,  fourth_consider,  fifth_consider,  subscription1,  subscription2,  subscription3,  install1,  install2,  install3,  install4,  install5,  impression1,  impression2,  impression3,  impression4,  impression5,  buy,  reasonable_price);
-        uploadJsonData("survey_two", jsonObject, CommunicationWithServer.surveyTwoURL);
+        uploadJsonData("survey_two", jsonObject, DatabaseUtilizer.surveyTwoURL);
     }
 
     // type 1
@@ -362,7 +363,7 @@ public class HelperFunctions extends Application{
             jsonObject = packLikeReadCount(1, typeId, types);
 
             // TODO: not sure about the server url
-            uploadJsonData("device_counts", jsonObject, CommunicationWithServer.counterURL);
+            uploadJsonData("device_counts", jsonObject, DatabaseUtilizer.counterURL);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -375,7 +376,7 @@ public class HelperFunctions extends Application{
             jsonObject = packLikeReadCount(2, typeId, types);
 
             // TODO: not sure about the server url
-            uploadJsonData("mode_counts", jsonObject, CommunicationWithServer.counterURL);
+            uploadJsonData("mode_counts", jsonObject, DatabaseUtilizer.counterURL);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -388,12 +389,11 @@ public class HelperFunctions extends Application{
             jsonObject = packLikeReadCount(3, typeId, types);
 
             // TODO: not sure about the server url
-            uploadJsonData("zone_counts", jsonObject, CommunicationWithServer.counterURL);
+            uploadJsonData("zone_counts", jsonObject, DatabaseUtilizer.counterURL);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
     // second method
     /////// upload using android Volley
@@ -406,7 +406,7 @@ public class HelperFunctions extends Application{
         byte[] imageBytes = outputStream.toByteArray();
         final String encodeImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, CommunicationWithServer.hipsterContentURL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.hipsterContentURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -417,7 +417,7 @@ public class HelperFunctions extends Application{
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        //Showing toast
+                        Log.e("volley error", String.valueOf(volleyError));
                     }
                 }){
             @Override
@@ -444,6 +444,12 @@ public class HelperFunctions extends Application{
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
+    }
+
+
+    // yiwei1116 upload function
+    public void uploadHipsterContentData() {
+
     }
 
 }

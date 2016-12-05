@@ -31,16 +31,7 @@ import java.util.List;
  * Created by Oslo on 10/18/16.
  */
 public class CommunicationWithServer {
-    public static final String IP = "140.116.82.48";
-//    public static final String IP = "60.251.33.54:98";
 
-    public static final String serverURL = "http://" + IP + "/interface/jsondecode.php";
-    public static final String downloadURL = "http://" + IP + "/interface/getfile.php";
-    public static final String hipsterContentURL = "http://" + IP + "/interface/hipster.php"; // hipster content
-    public static final String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
-    public static final String surveyTwoURL = "http://" + IP + "/interface/surveytwo.php";
-    public static final String counterURL = "http://" + IP + "/interface/deviceadd.php"; // counter
-    public static final String filePathURLPrefix = "http://" + IP + "/web/";
 
     public int totalCount;
     public int partialCount;
@@ -300,7 +291,7 @@ public class CommunicationWithServer {
             URL url;
             try {
                 // send URL request
-                url = new URL(downloadURL);
+                url = new URL(DatabaseUtilizer.downloadURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setUseCaches(false);
@@ -429,7 +420,7 @@ public class CommunicationWithServer {
                         filename = splits[splits.length - 1];
                         // 解析路徑
                         String pathSuffix = eachFile.substring(3);
-                        filepath = filePathURLPrefix + pathSuffix;
+                        filepath = DatabaseUtilizer.filePathURLPrefix + pathSuffix;
                         Log.i("each file", eachFile);
                         URL url = new URL(filepath);
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
