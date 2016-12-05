@@ -39,6 +39,7 @@ import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import java.util.ArrayList;
@@ -175,6 +176,7 @@ public class MapFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 Dialog dialog = new Dialog(getActivity(), R.style.selectorDialog);
                 dialog.setContentView(R.layout.alertdialog_map_info);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -209,12 +211,14 @@ public class MapFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 notice.setVisibility(View.GONE);
             }
         });
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 notice.setVisibility(View.GONE);
                 enterZone();
             }
@@ -234,6 +238,12 @@ public class MapFragment extends Fragment {
         Cursor cursor = dbManager.getFieldMap(field_id);
         cursor.moveToFirst();
         return cursor.getString(cursor.getColumnIndex("name_en"));
+    }
+
+    private String getZoneName(int zone_id) {
+        Cursor cursor = dbManager.getReadableDatabase().rawQuery("SELECT name, name_en from zone where zone_id=" + zone_id + "", null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex(isEnglish ? "name_en" : "name"));
     }
 
     @Override
@@ -378,7 +388,9 @@ public class MapFragment extends Fragment {
         String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
         String nextPath = pathOrder.get(currentZoneOrder-1);
         notice.setVisibility(View.VISIBLE);
-        txtMapArea.setText("   "+beacon.optString("name"));     //"進入導覽"顯示名稱
+
+        String zoneName = getZoneName(mCurrentZone);
+        txtMapArea.setText(zoneName);     //"進入導覽"顯示名稱
 
         if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
             //Change field

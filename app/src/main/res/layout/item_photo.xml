@@ -12,6 +12,7 @@
         android:scaleX="0.9"
         android:scaleY="0.9"
         android:layout_centerInParent="true"
+
         />
 
 </RelativeLayout>

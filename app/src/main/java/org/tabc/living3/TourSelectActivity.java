@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.TourViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 onBackPressed();
             }
         });
@@ -65,14 +68,23 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
             confirmBtn.setVisibility(View.INVISIBLE);
 
             final Dialog dialog = new Dialog(TourSelectActivity.this, R.style.dialog_coach_normal);
-            dialog.setContentView(R.layout.alertdialog_coach_tour_select);
+            dialog.setContentView(R.layout.alertdialog_coach);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
 
-            Button understand = (Button) dialog.findViewById(R.id.btn_understand_tour_select);
+            ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+            bg.setBackgroundResource(R.drawable.tour_select_coachmarks);
+
+            TextView text = (TextView) dialog.findViewById(R.id.txt_coach_button);
+            text.setVisibility(View.VISIBLE);
+            text.setText(R.string.tour_select_guide);
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach);
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     Button confirmBtn = (Button) findViewById(R.id.btn_confirm_tour);
                     confirmBtn.setVisibility(View.VISIBLE);
 
@@ -136,6 +148,8 @@ public class TourSelectActivity extends AppCompatActivity implements ICoachProto
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     Intent intent = new Intent(TourSelectActivity.this, SurveyActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);

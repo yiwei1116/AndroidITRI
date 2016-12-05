@@ -29,6 +29,7 @@ import android.widget.ToggleButton;
 import org.tabc.living3.CommunicationWithServer;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
@@ -109,8 +110,6 @@ public class TemplateContext extends Fragment {
         db = dbManager.getReadableDatabase();
         cursor_zone = db.query(table_name_zone, null, null, null, null, null, null);
         cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
-
-
     }
 
 
@@ -142,6 +141,7 @@ public class TemplateContext extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 getActivity().onBackPressed();
             }
         });
@@ -304,6 +304,7 @@ public class TemplateContext extends Fragment {
             btnNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getActivity());
 
                     MTP = new MergeTemplatePic();
                     bundle1 = new Bundle();

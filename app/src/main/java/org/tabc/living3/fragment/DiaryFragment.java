@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 
 
 /**
@@ -113,9 +114,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener{
                 choosePhoto();
                 break;
 
-
         }
-
+        ButtonSound.play(getActivity());
     }
     @TargetApi(Build.VERSION_CODES.M)
     public void takePhoto(){

@@ -15,9 +15,11 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -34,6 +36,7 @@ import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
@@ -42,6 +45,7 @@ import org.tabc.living3.util.IYoutube;
 import org.tabc.living3.util.MainButton;
 import org.tabc.living3.util.SQLiteDbManager;
 import org.tabc.living3.util.TimeUtilities;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -105,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 onBackPressed();
             }
         });
@@ -196,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
         @Override
         public void onClick(View v) {
+            boolean isButtonPlaySound = false;
 
             switch (v.getId()) {
                 /**
@@ -205,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     // close font button and let text to speech keep going while press info button
                     setFontNormalIfActive();
                     if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_normal)) {
+                        isButtonPlaySound = true;
                         setInfoActive();
 
                         EquipmentTabFragment currentInfo = (EquipmentTabFragment) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -252,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     if (diaryBtn.isBackgroundEqual(R.drawable.btn_main_diary_normal)) {
+                        isButtonPlaySound = true;
                         replaceFragment(diaryFragment);
                     }
                     break;
@@ -264,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     setFontNormalIfActive();
                     stopTexttoSpeech();
                     if (mapBtn.isBackgroundEqual(R.drawable.btn_main_map_normal)) {
+                        isButtonPlaySound = true;
                         replaceFragment(mapFragment);
                     }
                     break;
@@ -274,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     // close font button while press the sound button
                     setFontNormalIfActive();
                     if (soundBtn.isBackgroundEqual(R.drawable.btn_main_sound_normal)){
+                        isButtonPlaySound = true;
                         setSoundActive();
                         final ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
@@ -303,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                 case R.id.btn_font_main:
                     // continue text to speech while press the font button
                     if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_normal)) {
+                        isButtonPlaySound = true;
                         setFontActive();
 
                         Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.sound_font_in);
@@ -342,6 +354,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                     break;
 
             }
+            if (isButtonPlaySound)
+                ButtonSound.play(getApplication());
         }
     }
 
@@ -749,37 +763,68 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         boolean isNotFirst = settings.getBoolean(ICoachProtocol.MAP_INFO_COACH, false);
 
         if (!isNotFirst) {
-            final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_info);
-            dialog.setContentView(R.layout.alertdialog_coach_info);
+            // calculate physical screen size in inches
+            // if it is smaller than 5.0 than apply R.style.dialog_coach_small
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
+            double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+            double screenInches = Math.sqrt(x+y);
+            int style = R.style.dialog_coach_normal;
+            Log.d("GGG", String.valueOf(screenInches));
+            if (screenInches <= 5.0)
+                style = R.style.dialog_coach_small;
+
+            final Dialog dialog = new Dialog(MainActivity.this, style);
+            dialog.setContentView(R.layout.alertdialog_coach);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
 
-            Button understand = (Button) dialog.findViewById(R.id.btn_coach_info);
+            ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+            bg.setBackgroundResource(R.drawable.coachmark_info);
+
+            TextView text = (TextView) dialog.findViewById(R.id.txt_coach_middle);
+            text.setVisibility(View.VISIBLE);
+            text.setText(R.string.coach_swip_leftright);
+
+            final int finalStyle = style;
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach);
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.MAP_INFO_COACH, true);
                     editor.apply();
 
-                    showMapCoachQuestion();
+                    showMapCoachQuestion(finalStyle);
                     dialog.dismiss();
                 }
             });
         }
     }
 
-    private void showMapCoachQuestion() {
-        final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_question);
-        dialog.setContentView(R.layout.alertdialog_coach_question);
+    private void showMapCoachQuestion(int style) {
+        final Dialog dialog = new Dialog(MainActivity.this, style);
+        dialog.setContentView(R.layout.alertdialog_coach);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
 
-        Button understand = (Button) dialog.findViewById(R.id.btn_coach_question);
+        ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+        bg.setBackgroundResource(R.drawable.coachmark_question);
+
+        TextView text = (TextView) dialog.findViewById(R.id.txt_coach_middle);
+        text.setVisibility(View.VISIBLE);
+        text.setText(R.string.coach_question);
+
+        Button understand = (Button) dialog.findViewById(R.id.btn_coach);
         understand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 dialog.dismiss();
             }
         });
@@ -791,14 +836,23 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
         if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
-            dialog.setContentView(R.layout.alertdialog_coach_mode_swapup);
+            dialog.setContentView(R.layout.alertdialog_coach);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
 
-            Button understand = (Button) dialog.findViewById(R.id.btn_coach_up);
+            ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+            bg.setBackgroundResource(R.drawable.coachmark_swipup);
+
+            TextView text = (TextView) dialog.findViewById(R.id.txt_coach_button);
+            text.setVisibility(View.VISIBLE);
+            text.setText(R.string.coach_swapup);
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach);
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.MODE_SELECT_COACH, true);
@@ -816,14 +870,23 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
         if (!isNotFirst) {
             final Dialog dialog = new Dialog(MainActivity.this, R.style.dialog_coach_normal);
-            dialog.setContentView(R.layout.alertdialog_coach_equip_slide);
+            dialog.setContentView(R.layout.alertdialog_coach);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
 
-            Button understand = (Button) dialog.findViewById(R.id.btn_coach_left);
+            ImageView bg = (ImageView) dialog.findViewById(R.id.bg_coach);
+            bg.setBackgroundResource(R.drawable.tour_select_coachmarks);
+
+            TextView text = (TextView) dialog.findViewById(R.id.txt_coach_button);
+            text.setVisibility(View.VISIBLE);
+            text.setText(R.string.coach_swip_leftright);
+
+            Button understand = (Button) dialog.findViewById(R.id.btn_coach);
             understand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ButtonSound.play(getApplication());
+
                     SharedPreferences settings = getSharedPreferences(ICoachProtocol.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putBoolean(ICoachProtocol.DEVICE_COACH, true);
@@ -834,6 +897,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             });
         }
     }
+
     public void shutTexttoSpeech(){
         if( textToSpeech != null ) {
             textToSpeech.stop();

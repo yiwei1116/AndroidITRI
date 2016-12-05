@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import org.tabc.living3.MainActivity;
@@ -90,13 +91,18 @@ public class CustomPhoto extends Fragment  {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_nextstep:
+                        if(photoUri==null){
+                            Toast.makeText(getActivity(),R.string.please_select_the_picture, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
                         nextStep();
+                        }
                         break;
                 }
                 return false;
             }
         });
-      CustomPhoto();
+     // CustomPhoto();
         return view;
     }
     @Override
@@ -122,6 +128,7 @@ public class CustomPhoto extends Fragment  {
             cursor.moveToPosition(i);
             int id = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Images.Media._ID));// ID
+
             thumbs.add(id + "");
 
             String filepath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));//抓路徑
@@ -133,13 +140,15 @@ public class CustomPhoto extends Fragment  {
         cursor.close();
 
         imageAdapter = new ImageAdapter(getActivity(), thumbs);
-        gridView.setAdapter(imageAdapter);
         imageAdapter.notifyDataSetChanged();
+        gridView.setAdapter(imageAdapter);
+
         gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long id) {
 
                 photoUri = imagePaths.get(position);
+                Log.e("position",String.valueOf(position));
             }
         });
     }
@@ -160,10 +169,22 @@ public class CustomPhoto extends Fragment  {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        CustomPhoto();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity) getActivity()).showDefaultToolbar();
         ((MainActivity) getActivity()).setToolbarTitle(R.string.nothing);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        imagePaths.clear();
     }
 
     @Override

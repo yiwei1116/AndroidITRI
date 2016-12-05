@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
@@ -104,6 +105,7 @@ public class ChooseTemplate extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
                 getActivity().onBackPressed();
             }
         });
@@ -120,17 +122,15 @@ public class ChooseTemplate extends Fragment {
         btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 TC = new TemplateContext();
                 Bundle bundle = new Bundle();
                 bundle.putString("Template", String.valueOf(viewPageIndex));
                 if (flagSelect.equals("true")) {
-
-
                     bundle.putString("picPath", picPath);
                 } else {
-
                     bundle.putString("picPath", photoUri);
-
                 }
 
                 TC.setArguments(bundle);

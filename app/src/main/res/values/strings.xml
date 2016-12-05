@@ -226,7 +226,7 @@
     <string name="diary_camera">相機</string>
     <string name="diary_photo">相簿</string>
     <string name="custom_camera_redo">重拍</string>
-
+    <string name="please_select_the_picture">請選取照片</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
+import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
@@ -119,6 +120,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 getActivity().onBackPressed();
             }
         });
@@ -169,6 +172,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         nextIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 RelativeLayout intro = (RelativeLayout) view.findViewById(R.id.rlayout_mode_intro);
                 intro.setVisibility(View.INVISIBLE);
 
@@ -236,6 +241,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getActivity());
+
                 int numberOfDevices = dbManager.getNumbersOfDevicesFromMode(modeId);
 
                 EquipmentTabFragment equipTabFragment = EquipmentTabFragment.newInstance(numberOfDevices, modeId, modeName);

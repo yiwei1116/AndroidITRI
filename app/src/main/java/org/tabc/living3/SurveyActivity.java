@@ -17,6 +17,8 @@ import android.widget.TextView;
 import org.tabc.living3.R;
 
 import org.json.JSONException;
+import org.tabc.living3.util.ButtonSound;
+import org.tabc.living3.util.HelperFunctions;
 
 public class SurveyActivity extends AppCompatActivity {
     public static SurveyActivity instance = null;
@@ -24,7 +26,7 @@ public class SurveyActivity extends AppCompatActivity {
     private int tourIndex;
     private boolean isEnglish;
     private boolean menuHide = true;
-
+    private HelperFunctions helpFunc;
     private CommunicationWithServer comm;
     private int gender = 0;
     private int age = 0;
@@ -78,6 +80,8 @@ public class SurveyActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 pageGender();
                 dialog.dismiss();
             }
@@ -85,6 +89,8 @@ public class SurveyActivity extends AppCompatActivity {
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonSound.play(getApplication());
+
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(MainActivity.GET_IS_ENGLISH, isEnglish);
@@ -1142,7 +1148,7 @@ public class SurveyActivity extends AppCompatActivity {
 
                 // upload to server
                 try {
-                    comm.uploadSurveyData(
+                    helpFunc.uploadSurveyData(
                             name,
                             mail,
                             gender,
@@ -1173,7 +1179,7 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // upload to server
                 try {
-                    comm.uploadSurveyData(
+                    helpFunc.uploadSurveyData(
                             name,
                             mail,
                             gender,
