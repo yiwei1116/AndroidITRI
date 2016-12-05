@@ -424,17 +424,13 @@ public class HelperFunctions extends Application{
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
                 String image = encodeImage;
-
                 //Getting Image Name
                 String name = "abc.jpeg";
-
                 //Creating parameters
                 Map<String,String> params = new Hashtable<String, String>();
-
                 //Adding parameters
                 params.put("picture_data", image);
                 params.put("picture_name", name);
-
                 //returning parameters
                 return params;
             }
@@ -448,8 +444,69 @@ public class HelperFunctions extends Application{
 
 
     // yiwei1116 upload function
-    public void uploadHipsterContentData() {
+    public void uploadHipsterContentData(int zone_id, String filePath, String content, String picture_name, String combine_name, int hipster_template_id, int hipster_text_id) {
+        // SQLiteDatabase db = manager.getReadableDatabase();
+        // Cursor cursor = db.rawQuery("");
+        try {
+            // parse input name to get the file
+            File picture = new File(filePath, picture_name);
+            File combine = new File(filePath, combine_name);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
+            Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(picture));
+            Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combine));
 
+            pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+
+            byte[] pictureBytes = outputStream.toByteArray();
+            byte[] combineBytes = outputStream1.toByteArray();
+            final String pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
+            final String combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
+
+            JSONObject uploadObj = new JSONObject();
+            uploadObj.put("zone_id", zone_id);
+            uploadObj.put("content", content);
+            uploadObj.put("picture_name", picture_name);
+            uploadObj.put("picture_data", pictureByteImage);
+            uploadObj.put("combine_name", combine_name);
+            uploadObj.put("combine_data", combineByteImage);
+            uploadObj.put("hipster_template_id", hipster_template_id);
+            uploadObj.put("hipster_text_id", hipster_text_id);
+            final String uploadString = uploadObj.toString();
+
+            StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.hipsterContentURL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            Log.e("response", s);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            //Dismissing the progress dialog
+                            Log.e("volley error", String.valueOf(volleyError));
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    //Converting Bitmap to String
+                    //Getting Image Name
+                    //Creating parameters
+                    Map<String,String> params = new Hashtable<String, String>();
+                    //Adding parameters
+                    params.put("upload_hipster", uploadString);
+                    //returning parameters
+                    return params;
+                }
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(hipsterUploadRequest);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
