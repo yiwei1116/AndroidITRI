@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -59,6 +60,7 @@ public class MapFragment extends Fragment {
     private static final String TAG = "MapFragment";
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
+    DisplayMetrics metrics = new DisplayMetrics();
     JavaScriptInterface mJavaScriptInterface;
     private WebView mWebViewMap;
     private RelativeLayout notice;      //進入導覽
@@ -113,6 +115,10 @@ public class MapFragment extends Fragment {
         mFileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
         pathOrder = dbManager.querySvgId();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
+
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        //Log.e("5465465","wid:"+metrics.widthPixels+"  hei:"+metrics.heightPixels);
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -147,8 +153,6 @@ public class MapFragment extends Fragment {
                 if (zoneOrder2.get(i) == 19)           //討論終點end條件
                     break;
             }
-            for(int i = 0;i<zoneOrder2.size();i++)
-                Log.e("dfsgsrg",zoneOrder2.get(i)+"");
         }catch(JSONException e){}
 
         // set toolbar title
@@ -293,11 +297,12 @@ public class MapFragment extends Fragment {
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-        //mWebViewMap.setInitialScale(180);
+        mWebViewMap.setInitialScale(150);
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
-        //websettings.setSupportZoom(false);  // do not remove this
+        //websettings.setSupportZoom(true);  // do not remove this
         websettings.setBuiltInZoomControls(true); //顯示放大縮小 controller
+        websettings.setDisplayZoomControls(false);
         websettings.setAllowFileAccessFromFileURLs(true); // do not remove this
         websettings.setSupportMultipleWindows(false);
         websettings.setJavaScriptCanOpenWindowsAutomatically(false);
@@ -384,6 +389,8 @@ public class MapFragment extends Fragment {
     {
         mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
+        // Log.e(TAG,"Enter next zone");
+        mWebViewMap.loadUrl("javascript: setScreenFocus("+mCurrentZone+","+metrics.widthPixels+","+metrics.widthPixels+")");
 
         String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
         String nextPath = pathOrder.get(currentZoneOrder-1);
@@ -416,7 +423,7 @@ public class MapFragment extends Fragment {
             }
         }
         mLastSacnBeacon = beacon;
-        Log.e("tgftdfhfdgh","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
+        //Log.e("start,end","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
     }
     public Handler getJsHandler() {
         return jsHandler;
@@ -449,6 +456,7 @@ public class MapFragment extends Fragment {
                         case JavaScriptInterface.SVGLOAD:
                             isSVGLOADED = true;
                             mWebViewMap.loadUrl("javascript: setTestClick()");
+                            mWebViewMap.loadUrl("javascript: setScreenFocus("+ (mCurrentZone==0?1:mCurrentZone) + ","+metrics.widthPixels+","+metrics.widthPixels+")");
                             String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
                             String nextPath = (currentZoneOrder<=0)?"":pathOrder.get(currentZoneOrder-1);
                             for(int i = 0; i<currentZoneOrder;i++)
