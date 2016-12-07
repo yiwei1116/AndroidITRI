@@ -42,7 +42,7 @@
         android:layout_below="@+id/title_area_fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:paddingBottom="4dp"
+        android:paddingBottom="16dp"
         android:paddingLeft="@dimen/content_padding_rl"
         android:paddingRight="@dimen/content_padding_rl"
         android:textColor="@color/colorWhite"

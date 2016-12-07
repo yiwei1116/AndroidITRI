@@ -137,6 +137,11 @@ public class ModeSelectFragment extends Fragment {
         super.onStart();
         TextView modeTitle = (TextView) view.findViewById(R.id.txt_mode_select);
         String title = String.valueOf(modeNumber) + getResources().getString(R.string.mode_select_title);
+        if (((MainActivity) getActivity()).isEnglish()) {
+            title = String.valueOf(modeNumber) + " " + getResources().getString(R.string.mode_select_title);
+            if (modeNumber > 1)
+                title += "s";
+        }
         modeTitle.setText(title);
 
         GridView modeGrid = (GridView) view.findViewById(R.id.gridview_mode_select);
