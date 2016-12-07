@@ -7,14 +7,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -41,7 +46,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -202,13 +206,34 @@ public class HelperFunctions extends Application{
     }
 
     // upload should include : hipster_content, survey_result
-    public JSONObject packHipsterContentData(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
+    public JSONObject packHipsterContentData(String content, String picture, String combine, String filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException, FileNotFoundException {
         JSONObject uploadObject = new JSONObject();
-        uploadObject.put("content", textContent);
-        uploadObject.put("combine_picture", picture);
+        uploadObject.put("content", content);
+        uploadObject.put("picture_name", picture);
+        uploadObject.put("combine_name", combine);
         uploadObject.put("hipster_template_id", hipsterTemplateId);
         uploadObject.put("hipster_text_id", hipsterTextId);
         uploadObject.put("zone_id", zoneId);
+
+        File pictureFile = new File(filepath, picture);
+        File combineFile = new File(filepath, combine);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
+        Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
+        Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile));
+
+        pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+
+        byte[] pictureBytes = outputStream.toByteArray();
+        byte[] combineBytes = outputStream1.toByteArray();
+        final String pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
+        final String combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
+
+        uploadObject.put("picture_data", pictureByteImage);
+        uploadObject.put("combine_data", combineByteImage);
+
         return uploadObject;
     }
 
@@ -232,7 +257,7 @@ public class HelperFunctions extends Application{
     }
 
     // UPLOAD to "survey2" table
-    public JSONObject packSurveyTwoData (int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
+    public JSONObject packFeedbackData (int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
         JSONObject uploadObject = new JSONObject();
         uploadObject.put("attitude", attitude);
         uploadObject.put("functionality", functionality);
@@ -317,74 +342,12 @@ public class HelperFunctions extends Application{
         return object;
     }
 
-    // 奕崴呼叫此函數 should call this function
-    // 文字內容，照片檔名，版型id，罐頭文字id，zoneid
-    public void uploadHipsterContent(String textContent, String picture, int hipsterTemplateId, int hipsterTextId, int zoneId) throws JSONException {
-        JSONObject jsonObject = packHipsterContentData(textContent, picture, hipsterTemplateId, hipsterTextId, zoneId);
-        uploadJsonData("hipster_content", jsonObject, DatabaseUtilizer.hipsterContentURL);
-    }
-
-    public void uploadSurveyData(String name, String email, int gender, int age, int education, int career, int exp, int salary, int location, int house_type, int family_type, int fimily_member, int know_way) throws JSONException {
-        JSONObject jsonObject = packSurveyData(name, email, gender, age, education, career, exp, salary, location, house_type, family_type, fimily_member, know_way);
-        uploadJsonData("survey", jsonObject, DatabaseUtilizer.surveyOneURL);
-    }
-
-    public void uploadSecondSurveyData(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) throws JSONException {
-        JSONObject jsonObject = packSurveyTwoData( attitude,  functionality,  visual,  operability,  user_friendly,  price,  maintenance,  safety,  energy,  first_choise,  second_choise,  third_choise,  fourth_choise,  fifth_choise,  first_consider,  second_consider,  third_consider,  fourth_consider,  fifth_consider,  subscription1,  subscription2,  subscription3,  install1,  install2,  install3,  install4,  install5,  impression1,  impression2,  impression3,  impression4,  impression5,  buy,  reasonable_price);
-        uploadJsonData("survey_two", jsonObject, DatabaseUtilizer.surveyTwoURL);
-    }
-
     // type 1
-    public void uploadDeviceLikeAndReadCount(int typeId, int types[]) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = packLikeReadCount(1, typeId, types);
+    public void uploadDeviceLikeAndReadCount(int typeId, int types[]) throws JSONException {
+        JSONObject jsonObject = packLikeReadCount(1, typeId, types);
+        final String uploadString = jsonObject.toString();
 
-            // TODO: not sure about the server url
-            uploadJsonData("device_counts", jsonObject, DatabaseUtilizer.counterURL);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // type 2
-    public void uploadModeLikeAndReadCount(int typeId, int types[]) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = packLikeReadCount(2, typeId, types);
-
-            // TODO: not sure about the server url
-            uploadJsonData("mode_counts", jsonObject, DatabaseUtilizer.counterURL);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // type 3
-    public void uploadZoneLikeAndReadCount(int typeId, int types[]) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject = packLikeReadCount(3, typeId, types);
-
-            // TODO: not sure about the server url
-            uploadJsonData("zone_counts", jsonObject, DatabaseUtilizer.counterURL);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // second method
-    /////// upload using android Volley
-    public void uploadImage() throws FileNotFoundException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        File rootDir = Environment.getExternalStorageDirectory();
-        File f = new File(rootDir.getAbsolutePath() + "/itri", "photofds.png");
-        Bitmap bmp = BitmapFactory.decodeStream(new FileInputStream(f));
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] imageBytes = outputStream.toByteArray();
-        final String encodeImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.hipsterContentURL,
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -395,62 +358,268 @@ public class HelperFunctions extends Application{
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        Log.e("volley error", String.valueOf(volleyError));
+                        NetworkResponse networkResponse = volleyError.networkResponse;
+                        if (networkResponse != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                        }
+
+                        if (volleyError instanceof TimeoutError) {
+                            Log.e("Volley", "TimeoutError");
+                        }else if(volleyError instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (volleyError instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (volleyError instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (volleyError instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (volleyError instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
                     }
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
-                String image = encodeImage;
-                //Getting Image Name
-                String name = "abc.jpeg";
                 //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
+                HashMap<String,String> params = new HashMap<String, String>();
                 //Adding parameters
-                params.put("picture_data", image);
-                params.put("picture_name", name);
+                params.put("device_counts", uploadString);
                 //returning parameters
                 return params;
             }
         };
-        //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        //Adding request to the queue
-        requestQueue.add(stringRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(hipsterUploadRequest);
     }
 
+    // type 2
+    public void uploadModeLikeAndReadCount(int typeId, int types[]) throws JSONException {
+        JSONObject jsonObject = packLikeReadCount(2, typeId, types);
+        final String uploadString = jsonObject.toString();
 
-    // yiwei1116 upload function
-    public void uploadHipsterContentData(int zone_id, String filePath, String content, String picture_name, String combine_name, int hipster_template_id, int hipster_text_id) {
-        // SQLiteDatabase db = manager.getReadableDatabase();
-        // Cursor cursor = db.rawQuery("");
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e("response", s);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        NetworkResponse networkResponse = volleyError.networkResponse;
+                        if (networkResponse != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                        }
+
+                        if (volleyError instanceof TimeoutError) {
+                            Log.e("Volley", "TimeoutError");
+                        }else if(volleyError instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (volleyError instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (volleyError instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (volleyError instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (volleyError instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                //Creating parameters
+                HashMap<String,String> params = new HashMap<String, String>();
+                //Adding parameters
+                params.put("mode_counts", uploadString);
+                //returning parameters
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(hipsterUploadRequest);
+    }
+
+    // type 3
+    public void uploadZoneLikeAndReadCount(int typeId, int types[]) throws JSONException {
+        JSONObject jsonObject = packLikeReadCount(3, typeId, types);
+        final String uploadString = jsonObject.toString();
+
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e("response", s);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        NetworkResponse networkResponse = volleyError.networkResponse;
+                        if (networkResponse != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                        }
+
+                        if (volleyError instanceof TimeoutError) {
+                            Log.e("Volley", "TimeoutError");
+                        }else if(volleyError instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (volleyError instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (volleyError instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (volleyError instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (volleyError instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                //Creating parameters
+                HashMap<String,String> params = new HashMap<String, String>();
+                //Adding parameters
+                params.put("zone_counts", uploadString);
+                //returning parameters
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(hipsterUploadRequest);
+
+    }
+
+    public void uploadSurvey(int gender, int age, int education, int career, int experience, int salary, int location, int house_type, int family_type, int family_member, int know_way, String name, String email) {
         try {
-            // parse input name to get the file
-            File picture = new File(filePath, picture_name);
-            File combine = new File(filePath, combine_name);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
-            Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(picture));
-            Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combine));
+            JSONObject uploadObj = packSurveyData(name, email, gender, age, education, career, experience, salary, location, house_type, family_type, family_member, know_way);
+            final String uploadString = uploadObj.toString();
 
-            pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("data", uploadString);
 
-            byte[] pictureBytes = outputStream.toByteArray();
-            byte[] combineBytes = outputStream1.toByteArray();
-            final String pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
-            final String combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
+            StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.surveyOneURL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            Log.e("response", s);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            //Dismissing the progress dialog
+                            NetworkResponse networkResponse = volleyError.networkResponse;
+                            if (networkResponse != null) {
+                                Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                            }
 
-            JSONObject uploadObj = new JSONObject();
-            uploadObj.put("zone_id", zone_id);
-            uploadObj.put("content", content);
-            uploadObj.put("picture_name", picture_name);
-            uploadObj.put("picture_data", pictureByteImage);
-            uploadObj.put("combine_name", combine_name);
-            uploadObj.put("combine_data", combineByteImage);
-            uploadObj.put("hipster_template_id", hipster_template_id);
-            uploadObj.put("hipster_text_id", hipster_text_id);
+                            if (volleyError instanceof TimeoutError) {
+                                Log.e("Volley", "TimeoutError");
+                            }else if(volleyError instanceof NoConnectionError){
+                                Log.e("Volley", "NoConnectionError");
+                            } else if (volleyError instanceof AuthFailureError) {
+                                Log.e("Volley", "AuthFailureError");
+                            } else if (volleyError instanceof ServerError) {
+                                Log.e("Volley", "ServerError");
+                            } else if (volleyError instanceof NetworkError) {
+                                Log.e("Volley", "NetworkError");
+                            } else if (volleyError instanceof ParseError) {
+                                Log.e("Volley", "ParseError");
+                            }
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    //Converting Bitmap to String
+                    //Getting Image Name
+                    //Creating parameters
+                    HashMap<String,String> params = new HashMap<String, String>();
+                    //Adding parameters
+                    params.put("survey", uploadString);
+                    //returning parameters
+                    return params;
+                }
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(hipsterUploadRequest);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void uploadFeedback(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) {
+        try {
+            // pack function
+            JSONObject uploadObj = packFeedbackData(attitude, functionality, visual, operability, user_friendly, price, maintenance, safety, energy, first_choise, second_choise, third_choise, fourth_choise, fifth_choise, first_consider, second_consider, third_consider, fourth_consider, fifth_consider, subscription1, subscription2, subscription3, install1, install2, install3, install4, install5, impression1, impression2, impression3, impression4, impression5, buy, reasonable_price);
+            final String uploadString = uploadObj.toString();
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("data", uploadString);
+
+            StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.feedbackURL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String s) {
+                            Log.e("response", s);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            //Dismissing the progress dialog
+                            NetworkResponse networkResponse = volleyError.networkResponse;
+                            if (networkResponse != null) {
+                                Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                            }
+
+                            if (volleyError instanceof TimeoutError) {
+                                Log.e("Volley", "TimeoutError");
+                            }else if(volleyError instanceof NoConnectionError){
+                                Log.e("Volley", "NoConnectionError");
+                            } else if (volleyError instanceof AuthFailureError) {
+                                Log.e("Volley", "AuthFailureError");
+                            } else if (volleyError instanceof ServerError) {
+                                Log.e("Volley", "ServerError");
+                            } else if (volleyError instanceof NetworkError) {
+                                Log.e("Volley", "NetworkError");
+                            } else if (volleyError instanceof ParseError) {
+                                Log.e("Volley", "ParseError");
+                            }
+                        }
+                    }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    //Converting Bitmap to String
+                    //Creating parameters
+                    HashMap<String,String> params = new HashMap<String, String>();
+                    //Adding parameters
+                    params.put("feedback", uploadString);
+                    //returning parameters
+                    return params;
+                }
+            };
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(hipsterUploadRequest);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void uploadHipster(String content, String picture, String combine, String filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
+        try {
+            JSONObject uploadObj = packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
             final String uploadString = uploadObj.toString();
 
             StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.hipsterContentURL,
@@ -464,17 +633,33 @@ public class HelperFunctions extends Application{
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             //Dismissing the progress dialog
-                            Log.e("volley error", String.valueOf(volleyError));
+                            NetworkResponse networkResponse = volleyError.networkResponse;
+                            if (networkResponse != null) {
+                                Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                            }
+
+                            if (volleyError instanceof TimeoutError) {
+                                Log.e("Volley", "TimeoutError");
+                            }else if(volleyError instanceof NoConnectionError){
+                                Log.e("Volley", "NoConnectionError");
+                            } else if (volleyError instanceof AuthFailureError) {
+                                Log.e("Volley", "AuthFailureError");
+                            } else if (volleyError instanceof ServerError) {
+                                Log.e("Volley", "ServerError");
+                            } else if (volleyError instanceof NetworkError) {
+                                Log.e("Volley", "NetworkError");
+                            } else if (volleyError instanceof ParseError) {
+                                Log.e("Volley", "ParseError");
+                            }
                         }
                     }){
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     //Converting Bitmap to String
-                    //Getting Image Name
                     //Creating parameters
-                    Map<String,String> params = new Hashtable<String, String>();
+                    HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
-                    params.put("upload_hipster", uploadString);
+                    params.put("hipster_content", uploadString);
                     //returning parameters
                     return params;
                 }
@@ -486,5 +671,6 @@ public class HelperFunctions extends Application{
             e.printStackTrace();
         }
     }
+
 
 }
