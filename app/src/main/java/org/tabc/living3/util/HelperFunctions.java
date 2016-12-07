@@ -347,7 +347,7 @@ public class HelperFunctions extends Application{
         JSONObject jsonObject = packLikeReadCount(1, typeId, types);
         final String uploadString = jsonObject.toString();
 
-        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.deviceaddURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -399,7 +399,7 @@ public class HelperFunctions extends Application{
         JSONObject jsonObject = packLikeReadCount(2, typeId, types);
         final String uploadString = jsonObject.toString();
 
-        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.modeaddURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -451,7 +451,7 @@ public class HelperFunctions extends Application{
         JSONObject jsonObject = packLikeReadCount(3, typeId, types);
         final String uploadString = jsonObject.toString();
 
-        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counterURL,
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.zoneaddURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

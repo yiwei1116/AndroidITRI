@@ -12,7 +12,9 @@ public class DatabaseUtilizer {
     public static final String hipsterContentURL = "http://" + IP + "/interface/hipster.php"; // hipster content
     public static final String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
     public static final String feedbackURL = "http://" + IP + "/interface/survey2.php";
-    public static final String counterURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    public static final String deviceaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    public static final String modeaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    public static final String zoneaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
     public static final String filePathURLPrefix = "http://" + IP + "/web/";
 
     /*
