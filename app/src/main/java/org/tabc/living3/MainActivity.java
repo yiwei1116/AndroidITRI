@@ -288,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                         setSoundActive();
                         final ISoundInterface iSoundInterface =
                                 (ISoundInterface) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
-                        // FIXME: speak method with HashMap parameter may not be supported in the future
                         textToSpeech.speak(iSoundInterface.getIntroduction(), TextToSpeech.QUEUE_FLUSH, ttsMap);
 
                      /*   ISoundInterface iSoundInterface =
@@ -438,7 +437,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     }
 
     public void audioPause() {
-        // FIXME: if soundPlayr != null
         if (soundPlayer != null)
             soundPlayer.pause();
         pauseButton.setVisibility(View.GONE);

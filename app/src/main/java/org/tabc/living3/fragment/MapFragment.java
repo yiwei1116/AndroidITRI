@@ -41,6 +41,7 @@ import org.tabc.living3.R;
 import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
 import org.tabc.living3.util.ButtonSound;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class MapFragment extends Fragment {
     private Boolean isSVGLOADED = false;
 
     private int mCurrentField = 1;
-    private int mCurrentZone;
+    private int mCurrentZone = 1;
     private int currentZoneOrder = 0;
     //private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
     private ArrayList<Integer> zoneOrder2 = new ArrayList<>();
@@ -196,7 +197,7 @@ public class MapFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                FeedbackFragment feedback = FeedbackFragment.newInstance(mCurrentZone);
+                FeedbackFragment feedback = FeedbackFragment.newInstance(mCurrentField);
                 feedback.feedbackAlertDialog(getActivity(), feedback);
                 return true;
             }
@@ -241,13 +242,14 @@ public class MapFragment extends Fragment {
     private String getFieldName(int field_id) {
         Cursor cursor = dbManager.getFieldMap(field_id);
         cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex("name_en"));
+        return cursor.getString(cursor.getColumnIndex(DatabaseUtilizer.NAME_EN));
     }
 
     private String getZoneName(int zone_id) {
         Cursor cursor = dbManager.getReadableDatabase().rawQuery("SELECT name, name_en from zone where zone_id=" + zone_id + "", null);
         cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex(isEnglish ? "name_en" : "name"));
+        return cursor.getString(cursor.getColumnIndex(isEnglish ?
+                DatabaseUtilizer.NAME_EN : DatabaseUtilizer.NAME));
     }
 
     @Override
