@@ -54,6 +54,7 @@ public class SurveyActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.survey_title);
 
         comm = LoadingActivity.getCommunicationWithServer();
+        helpFunc = new HelperFunctions();
 
 
         Bundle bundle = this.getIntent().getExtras();
