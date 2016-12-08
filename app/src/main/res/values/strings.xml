@@ -227,5 +227,6 @@
     <string name="diary_photo">相簿</string>
     <string name="custom_camera_redo">重拍</string>
     <string name="please_select_the_picture">請選取照片</string>
+    <string name="template_content">內文(30字已內)</string>
 
 </resources>

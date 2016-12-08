@@ -1,6 +1,8 @@
 package org.tabc.living3.fragment;
 
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -175,6 +178,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             mPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/" + now + ".jpeg";
             Log.e("mPath",mPath);
             //藉由View來Cache全螢幕畫面後放入Bitmap
+            addImageToGallery(mPath,getActivity());
             View mView = getActivity().getWindow().getDecorView();
             mView.setDrawingCacheEnabled(true);
             mView.buildDrawingCache();
@@ -307,9 +311,9 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         icDownload.setVisibility(View.GONE);
         textView.setVisibility(View.GONE);
         mask.setVisibility(View.VISIBLE);
-        Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
+       // Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.info_fade_in);
         function.setVisibility(View.VISIBLE);
-        function.setAnimation(fadeIn);
+        //function.setAnimation(fadeIn);
     }
     private void hideStoreLayout(){
 
@@ -357,5 +361,15 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
             layout.addView(pic, params);
         }
+    public static void addImageToGallery(final String filePath, final Context context) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, filePath);
+
+        context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
 
 }
