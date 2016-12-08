@@ -88,6 +88,7 @@ public class TemplateContext extends Fragment {
     private boolean flag;
     private DisplayMetrics metrics;
     private Bitmap sourceBitmap;
+    private Boolean isEnglish;
     public TemplateContext() {
 
     }
@@ -110,6 +111,7 @@ public class TemplateContext extends Fragment {
         db = dbManager.getReadableDatabase();
         cursor_zone = db.query(table_name_zone, null, null, null, null, null, null);
         cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
+        isEnglish = ((MainActivity) getActivity()).isEnglish();
     }
 
 
@@ -267,29 +269,50 @@ public class TemplateContext extends Fragment {
     }
 
     public void getZone() {
-        for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
+        Log.e("len",String.valueOf(isEnglish));
+        if(isEnglish) {
 
-            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name")));
+            for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
+
+            arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name_en")));
 
 
         }
 
+        }
+        else {
+            for (cursor_zone.moveToFirst(); !cursor_zone.isAfterLast(); cursor_zone.moveToNext()) {
+
+                arrayList_zone_name.add(cursor_zone.getString(cursor_zone.getColumnIndex("name")));
+
+
+            }
+        }
         cursor_zone.close();
 
     }
     public void getTemplateContext(){
+        if(isEnglish) {
 
+            for (cursor_hipster_text.moveToFirst(); !cursor_hipster_text.isAfterLast(); cursor_hipster_text.moveToNext()) {
+                RadioButton radioButton = new RadioButton(getActivity());
+                radioButton.setText(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content_en")));
+                radioButton.setTextSize(20);
+                radiogroup1.addView(radioButton);
+            }
 
-        for (cursor_hipster_text.moveToFirst(); !cursor_hipster_text.isAfterLast(); cursor_hipster_text.moveToNext()) {
+        }
+    else {
+            for (cursor_hipster_text.moveToFirst(); !cursor_hipster_text.isAfterLast(); cursor_hipster_text.moveToNext()) {
                 RadioButton radioButton = new RadioButton(getActivity());
                 radioButton.setText(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content")));
                 radioButton.setTextSize(20);
                 radiogroup1.addView(radioButton);
-            //arrayList_hipster_text.add(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content")));
+                //arrayList_hipster_text.add(cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("content")));
 
-               // Log.e("hipster_text",arrayList_hipster_text.get(cursor_hipster_text.getPosition()));
+                // Log.e("hipster_text",arrayList_hipster_text.get(cursor_hipster_text.getPosition()));
+            }
         }
-
         cursor_hipster_text.close();
 
 
