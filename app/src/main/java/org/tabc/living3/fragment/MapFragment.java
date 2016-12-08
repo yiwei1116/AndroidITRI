@@ -307,6 +307,14 @@ public class MapFragment extends Fragment {
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
         mWebViewMap.setInitialScale(150);
 
+        if (Build.VERSION.SDK_INT >= 19) {
+            // chromium, enable hardware acceleration
+            mWebViewMap.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            // older android version, disable hardware acceleration
+            mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
         //websettings.setSupportZoom(true);  // do not remove this
