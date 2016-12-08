@@ -29,6 +29,7 @@
 		});
         function setBG(url) {
 			$("body").css('background-image',url);
+			//$("body").css('background-size','cover');
 		}
 		function setSVGLoad(svg, region, next, oP,nP) {
 			$("body").load(svg, function() {
@@ -156,11 +157,11 @@
 
 
         }
-        function setScreenFocus(region,width,height)     //
+        function setScreenFocus(region,width,height,zoomLevel)     //
         {
-            $('html,body').animate({scrollTop:$("#mn"+region).offset().top-$('svg').offset().top-(height/2/1.5)},400);
-            $('html,body').animate({scrollLeft:$("#mn"+region).offset().left-$('svg').offset().left-(width/2/1.5)},400);
-            //alert("offset: " + $("#mn"+region).offset().left +" scrollLeft: "+$("#mn"+region).scrollLeft())
+            $('html,body').animate({scrollLeft:$("#mn"+region).offset().left-$('svg').offset().left-(width/2/zoomLevel)},400);
+            $('html,body').animate({scrollTop:$("#mn"+region).offset().top-$('svg').offset().top-(height/2/zoomLevel)},400);
+
         }
 		function loadSVGLater()
 		{

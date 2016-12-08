@@ -83,6 +83,7 @@ public class MapFragment extends Fragment {
     private ArrayList<String> pathOrder;
     private boolean isEnglish;
 
+    private float scaleLevel;
 
     public MapFragment() {
     }
@@ -118,7 +119,6 @@ public class MapFragment extends Fragment {
         isEnglish = ((MainActivity) getActivity()).isEnglish();
 
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        //Log.e("5465465","wid:"+metrics.widthPixels+"  hei:"+metrics.heightPixels);
 
     }
 
@@ -292,7 +292,13 @@ public class MapFragment extends Fragment {
 
     private void initWebView() {
         mWebViewMap.setWebChromeClient(new WebChromeClient());
-        mWebViewMap.setWebViewClient(new WebViewClient());
+        mWebViewMap.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onScaleChanged(WebView view, float oldScale, float newScale) {
+                super.onScaleChanged(view, oldScale, newScale);
+                scaleLevel = newScale;
+            }
+        });
         mJavaScriptInterface = new JavaScriptInterface(this);
         mWebViewMap.addJavascriptInterface(mJavaScriptInterface, "Android");
         mWebViewMap.setHorizontalScrollBarEnabled(false);
@@ -300,11 +306,12 @@ public class MapFragment extends Fragment {
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
         mWebViewMap.setInitialScale(150);
+
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
         //websettings.setSupportZoom(true);  // do not remove this
-        websettings.setBuiltInZoomControls(true); //顯示放大縮小 controller
-        websettings.setDisplayZoomControls(false);
+        websettings.setBuiltInZoomControls(true);
+        websettings.setDisplayZoomControls(false);  //顯示放大縮小 controller
         websettings.setAllowFileAccessFromFileURLs(true); // do not remove this
         websettings.setSupportMultipleWindows(false);
         websettings.setJavaScriptCanOpenWindowsAutomatically(false);
@@ -387,12 +394,14 @@ public class MapFragment extends Fragment {
             }
         }
     };
+
     public void enterNextZone(JSONObject beacon) throws JSONException
     {
         mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
-        // Log.e(TAG,"Enter next zone");
-        mWebViewMap.loadUrl("javascript: setScreenFocus("+mCurrentZone+","+metrics.widthPixels+","+metrics.widthPixels+")");
+        //Log.e(TAG,"scaleLevel: "+scaleLevel);
+
+        mWebViewMap.loadUrl("javascript: setScreenFocus("+mCurrentZone+","+metrics.widthPixels+","+metrics.widthPixels+","+scaleLevel+")");
 
         String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
         String nextPath = pathOrder.get(currentZoneOrder-1);
@@ -458,7 +467,7 @@ public class MapFragment extends Fragment {
                         case JavaScriptInterface.SVGLOAD:
                             isSVGLOADED = true;
                             mWebViewMap.loadUrl("javascript: setTestClick()");
-                            mWebViewMap.loadUrl("javascript: setScreenFocus("+ (mCurrentZone==0?1:mCurrentZone) + ","+metrics.widthPixels+","+metrics.widthPixels+")");
+                            mWebViewMap.loadUrl("javascript: setScreenFocus("+ (mCurrentZone==0?1:mCurrentZone) + ","+metrics.widthPixels+","+metrics.widthPixels+","+mWebViewMap.getScale()+")");
                             String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
                             String nextPath = (currentZoneOrder<=0)?"":pathOrder.get(currentZoneOrder-1);
                             for(int i = 0; i<currentZoneOrder;i++)
