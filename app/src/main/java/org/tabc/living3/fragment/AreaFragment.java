@@ -91,10 +91,6 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
         if (getArguments() != null) {
             tourIndex = getArguments().getInt(TOUR_INDEX);
             currentZone = getArguments().getInt(ZONE);
-
-            // FIXME: if there are no beacon nearby, than currentZone set to 2
-            if (currentZone == 0)
-                currentZone = 2;
         }
 
         isEnglish = ((MainActivity) getActivity()).isEnglish();

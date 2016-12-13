@@ -54,6 +54,7 @@ public class SurveyActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.survey_title);
 
         comm = LoadingActivity.getCommunicationWithServer();
+        helpFunc = new HelperFunctions();
 
 
         Bundle bundle = this.getIntent().getExtras();
@@ -1147,24 +1148,20 @@ public class SurveyActivity extends AppCompatActivity {
                 mail = mailEdtxt.getText().toString();
 
                 // upload to server
-                try {
-                    helpFunc.uploadSurveyData(
-                            name,
-                            mail,
-                            gender,
-                            age,
-                            education,
-                            career,
-                            exp,
-                            salary,
-                            location,
-                            house_type,
-                            family_type,
-                            family_member,
-                            know_way);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                helpFunc.uploadSurvey(
+                        gender,
+                        age,
+                        education,
+                        career,
+                        exp,
+                        salary,
+                        location,
+                        house_type,
+                        family_type,
+                        family_member,
+                        know_way,
+                        name,
+                        mail);
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();
@@ -1178,24 +1175,20 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // upload to server
-                try {
-                    helpFunc.uploadSurveyData(
-                            name,
-                            mail,
-                            gender,
-                            age,
-                            education,
-                            career,
-                            exp,
-                            salary,
-                            location,
-                            house_type,
-                            family_type,
-                            family_member,
-                            know_way);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                helpFunc.uploadSurvey(
+                        gender,
+                        age,
+                        education,
+                        career,
+                        exp,
+                        salary,
+                        location,
+                        house_type,
+                        family_type,
+                        family_member,
+                        know_way,
+                        name,
+                        mail);
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();

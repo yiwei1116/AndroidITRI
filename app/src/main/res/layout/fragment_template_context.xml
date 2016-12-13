@@ -78,9 +78,8 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
-
             android:gravity="top"
-            android:hint="內文(30字已內)"
+            android:hint="@string/template_content"
             android:textColorHint="@color/btn_font_color_grey" />
 
     </FrameLayout>

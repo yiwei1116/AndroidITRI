@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import org.tabc.living3.R;
 import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
 import org.tabc.living3.util.ButtonSound;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class MapFragment extends Fragment {
     private static final String TAG = "MapFragment";
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
+    DisplayMetrics metrics = new DisplayMetrics();
     JavaScriptInterface mJavaScriptInterface;
     private WebView mWebViewMap;
     private RelativeLayout notice;      //進入導覽
@@ -73,13 +76,14 @@ public class MapFragment extends Fragment {
     private Boolean isSVGLOADED = false;
 
     private int mCurrentField = 1;
-    private int mCurrentZone;
+    private int mCurrentZone = 1;
     private int currentZoneOrder = 0;
     //private int zoneOrder[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
     private ArrayList<Integer> zoneOrder2 = new ArrayList<>();
     private ArrayList<String> pathOrder;
     private boolean isEnglish;
 
+    private float scaleLevel;
 
     public MapFragment() {
     }
@@ -113,6 +117,9 @@ public class MapFragment extends Fragment {
         mFileDirPath = String.valueOf(getActivity().getFilesDir()) + "/itri/";
         pathOrder = dbManager.querySvgId();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
+
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -147,8 +154,6 @@ public class MapFragment extends Fragment {
                 if (zoneOrder2.get(i) == 19)           //討論終點end條件
                     break;
             }
-            for(int i = 0;i<zoneOrder2.size();i++)
-                Log.e("dfsgsrg",zoneOrder2.get(i)+"");
         }catch(JSONException e){}
 
         // set toolbar title
@@ -192,7 +197,7 @@ public class MapFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                FeedbackFragment feedback = FeedbackFragment.newInstance(mCurrentZone);
+                FeedbackFragment feedback = FeedbackFragment.newInstance(mCurrentField);
                 feedback.feedbackAlertDialog(getActivity(), feedback);
                 return true;
             }
@@ -237,13 +242,14 @@ public class MapFragment extends Fragment {
     private String getFieldName(int field_id) {
         Cursor cursor = dbManager.getFieldMap(field_id);
         cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex("name_en"));
+        return cursor.getString(cursor.getColumnIndex(DatabaseUtilizer.NAME_EN));
     }
 
     private String getZoneName(int zone_id) {
         Cursor cursor = dbManager.getReadableDatabase().rawQuery("SELECT name, name_en from zone where zone_id=" + zone_id + "", null);
         cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex(isEnglish ? "name_en" : "name"));
+        return cursor.getString(cursor.getColumnIndex(isEnglish ?
+                DatabaseUtilizer.NAME_EN : DatabaseUtilizer.NAME));
     }
 
     @Override
@@ -286,18 +292,34 @@ public class MapFragment extends Fragment {
 
     private void initWebView() {
         mWebViewMap.setWebChromeClient(new WebChromeClient());
-        mWebViewMap.setWebViewClient(new WebViewClient());
+        mWebViewMap.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onScaleChanged(WebView view, float oldScale, float newScale) {
+                super.onScaleChanged(view, oldScale, newScale);
+                scaleLevel = newScale;
+            }
+        });
         mJavaScriptInterface = new JavaScriptInterface(this);
         mWebViewMap.addJavascriptInterface(mJavaScriptInterface, "Android");
         mWebViewMap.setHorizontalScrollBarEnabled(false);
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-        //mWebViewMap.setInitialScale(180);
+        mWebViewMap.setInitialScale(150);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            // chromium, enable hardware acceleration
+            mWebViewMap.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            // older android version, disable hardware acceleration
+            mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         WebSettings websettings = mWebViewMap.getSettings();
         websettings.setJavaScriptEnabled(true);
-        //websettings.setSupportZoom(false);  // do not remove this
-        websettings.setBuiltInZoomControls(true); //顯示放大縮小 controller
+        //websettings.setSupportZoom(true);  // do not remove this
+        websettings.setBuiltInZoomControls(true);
+        websettings.setDisplayZoomControls(false);  //顯示放大縮小 controller
         websettings.setAllowFileAccessFromFileURLs(true); // do not remove this
         websettings.setSupportMultipleWindows(false);
         websettings.setJavaScriptCanOpenWindowsAutomatically(false);
@@ -380,10 +402,14 @@ public class MapFragment extends Fragment {
             }
         }
     };
+
     public void enterNextZone(JSONObject beacon) throws JSONException
     {
         mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
+        //Log.e(TAG,"scaleLevel: "+scaleLevel);
+
+        mWebViewMap.loadUrl("javascript: setScreenFocus("+mCurrentZone+","+metrics.widthPixels+","+metrics.widthPixels+","+scaleLevel+")");
 
         String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
         String nextPath = pathOrder.get(currentZoneOrder-1);
@@ -416,7 +442,7 @@ public class MapFragment extends Fragment {
             }
         }
         mLastSacnBeacon = beacon;
-        Log.e("tgftdfhfdgh","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
+        //Log.e("start,end","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
     }
     public Handler getJsHandler() {
         return jsHandler;
@@ -449,6 +475,7 @@ public class MapFragment extends Fragment {
                         case JavaScriptInterface.SVGLOAD:
                             isSVGLOADED = true;
                             mWebViewMap.loadUrl("javascript: setTestClick()");
+                            mWebViewMap.loadUrl("javascript: setScreenFocus("+ (mCurrentZone==0?1:mCurrentZone) + ","+metrics.widthPixels+","+metrics.widthPixels+","+mWebViewMap.getScale()+")");
                             String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
                             String nextPath = (currentZoneOrder<=0)?"":pathOrder.get(currentZoneOrder-1);
                             for(int i = 0; i<currentZoneOrder;i++)

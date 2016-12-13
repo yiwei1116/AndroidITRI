@@ -50,7 +50,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class FeedbackFragment extends Fragment {
-    private static final String ZONE_ID = "ZONE_ID";
+    private static final String FIELD_ID = "FIELD_ID";
 
     private View view;
     private ScrollView scrollView;
@@ -61,9 +61,7 @@ public class FeedbackFragment extends Fragment {
 
     private SQLiteDbManager dbManager;
 
-    private int zoneId;
     private int field;
-    private CommunicationWithServer comm;
     private HelperFunctions helpFunc;
     private int attitude = 0;
     private int functionality = 0;
@@ -93,10 +91,10 @@ public class FeedbackFragment extends Fragment {
      *
      * @return A new instance of fragment FeedbackFragment.
      */
-    public static FeedbackFragment newInstance(int zoneId) {
+    public static FeedbackFragment newInstance(int fieldId) {
         FeedbackFragment fragment = new FeedbackFragment();
         Bundle args = new Bundle();
-        args.putInt(ZONE_ID, zoneId);
+        args.putInt(FIELD_ID, fieldId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,21 +103,11 @@ public class FeedbackFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            zoneId = getArguments().getInt(ZONE_ID);
-            // TODO: zone id = 2
-            if (zoneId == 0)
-                zoneId = 2;
+            field = getArguments().getInt(FIELD_ID);
         }
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         spinnerList = new ArrayList<String>();
-
-        try {
-            JSONObject zone = dbManager.queryZone(zoneId);
-
-            field = zone.getInt("field_id");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        helpFunc = new HelperFunctions();
     }
 
     @Override
@@ -154,7 +142,6 @@ public class FeedbackFragment extends Fragment {
         scrollView = (ScrollView) view.findViewById(R.id.scrollview_feedback);
 
         isEnglish = ((MainActivity) getActivity()).isEnglish();
-        comm = ((MainActivity) getActivity()).getCommunicationWithServer();
 
         addSpinnerList();
 
@@ -1066,19 +1053,15 @@ public class FeedbackFragment extends Fragment {
                     fifth_consider = "0";
 
                 // update feedback to server
-                try {
-                    helpFunc.uploadSecondSurveyData(attitude,
-                            functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
-                            first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
-                            first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
-                            subscription1, subscription2, subscription3,
-                            install1, install2, install3, install4, install5,
-                            impression1, impression2, impression3, impression4, impression5,
-                            buy,
-                            reasonable_price);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                helpFunc.uploadFeedback(attitude,
+                        functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
+                        first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
+                        first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
+                        subscription1, subscription2, subscription3,
+                        install1, install2, install3, install4, install5,
+                        impression1, impression2, impression3, impression4, impression5,
+                        buy,
+                        reasonable_price);
 
                 getActivity().onBackPressed();
             }

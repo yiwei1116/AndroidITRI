@@ -11,6 +11,9 @@
         var nextRegion = "";
         var oldPath = "";
         var nextPath = "";
+        var screenX = 0;
+        var screenY = 0;
+
 		// on document ready
 		$(function() {
 			// reset opacity
@@ -26,15 +29,16 @@
 		});
         function setBG(url) {
 			$("body").css('background-image',url);
+			//$("body").css('background-size','cover');
 		}
 		function setSVGLoad(svg, region, next, oP,nP) {
 			$("body").load(svg, function() {
 				// execute after floorplan.svg loaded
 				onRegionChanged(region,next,oP,nP);
-				setTimeout('Android.onSVGLoadDone()', 100);
+				setTimeout('Android.onSVGLoadDone()', 90);
 			});
 		}
-        function setTestClick()     //for demo test
+        function setTestClick()     //for demo
         {
             $( "#ma1" ).bind( "click", function() {
               Android.onMARegionClick(1);
@@ -151,6 +155,12 @@
               Android.onMNRegionClick(19);
             });
 
+
+        }
+        function setScreenFocus(region,width,height,zoomLevel)     //
+        {
+            $('html,body').animate({scrollLeft:$("#mn"+region).offset().left-$('svg').offset().left-(width/2/zoomLevel)},400);
+            $('html,body').animate({scrollTop:$("#mn"+region).offset().top-$('svg').offset().top-(height/2/zoomLevel)},400);
 
         }
 		function loadSVGLater()
