@@ -15,6 +15,7 @@ public class DatabaseUtilizer {
     public static final String deviceaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
     public static final String modeaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
     public static final String zoneaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    private final String survey1Url = "http://140.116.82.48/interface/survey.php";
     public static final String filePathURLPrefix = "http://" + IP + "/web/";
 
     /*
