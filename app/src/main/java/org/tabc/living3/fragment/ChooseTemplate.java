@@ -171,7 +171,7 @@ public class ChooseTemplate extends Fragment {
 
 
 
-        private HelperFunctions helperFunctions = new HelperFunctions(sqliteDbManager);
+        private HelperFunctions helperFunctions = new HelperFunctions();
         private LayoutInflater mLayoutInflater;
 
         public ChooseTemp(Context context){

@@ -266,11 +266,11 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
         // upload mode like and read count
         int[] empty = {};
-        try {
-            helperFunctions.uploadModeLikeAndReadCount(modeId, empty);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            helperFunctions.uploadModeLikeAndReadCount(modeId, empty);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

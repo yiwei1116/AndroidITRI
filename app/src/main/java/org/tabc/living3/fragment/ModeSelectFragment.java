@@ -158,11 +158,11 @@ public class ModeSelectFragment extends Fragment {
         super.onDestroyView();
         // upload zone like count
         int[] empty = {};
-        try {
-            helperFunctions.uploadZoneLikeAndReadCount(currentZone, empty);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            helperFunctions.uploadZoneLikeAndReadCount(currentZone, empty);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void addModeItem() throws JSONException {
