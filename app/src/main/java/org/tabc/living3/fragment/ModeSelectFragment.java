@@ -52,6 +52,7 @@ public class ModeSelectFragment extends Fragment {
     private ArrayList<Item> modeItem;
 
     private SQLiteDbManager dbManager;
+    private HelperFunctions helperFunctions;
 
     public ModeSelectFragment() {
     }
@@ -83,6 +84,7 @@ public class ModeSelectFragment extends Fragment {
         }
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        helperFunctions = new HelperFunctions(dbManager);
         try {
             modesArray = dbManager.queryModeDataWithZoneId(currentZone);
         } catch (JSONException e) {
@@ -115,6 +117,7 @@ public class ModeSelectFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                dbManager.addZoneLikeCount(currentZone);
                 return true;
             }
         });
@@ -148,6 +151,18 @@ public class ModeSelectFragment extends Fragment {
         Adapter adapter = new Adapter(this.getActivity());
 
         modeGrid.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // upload zone like count
+        int[] empty = {};
+        try {
+            helperFunctions.uploadZoneLikeAndReadCount(currentZone, empty);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addModeItem() throws JSONException {
@@ -192,6 +207,8 @@ public class ModeSelectFragment extends Fragment {
 
             // update is read to mode
             dbManager.updateModeDidRead(selectModeId);
+            // add mode read count
+            dbManager.addModeReadCount(selectModeId);
 
             // renew grid view
             this.notifyDataSetInvalidated();
@@ -213,7 +230,7 @@ public class ModeSelectFragment extends Fragment {
             Bitmap bg = null;
             try {
                 Matrix matrix = new Matrix();
-                Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
+                Bitmap bitmap = helperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
                 matrix.postScale((float) 0.25, (float) 0.25);
                 bg = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),bitmap.getHeight(), matrix, true);
             } catch (FileNotFoundException e) {

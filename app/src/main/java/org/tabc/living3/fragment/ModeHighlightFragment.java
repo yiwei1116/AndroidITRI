@@ -53,6 +53,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     private int modeId;
     private String zoneName;
     private SQLiteDbManager dbManager;
+    private HelperFunctions helperFunctions;
     private String modeName;
     private String modeIntroduction;
     private String splash_bg_vertical;
@@ -90,6 +91,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         boolean isEnglish = ((MainActivity) getActivity()).isEnglish();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        helperFunctions = new HelperFunctions(dbManager);
         try {
             JSONObject mode = dbManager.queryModeFiles(modeId);
 
@@ -128,6 +130,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                dbManager.addModeLikeCount(modeId);
                 return true;
             }
         });
@@ -153,7 +156,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
         Bitmap bg = null;
         try {
-            bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+            bg = helperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -198,11 +201,11 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
         ((MainActivity) getActivity()).setToolbarTitle(modeName);
 
-        Bitmap bg = HelperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
+        Bitmap bg = helperFunctions.getBitmapFromFile(getActivity(), splash_bg_vertical);
         final ImageView modeBg = (ImageView) view.findViewById(R.id.img_mode_highlight_bg);
         modeBg.setImageBitmap(bg);
 
-        Bitmap highlight = HelperFunctions.getBitmapFromFile(getActivity(), splash_fg_vertical);
+        Bitmap highlight = helperFunctions.getBitmapFromFile(getActivity(), splash_fg_vertical);
         ImageView modeHighlight = (ImageView) view.findViewById(R.id.img_mode_highlight_fg);
         modeHighlight.setImageBitmap(highlight);
 
@@ -223,7 +226,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
             public void onAnimationEnd(Animation animation) {
                 Bitmap blur = null;
                 try {
-                    blur = HelperFunctions.getBitmapFromFile(getActivity(), splash_blur_vertical);
+                    blur = helperFunctions.getBitmapFromFile(getActivity(), splash_blur_vertical);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -260,6 +263,14 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         ((MainActivity)getActivity()).setSoundDisabled();
 
         ((MainActivity) getActivity()).stopTexttoSpeech();
+
+        // upload mode like and read count
+        int[] empty = {};
+        try {
+            helperFunctions.uploadModeLikeAndReadCount(modeId, empty);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

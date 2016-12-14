@@ -102,6 +102,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     };
 
     private SQLiteDbManager dbManager;
+    private HelperFunctions helperFunctions;
 
     public EquipmentTabFragment() {
     }
@@ -144,6 +145,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         equipTabs = new ArrayList<>();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
+        helperFunctions = new HelperFunctions(dbManager);
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
@@ -185,6 +187,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                int curr = mViewPager.getCurrentItem();
+                dbManager.addDeviceLikeCount(equipTabs.get(curr).getDeviceId());
                 return true;
             }
         });
@@ -310,6 +314,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
         }
+
+        // upload read count and like count
+//        helperFunctions.uploadDeviceLikeAndReadCount();
 
         // remove current tab's youtube fragment immediately
         String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());
@@ -441,7 +448,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         String name = photoList.get(image_index);
                         Bitmap bitmap = null;
                         try {
-                            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                            bitmap = helperFunctions.getBitmapFromFile(getActivity(), name);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -458,7 +465,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                         String name = photoList.get(image_index);
                         Bitmap bitmap = null;
                         try {
-                            bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                            bitmap = helperFunctions.getBitmapFromFile(getActivity(), name);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -473,7 +480,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 String name = photoList.get(image_index);
                 Bitmap bitmap = null;
                 try {
-                    bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+                    bitmap = helperFunctions.getBitmapFromFile(getActivity(), name);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -550,7 +557,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         // set equipment image
         String imageName = currTab.getEquipPhotoFirst();
-        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), imageName);
+        Bitmap bitmap = helperFunctions.getBitmapFromFile(getActivity(), imageName);
         ImageView imageView = (ImageView) v.findViewById(R.id.equip_item_image_view);
         imageView.setImageBitmap(bitmap);
 
@@ -609,7 +616,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         scrollView.setTag(tag);
 
         String name = currTab.getCompanyTitleImage();
-        Bitmap bitmap = HelperFunctions.getBitmapFromFile(getActivity(), name);
+        Bitmap bitmap = helperFunctions.getBitmapFromFile(getActivity(), name);
         Drawable back = new BitmapDrawable(bitmap);
         ImageView bg = (ImageView) v.findViewById(R.id.equipment_info_title_image);
         bg.setBackgroundDrawable(back);
@@ -629,7 +636,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         TextView compLocation = (TextView) v.findViewById(R.id.equipment_info_company_location);
         compLocation.setText(currTab.getCompanyLocation());
 
-        Bitmap qrcode = HelperFunctions.getBitmapFromFile(getActivity(), currTab.getCompanyQRcode());
+        Bitmap qrcode = helperFunctions.getBitmapFromFile(getActivity(), currTab.getCompanyQRcode());
         ImageView compQRcode = (ImageView) v.findViewById(R.id.equipment_info_company_qrcode);
         compQRcode.setImageBitmap(qrcode);
     }

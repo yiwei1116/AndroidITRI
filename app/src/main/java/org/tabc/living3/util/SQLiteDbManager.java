@@ -1751,7 +1751,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cv.put("like_count",like_count);
         cursor.close();
         // update to the same field
-        writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "zone_id=" + zone_id, null);
+        writeDB.update(DatabaseUtilizer.ZONE_TABLE, cv, "zone_id=" + zone_id, null);
     }
 
     // set all mode did_read to 0 --> 振哥 to test

@@ -1,5 +1,6 @@
 package org.tabc.living3.util;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +12,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
@@ -58,25 +60,22 @@ public class HelperFunctions extends Application{
     private SQLiteDbManager manager;
     public static final String uploadUrlForHipsterContentSuffix = "http://";
 
-    public HelperFunctions(FeedbackFragment feedbackFragment) {
-        this.context = feedbackFragment.getActivity().getApplicationContext();
-        this.manager = new SQLiteDbManager(this.context);
-    }
-
     public HelperFunctions(SurveyActivity surveyActivity) {
         this.context = surveyActivity.getApplicationContext();
         this.manager = new SQLiteDbManager(this.context);
     }
 
-    public HelperFunctions() {
+    public HelperFunctions(SQLiteDbManager manager) {
+        this.manager = manager;
+    }
 
+    public HelperFunctions() {
+        //this.manager = manager;
     }
 
     public static Bitmap readImageBitmap(String internalImagePath) throws FileNotFoundException {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         File fileObj = new File(internalImagePath);
-        /*Bitmap bitmap = BitmapFactory.decodeFile(fileObj.getAbsolutePath());
-        return bitmap;*/
         InputStream inputStream = new FileInputStream(fileObj.getAbsolutePath());
         return BitmapFactory.decodeStream(inputStream, null, opt);
     }
@@ -251,7 +250,7 @@ public class HelperFunctions extends Application{
         uploadObject.put("location", location);
         uploadObject.put("house_type", house_type);
         uploadObject.put("family_type", family_type);
-        uploadObject.put("fimily_member", fimily_member);
+        uploadObject.put("family_member", fimily_member);
         uploadObject.put("know_way", know_way);
         return uploadObject;
     }
@@ -503,10 +502,7 @@ public class HelperFunctions extends Application{
         try {
             JSONObject uploadObj = packSurveyData(name, email, gender, age, education, career, experience, salary, location, house_type, family_type, family_member, know_way);
             final String uploadString = uploadObj.toString();
-
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("data", uploadString);
-
+            Log.e("sfaddgsgfdgas", "survey=" + uploadString);
             StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.surveyOneURL,
                     new Response.Listener<String>() {
                         @Override
@@ -545,11 +541,15 @@ public class HelperFunctions extends Application{
                     //Creating parameters
                     HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
+                    ///////// check is it uploadString or params
                     params.put("survey", uploadString);
+                    Log.e("checkcheckcheck", String.valueOf(params));
                     //returning parameters
                     return params;
                 }
             };
+
+            hipsterUploadRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(hipsterUploadRequest);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,8 +55,7 @@ public class SurveyActivity extends AppCompatActivity {
         toolBarTxt.setText(R.string.survey_title);
 
         comm = LoadingActivity.getCommunicationWithServer();
-        helpFunc = new HelperFunctions();
-
+        helpFunc = new HelperFunctions(SurveyActivity.this);
 
         Bundle bundle = this.getIntent().getExtras();
         tourIndex = bundle.getInt(MainActivity.GET_TOUR_INDEX);
@@ -1144,8 +1144,10 @@ public class SurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText nameEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_name);
                 EditText mailEdtxt = (EditText) findViewById(R.id.edtxt_survey_page12_mail) ;
-                name = nameEdtxt.getText().toString();
-                mail = mailEdtxt.getText().toString();
+                if (nameEdtxt.getText().toString() != null)
+                    name = nameEdtxt.getText().toString();
+                if (mailEdtxt.getText().toString() != null)
+                    mail = mailEdtxt.getText().toString();
 
                 // upload to server
                 helpFunc.uploadSurvey(
@@ -1162,6 +1164,7 @@ public class SurveyActivity extends AppCompatActivity {
                         know_way,
                         name,
                         mail);
+                Log.e("check upload", "sdfgasfsd");
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();

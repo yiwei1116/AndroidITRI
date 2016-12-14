@@ -107,7 +107,7 @@ public class FeedbackFragment extends Fragment {
         }
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         spinnerList = new ArrayList<String>();
-        helpFunc = new HelperFunctions();
+        helpFunc = new HelperFunctions(dbManager);
     }
 
     @Override
