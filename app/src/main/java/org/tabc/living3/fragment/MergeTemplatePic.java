@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,7 +59,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String photoUri,picPath;
     private ImageView mergeImage,qrcodeImage,pic;
     private TextView textView;
-    private Button icDownload,savePhone,sendMail,backTour,btnShowSucess;
+    private Button icDownload,savePhone,sendMail,backTour;
+    private ImageButton btnShowSucess;
     private Toolbar toolbar;
     private Bitmap mBitmap;
     private LinearLayout mask,function,showSuccess;
@@ -122,7 +124,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         savePhone = (Button)view.findViewById(R.id.savetoPhone);
         sendMail = (Button)view.findViewById(R.id.sendMail);
         backTour = (Button)view.findViewById(R.id.backtoMain);
-        btnShowSucess = (Button)view.findViewById(R.id.check);
+        btnShowSucess = (ImageButton)view.findViewById(R.id.check);
         savePhone.setOnClickListener(this);
         sendMail.setOnClickListener(this);
         backTour.setOnClickListener(this);

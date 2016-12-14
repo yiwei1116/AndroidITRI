@@ -1150,7 +1150,7 @@ public class SurveyActivity extends AppCompatActivity {
                     mail = mailEdtxt.getText().toString();
 
                 // upload to server
-                helpFunc.uploadSurvey(
+                helpFunc.volleyWhat(
                         gender,
                         age,
                         education,
@@ -1178,7 +1178,7 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // upload to server
-                helpFunc.uploadSurvey(
+                helpFunc.volleyWhat(
                         gender,
                         age,
                         education,
