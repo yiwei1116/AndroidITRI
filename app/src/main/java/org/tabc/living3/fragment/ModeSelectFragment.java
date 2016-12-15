@@ -85,7 +85,7 @@ public class ModeSelectFragment extends Fragment {
         }
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        helperFunctions = new HelperFunctions(getActivity());
+        helperFunctions = new HelperFunctions(getActivity().getApplicationContext());
         try {
             modesArray = dbManager.queryModeDataWithZoneId(currentZone);
         } catch (JSONException e) {
@@ -158,12 +158,12 @@ public class ModeSelectFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // upload zone like count
-        int[] empty = {};
-//        try {
-//            helperFunctions.uploadZoneLikeAndReadCount(currentZone, empty);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+
+        try {
+            helperFunctions.uploadZoneLikeAndReadCount(currentZone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addModeItem() throws JSONException {

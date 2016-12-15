@@ -80,10 +80,11 @@ public class HelperFunctions extends Application{
     public HelperFunctions(Context context) {
         this.context = context;
         this.uploadString = new String();
+        this.manager = new SQLiteDbManager(this.context);
     }
 
     public HelperFunctions() {
-        this.uploadString = new String();
+        // this.uploadString = new String();
     }
 
     public static Bitmap readImageBitmap(String internalImagePath) throws FileNotFoundException {
@@ -355,7 +356,7 @@ public class HelperFunctions extends Application{
     }
 
     // type 1
-    public void uploadDeviceLikeAndReadCount(int typeId, int types[]) throws JSONException {
+    public void uploadDeviceLikeAndReadCount(int types[]) throws JSONException {
         JSONObject jsonObject = new JSONObject();
 
         JSONArray array = new JSONArray();
@@ -628,12 +629,12 @@ public class HelperFunctions extends Application{
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
         requestQueue.add(hipsterUploadRequest);
     }
 
     // type 2
-    public void uploadModeLikeAndReadCount(int typeId, int types[]) throws JSONException {
+    public void uploadModeLikeAndReadCount(int typeId) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         SQLiteDatabase db = manager.getReadableDatabase();
 
@@ -693,13 +694,14 @@ public class HelperFunctions extends Application{
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
         requestQueue.add(hipsterUploadRequest);
     }
 
     // type 3
-    public void uploadZoneLikeAndReadCount(int typeId, int types[]) throws JSONException {
+    public void uploadZoneLikeAndReadCount(int typeId) throws JSONException {
         JSONObject jsonObject = new JSONObject();
+
         SQLiteDatabase db = manager.getReadableDatabase();
         Cursor acursor = db.rawQuery("select like_count from zone where zone_id=" + typeId, null);
         acursor.moveToFirst();
@@ -752,7 +754,7 @@ public class HelperFunctions extends Application{
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
         requestQueue.add(hipsterUploadRequest);
 
     }

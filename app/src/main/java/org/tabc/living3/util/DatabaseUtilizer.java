@@ -13,8 +13,8 @@ public class DatabaseUtilizer {
     public static final String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
     public static final String feedbackURL = "http://" + IP + "/interface/survey2.php";
     public static final String deviceaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
-    public static final String modeaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
-    public static final String zoneaddURL = "http://" + IP + "/interface/deviceadd.php"; // counter
+    public static final String modeaddURL = "http://" + IP + "/interface/modeadd.php"; // counter
+    public static final String zoneaddURL = "http://" + IP + "/interface/zoneadd.php"; // counter
     private final String survey1Url = "http://140.116.82.48/interface/survey.php";
     public static final String filePathURLPrefix = "http://" + IP + "/web/";
 
