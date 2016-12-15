@@ -791,15 +791,11 @@ public class HelperFunctions extends Application{
                     HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
                     params.put("hipster_content", uploadString);
+                    Log.e("hipster_content", uploadString);
                     //returning parameters
                     return params;
                 }
             };
-
-            hipsterUploadRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    100000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
             RequestQueue requestQueue = Volley.newRequestQueue(this.context);
             requestQueue.add(hipsterUploadRequest);
