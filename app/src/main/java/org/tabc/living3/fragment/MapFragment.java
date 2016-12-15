@@ -409,9 +409,7 @@ public class MapFragment extends Fragment {
         String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
         String nextPath = pathOrder.get(currentZoneOrder-1);
         notice.setVisibility(View.VISIBLE);
-
-        String zoneName = getZoneName(mCurrentZone);
-        txtMapArea.setText(zoneName);     //"進入導覽"顯示名稱
+        txtMapArea.setText(getZoneName(mCurrentZone));     //"進入導覽"顯示名稱
 
         if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
             //Change field

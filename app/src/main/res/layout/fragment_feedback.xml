@@ -757,9 +757,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rbtn_first_order_reason_maintainence"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
                     android:layout_marginTop="@dimen/feedback_rbtn_margin"
                     android:button="@drawable/selecter_rbtn_feedback"
                     android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_first_order_reason_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_first_order_reason_safe"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_energy"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
                 <TextView
@@ -771,7 +782,7 @@
                     android:textSize="@dimen/feedback_subtitle_font_size"
                     android:paddingBottom="@dimen/feedback_rbtn_margin"
                     android:text="@string/feedback_second_order"
-                    android:layout_below="@+id/rbtn_first_order_reason_safe" />
+                    android:layout_below="@+id/rbtn_first_order_reason_energy" />
 
                 <Spinner
                     android:layout_width="wrap_content"
@@ -855,16 +866,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rbtn_second_order_reason_maintainence"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
                     android:layout_marginTop="@dimen/feedback_rbtn_margin"
                     android:button="@drawable/selecter_rbtn_feedback"
                     android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_second_order_reason_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_second_order_reason_safe"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_energy"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_below="@+id/rbtn_second_order_reason_safe"
+                    android:layout_below="@+id/rbtn_second_order_reason_energy"
                     android:id="@+id/feedback_third_order"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
@@ -953,16 +975,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rbtn_third_order_reason_maintainence"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
                     android:layout_marginTop="@dimen/feedback_rbtn_margin"
                     android:button="@drawable/selecter_rbtn_feedback"
                     android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_third_order_reason_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_third_order_reason_safe"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_energy"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_below="@+id/rbtn_third_order_reason_safe"
+                    android:layout_below="@+id/rbtn_third_order_reason_energy"
                     android:id="@+id/feedback_fourth_order"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
@@ -1051,16 +1084,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rbtn_fourth_order_reason_maintainence"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
                     android:layout_marginTop="@dimen/feedback_rbtn_margin"
                     android:button="@drawable/selecter_rbtn_feedback"
                     android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fourth_order_reason_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_safe"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_energy"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:layout_below="@+id/rbtn_fourth_order_reason_safe"
+                    android:layout_below="@+id/rbtn_fourth_order_reason_energy"
                     android:id="@+id/feedback_fifth_order"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/feedback_subtitle_font_size"
@@ -1149,9 +1193,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rbtn_fifth_order_reason_maintainence"
+                    android:layout_marginBottom="@dimen/feedback_rbtn_margin"
                     android:layout_marginTop="@dimen/feedback_rbtn_margin"
                     android:button="@drawable/selecter_rbtn_feedback"
                     android:text="@string/feedback_feature_safe"
+                    android:textSize="@dimen/feedback_rbtn_font_size" />
+
+                <CheckBox
+                    android:id="@+id/rbtn_fifth_order_reason_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rbtn_fifth_order_reason_safe"
+                    android:layout_marginTop="@dimen/feedback_rbtn_margin"
+                    android:button="@drawable/selecter_rbtn_feedback"
+                    android:text="@string/feedback_feature_energy"
                     android:textSize="@dimen/feedback_rbtn_font_size" />
 
             </RelativeLayout>

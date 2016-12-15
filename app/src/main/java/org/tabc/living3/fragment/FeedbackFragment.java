@@ -508,6 +508,8 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_operation);
         CheckBox humility_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_humility);
         CheckBox maintainence_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_maintainence);
+        CheckBox safe_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_safe);
+        CheckBox energy_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_energy);
         function_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -538,6 +540,18 @@ public class FeedbackFragment extends Fragment {
                 first_consider += "5";
             }
         });
+        safe_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "6";
+            }
+        });
+        energy_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "7";
+            }
+        });
 
         Spinner spinner_2 = (Spinner) view.findViewById(R.id.feedback_spinner_second_order);
         spinner_2.setAdapter(lunchList);
@@ -559,6 +573,8 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_operation);
         CheckBox humility_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_humility);
         CheckBox maintainence_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_maintainence);
+        CheckBox safe_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_safe);
+        CheckBox energy_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_energy);
         function_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -589,6 +605,18 @@ public class FeedbackFragment extends Fragment {
                 second_consider += "5";
             }
         });
+        safe_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                second_consider += "6";
+            }
+        });
+        energy_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                second_consider += "7";
+            }
+        });
 
 
 
@@ -612,6 +640,8 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_operation);
         CheckBox humility_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_humility);
         CheckBox maintainence_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_maintainence);
+        CheckBox safe_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_safe);
+        CheckBox energy_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_energy);
         function_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -642,6 +672,18 @@ public class FeedbackFragment extends Fragment {
                 third_consider += "5";
             }
         });
+        safe_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                third_consider += "6";
+            }
+        });
+        energy_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                third_consider += "7";
+            }
+        });
 
 
 
@@ -665,6 +707,8 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_operation);
         CheckBox humility_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_humility);
         CheckBox maintainence_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_maintainence);
+        CheckBox safe_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_safe);
+        CheckBox energy_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_energy);
         function_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -695,6 +739,18 @@ public class FeedbackFragment extends Fragment {
                 fourth_consider += "5";
             }
         });
+        safe_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fourth_consider += "6";
+            }
+        });
+        energy_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fourth_consider += "7";
+            }
+        });
 
 
 
@@ -718,6 +774,8 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_operation);
         CheckBox humility_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_humility);
         CheckBox maintainence_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_maintainence);
+        CheckBox safe_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_safe);
+        CheckBox energy_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_energy);
         function_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -746,6 +804,18 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 fifth_consider += "5";
+            }
+        });
+        safe_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fifth_consider += "6";
+            }
+        });
+        energy_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                fifth_consider += "7";
             }
         });
 

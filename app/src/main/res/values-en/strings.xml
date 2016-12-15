@@ -192,4 +192,5 @@
     <string name="diary_photo">Album</string>
     <string name="please_select_the_picture">Please select the picture</string>
     <string name="template_content">content within thirty words</string>
+    <string name="feedback_feature_energy">Conserves energy</string>
 </resources>
