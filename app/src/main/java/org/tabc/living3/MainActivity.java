@@ -917,7 +917,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
                     if (status == TextToSpeech.SUCCESS) {
 
-                        l = Locale.CHINESE;
+                        l = isEnglish ? Locale.US : Locale.CHINESE;
                         // 目前指定的【語系+國家】TTS, 已下載離線語音檔, 可以離線發音
                         if (textToSpeech.isLanguageAvailable(l) == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
                             textToSpeech.setLanguage(l);

@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -84,7 +85,7 @@ public class ModeSelectFragment extends Fragment {
         }
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        helperFunctions = new HelperFunctions(dbManager);
+        helperFunctions = new HelperFunctions(getActivity());
         try {
             modesArray = dbManager.queryModeDataWithZoneId(currentZone);
         } catch (JSONException e) {
@@ -233,6 +234,7 @@ public class ModeSelectFragment extends Fragment {
                 Bitmap bitmap = helperFunctions.getBitmapFromFile(getActivity(), modeItem.get(position).splash_bg_vertical);
                 matrix.postScale((float) 0.25, (float) 0.25);
                 bg = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),bitmap.getHeight(), matrix, true);
+//                bg = bitmap;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
