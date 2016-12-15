@@ -562,31 +562,31 @@ public class FeedbackFragment extends Fragment {
         function_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "1";
+                second_consider += "1";
             }
         });
         beauty_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "2";
+                second_consider += "2";
             }
         });
         operation_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "3";
+                second_consider += "3";
             }
         });
         humility_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "4";
+                second_consider += "4";
             }
         });
         maintainence_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "5";
+                second_consider += "5";
             }
         });
 
@@ -615,31 +615,31 @@ public class FeedbackFragment extends Fragment {
         function_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "1";
+                third_consider += "1";
             }
         });
         beauty_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "2";
+                third_consider += "2";
             }
         });
         operation_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "3";
+                third_consider += "3";
             }
         });
         humility_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "4";
+                third_consider += "4";
             }
         });
         maintainence_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "5";
+                third_consider += "5";
             }
         });
 
@@ -668,31 +668,31 @@ public class FeedbackFragment extends Fragment {
         function_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "1";
+                fourth_consider += "1";
             }
         });
         beauty_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "2";
+                fourth_consider += "2";
             }
         });
         operation_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "3";
+                fourth_consider += "3";
             }
         });
         humility_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "4";
+                fourth_consider += "4";
             }
         });
         maintainence_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "5";
+                fourth_consider += "5";
             }
         });
 
@@ -721,31 +721,31 @@ public class FeedbackFragment extends Fragment {
         function_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "1";
+                fifth_consider += "1";
             }
         });
         beauty_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "2";
+                fifth_consider += "2";
             }
         });
         operation_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "3";
+                fifth_consider += "3";
             }
         });
         humility_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "4";
+                fifth_consider += "4";
             }
         });
         maintainence_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                first_consider += "5";
+                fifth_consider += "5";
             }
         });
 
@@ -1181,15 +1181,15 @@ public class FeedbackFragment extends Fragment {
                 if (fifth_consider == "")
                     fifth_consider = "0";
 
-//                Log.d("GG", String.format("%d\n%d %d %d %d %d %d %d %d\n%d %d %d %d %d\n%s %s %s %s %s\n%d %d %d\n%d %d %d %d %d\n%d %d %d %d %d\n%d\n%d",attitude,
-//                        functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
-//                        first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
-//                        first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
-//                        subscription1, subscription2, subscription3,
-//                        install1, install2, install3, install4, install5,
-//                        impression1, impression2, impression3, impression4, impression5,
-//                        buy,
-//                        reasonable_price));
+                Log.d("GG", String.format("%d\n%d %d %d %d %d %d %d %d\n%d %d %d %d %d\n%s %s %s %s %s\n%d %d %d\n%d %d %d %d %d\n%d %d %d %d %d\n%d\n%d",attitude,
+                        functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
+                        first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
+                        first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
+                        subscription1, subscription2, subscription3,
+                        install1, install2, install3, install4, install5,
+                        impression1, impression2, impression3, impression4, impression5,
+                        buy,
+                        reasonable_price));
 
                 // update feedback to server
                 helpFunc.uploadFeedback(attitude,

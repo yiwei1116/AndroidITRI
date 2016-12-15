@@ -670,7 +670,7 @@ public class HelperFunctions extends Application{
                     //Creating parameters
                     HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
-                    params.put("survey", uploadString);
+                    params.put("feedback", uploadString);
                     Log.e("volley", uploadString);
                     //returning parameters
                     return params;
