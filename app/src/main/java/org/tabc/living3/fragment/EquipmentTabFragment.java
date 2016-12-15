@@ -53,6 +53,7 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  equipment number can not be over 20,
@@ -145,7 +146,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         equipTabs = new ArrayList<>();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        helperFunctions = new HelperFunctions(getActivity());
+        helperFunctions = new HelperFunctions(getActivity().getApplicationContext());
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
@@ -310,13 +311,20 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         youtubePlayer.release();
 
+        ArrayList<Integer> deviceds_id = new ArrayList<>();
+        int i = 0;
         // release sound
         for (EquipmentTabInformation tab : equipTabs) {
             tab.getMediaPlayer().release();
+            deviceds_id.add(tab.getDeviceId());
         }
 
         // upload read count and like count
-//        helperFunctions.uploadDeviceLikeAndReadCount();
+        try {
+            helperFunctions.uploadDeviceLikeAndReadCount(deviceds_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         // remove current tab's youtube fragment immediately
         String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());
