@@ -74,7 +74,7 @@ public class TemplateContext extends Fragment {
     private Button btnNextStep;
     private List<String> imageList = new ArrayList<>();
     private CommunicationWithServer communicationWithServer = new CommunicationWithServer();
-    private HelperFunctions helperFunctions = new HelperFunctions();
+    private HelperFunctions helperFunctions;
     private Activity activity;
     private ArrayList<Bitmap> bitmapArray;
     private SharedPreferences settings;
@@ -108,6 +108,7 @@ public class TemplateContext extends Fragment {
         super.onCreate(savedInstanceState);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
         db = dbManager.getReadableDatabase();
+        helperFunctions = new HelperFunctions(getActivity().getApplicationContext());
         cursor_zone = db.query(table_name_zone, null, null, null, null, null, null);
         cursor_hipster_text = db.query(table_name_hipster_text,null,null,null,null,null,null);
         isEnglish = ((MainActivity) getActivity()).isEnglish();

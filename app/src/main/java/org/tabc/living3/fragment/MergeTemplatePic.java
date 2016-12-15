@@ -70,7 +70,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     public String db_name = "android_itri_1.db";
     private SQLiteDbManager dbManager;
     private Cursor cursor_template;
-    private HelperFunctions helperFunctions = new HelperFunctions();
+    private HelperFunctions helperFunctions;
     int width,length;
     Bundle bundle1;
     private List<String> imageList = new ArrayList<>();
@@ -131,6 +131,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         icDownload.setOnClickListener(this);
         btnShowSucess.setOnClickListener(this);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
+        helperFunctions = new HelperFunctions(getActivity().getApplicationContext());
         imageList = dbManager.getHipsterTemplateDownloadFiles();
         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
         for(int i=0;i<imageList.size();i++){
