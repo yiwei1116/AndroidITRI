@@ -91,7 +91,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         boolean isEnglish = ((MainActivity) getActivity()).isEnglish();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        helperFunctions = new HelperFunctions(dbManager);
+        helperFunctions = new HelperFunctions(getActivity());
         try {
             JSONObject mode = dbManager.queryModeFiles(modeId);
 

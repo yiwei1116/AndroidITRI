@@ -205,11 +205,6 @@ public class MapFragment extends Fragment {
 
         notice = (RelativeLayout) view.findViewById(R.id.rlayout_map_area);
 
-        // show notice if in debug mode
-        if (BuildConfig.DEBUG) {
-            notice.setVisibility(View.VISIBLE);
-        }
-
         Button cancel = (Button) view.findViewById(R.id.btn_cancel_map_area);
         Button enter = (Button) view.findViewById(R.id.btn_enter_map_area);
         txtMapArea = (TextView) view.findViewById(R.id.txt_map_area);

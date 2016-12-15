@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -250,17 +252,22 @@ public class FeedbackFragment extends Fragment {
         TextView question = (TextView) view.findViewById(R.id.txt_feedback_question);
         question.setText(R.string.feedback_question_1);
 
-        if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_1_very_support) {
-            attitude = 1;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_1_support) {
-            attitude = 2;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_1_soso) {
-            attitude = 3;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_1_unsupport) {
-            attitude = 4;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_1_very_unsupport) {
-            attitude = 5;
-        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_1_very_support) {
+                    attitude = 1;
+                } else if (checkedId == R.id.rbtn_feedback_1_support) {
+                    attitude = 2;
+                } else if (checkedId == R.id.rbtn_feedback_1_soso) {
+                    attitude = 3;
+                } else if (checkedId == R.id.rbtn_feedback_1_unsupport) {
+                    attitude = 4;
+                } else if (checkedId == R.id.rbtn_feedback_1_very_unsupport) {
+                    attitude = 5;
+                }
+            }
+        });
 
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
@@ -299,108 +306,149 @@ public class FeedbackFragment extends Fragment {
         question.setText(R.string.feedback_question_2);
 
         RadioGroup rGFunction = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_function);
-        if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_important) {
-            functionality = 1;
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_important) {
-            functionality = 2;
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_soso) {
-            functionality = 3;
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_unimportant) {
-            functionality = 4;
-        } else if (rGFunction.getCheckedRadioButtonId() == R.id.rbtn_feedback_function_very_unimportant) {
-            functionality = 5;
-        }
+        rGFunction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_function_very_important) {
+                    functionality = 1;
+                } else if (checkedId == R.id.rbtn_feedback_function_important) {
+                    functionality = 2;
+                } else if (checkedId == R.id.rbtn_feedback_function_soso) {
+                    functionality = 3;
+                } else if (checkedId == R.id.rbtn_feedback_function_unimportant) {
+                    functionality = 4;
+                } else if (checkedId == R.id.rbtn_feedback_function_very_unimportant) {
+                    functionality = 5;
+                }
+            }
+        });
 
         RadioGroup rGBeauty = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_beauty);
-        if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_important) {
-            visual = 1;
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_important) {
-            visual = 2;
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_soso) {
-            visual = 3;
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_unimportant) {
-            visual = 4;
-        } else if (rGBeauty.getCheckedRadioButtonId() == R.id.rbtn_feedback_beauty_very_unimportant) {
-            visual = 5;
-        }
+        rGBeauty.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_beauty_very_important) {
+                    visual = 1;
+                } else if (checkedId == R.id.rbtn_feedback_beauty_important) {
+                    visual = 2;
+                } else if (checkedId == R.id.rbtn_feedback_beauty_soso) {
+                    visual = 3;
+                } else if (checkedId == R.id.rbtn_feedback_beauty_unimportant) {
+                    visual = 4;
+                } else if (checkedId == R.id.rbtn_feedback_beauty_very_unimportant) {
+                    visual = 5;
+                }
+            }
+        });
 
         RadioGroup rGOperation = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_operability);
-        if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_very_important) {
-            operability = 1;
-        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_important) {
-            operability = 2;
-        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_soso) {
-            operability = 3;
-        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_unimportant) {
-            operability = 4;
-        } else if (rGOperation.getCheckedRadioButtonId() == R.id.rbtn_feedback_operability_very_unimportant) {
-            operability = 5;
-        }
+        rGOperation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_operability_very_important) {
+                    operability = 1;
+                } else if (checkedId == R.id.rbtn_feedback_operability_important) {
+                    operability = 2;
+                } else if (checkedId == R.id.rbtn_feedback_operability_soso) {
+                    operability = 3;
+                } else if (checkedId == R.id.rbtn_feedback_operability_unimportant) {
+                    operability = 4;
+                } else if (checkedId == R.id.rbtn_feedback_operability_very_unimportant) {
+                    operability = 5;
+                }
+            }
+        });
 
         RadioGroup rGHumility = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_humility);
-        if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_very_important) {
-            user_friendly = 1;
-        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_important) {
-            user_friendly = 2;
-        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_soso) {
-            user_friendly = 3;
-        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_unimportant) {
-            user_friendly = 4;
-        } else if (rGHumility.getCheckedRadioButtonId() == R.id.rbtn_feedback_humility_very_unimportant) {
-            user_friendly = 5;
-        }
+        rGHumility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_humility_very_important) {
+                    user_friendly = 1;
+                } else if (checkedId == R.id.rbtn_feedback_humility_important) {
+                    user_friendly = 2;
+                } else if (checkedId == R.id.rbtn_feedback_humility_soso) {
+                    user_friendly = 3;
+                } else if (checkedId == R.id.rbtn_feedback_humility_unimportant) {
+                    user_friendly = 4;
+                } else if (checkedId == R.id.rbtn_feedback_humility_very_unimportant) {
+                    user_friendly = 5;
+                }
+            }
+        });
+
 
         RadioGroup rGPrice = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_price);
-        if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_very_important) {
-            price = 1;
-        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_important) {
-            price = 2;
-        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_soso) {
-            price = 3;
-        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_unimportant) {
-            price = 4;
-        } else if (rGPrice.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_very_unimportant) {
-            price = 5;
-        }
+        rGPrice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_price_very_important) {
+                    price = 1;
+                } else if (checkedId == R.id.rbtn_feedback_price_important) {
+                    price = 2;
+                } else if (checkedId == R.id.rbtn_feedback_price_soso) {
+                    price = 3;
+                } else if (checkedId == R.id.rbtn_feedback_price_unimportant) {
+                    price = 4;
+                } else if (checkedId == R.id.rbtn_feedback_price_very_unimportant) {
+                    price = 5;
+                }
+            }
+        });
 
         RadioGroup rGMaintenance = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_maintenance);
-        if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_very_important) {
-            maintenance = 1;
-        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_important) {
-            maintenance = 2;
-        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_soso) {
-            maintenance = 3;
-        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_unimportant) {
-            maintenance = 4;
-        } else if (rGMaintenance.getCheckedRadioButtonId() == R.id.rbtn_feedback_maintenance_very_unimportant) {
-            maintenance = 5;
-        }
+        rGMaintenance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_maintenance_very_important) {
+                    maintenance = 1;
+                } else if (checkedId == R.id.rbtn_feedback_maintenance_important) {
+                    maintenance = 2;
+                } else if (checkedId == R.id.rbtn_feedback_maintenance_soso) {
+                    maintenance = 3;
+                } else if (checkedId == R.id.rbtn_feedback_maintenance_unimportant) {
+                    maintenance = 4;
+                } else if (checkedId == R.id.rbtn_feedback_maintenance_very_unimportant) {
+                    maintenance = 5;
+                }
+            }
+        });
 
         RadioGroup rGSafe = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_safetly);
-        if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_very_important) {
-            safety = 1;
-        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_important) {
-            safety = 2;
-        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_soso) {
-            safety = 3;
-        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_unimportant) {
-            safety = 4;
-        } else if (rGSafe.getCheckedRadioButtonId() == R.id.rbtn_feedback_safetly_very_unimportant) {
-            safety = 5;
-        }
+        rGSafe.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_safetly_very_important) {
+                    safety = 1;
+                } else if (checkedId == R.id.rbtn_feedback_safetly_important) {
+                    safety = 2;
+                } else if (checkedId == R.id.rbtn_feedback_safetly_soso) {
+                    safety = 3;
+                } else if (checkedId == R.id.rbtn_feedback_safetly_unimportant) {
+                    safety = 4;
+                } else if (checkedId == R.id.rbtn_feedback_safetly_very_unimportant) {
+                    safety = 5;
+                }
+            }
+        });
 
         RadioGroup rGEnergy = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_energy);
-        if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_important) {
-            energy = 1;
-        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_important) {
-            energy = 2;
-        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_soso) {
-            energy = 3;
-        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_unimportant) {
-            energy = 4;
-        } else if (rGEnergy.getCheckedRadioButtonId() == R.id.rbtn_feedback_energy_very_unimportant) {
-            energy = 5;
-        }
+        rGEnergy.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_energy_very_important) {
+                    energy = 1;
+                } else if (checkedId == R.id.rbtn_feedback_energy_important) {
+                    energy = 2;
+                } else if (checkedId == R.id.rbtn_feedback_energy_soso) {
+                    energy = 3;
+                } else if (checkedId == R.id.rbtn_feedback_energy_unimportant) {
+                    energy = 4;
+                } else if (checkedId == R.id.rbtn_feedback_energy_very_unimportant) {
+                    energy = 5;
+                }
+            }
+        });
 
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
@@ -460,23 +508,36 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_operation);
         CheckBox humility_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_humility);
         CheckBox maintainence_1 = (CheckBox) view.findViewById(R.id.rbtn_first_order_reason_maintainence);
-        if (function_1.isChecked()) {
-            first_consider += "1";
-        }
-        if (beauty_1.isChecked()) {
-            first_consider += "2";
-        }
-        if (operation_1.isChecked()) {
-            first_consider += "3";
-        }
-        if (humility_1.isChecked()) {
-            first_consider += "4";
-        }
-        if (maintainence_1.isChecked()) {
-            first_consider += "5";
-        }
-
-
+        function_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "1";
+            }
+        });
+        beauty_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "2";
+            }
+        });
+        operation_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "3";
+            }
+        });
+        humility_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "4";
+            }
+        });
+        maintainence_1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "5";
+            }
+        });
 
         Spinner spinner_2 = (Spinner) view.findViewById(R.id.feedback_spinner_second_order);
         spinner_2.setAdapter(lunchList);
@@ -498,21 +559,36 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_operation);
         CheckBox humility_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_humility);
         CheckBox maintainence_2 = (CheckBox) view.findViewById(R.id.rbtn_second_order_reason_maintainence);
-        if (function_2.isChecked()) {
-            second_consider += "1";
-        }
-        if (beauty_2.isChecked()) {
-            second_consider += "2";
-        }
-        if (operation_2.isChecked()) {
-            second_consider += "3";
-        }
-        if (humility_2.isChecked()) {
-            second_consider += "4";
-        }
-        if (maintainence_2.isChecked()) {
-            second_consider += "5";
-        }
+        function_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "1";
+            }
+        });
+        beauty_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "2";
+            }
+        });
+        operation_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "3";
+            }
+        });
+        humility_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "4";
+            }
+        });
+        maintainence_2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "5";
+            }
+        });
 
 
 
@@ -536,21 +612,36 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_operation);
         CheckBox humility_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_humility);
         CheckBox maintainence_3 = (CheckBox) view.findViewById(R.id.rbtn_third_order_reason_maintainence);
-        if (function_3.isChecked()) {
-            third_consider += "1";
-        }
-        if (beauty_3.isChecked()) {
-            third_consider += "2";
-        }
-        if (operation_3.isChecked()) {
-            third_consider += "3";
-        }
-        if (humility_3.isChecked()) {
-            third_consider += "4";
-        }
-        if (maintainence_3.isChecked()) {
-            third_consider += "5";
-        }
+        function_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "1";
+            }
+        });
+        beauty_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "2";
+            }
+        });
+        operation_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "3";
+            }
+        });
+        humility_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "4";
+            }
+        });
+        maintainence_3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "5";
+            }
+        });
 
 
 
@@ -574,21 +665,36 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_operation);
         CheckBox humility_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_humility);
         CheckBox maintainence_4 = (CheckBox) view.findViewById(R.id.rbtn_fourth_order_reason_maintainence);
-        if (function_4.isChecked()) {
-            fourth_consider += "1";
-        }
-        if (beauty_4.isChecked()) {
-            fourth_consider += "2";
-        }
-        if (operation_4.isChecked()) {
-            fourth_consider += "3";
-        }
-        if (humility_4.isChecked()) {
-            fourth_consider += "4";
-        }
-        if (maintainence_4.isChecked()) {
-            fourth_consider += "5";
-        }
+        function_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "1";
+            }
+        });
+        beauty_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "2";
+            }
+        });
+        operation_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "3";
+            }
+        });
+        humility_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "4";
+            }
+        });
+        maintainence_4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "5";
+            }
+        });
 
 
 
@@ -612,21 +718,36 @@ public class FeedbackFragment extends Fragment {
         CheckBox operation_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_operation);
         CheckBox humility_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_humility);
         CheckBox maintainence_5 = (CheckBox) view.findViewById(R.id.rbtn_fifth_order_reason_maintainence);
-        if (function_5.isChecked()) {
-            fifth_consider += "1";
-        }
-        if (beauty_5.isChecked()) {
-            fifth_consider += "2";
-        }
-        if (operation_5.isChecked()) {
-            fifth_consider += "3";
-        }
-        if (humility_5.isChecked()) {
-            fifth_consider += "4";
-        }
-        if (maintainence_5.isChecked()) {
-            fifth_consider += "5";
-        }
+        function_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "1";
+            }
+        });
+        beauty_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "2";
+            }
+        });
+        operation_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "3";
+            }
+        });
+        humility_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "4";
+            }
+        });
+        maintainence_5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                first_consider += "5";
+            }
+        });
 
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
@@ -981,11 +1102,16 @@ public class FeedbackFragment extends Fragment {
         question.setText(R.string.feedback_question_7);
 
         RadioGroup rGroup = (RadioGroup) view.findViewById(R.id.radiogroup_feedback_7);
-        if (rGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_7_no) {
-            buy = 1;
-        } else if (rGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_7_yes) {
-            buy = 2;
-        }
+        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_7_no) {
+                    buy = 1;
+                } else if (checkedId == R.id.rbtn_feedback_7_yes) {
+                    buy = 2;
+                }
+            }
+        });
 
         Button next = (Button) view.findViewById(R.id.btn_feedback_next);
         next.setOnClickListener(new View.OnClickListener() {
@@ -1017,17 +1143,22 @@ public class FeedbackFragment extends Fragment {
             }
         });
 
-        if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_10k) {
-            reasonable_price = 1;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_50k) {
-            reasonable_price = 2;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_100k) {
-            reasonable_price = 3;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_200k) {
-            reasonable_price = 4;
-        } else if (radioGroup.getCheckedRadioButtonId() == R.id.rbtn_feedback_price_over_200k) {
-            reasonable_price = 5;
-        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbtn_feedback_price_10k) {
+                    reasonable_price = 1;
+                } else if (checkedId == R.id.rbtn_feedback_price_50k) {
+                    reasonable_price = 2;
+                } else if (checkedId == R.id.rbtn_feedback_price_100k) {
+                    reasonable_price = 3;
+                } else if (checkedId == R.id.rbtn_feedback_price_200k) {
+                    reasonable_price = 4;
+                } else if (checkedId == R.id.rbtn_feedback_price_over_200k) {
+                    reasonable_price = 5;
+                }
+            }
+        });
 
         TextView title = (TextView) view.findViewById(R.id.txt_feedback_title);
         title.setText(R.string.feedback_title_8);
@@ -1049,6 +1180,16 @@ public class FeedbackFragment extends Fragment {
                     fourth_consider = "0";
                 if (fifth_consider == "")
                     fifth_consider = "0";
+
+//                Log.d("GG", String.format("%d\n%d %d %d %d %d %d %d %d\n%d %d %d %d %d\n%s %s %s %s %s\n%d %d %d\n%d %d %d %d %d\n%d %d %d %d %d\n%d\n%d",attitude,
+//                        functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
+//                        first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
+//                        first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
+//                        subscription1, subscription2, subscription3,
+//                        install1, install2, install3, install4, install5,
+//                        impression1, impression2, impression3, impression4, impression5,
+//                        buy,
+//                        reasonable_price));
 
                 // update feedback to server
                 helpFunc.uploadFeedback(attitude,

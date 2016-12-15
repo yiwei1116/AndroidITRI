@@ -1161,7 +1161,6 @@ public class SurveyActivity extends AppCompatActivity {
                         know_way,
                         name,
                         mail);
-                Log.e("check upload", "sdfgasfsd");
 
                 Intent intent = new Intent(SurveyActivity.this, MainActivity.class);
                 Bundle bundle = new Bundle();

@@ -145,7 +145,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         equipTabs = new ArrayList<>();
 
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
-        helperFunctions = new HelperFunctions(dbManager);
+        helperFunctions = new HelperFunctions(getActivity());
 
         ((MainActivity) getActivity()).showEquipCoachSlide();
         isEnglish = ((MainActivity) getActivity()).isEnglish();
@@ -509,9 +509,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setTitle(name);
 
             // insert photo to array list
-            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
-            // insert second photo to photo array list
             tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO));
+            // insert second photo to photo array list
+//            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
 
             tab.setVideo(true);
             tab.setPhoto(true);
