@@ -724,7 +724,6 @@ public class HelperFunctions extends Application{
                         if (networkResponse != null) {
                             Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
                         }
-
                         if (volleyError instanceof TimeoutError) {
                             Log.e("Volley", "TimeoutError");
                         }else if(volleyError instanceof NoConnectionError){
@@ -747,11 +746,11 @@ public class HelperFunctions extends Application{
                 HashMap<String,String> params = new HashMap<String, String>();
                 //Adding parameters
                 params.put("zone_counts", uploadString);
+                Log.e("zone_counts", uploadString);
                 //returning parameters
                 return params;
             }
         };
-
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(hipsterUploadRequest);
