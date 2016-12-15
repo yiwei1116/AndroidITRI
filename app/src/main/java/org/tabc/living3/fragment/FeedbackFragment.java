@@ -1181,16 +1181,6 @@ public class FeedbackFragment extends Fragment {
                 if (fifth_consider == "")
                     fifth_consider = "0";
 
-                Log.d("GG", String.format("%d\n%d %d %d %d %d %d %d %d\n%d %d %d %d %d\n%s %s %s %s %s\n%d %d %d\n%d %d %d %d %d\n%d %d %d %d %d\n%d\n%d",attitude,
-                        functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
-                        first_choise, second_choise, third_choise, fourth_choise, fifth_choise,
-                        first_consider, second_consider, third_consider, fourth_consider, fifth_consider,
-                        subscription1, subscription2, subscription3,
-                        install1, install2, install3, install4, install5,
-                        impression1, impression2, impression3, impression4, impression5,
-                        buy,
-                        reasonable_price));
-
                 // update feedback to server
                 helpFunc.uploadFeedback(attitude,
                         functionality, visual, operability, user_friendly, price, maintenance, safety, energy,
