@@ -31,8 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.tabc.living3.CommunicationWithServer;
-import org.tabc.living3.SurveyActivity;
-import org.tabc.living3.fragment.FeedbackFragment;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -60,18 +58,26 @@ public class HelperFunctions extends Application{
     private Context context;
     private SQLiteDbManager manager;
     public static final String uploadUrlForHipsterContentSuffix = "http://";
+    private String uploadString;
 
-    public HelperFunctions(SurveyActivity surveyActivity) {
-        this.context = surveyActivity.getApplicationContext();
+    public HelperFunctions(Activity activity) {
+        this.context = activity.getApplicationContext();
         this.manager = new SQLiteDbManager(this.context);
+        this.uploadString = new String();
     }
 
     public HelperFunctions(SQLiteDbManager manager) {
         this.manager = manager;
+        this.uploadString = new String();
+    }
+
+    public HelperFunctions(Context context) {
+        this.context = context;
+        this.uploadString = new String();
     }
 
     public HelperFunctions() {
-        //this.manager = manager;
+        this.uploadString = new String();
     }
 
     public static Bitmap readImageBitmap(String internalImagePath) throws FileNotFoundException {
@@ -516,9 +522,23 @@ public class HelperFunctions extends Application{
 
     public void uploadSurvey(int gender, int age, int education, int career, int experience, int salary, int location, int house_type, int family_type, int family_member, int know_way, String name, String email) {
         try {
-            JSONObject uploadObj = packSurveyData(name, email, gender, age, education, career, experience, salary, location, house_type, family_type, family_member, know_way);
-            final String uploadString = uploadObj.toString();
-            Log.e("sfaddgsgfdgas", "survey=" + uploadString);
+            JSONObject uploadObj = new JSONObject();
+            uploadObj.put("gender", gender);
+            uploadObj.put("age", age);
+            uploadObj.put("education", education);
+            uploadObj.put("career", career);
+            uploadObj.put("experience", experience);
+            uploadObj.put("salary", salary);
+            uploadObj.put("location", location);
+            uploadObj.put("house_type", house_type);
+            uploadObj.put("family_type", family_type);
+            uploadObj.put("family_member", family_member);
+            uploadObj.put("know_way", know_way);
+            uploadObj.put("name", name);
+            uploadObj.put("email", email);
+
+            uploadString = uploadObj.toString();
+
             StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.surveyOneURL,
                     new Response.Listener<String>() {
                         @Override
@@ -557,17 +577,14 @@ public class HelperFunctions extends Application{
                     //Creating parameters
                     HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
-                    ///////// check is it uploadString or params
                     params.put("survey", uploadString);
-                    Log.e("checkcheckcheck", String.valueOf(params));
+                    Log.e("volley", uploadString);
                     //returning parameters
                     return params;
                 }
             };
 
-            hipsterUploadRequest.setRetryPolicy(new DefaultRetryPolicy(100000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(this.context);
             requestQueue.add(hipsterUploadRequest);
         }catch (Exception e) {
             e.printStackTrace();
@@ -576,12 +593,44 @@ public class HelperFunctions extends Application{
 
     public void uploadFeedback(int attitude, int functionality, int visual, int operability, int user_friendly, int price, int maintenance, int safety, int energy, int first_choise, int second_choise, int third_choise, int fourth_choise, int fifth_choise, String first_consider, String second_consider, String third_consider, String fourth_consider, String fifth_consider, int subscription1, int subscription2, int subscription3, int install1, int install2, int install3, int install4, int install5, int impression1, int impression2, int impression3, int impression4, int impression5, int buy, int reasonable_price) {
         try {
-            // pack function
-            JSONObject uploadObj = packFeedbackData(attitude, functionality, visual, operability, user_friendly, price, maintenance, safety, energy, first_choise, second_choise, third_choise, fourth_choise, fifth_choise, first_consider, second_consider, third_consider, fourth_consider, fifth_consider, subscription1, subscription2, subscription3, install1, install2, install3, install4, install5, impression1, impression2, impression3, impression4, impression5, buy, reasonable_price);
-            final String uploadString = uploadObj.toString();
+            JSONObject uploadObj = new JSONObject();
+            uploadObj.put("attitude", attitude);
+            uploadObj.put("functionality", functionality);
+            uploadObj.put("visual", visual);
+            uploadObj.put("operability", operability);
+            uploadObj.put("operability", operability);
+            uploadObj.put("user_friendly", user_friendly);
+            uploadObj.put("price", price);
+            uploadObj.put("maintenance", maintenance);
+            uploadObj.put("safety", safety);
+            uploadObj.put("energy", energy);
+            uploadObj.put("first_choise", first_choise);
+            uploadObj.put("second_choise", second_choise);
+            uploadObj.put("third_choise", third_choise);
+            uploadObj.put("fourth_choise", fourth_choise);
+            uploadObj.put("fifth_choise", fifth_choise);
+            uploadObj.put("first_consider", first_consider);
+            uploadObj.put("second_consider", second_consider);
+            uploadObj.put("third_consider", third_consider);
+            uploadObj.put("fourth_consider", fourth_consider);
+            uploadObj.put("fifth_consider", fifth_consider);
+            uploadObj.put("subscription1", subscription1);
+            uploadObj.put("subscription2", subscription2);
+            uploadObj.put("subscription3", subscription3);
+            uploadObj.put("install1", install1);
+            uploadObj.put("install2", install2);
+            uploadObj.put("install3", install3);
+            uploadObj.put("install4", install4);
+            uploadObj.put("install5", install5);
+            uploadObj.put("impression1", impression1);
+            uploadObj.put("impression2", impression2);
+            uploadObj.put("impression3", impression3);
+            uploadObj.put("impression4", impression4);
+            uploadObj.put("impression5", impression5);
+            uploadObj.put("buy", buy);
+            uploadObj.put("reasonable_price", reasonable_price);
 
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("data", uploadString);
+            uploadString = uploadObj.toString();
 
             StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.feedbackURL,
                     new Response.Listener<String>() {
@@ -617,21 +666,18 @@ public class HelperFunctions extends Application{
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     //Converting Bitmap to String
+                    //Getting Image Name
                     //Creating parameters
                     HashMap<String,String> params = new HashMap<String, String>();
                     //Adding parameters
-                    params.put("feedback", uploadString);
+                    params.put("survey", uploadString);
+                    Log.e("volley", uploadString);
                     //returning parameters
                     return params;
                 }
             };
 
-            hipsterUploadRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    100000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(this.context);
             requestQueue.add(hipsterUploadRequest);
         }catch (Exception e) {
             e.printStackTrace();
@@ -640,8 +686,34 @@ public class HelperFunctions extends Application{
 
     public void uploadHipster(String content, String picture, String combine, String filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
         try {
-            JSONObject uploadObj = packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
-            final String uploadString = uploadObj.toString();
+            JSONObject uploadObj = new JSONObject(); //packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
+            uploadObj.put("content", content);
+            uploadObj.put("picture_name", picture);
+            uploadObj.put("combine_name", combine);
+            uploadObj.put("hipster_template_id", hipsterTemplateId);
+            uploadObj.put("hipster_text_id", hipsterTextId);
+            uploadObj.put("zone_id", zoneId);
+
+            File pictureFile = new File(filepath, picture);
+            File combineFile = new File(filepath, combine);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
+            Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
+            Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile));
+
+            pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+
+            byte[] pictureBytes = outputStream.toByteArray();
+            byte[] combineBytes = outputStream1.toByteArray();
+            final String pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
+            final String combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
+
+            uploadObj.put("picture_data", pictureByteImage);
+            uploadObj.put("combine_data", combineByteImage);
+
+            uploadString = uploadObj.toString();
 
             StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.hipsterContentURL,
                     new Response.Listener<String>() {
@@ -691,7 +763,7 @@ public class HelperFunctions extends Application{
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(this.context);
             requestQueue.add(hipsterUploadRequest);
         }catch (Exception e) {
             e.printStackTrace();
@@ -853,14 +925,11 @@ public class HelperFunctions extends Application{
                 }
             };
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(this.context);
             requestQueue.add(hipsterUploadRequest);
-//            Log.e("queueueueueue", String.valueOf(uploadObj));
         }catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
 }

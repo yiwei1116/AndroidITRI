@@ -15,9 +15,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.tabc.living3.R;
-
-import org.json.JSONException;
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 
@@ -1150,7 +1147,7 @@ public class SurveyActivity extends AppCompatActivity {
                     mail = mailEdtxt.getText().toString();
 
                 // upload to server
-                helpFunc.volleyWhat(
+                helpFunc.uploadSurvey(
                         gender,
                         age,
                         education,
@@ -1178,7 +1175,7 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // upload to server
-                helpFunc.volleyWhat(
+                helpFunc.uploadSurvey(
                         gender,
                         age,
                         education,

@@ -32,6 +32,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true"
         android:hardwareAccelerated="true"
+        android:name="org.tabc.living3.util.HelperFunctions"
         >
         <activity
             android:screenOrientation="portrait"

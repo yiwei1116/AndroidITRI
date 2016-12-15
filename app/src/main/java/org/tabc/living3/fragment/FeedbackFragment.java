@@ -25,15 +25,13 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.tabc.living3.CommunicationWithServer;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -107,7 +105,7 @@ public class FeedbackFragment extends Fragment {
         }
         dbManager = new SQLiteDbManager(getActivity(), SQLiteDbManager.DATABASE_NAME);
         spinnerList = new ArrayList<String>();
-        helpFunc = new HelperFunctions(dbManager);
+        helpFunc = new HelperFunctions(getActivity().getApplicationContext());
     }
 
     @Override

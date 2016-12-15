@@ -2,13 +2,15 @@ package org.tabc.living3.fragment;
 
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,9 +34,6 @@ import org.tabc.living3.R;
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;

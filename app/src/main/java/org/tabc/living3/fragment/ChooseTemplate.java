@@ -171,7 +171,7 @@ public class ChooseTemplate extends Fragment {
 
 
 
-        private HelperFunctions helperFunctions = new HelperFunctions();
+        private HelperFunctions helperFunctions = new HelperFunctions(mContext);
         private LayoutInflater mLayoutInflater;
 
         public ChooseTemp(Context context){
