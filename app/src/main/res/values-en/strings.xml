@@ -191,6 +191,8 @@
     <string name="diary_camera">Camera</string>
     <string name="diary_photo">Album</string>
     <string name="please_select_the_picture">Please select the picture</string>
+    <string name="please_write_content">Please write down content</string>
+    <string name="please_select_zone">Please select your location</string>
     <string name="template_content">content within thirty words</string>
     <string name="feedback_feature_energy">Conserves energy</string>
 </resources>

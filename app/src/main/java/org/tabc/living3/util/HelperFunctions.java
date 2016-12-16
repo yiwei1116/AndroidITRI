@@ -722,7 +722,7 @@ public class HelperFunctions extends Application{
         }
     }
 
-    public void uploadHipster(String content, String picture, String combine, String filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
+    public void uploadHipster(String content, String picture, String combine, String pictureFilepPath, String combineFilePath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
         try {
             JSONObject uploadObj = new JSONObject(); //packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
             uploadObj.put("content", content);
@@ -732,9 +732,9 @@ public class HelperFunctions extends Application{
             uploadObj.put("hipster_text_id", hipsterTextId);
             uploadObj.put("zone_id", zoneId);
 
-            File pictureFile = new File(filepath, picture);
-            File combineFile = new File(filepath, combine);
-
+            File pictureFile = new File(pictureFilepPath, picture);
+            File combineFile = new File(combineFilePath, combine);
+            Log.e("ahhhhhhhhhhhhh", String.valueOf(pictureFile));
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
             Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
