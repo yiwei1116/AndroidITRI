@@ -517,9 +517,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setTitle(name);
 
             // insert photo to array list
-            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO));
+            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
             // insert second photo to photo array list
-//            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
+//            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO));
 
             tab.setVideo(true);
             tab.setPhoto(true);
