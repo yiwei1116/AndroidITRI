@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.tabc.living3.CommunicationWithServer;
@@ -54,12 +55,13 @@ public class TemplateContext extends Fragment {
     private FrameLayout write,build;
     private String templateIndex , photoUri,picPath;
     private String textBulid ;
+    private String hipster_text_id,zone_id,templateTextID;
     MergeTemplatePic MTP;
     private String StringContext;
     private  Bundle bundle1;
     private  Spinner spinner;
     private RadioButton radioSexButton;
-    private int selectedId;
+    private int selectedId,spinnerPos;
     public String db_name = "android_itri_1.db";
     public String table_name_zone = "zone";
     public String table_name_hipster_text = "hipster_text";
@@ -88,6 +90,7 @@ public class TemplateContext extends Fragment {
     private DisplayMetrics metrics;
     private Bitmap sourceBitmap;
     private Boolean isEnglish;
+
     public TemplateContext() {
 
     }
@@ -215,10 +218,13 @@ public class TemplateContext extends Fragment {
                     RadioButton btn = (RadioButton) rg.getChildAt(i);
                     if (btn.getId() == checkedId) {
                         textBulid = (String) btn.getText();
-                        Log.e("String", textBulid);
+                        selectedId =( (checkedId-1) % (rg.getChildCount()))+1;
+                        Log.e("selectedId", String.valueOf(selectedId));
+                        Log.e("rg.getChildCount()", String.valueOf(rg.getChildCount()));
                         return;
                     }
                 }
+
             }
         });
         write = (FrameLayout)view.findViewById(R.id.write);
@@ -255,7 +261,8 @@ public class TemplateContext extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long arg3) {
-
+                spinnerPos = position;
+                Log.e("spinnerPos",String.valueOf(spinnerPos));
             }
 
             @Override
@@ -288,7 +295,7 @@ public class TemplateContext extends Fragment {
 
             }
         }
-        cursor_zone.close();
+
 
     }
     public void getTemplateContext(){
@@ -313,7 +320,7 @@ public class TemplateContext extends Fragment {
                 // Log.e("hipster_text",arrayList_hipster_text.get(cursor_hipster_text.getPosition()));
             }
         }
-        cursor_hipster_text.close();
+
 
 
 
@@ -327,19 +334,37 @@ public class TemplateContext extends Fragment {
             btnNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ButtonSound.play(getActivity());
-
-                    MTP = new MergeTemplatePic();
-                    bundle1 = new Bundle();
                     if(!flag){
-                    StringContext = editText.getText().toString().trim();
+                        StringContext = editText.getText().toString().trim();
                     }
                     else{
                         StringContext = textBulid;
                     }
-                    if(StringContext==null){
-                        StringContext = "";
+
+                    if ( StringContext==null ){
+
+                        Toast.makeText(getActivity(),R.string.please_write_content, Toast.LENGTH_SHORT).show();
+
                     }
+                    else if(spinnerPos==0 ){
+
+                        Toast.makeText(getActivity(),R.string.please_select_zone, Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                    ButtonSound.play(getActivity());
+
+                    MTP = new MergeTemplatePic();
+                    bundle1 = new Bundle();
+
+
+                    if (buildContext.isChecked()){
+                     templateTextID = getTemplateTextID(selectedId);
+                    bundle1.putString("templateTextID", templateTextID);
+                    }else{
+                        bundle1.putString("", templateTextID);
+                    }
+                        String zoneID = getZoneID(spinnerPos);
+                    bundle1.putString("zoneID", zoneID);
                     bundle1.putString("TemplateNum", templateIndex);
                     bundle1.putString("StringContext", StringContext);
                     bundle1.putString("minX", String.valueOf(minX));
@@ -347,10 +372,14 @@ public class TemplateContext extends Fragment {
                     bundle1.putString("weight", String.valueOf(width));
                     bundle1.putString("height", String.valueOf(length));
                     bundle1.putString("picPath", picPath);
+
+                    cursor_hipster_text.close();
+                    cursor_zone.close();
+
                     MTP.setArguments(bundle1);
                     ((MainActivity) getActivity()).replaceFragment(MTP);
                 }
-            });
+            }});
         }
 
         @Override
@@ -454,6 +483,12 @@ public class TemplateContext extends Fragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+
+    }
 
     public void saveData(){
 
@@ -482,6 +517,21 @@ public class TemplateContext extends Fragment {
         scale = (tempX/tempY);
         Log.e("test",String.format("tempX %s , tempY %s , scale %s",df.format(tempX),df.format(tempY),df.format(scale)));
         return scale;
+    }
+    //cursor 0
+    private String getTemplateTextID(int radioBtnPos){
+        cursor_hipster_text.moveToPosition(radioBtnPos-1);
+        hipster_text_id = cursor_hipster_text.getString(cursor_hipster_text.getColumnIndex("hipster_text_id"));
+        Log.e("hipster_text_id",hipster_text_id);
+        return hipster_text_id;
+
+    }
+    private String getZoneID(int spinnerPosition){
+        cursor_zone.moveToPosition(spinnerPosition-1);
+        zone_id = cursor_zone.getString(cursor_zone.getColumnIndex("zone_id"));
+        Log.e("zone_id",zone_id);
+        return zone_id;
+
     }
 
 

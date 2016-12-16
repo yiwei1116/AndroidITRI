@@ -193,6 +193,7 @@
     <string name="feedback_feature_humility">&#160;&#160;&#160;人性化設計</string>
     <string name="feedback_feature_maintainence">&#160;&#160;&#160;易維護管理</string>
     <string name="feedback_feature_safe">&#160;&#160;&#160;安全特性</string>
+    <string name="feedback_feature_energy">&#160;&#160;&#160;節能特性</string>
     <string name="feedback_ja">&#160;&#160;&#160;是</string>
     <string name="feedback_nicht">&#160;&#160;&#160;否</string>
     <string name="feedback_equip_info">我需要得到下列產品之相關資訊</string>
@@ -227,6 +228,8 @@
     <string name="diary_photo">相簿</string>
     <string name="custom_camera_redo">重拍</string>
     <string name="please_select_the_picture">請選取照片</string>
+    <string name="please_select_zone">請選擇所在區域</string>
+    <string name="please_write_content">請寫下內文</string>
     <string name="template_content">內文(30字已內)</string>
 
 </resources>

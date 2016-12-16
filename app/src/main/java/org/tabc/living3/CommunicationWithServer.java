@@ -344,6 +344,8 @@ public class CommunicationWithServer {
 
     public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
 
+        private static final int PROGRESS_FULL_LEVEL = 10000;
+        private static final int LOADING_SPEEDUP_SCALE = 4;
         private List<String> files;
         private Handler handler;
         private int progressLevel;
@@ -355,11 +357,11 @@ public class CommunicationWithServer {
 
             // if files is not empty, set level to 10000 / files.size
             if (!files.isEmpty()) {
-                this.progressLevel = 10000 / files.size();
+                this.progressLevel = PROGRESS_FULL_LEVEL * LOADING_SPEEDUP_SCALE / files.size();
                 this.progress = 0;
             } else {
                 this.progressLevel = 0;
-                this.progress = 10000;
+                this.progress = PROGRESS_FULL_LEVEL;
             }
         }
 
@@ -387,14 +389,15 @@ public class CommunicationWithServer {
             msg.what = 1;
             msg.arg1 = values[0];
             handler.sendMessage(msg);
+
+            if (progress >= PROGRESS_FULL_LEVEL)
+                loadingActivity.startNextActivity();
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.i("end", "Download tasks end");
-
-            loadingActivity.startNextActivity();
         }
 
         private void downloadFiles() throws MalformedURLException {
@@ -449,8 +452,11 @@ public class CommunicationWithServer {
 //                            outputFile.createNewFile();
                             Log.i("exists", filename + " skip download - already exists");
                         }
-                        progress += progressLevel;
-                        onProgressUpdate(progress);
+
+                        if (progress <= PROGRESS_FULL_LEVEL) {
+                            progress += progressLevel;
+                            onProgressUpdate(progress);
+                        }
                     }
                 }
             } catch (Exception e) {
