@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.tabc.living3.CommunicationWithServer;
@@ -54,7 +55,7 @@ public class TemplateContext extends Fragment {
     private FrameLayout write,build;
     private String templateIndex , photoUri,picPath;
     private String textBulid ;
-    private String hipster_text_id,zone_id;
+    private String hipster_text_id,zone_id,templateTextID;
     MergeTemplatePic MTP;
     private String StringContext;
     private  Bundle bundle1;
@@ -333,27 +334,37 @@ public class TemplateContext extends Fragment {
             btnNextStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ButtonSound.play(getActivity());
-
-                    MTP = new MergeTemplatePic();
-                    bundle1 = new Bundle();
                     if(!flag){
-                    StringContext = editText.getText().toString().trim();
+                        StringContext = editText.getText().toString().trim();
                     }
                     else{
                         StringContext = textBulid;
                     }
-                    if(StringContext==null){
-                        StringContext = "";
-                    }
-                    if (buildContext.isChecked()){
-                    String templateTextID = getTemplateTextID(selectedId);
-                    bundle1.putString("templateTextID", templateTextID);}
-                    if(spinnerPos!=0){
-                    String zoneID = getZoneID(spinnerPos);
-                    bundle1.putString("zoneID", zoneID);
-                    }
 
+                    if ( StringContext==null ){
+
+                        Toast.makeText(getActivity(),R.string.please_write_content, Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if(spinnerPos==0 ){
+
+                        Toast.makeText(getActivity(),R.string.please_select_zone, Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                    ButtonSound.play(getActivity());
+
+                    MTP = new MergeTemplatePic();
+                    bundle1 = new Bundle();
+
+
+                    if (buildContext.isChecked()){
+                     templateTextID = getTemplateTextID(selectedId);
+                    bundle1.putString("templateTextID", templateTextID);
+                    }else{
+                        bundle1.putString("", templateTextID);
+                    }
+                        String zoneID = getZoneID(spinnerPos);
+                    bundle1.putString("zoneID", zoneID);
                     bundle1.putString("TemplateNum", templateIndex);
                     bundle1.putString("StringContext", StringContext);
                     bundle1.putString("minX", String.valueOf(minX));
@@ -368,7 +379,7 @@ public class TemplateContext extends Fragment {
                     MTP.setArguments(bundle1);
                     ((MainActivity) getActivity()).replaceFragment(MTP);
                 }
-            });
+            }});
         }
 
         @Override

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -54,7 +55,7 @@ import java.util.List;
  */
 public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String mPath;
-    private String templateIndex;
+    private String templateIndex,templateID,templateTextID,zoneID;
     private String StringContext;
     private String photoUri,picPath;
     private ImageView mergeImage,qrcodeImage,pic;
@@ -69,6 +70,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private RelativeLayout layout;
     public String db_name = "android_itri_1.db";
     private SQLiteDbManager dbManager;
+    private SQLiteDatabase db;
+    public String table_name_hipster_template = "hipster_template";
     private Cursor cursor_template;
     private HelperFunctions helperFunctions;
     int width,length;
@@ -93,6 +96,9 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbManager = new SQLiteDbManager(getActivity(), db_name);
+        db = dbManager.getReadableDatabase();
+        cursor_template = db.query(table_name_hipster_template, null, null, null, null, null, null);
     }
 
     @Override
@@ -144,6 +150,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         }
          bundle1 = getArguments();
        if(bundle1 != null) {
+           zoneID = (String) getArguments().get("zoneID");
+           templateTextID = (String) getArguments().get("templateTextID");
            templateIndex = (String) getArguments().get("TemplateNum");
            mergeImage.setImageBitmap(bitmapArray.get(Integer.valueOf(templateIndex)));
            StringContext = (String) getArguments().get("StringContext");
@@ -282,14 +290,15 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 showStoreLayout();
                 Log.e("picPath",picPath);
                 Log.e("mPath",mPath);
-             //   helperFunctions.uploadHipster(StringContext,picPath,mPath,);
+                String templateID = getTemplateID(templateIndex);
+                helperFunctions.uploadHipster(StringContext,getPicName(picPath),getPicName(mPath),getPicDirPath(picPath),getPicDirPath(mPath),Integer.parseInt(templateID),Integer.parseInt(templateTextID),Integer.parseInt(zoneID));
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
 
                 showSuccess.setVisibility(View.VISIBLE);
                 //openScreenshot(imageFile);
-                //showStoreSuccess();
+                    //showStoreSuccess();
                 break;
             case R.id.sendMail:
                 savetoPhone();
@@ -342,7 +351,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
             layout.addView(pic, params);
         }
-    public static void addImageToGallery(final String filePath, final Context context) {
+    private static void addImageToGallery(final String filePath, final Context context) {
 
         ContentValues values = new ContentValues();
 
@@ -352,5 +361,40 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
         context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
+    private String getTemplateID(String viewPagerIndex){
+
+        cursor_template.moveToPosition(Integer.parseInt(viewPagerIndex));
+        templateID = cursor_template.getString(cursor_template.getColumnIndex("hipster_template_id"));
+        Log.e("templateID",templateID);
+        cursor_template.close();
+        return templateID;
+
+
+
+    }
+    //檔名
+    private String getPicName(String picPath){
+
+        String[] paths = picPath.split("/");
+
+        String finalFile =  paths[paths.length-1];
+
+        return finalFile;
+    }
+    //到目錄
+    private String getPicDirPath(String picDir){
+        String dirPath="";
+        String[] paths = picDir.split("/");
+        for(int i = 0 ; i < paths.length-1 ; i++){
+
+        dirPath += paths[i]+"/";
+
+        }
+        Log.e("dirPath",dirPath);
+        return  dirPath;
+
+    }
+
+
 
 }
