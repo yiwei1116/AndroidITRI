@@ -383,7 +383,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     }
     //到目錄
     private String getPicDirPath(String picDir){
-        String dirPath="";
+        String dirPath = new String();
         String[] paths = picDir.split("/");
         for(int i = 0 ; i < paths.length-1 ; i++){
 
