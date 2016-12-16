@@ -280,10 +280,13 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             case R.id.ic_download:
                 takeScreenshot();
                 showStoreLayout();
-
+                Log.e("picPath",picPath);
+                Log.e("mPath",mPath);
+             //   helperFunctions.uploadHipster(StringContext,picPath,mPath,);
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
+
                 showSuccess.setVisibility(View.VISIBLE);
                 //openScreenshot(imageFile);
                 //showStoreSuccess();
@@ -332,31 +335,6 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
            pic = new ImageView(getActivity());
            pic.setImageURI(Uri.parse(picPath));
 
-            /*pic.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-
-                    pic.setImageURI(Uri.parse(photoUri));
-                    pic.buildDrawingCache();
-                    Bitmap bmp = pic.getDrawingCache();
-
-                    picWidth = bmp.getWidth();
-                    picHeight = bmp.getHeight();
-                    float scaleWidth = ((float) width) / picWidth;
-                    float scaleHeight = ((float) length) / picHeight;
-                    Matrix matrix = new Matrix();
-
-                    Log.e("width",String.valueOf(width));
-                    Log.e("length", String.valueOf(length));
-                    Log.e("picWidth",String.valueOf(picWidth));
-                    Log.e("picHeight", String.valueOf(picHeight));
-                    matrix.postScale(scaleWidth, scaleHeight);
-                    // 得到新的圖片
-                    Bitmap newbm = Bitmap.createBitmap(bmp, 0, 0, picWidth, picHeight, matrix, true);
-                    pic.setImageBitmap(newbm);
-                    return true;
-                }
-            });*/
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, length);
 
             params.leftMargin = minX;
