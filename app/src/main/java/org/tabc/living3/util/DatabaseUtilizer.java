@@ -242,6 +242,7 @@ public class DatabaseUtilizer {
     public static final String DB_CREATE_TABLE_COMPANY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.COMPANY_TABLE + " ("
             + DatabaseUtilizer.COMPANY_ID + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
+            + DatabaseUtilizer.NAME_EN + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_TEL + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_FAX + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.COMPANY_ADDR + " TEXT DEFAULT NULL, "

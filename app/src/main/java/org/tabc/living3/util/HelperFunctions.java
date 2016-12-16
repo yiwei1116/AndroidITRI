@@ -923,7 +923,8 @@ public class HelperFunctions extends Application{
         }
     }
 
-    public void uploadHipster(String content, String picture, String combine, String filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
+    // the file has to exist in that path
+    public void uploadHipster(String content, String picture, String combine, String picture_filepath, String combine_filepath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
         try {
             JSONObject uploadObj = new JSONObject(); //packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
             uploadObj.put("content", content);
@@ -933,8 +934,8 @@ public class HelperFunctions extends Application{
             uploadObj.put("hipster_text_id", hipsterTextId);
             uploadObj.put("zone_id", zoneId);
 
-            File pictureFile = new File(filepath, picture);
-            File combineFile = new File(filepath, combine);
+            File pictureFile = new File(picture_filepath, picture);
+            File combineFile = new File(combine_filepath, combine);
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();

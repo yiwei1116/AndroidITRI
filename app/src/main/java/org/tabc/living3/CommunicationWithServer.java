@@ -163,6 +163,7 @@ public class CommunicationWithServer {
                         // store each entry into database
                         sqLiteDbManager.insertCompany(json.optInt(DatabaseUtilizer.COMPANY_ID),
                                 json.optString(DatabaseUtilizer.NAME),
+                                json.optString(DatabaseUtilizer.NAME_EN),
                                 json.optString(DatabaseUtilizer.COMPANY_TEL),
                                 json.optString(DatabaseUtilizer.COMPANY_FAX),
                                 json.optString(DatabaseUtilizer.COMPANY_ADDR),
