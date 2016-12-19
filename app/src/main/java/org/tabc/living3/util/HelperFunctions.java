@@ -60,7 +60,7 @@ public class HelperFunctions extends Application{
     private SQLiteDbManager manager;
     public static final String uploadUrlForHipsterContentSuffix = "http://";
     private String uploadString;
-
+    private String pictureByteImage,combineByteImage;
     public HelperFunctions(Activity activity) {
         this.context = activity.getApplicationContext();
         this.manager = new SQLiteDbManager(this.context);
@@ -719,6 +719,7 @@ public class HelperFunctions extends Application{
 
     public void uploadHipster(String content, String picture, String combine, String pictureFilepPath, String combineFilePath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
         try {
+
             JSONObject uploadObj = new JSONObject(); //packHipsterContentData(content, picture, combine, filepath, hipsterTemplateId, hipsterTextId, zoneId);
             uploadObj.put("content", content);
             uploadObj.put("picture_name", picture);
@@ -729,20 +730,36 @@ public class HelperFunctions extends Application{
 
             File pictureFile = new File(pictureFilepPath, picture);
             File combineFile = new File(combineFilePath, combine);
-            Log.e("ahhhhhhhhhhhhh", String.valueOf(pictureFile));
+
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ByteArrayOutputStream outputStream1 = new ByteArrayOutputStream();
-            Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
-            Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile));
+
+            Bitmap pictureBmp=null;
+            Bitmap combineBmp=null;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            try {
+                pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile), null, options);
+                combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile), null, options);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            /*Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
+            Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile));*/
+            Log.e("LLLLLLLLLL", String.valueOf(pictureFile));
+
+            //pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            //combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
 
             pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
-
             byte[] pictureBytes = outputStream.toByteArray();
             byte[] combineBytes = outputStream1.toByteArray();
-            final String pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
-            final String combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
-
+            pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
+            Log.e("pictureByteImage",pictureByteImage);
+            combineByteImage = Base64.encodeToString(combineBytes, Base64.DEFAULT);
+            Log.e("combineByteImage",combineByteImage);
             uploadObj.put("picture_data", pictureByteImage);
             uploadObj.put("combine_data", combineByteImage);
 

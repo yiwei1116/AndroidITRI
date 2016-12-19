@@ -103,6 +103,7 @@ public class CustomPhoto extends Fragment  {
             }
         });
      // CustomPhoto();
+        customPhoto();
         return view;
     }
     @Override
@@ -110,7 +111,7 @@ public class CustomPhoto extends Fragment  {
         inflater.inflate(R.menu.choosephoto_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-    public void CustomPhoto() {
+    public void customPhoto() {
         ((MainActivity) getActivity()).hideMainBtn();
 
         ContentResolver cr = getActivity().getContentResolver();
@@ -148,7 +149,7 @@ public class CustomPhoto extends Fragment  {
             public void onItemClick(AdapterView adapterView, View view, int position, long id) {
 
                 photoUri = imagePaths.get(position);
-                Log.e("position",String.valueOf(position));
+                Log.e("photoUri",photoUri);
             }
         });
     }
@@ -171,7 +172,8 @@ public class CustomPhoto extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-        CustomPhoto();
+
+
     }
 
     @Override

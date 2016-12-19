@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -41,6 +42,7 @@ import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private String templateIndex,templateID,templateTextID,zoneID;
     private String StringContext;
     private String photoUri,picPath;
-    private ImageView mergeImage,qrcodeImage,pic;
+    private ImageView mergeImage,qrcodeImage,pic,TT;
     private TextView textView;
     private Button icDownload,savePhone,sendMail,backTour;
     private ImageButton btnShowSucess;
@@ -131,6 +133,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         sendMail = (Button)view.findViewById(R.id.sendMail);
         backTour = (Button)view.findViewById(R.id.backtoMain);
         btnShowSucess = (ImageButton)view.findViewById(R.id.check);
+        TT =(ImageView)view.findViewById(R.id.test);
         savePhone.setOnClickListener(this);
         sendMail.setOnClickListener(this);
         backTour.setOnClickListener(this);
@@ -171,6 +174,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
        }
         textView.setVisibility(View.VISIBLE);
         init();
+        displayPic();
         return view;
     }
 
@@ -295,7 +299,6 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
-
                 showSuccess.setVisibility(View.VISIBLE);
                 //openScreenshot(imageFile);
                     //showStoreSuccess();
@@ -383,7 +386,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     }
     //到目錄
     private String getPicDirPath(String picDir){
-        String dirPath="";
+
+        String dirPath=new String();
+
+
+
         String[] paths = picDir.split("/");
         for(int i = 0 ; i < paths.length-1 ; i++){
 
@@ -394,6 +401,22 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         return  dirPath;
 
     }
+    private void displayPic(){
+        File pic = new File(getPicDirPath(picPath),getPicName(picPath));
+        Bitmap bitmap=null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        try {
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(pic), null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        TT.setImageBitmap(bitmap);
+
+    }
+
 
 
 
