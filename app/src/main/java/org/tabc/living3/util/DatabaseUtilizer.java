@@ -22,26 +22,26 @@ public class DatabaseUtilizer {
         declare useful strings for downloading & uploading data
      */
     //public static String serverURL = "http://60.251.33.54:98/phpmyadmin/index.php";
-    public static String queryPhp = "http://" + IP + "/interface/deviceadd.php";
+    public static final String queryPhp = "http://" + IP + "/interface/deviceadd.php";
 
-    public static String dbProject = "project";
-    public static String dbFieldMap = "field_map";
-    public static String dbZone = "zone";
-    public static String dbPath = "path";
-    public static String dbBeacon = "beacon";
-    public static String dbMode = "mode";
-    public static String dbDevice = "device";
-    public static String dbCompany = "company";
-    public static String dbHipsterContent = "hipster_content";
-    public static String dbHipsterText = "hipster_text";
-    public static String dbHipsterTemplate = "hipster_template";
-    public static String dbVipDevice = "vip_device";
-    public static String dbVipVoice = "vip_voice";
-    public static String dbLease = "lease";
-    public static String dbUsers = "users";
-    public static String dbServerResult = "survey_result";
-    public static String dbVipPi = "vip_pi";
-    public static String dbSurvey = "survey";
+    public static final String dbProject = "project";
+    public static final String dbFieldMap = "field_map";
+    public static final String dbZone = "zone";
+    public static final String dbPath = "path";
+    public static final String dbBeacon = "beacon";
+    public static final String dbMode = "mode";
+    public static final String dbDevice = "device";
+    public static final String dbCompany = "company";
+    public static final String dbHipsterContent = "hipster_content";
+    public static final String dbHipsterText = "hipster_text";
+    public static final String dbHipsterTemplate = "hipster_template";
+    public static final String dbVipDevice = "vip_device";
+    public static final String dbVipVoice = "vip_voice";
+    public static final String dbLease = "lease";
+    public static final String dbUsers = "users";
+    public static final String dbServerResult = "survey_result";
+    public static final String dbVipPi = "vip_pi";
+    public static final String dbSurvey = "survey";
 
     //public static int
 
@@ -53,6 +53,8 @@ public class DatabaseUtilizer {
     public static final String GUIDE_VOICE = "guide_voice";
     public static final String GUIDE_VOICE_EN = "guide_voice_en";
     public static final String VIDEO = "video";
+    public static final String PHOTO_SIZE = "photo_size";
+    public static final String PHOTO_VERTICAL_SIZE = "photo_vertical_size";
     public static final String READ_COUNT = "read_count";
     public static final String LIKE_COUNT = "like_count";
     public static final String TIME_TOTAL = "time_total";
@@ -242,6 +244,7 @@ public class DatabaseUtilizer {
     public static final String DB_CREATE_TABLE_COMPANY = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.COMPANY_TABLE + " ("
             + DatabaseUtilizer.COMPANY_ID + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.NAME + " TEXT NOT NULL, "
+            + DatabaseUtilizer.NAME_EN + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_TEL + " TEXT NOT NULL, "
             + DatabaseUtilizer.COMPANY_FAX + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.COMPANY_ADDR + " TEXT DEFAULT NULL, "

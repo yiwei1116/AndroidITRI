@@ -546,11 +546,19 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             // add company information
             tab.setCompanyTitleText(name);
             tab.setCompanyTitleImage(equip.getString("photo"));
-            tab.setCompanyName(company.getString("name"));
-            tab.setCompanyWebsite(company.getString("web"));
-            tab.setCompanyPhone(company.getString("tel"));
-            tab.setCompanyLocation(company.getString("addr"));
-            tab.setCompanyQRcode(company.getString("qrcode"));
+            String companyName = company.getString(DatabaseUtilizer.NAME);
+            if (isEnglish) {
+                String companeName_en = company.getString(DatabaseUtilizer.NAME_EN);
+                if (companeName_en == null || companeName_en.equals("null")) {
+                    companyName = "";
+                } else
+                    companyName = companeName_en;
+            }
+            tab.setCompanyName(companyName);
+            tab.setCompanyWebsite(company.getString(DatabaseUtilizer.COMPANY_WEB));
+            tab.setCompanyPhone(company.getString(DatabaseUtilizer.COMPANY_TEL));
+            tab.setCompanyLocation(company.getString(DatabaseUtilizer.COMPANY_ADDR));
+            tab.setCompanyQRcode(company.getString(DatabaseUtilizer.QRCODE));
 
             equipTabs.add(tab);
         }

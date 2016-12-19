@@ -2,18 +2,12 @@ package org.tabc.living3.util;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.CharArrayBuffer;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -721,6 +715,7 @@ public class HelperFunctions extends Application{
             e.printStackTrace();
         }
     }
+
 
     public void uploadHipster(String content, String picture, String combine, String pictureFilepPath, String combineFilePath, int hipsterTemplateId, int hipsterTextId, int zoneId) {
         try {

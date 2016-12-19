@@ -545,6 +545,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // company table query and insert
     public boolean insertCompany(int company_id,
                                  String name,
+                                 String name_en,
                                  String tel,
                                  String fax,
                                  String addr,
@@ -554,6 +555,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("company_id", company_id);
         values.put("name", name);
+        values.put("name_en", name_en);
         values.put("tel", tel);
         values.put("fax", fax);
         values.put("addr", addr);
@@ -576,8 +578,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     public JSONObject getCompanyJSONObject(int company_id) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name, tel, fax, addr, web, qrcode from company where company_id=" + company_id, null);
+        Cursor cursor = db.rawQuery("select name, name_en, tel, fax, addr, web, qrcode from company where company_id=" + company_id, null);
         String name ;
+        String name_en ;
         String tel ;
         String fax ;
         String addr;
@@ -585,6 +588,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String qrcode;
         cursor.moveToFirst();
         name = cursor.getString(cursor.getColumnIndex("name"));
+        name_en = cursor.getString(cursor.getColumnIndex("name_en"));
         tel = cursor.getString(cursor.getColumnIndex("tel"));
         fax = cursor.getString(cursor.getColumnIndex("fax"));
         addr = cursor.getString(cursor.getColumnIndex("addr"));
@@ -592,6 +596,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         qrcode = cursor.getString(cursor.getColumnIndex("qrcode"));
         JSONObject obj = new JSONObject();
         obj.put("name", name);
+        obj.put("name_en", name_en);
         obj.put("tel", tel);
         obj.put("fax", fax);
         obj.put("addr", addr);
