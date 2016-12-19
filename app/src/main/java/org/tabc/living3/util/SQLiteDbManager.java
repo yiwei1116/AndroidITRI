@@ -10,7 +10,9 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.tabc.living3.CommunicationWithServer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // database name
     public static final String DATABASE_NAME = "living_3_0_ITRI.db";
+    public Context context;
+    public CommunicationWithServer communicationWithServer;
 
-    // TODO: 2. 下載音樂檔
+    // TODO: 需要根據資料庫欄位的“最後更新時間”，去決定需要下載哪些欄位
+    /// TODO: 若檔案大小介於可以容忍的範圍內則不下載, 若否則不下載
 
     /*
            ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
@@ -31,18 +36,23 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     public SQLiteDbManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, version);
+        this.context = context;
+        this.communicationWithServer = new CommunicationWithServer();
     }
 
     public SQLiteDbManager(Context context, String name) {
         super(context, DATABASE_NAME, null, VERSION);
+        this.context = context;
     }
 
     public SQLiteDbManager(Context context, String name, int version) {
         super(context, DATABASE_NAME, null, version);
+        this.context = context;
     }
 
     public SQLiteDbManager(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.context = context;
     }
 
     @Override
@@ -130,7 +140,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, guide_voice, guide_voice_size, guide_voice_en, guide_voice_en_size, photo, photo_size, photo_vertical, photo_vertical_size, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         int device_id;
         String name;
@@ -138,13 +148,18 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String introduction;
         String introduction_en;
         String guide_voice;
+        int guide_voice_size;
         String guide_voice_en;
+        int guide_voice_en_size;
         String photo;
+        int photo_size;
         String photo_vertical;
+        int photo_vertical_size;
         String hint;
         int company_id;
         int read_count;
         int like_count;
+
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
             JSONObject file = new JSONObject();
@@ -162,6 +177,24 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
             like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
+            guide_voice_size = cursor.getInt(cursor.getColumnIndex("guide_voice_size"));
+            guide_voice_en_size = cursor.getInt(cursor.getColumnIndex("guide_voice_en_size"));
+            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
+            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
+
+            // 實際掃 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            File rootDir = this.context.getFilesDir();
+            File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
+            String[] guide_voice_paths = guide_voice.split("/");
+            String[] guide_voice_en_paths = guide_voice_en.split("/");
+            String[] photo_path = photo.split("/");
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File guide_voice_file = new File(path, guide_voice_paths[guide_voice_paths.length -1]);
+            File guide_voice_en_file = new File(path, guide_voice_en_paths[guide_voice_en_paths.length -1]);
+            
             // add to JSONObject
             file.put("device_id", device_id);
             file.put("name", name);
@@ -181,6 +214,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             cursor.moveToNext();
         }
         cursor.close();
+
+        // 實際去下載檔案
+
+
         return filePaths;
     }
 
@@ -1430,8 +1467,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
-
-    // TODO: 需要根據資料庫欄位的“最後更新時間”，去決定需要下載哪些欄位
     /*
         --> get those entries that would need to fetch data from server
      */
@@ -1445,10 +1480,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         paths.addAll(getHipsterTemplateDownloadFiles());
         paths.addAll(getModeDownloadFiles());
         paths.addAll(getZoneDownloadFiles());
-
         return paths;
     }
-
 
     public List<String> getCompanyDownloadFiles() {
         List<String> companyFiles = new ArrayList<String>();
@@ -1562,7 +1595,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return templateFiles;
     }
 
-
     public List<String> getModeDownloadFiles() {
         List<String> modeFiles = new ArrayList<String>();;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1605,7 +1637,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     public List<String> getZoneDownloadFiles() {
-        List<String> zoneFiles = new ArrayList<String>();;
+        List<String> zoneFiles = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, photo, photo_vertical from zone", null);
 

@@ -91,7 +91,7 @@ public class DatabaseUtilizer {
     public static final String MODE_SPLASH_BG = "splash_bg_vertical";
     public static final String SPLASH_BG_SIZE = "splash_bg_vertical_size";
     public static final String MODE_SPLASH_FG = "splash_fg_vertical";
-    public static final String SPLASH_FG_SIZE = "splash_bg_vertical_size";
+    public static final String SPLASH_FG_SIZE = "splash_fg_vertical_size";
     public static final String MODE_SPLASH_BLUR = "splash_blur_vertical";
     public static final String SPLASH_BLUR_SIZE = "splash_blur_vertical_size";
     public static final String MODE_DID_READ = "did_read";

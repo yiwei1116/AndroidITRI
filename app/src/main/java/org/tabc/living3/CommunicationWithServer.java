@@ -486,4 +486,5 @@ public class CommunicationWithServer {
     }
 
     // ********************** download files end **********************
+
 }
