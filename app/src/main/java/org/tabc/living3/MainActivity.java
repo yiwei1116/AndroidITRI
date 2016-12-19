@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         containerSoundFontSize = (FrameLayout) findViewById(R.id.flayout_sound_font_container);
         fontSizeRL = (RelativeLayout) findViewById(R.id.rlayout_font_size_zoom);
         soundRL = (RelativeLayout) findViewById(R.id.rlayout_sound);
-        //createLanguageTTS();
         finishOtherActivity();
 
         fragmentBackStack = new LinkedList<Fragment>();
