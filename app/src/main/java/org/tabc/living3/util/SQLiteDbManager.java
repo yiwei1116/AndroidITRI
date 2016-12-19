@@ -20,7 +20,7 @@ import java.util.List;
 public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // database name
-    public static final String DATABASE_NAME = "android_itri_1.db";
+    public static final String DATABASE_NAME = "living_3_0_ITRI.db";
 
     // TODO: 2. 下載音樂檔
 
@@ -52,28 +52,19 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_BEACON);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_COMPANY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_FIELD_MAP);
-        // need to upload hipster content
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_CONTENT);
+
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEMPLATE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEXT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_MODE);
-        // upload survey
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
 
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PROJECT);
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_LEASE);
-        // problem with path
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY_RESULT);
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_USERS);
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_DEVICE);
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_PI);
-        //        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_VIP_VOICE);
+        // upload survey
+        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
     }
 
     public void onOpen(SQLiteDatabase db) {
-        Log.i("database", "database opened");
+        Log.i("SQLiteDB", "database opened");
     }
 
     @Override
@@ -90,7 +81,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String guide_voice,
                                 String guide_voice_en,
                                 String photo,
+                                String photo_size,
                                 String photo_vertical,
+                                String photo_vertical_size,
                                 String hint,
                                 int mode_id,
                                 int company_id,
@@ -112,6 +105,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("company_id", company_id);
         values.put("read_count", read_count);
         values.put("like_count", like_count);
+        int photo_size_int = Integer.parseInt(photo_size);
+        int photo_vertical_size_int = Integer.parseInt(photo_vertical_size);
+        values.put("photo_size", photo_size_int);
+        values.put("photo_vertical_size", photo_vertical_size_int);
+
         // error
         long rowId = db.insertWithOnConflict("device", null, values, 4);
         if (rowId != -1) {
@@ -637,10 +635,15 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                   int project_id,
                                   String introduction,
                                   String photo,
+                                  String photo_size,
                                   String photo_vertical,
+                                  String photo_vertical_size,
                                   String map_svg,
+                                  String map_svg_size,
                                   String map_svg_en,
-                                  String map_bg) {
+                                  String map_svg_en_size,
+                                  String map_bg,
+                                  String map_bg_size) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("field_map_id", field_map_id);
@@ -649,10 +652,22 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("project_id", project_id);
         values.put("introduction", introduction);
         values.put("photo", photo);
+        // parse string to ints to store those file sizes in "kb"
+        int photo_size_int = Integer.parseInt(photo_size);
+        values.put("photo_size", photo_size_int);
         values.put("photo_vertical", photo_vertical);
+        int photo_vertical_size_int = Integer.parseInt(photo_vertical_size);
+        values.put("photo_vertical_size", photo_vertical_size_int);
         values.put("map_svg", map_svg);
+        int map_svg_size_int = Integer.parseInt(map_svg_size);
+        values.put("map_svg_size", map_svg_size_int);
         values.put("map_svg_en", map_svg_en);
+        int map_svg_en_size_int = Integer.parseInt(map_svg_en_size);
+        values.put("map_svg_en_size", map_svg_en_size_int);
         values.put("map_bg", map_bg);
+        int map_bg_size_int = Integer.parseInt(map_bg_size);
+        values.put("map_bg_size", map_bg_size_int);
+
         long rowId = db.insertWithOnConflict("field_map", null, values, 4);
         if (rowId != -1) {
             Log.i("field_map", "insert field_map_id=" + field_map_id + " success.");
@@ -773,12 +788,16 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     // hipster template table query and insert
     public boolean insertHipsterTemplate(int hipster_template_id,
                                          String name,
-                                         String template) {
+                                         String template,
+                                         String template_size) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("hipster_template_id", hipster_template_id);
         values.put("name", name);
         values.put("template", template);
+        int template_size_int = Integer.parseInt(template_size);
+        values.put("template_size", template_size_int);
+
         long rowId = db.insertWithOnConflict("hipster_template", null, values, 4);
         if (rowId != -1) {
             Log.i("hipster_template", "insert hipster_template_id=" + hipster_template_id + " success.");
@@ -908,11 +927,16 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                               String introduction,
                               String introduction_en,
                               String guide_voice,
+                              String guide_voice_size,
                               String guide_voice_en,
+                              String guide_voice_en_size,
                               String video,
                               String splash_bg_vertical,
+                              String splash_bg_vertical_size,
                               String splash_fg_vertical,
+                              String splash_fg_vertical_size,
                               String splash_blur_vertical,
+                              String splash_blur_vertical_size,
                               int like_count,
                               int read_count,
                               int time_total,
@@ -926,11 +950,21 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("introduction", introduction);
         values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
+        int guide_voice_size_int = Integer.parseInt(guide_voice_size);
+        values.put("guide_voice_size", guide_voice_size_int);
         values.put("guide_voice_en", guide_voice_en);
+        int guide_voice_en_size_int = Integer.parseInt(guide_voice_en_size);
+        values.put("guide_voice_en_size", guide_voice_en_size_int);
         values.put("video", video);
         values.put("splash_bg_vertical", splash_bg_vertical);
+        int splash_bg_vertical_size_int = Integer.parseInt(splash_bg_vertical_size);
+        values.put("splash_bg_vertical_size", splash_bg_vertical_size_int);
         values.put("splash_fg_vertical", splash_fg_vertical);
+        int splash_fg_vertical_size_int = Integer.parseInt(splash_fg_vertical_size);
+        values.put("splash_fg_vertical_size", splash_fg_vertical_size_int);
         values.put("splash_blur_vertical", splash_blur_vertical);
+        int splash_blur_vertical_size_int = Integer.parseInt(splash_blur_vertical_size);
+        values.put("splash_blur_vertical_size", splash_fg_vertical_size_int);
         values.put("like_count", like_count);
         values.put("read_count", read_count);
         values.put("time_total", time_total);
@@ -1254,10 +1288,14 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String introduction,
                                 String introduction_en,
                                 String guide_voice,
+                                String guide_voice_size,
                                 String guide_voice_en,
+                                String guide_voice_en_size,
                                 String hint,
                                 String photo,
+                                String photo_size,
                                 String photo_vertical,
+                                String photo_vertical_size,
                                 int field_id,
                                 int like_count) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1268,12 +1306,21 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("introduction", introduction);
         values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
+        int guide_voice_size_int = Integer.parseInt(guide_voice_size);
+        values.put("guide_voice_size", guide_voice_size_int);
         values.put("guide_voice_en", guide_voice_en);
+        int guide_voice_en_size_int = Integer.parseInt(guide_voice_en_size);
+        values.put("guide_voice_en_size", guide_voice_en_size_int);
         values.put("hint", hint);
         values.put("photo", photo);
+        int photo_size_int = Integer.parseInt(photo_size);
+        values.put("photo_size", photo_size_int);
         values.put("photo_vertical", photo_vertical);
+        int photo_vertical_size_int = Integer.parseInt(photo_vertical_size);
+        values.put("photo_vertical_size", photo_vertical_size_int);
         values.put("field_id", field_id);
         values.put("like_count", like_count);
+
         long rowId = db.insertWithOnConflict("zone", null, values, 4);
         if (rowId != -1) {
             Log.i("zone", "insert zone_id=" + zone_id + " success.");
@@ -1384,6 +1431,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
 
+    // TODO: 需要根據資料庫欄位的“最後更新時間”，去決定需要下載哪些欄位
     /*
         --> get those entries that would need to fetch data from server
      */
