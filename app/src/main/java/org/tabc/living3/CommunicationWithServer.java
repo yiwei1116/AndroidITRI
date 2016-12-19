@@ -417,8 +417,8 @@ public class CommunicationWithServer {
             if (files.isEmpty())
                 onProgressUpdate(progress);
 
-            try {
-                for (String eachFile : files) {
+            for (String eachFile : files) {
+                try {
                     if (eachFile.length() != 0 && eachFile != null && !eachFile.equals("null")) {
                         String[] splits = eachFile.split("/");
                         filename = splits[splits.length - 1];
@@ -458,9 +458,10 @@ public class CommunicationWithServer {
                             onProgressUpdate(progress);
                         }
                     }
+
+                } catch (Exception e) {
+                    Log.e("error", String.valueOf(e));
                 }
-            } catch (Exception e) {
-                Log.e("error", String.valueOf(e));
             }
 
         }
