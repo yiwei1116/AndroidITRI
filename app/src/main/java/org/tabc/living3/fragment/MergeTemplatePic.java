@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -174,7 +175,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
        }
         textView.setVisibility(View.VISIBLE);
         init();
-        displayPic();
+
         return view;
     }
 
@@ -193,7 +194,9 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             mPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/" + now + ".jpeg";
             Log.e("mPath",mPath);
             //藉由View來Cache全螢幕畫面後放入Bitmap
+
             addImageToGallery(mPath,getActivity());
+            displayPic();
             View mView = getActivity().getWindow().getDecorView();
             mView.setDrawingCacheEnabled(true);
             mView.buildDrawingCache();
@@ -295,7 +298,11 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 Log.e("picPath",picPath);
                 Log.e("mPath",mPath);
                 String templateID = getTemplateID(templateIndex);
-                helperFunctions.uploadHipster(StringContext,getPicName(picPath),getPicName(mPath),getPicDirPath(picPath),getPicDirPath(mPath),Integer.parseInt(templateID),Integer.parseInt(templateTextID),Integer.parseInt(zoneID));
+                try {
+                    helperFunctions.uploadHipster(toUtf8(StringContext),getPicName(picPath),getPicName(mPath),getPicDirPath(picPath),getPicDirPath(mPath),Integer.parseInt(templateID),Integer.parseInt(templateTextID),Integer.parseInt(zoneID));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.savetoPhone:
                 savetoPhone();
@@ -381,7 +388,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         String[] paths = picPath.split("/");
 
         String finalFile =  paths[paths.length-1];
-
+        Log.e("finalFile",finalFile);
         return finalFile;
     }
     //到目錄
@@ -402,7 +409,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
     }
     private void displayPic(){
-        File pic = new File(getPicDirPath(picPath),getPicName(picPath));
+        File pic = new File(getPicDirPath(mPath),getPicName(mPath));
         Bitmap bitmap=null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -415,6 +422,9 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
         TT.setImageBitmap(bitmap);
 
+    }
+    public static String toUtf8(String str) throws UnsupportedEncodingException {
+        return new String(str.getBytes("UTF-8"),"UTF-8");
     }
 
 

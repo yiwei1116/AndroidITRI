@@ -740,11 +740,12 @@ public class HelperFunctions extends Application{
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             try {
                 pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile), null, options);
-                combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile), null, options);
+                //combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile), null, options);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
 
+                e.printStackTrace();
+                Log.e("12","32");
+            }
             /*Bitmap pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile));
             Bitmap combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile));*/
             Log.e("LLLLLLLLLL", String.valueOf(pictureFile));
@@ -753,7 +754,7 @@ public class HelperFunctions extends Application{
             //combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
 
             pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+            //combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
             byte[] pictureBytes = outputStream.toByteArray();
             byte[] combineBytes = outputStream1.toByteArray();
             pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);
