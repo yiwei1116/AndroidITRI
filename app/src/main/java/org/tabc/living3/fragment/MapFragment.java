@@ -300,7 +300,7 @@ public class MapFragment extends Fragment {
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-        mWebViewMap.setInitialScale(150);
+        mWebViewMap.setInitialScale(180);
 
         if (Build.VERSION.SDK_INT >= 19) {
             // chromium, enable hardware acceleration
