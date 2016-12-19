@@ -146,7 +146,9 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.INTRODUCTION_EN),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_SIZE),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN_SIZE),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
                                 json.optString(DatabaseUtilizer.DEVICE_HINT),
@@ -199,10 +201,15 @@ public class CommunicationWithServer {
                                 json.optInt(DatabaseUtilizer.PROJECT_ID),
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
+                                json.optString(DatabaseUtilizer.PHOTO_SIZE),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
+                                json.optString(DatabaseUtilizer.PHOTO_VERTICAL_SIZE),
                                 json.optString(DatabaseUtilizer.MAP_SVG),
+                                json.optString(DatabaseUtilizer.MAP_SVG_SIZE),
                                 json.optString(DatabaseUtilizer.MAP_SVG_EN),
-                                json.optString(DatabaseUtilizer.MAP_BG));
+                                json.optString(DatabaseUtilizer.MAP_SVG_EN_SIZE),
+                                json.optString(DatabaseUtilizer.MAP_BG),
+                                json.optString(DatabaseUtilizer.MAP_BG_SIZE));
                     }
                     break;
                 case "hipster_template":
@@ -212,7 +219,8 @@ public class CommunicationWithServer {
                         // store each entry into database
                         sqLiteDbManager.insertHipsterTemplate(json.optInt(DatabaseUtilizer.HIPSTER_TEMPLATE_ID),
                                 json.optString(DatabaseUtilizer.NAME),
-                                json.optString(DatabaseUtilizer.TEMPLATE));
+                                json.optString(DatabaseUtilizer.TEMPLATE),
+                                json.optString(DatabaseUtilizer.TEMPLATE_SIZE));
                     }
                     break;
                 case "hipster_text":
@@ -236,11 +244,16 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.INTRODUCTION_EN),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_SIZE),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN_SIZE),
                                 json.optString(DatabaseUtilizer.VIDEO),
                                 json.optString(DatabaseUtilizer.MODE_SPLASH_BG),
+                                json.optString(DatabaseUtilizer.SPLASH_BG_SIZE),
                                 json.optString(DatabaseUtilizer.MODE_SPLASH_FG),
+                                json.optString(DatabaseUtilizer.SPLASH_FG_SIZE),
                                 json.optString(DatabaseUtilizer.MODE_SPLASH_BLUR),
+                                json.optString(DatabaseUtilizer.SPLASH_BLUR_SIZE),
                                 json.optInt(DatabaseUtilizer.LIKE_COUNT),
                                 json.optInt(DatabaseUtilizer.READ_COUNT),
                                 json.optInt(DatabaseUtilizer.TIME_TOTAL),
@@ -259,10 +272,14 @@ public class CommunicationWithServer {
                                 json.optString(DatabaseUtilizer.INTRODUCTION),
                                 json.optString(DatabaseUtilizer.INTRODUCTION_EN),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_SIZE),
                                 json.optString(DatabaseUtilizer.GUIDE_VOICE_EN),
+                                json.optString(DatabaseUtilizer.GUIDE_VOICE_EN_SIZE),
                                 json.optString(DatabaseUtilizer.DEVICE_HINT),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO),
+                                json.optString(DatabaseUtilizer.PHOTO_SIZE),
                                 json.optString(DatabaseUtilizer.DEVICE_PHOTO_VER),
+                                json.optString(DatabaseUtilizer.PHOTO_VERTICAL_SIZE),
                                 json.optInt(DatabaseUtilizer.FIELD_ID),
                                 json.optInt(DatabaseUtilizer.LIKE_COUNT));
                     }
