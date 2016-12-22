@@ -1001,7 +1001,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("splash_fg_vertical_size", splash_fg_vertical_size_int);
         values.put("splash_blur_vertical", splash_blur_vertical);
         int splash_blur_vertical_size_int = Integer.parseInt(splash_blur_vertical_size);
-        values.put("splash_blur_vertical_size", splash_fg_vertical_size_int);
+        values.put("splash_blur_vertical_size", splash_blur_vertical_size_int);
         values.put("like_count", like_count);
         values.put("read_count", read_count);
         values.put("time_total", time_total);
