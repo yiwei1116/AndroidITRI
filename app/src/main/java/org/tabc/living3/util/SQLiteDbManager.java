@@ -194,7 +194,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             String[] photo_vertical_path = photo_vertical.split("/");
             File guide_voice_file = new File(path, guide_voice_paths[guide_voice_paths.length -1]);
             File guide_voice_en_file = new File(path, guide_voice_en_paths[guide_voice_en_paths.length -1]);
-            
+
             // add to JSONObject
             file.put("device_id", device_id);
             file.put("name", name);
@@ -216,7 +216,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.close();
 
         // 實際去下載檔案
-
 
         return filePaths;
     }
