@@ -135,12 +135,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getDevice(int device_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from device where device_id=" + device_id + "", null);
-        return cursor;
-    }
-
     // get device files without guide voice
     public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
@@ -271,7 +265,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
         read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
         like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
-
 
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
@@ -446,7 +439,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
-        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_id, null);
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
@@ -579,7 +572,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
-        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_id, null);
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
@@ -832,27 +825,99 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select field_map_id, photo, photo_vertical, map_svg, map_svg_en, map_bg from field_map", null);
+        Cursor cursor = db.rawQuery("select field_map_id, photo, photo_size, photo_vertical, photo_vertical_size, map_svg, map_svg_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map", null);
         cursor.moveToFirst();
         String field_map_id;
         String guide_voice;
         String guide_voice_en;
         String photo;
+        int photo_size;
+        int photo_vertical_size;
+
         String photo_vertical;
         String map_svg;
         String map_svg_en;
         String map_bg;
+        int map_svg_size;
+        int map_bg_size;
+        int map_svg_en_size;
         // fetch all company_id & qrcode
         while (cursor.isAfterLast() == false) {
-            field_map_id = cursor.getString(cursor.getColumnIndex("device_id"));
+            field_map_id = cursor.getString(cursor.getColumnIndex("field_map_id"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
             map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
             map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
             map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
+            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
+            map_svg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
+            map_svg_en_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
+            map_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
+
+            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            File rootDir = this.context.getFilesDir();
+            File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
+
+            String[] svg_path = map_svg.split("/");
+            String[] svg_en_path = map_svg_en.split("/");
+            String[] bg_path = map_bg.split("/");
+            File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+
+            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+
+            String[] photo_path = photo.split("/");
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_file = new File(path, photo_path[photo_path.length -1]);
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+            if (!photo_file.exists()) {
+                DownloadSingleFile(photo);
+            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
+
+            if (!photo_vertical_file.exists()) {
+                DownloadSingleFile(photo_vertical);
+            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
+
+
+            if (!svg_file.exists()) {
+                DownloadSingleFile(map_svg);
+            } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg);
+            }
+
+            if (!svg_en_file.exists()) {
+                DownloadSingleFile(map_svg_en);
+            } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg_en);
+            }
+
+            if (!bg_file.exists()) {
+                DownloadSingleFile(map_bg);
+            } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_bg);
+            }
 
             // add to JSONObject
-            file.put("device_id", field_map_id);
+            file.put("field_map_id", field_map_id);
             file.put("photo", photo);
             file.put("photo_vertical", photo_vertical);
             file.put("map_svg", map_svg);
@@ -869,31 +934,103 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // give jiang
     public JSONObject queryFieldMapWithFieldMapId(int field_map_id) throws JSONException {
+        JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select map_svg, map_svg_en, map_bg from field_map where field_map_id=" + field_map_id, null);
-        JSONObject object = new JSONObject();
+        Cursor cursor = db.rawQuery("select field_map_id, photo, photo_size, photo_vertical, photo_vertical_size, map_svg, map_svg_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_map_id, null);
         cursor.moveToFirst();
-        String map_svg = "";
-        String map_svg_en = "";
-        String map_bg = "";
-        map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
-        map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
-        map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
-        // parse file name
-        String[] paths = map_svg.split("/");
-        String svgName = paths[paths.length-1];
+        String photo;
+        int photo_size;
+        int photo_vertical_size;
 
-        String[] paths_en = map_svg_en.split("/");
-        String svgNameEn = paths_en[paths_en.length - 1];
+        String photo_vertical;
+        String map_svg;
+        String map_svg_en;
+        String map_bg;
+        int map_svg_size;
+        int map_bg_size;
+        int map_svg_en_size;
+        // fetch all company_id & qrcode
+            photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+            map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
+            map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
+            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
+            map_svg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
+            map_svg_en_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
+            map_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
 
-        String[] pathsBg = map_bg.split("/");
-        String svgNameBg = pathsBg[pathsBg.length-1];
+            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            File rootDir = this.context.getFilesDir();
+            File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
 
-        object.put("map_svg", svgName);
-        object.put("map_svg_en", svgNameEn);
-        object.put("map_bg", svgNameBg);
+            String[] svg_path = map_svg.split("/");
+            String[] svg_en_path = map_svg_en.split("/");
+            String[] bg_path = map_bg.split("/");
+            File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+
+            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+
+            String[] photo_path = photo.split("/");
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_file = new File(path, photo_path[photo_path.length -1]);
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+            if (!photo_file.exists()) {
+                DownloadSingleFile(photo);
+            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
+
+            if (!photo_vertical_file.exists()) {
+                DownloadSingleFile(photo_vertical);
+            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
+
+
+            if (!svg_file.exists()) {
+                DownloadSingleFile(map_svg);
+            } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg);
+            }
+
+            if (!svg_en_file.exists()) {
+                DownloadSingleFile(map_svg_en);
+            } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg_en);
+            }
+
+            if (!bg_file.exists()) {
+                DownloadSingleFile(map_bg);
+            } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_bg);
+            }
+
+            // add to JSONObject
+            file.put("field_map_id", field_map_id);
+            file.put("photo", photo);
+            file.put("photo_vertical", photo_vertical);
+            file.put("map_svg", map_svg);
+            file.put("map_svg_en", map_svg_en);
+            file.put("map_bg", map_bg);
         cursor.close();
-        return object;
+        return file;
     }
 
 
@@ -923,12 +1060,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getHipsterContent(int hipster_content_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from hipster_content where hipster_content_id=" + hipster_content_id + "", null);
-        return cursor;
-    }
-
     // hipster template table query and insert
     public boolean insertHipsterTemplate(int hipster_template_id,
                                          String name,
@@ -949,12 +1080,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-    }
-
-    public Cursor getHipsterTemplate(int hipster_template_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from hipster_template where hipster_template_id=" + hipster_template_id + "", null);
-        return cursor;
     }
 
     // get hipster template columns
@@ -999,12 +1124,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getHipsterText(int hipster_text_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from hipster_text where hipster_text_id=" + hipster_text_id + "", null);
-        return cursor;
-    }
-
     // get hipster text files in an JSONArray
     public JSONArray queryHipsterTextFiles() throws JSONException {
         JSONObject file = new JSONObject();
@@ -1032,38 +1151,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return filePaths;
     }
 
-    // lease table query and insert
-    public boolean insertLease(int id,
-                               int pad_id,
-                               String borrower,
-                               String borrower_tel,
-                               String lease_date,
-                               String return_date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id", id);
-        values.put("pad_id", pad_id);
-        values.put("borrower", borrower);
-        values.put("borrower_tel", borrower_tel);
-        // lease_date & return_date have to be in correct datetime format
-        values.put("lease_date", lease_date);
-        values.put("return_date", return_date);
-        long rowId = db.insertWithOnConflict("lease", null, values, 4);
-        if (rowId != -1) {
-            Log.i("lease", "insert id=" + id + " success.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Cursor getLease(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from lease where id=" + id + "", null);
-        return cursor;
-    }
-
-
     // mode table query and insert
     public boolean insertMode(int mode_id,
                               String name,
@@ -1071,9 +1158,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                               String introduction,
                               String introduction_en,
                               String guide_voice,
-                              String guide_voice_size,
                               String guide_voice_en,
-                              String guide_voice_en_size,
                               String video,
                               String splash_bg_vertical,
                               String splash_bg_vertical_size,
@@ -1094,11 +1179,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("introduction", introduction);
         values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
-        int guide_voice_size_int = Integer.parseInt(guide_voice_size);
-        values.put("guide_voice_size", guide_voice_size_int);
         values.put("guide_voice_en", guide_voice_en);
-        int guide_voice_en_size_int = Integer.parseInt(guide_voice_en_size);
-        values.put("guide_voice_en_size", guide_voice_en_size_int);
         values.put("video", video);
         values.put("splash_bg_vertical", splash_bg_vertical);
         int splash_bg_vertical_size_int = Integer.parseInt(splash_bg_vertical_size);
@@ -1124,12 +1205,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getMode(int mode_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from mode where mode_id=" + mode_id + "", null);
-        return cursor;
-    }
-
     // get mode files with mode_id  振哥
     public JSONObject queryModeFiles(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
@@ -1144,46 +1219,92 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String guide_voice_en;
         String video;
         String splash_bg_vertical;
+        int splash_bg_size;
         String splash_fg_vertical;
+        int splash_fg_size;
         String splash_blur_vertical;
+        int splash_blur_size;
         int like_count = 0;
         int read_count = 0;
         int time_total = 0;
         int zone_id = 0;
         int did_read = 0;
         // fetch all company_id & qrcode
-            JSONObject file = new JSONObject();
-            name = cursor.getString(cursor.getColumnIndex("name"));
-            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
-            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
-            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
-            guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
-            guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
-            video = cursor.getString(cursor.getColumnIndex("video"));
-            splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
-            splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
-            splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
-            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
-            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
-            time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
-            zone_id = cursor.getInt(cursor.getColumnIndex("zone_id"));
-            did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
-            // add to JSONObject
-            file.put("mode_id", mode_id);
-            file.put("name", name);
-            file.put("name_en", name_en);
-            file.put("introduction", introduction);
-            file.put("introduction_en", introduction_en);
-            file.put("guide_voice", guide_voice);
-            file.put("guide_voice_en", guide_voice_en);
-            file.put("video", video);
-            file.put("splash_bg_vertical", splash_bg_vertical);
-            file.put("splash_fg_vertical", splash_fg_vertical);
-            file.put("splash_blur_vertical", splash_blur_vertical);
-            file.put("like_count", like_count);
-            file.put("read_count", read_count);
-            file.put("time_total", time_total);
-            file.put("zone_id", zone_id);
+        JSONObject file = new JSONObject();
+        name = cursor.getString(cursor.getColumnIndex("name"));
+        name_en = cursor.getString(cursor.getColumnIndex("name_en"));
+        introduction = cursor.getString(cursor.getColumnIndex("introduction"));
+        introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
+        guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
+        guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
+        video = cursor.getString(cursor.getColumnIndex("video"));
+        splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
+        splash_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_BG_SIZE));
+        splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
+        splash_fg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_FG_SIZE));
+        splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+        splash_blur_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_BLUR_SIZE));
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
+        time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
+        zone_id = cursor.getInt(cursor.getColumnIndex("zone_id"));
+        did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
+
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if ( !path.exists() ) {
+            path.mkdirs();
+        }
+
+        String[] bg_path = splash_bg_vertical.split("/");
+        String[] fg_path = splash_fg_vertical.split("/");
+        String[] blur_path = splash_blur_vertical.split("/");
+        File bg_file = new File(path, bg_path[bg_path.length - 1]);
+        File fg_file = new File(path, fg_path[fg_path.length - 1]);
+        File blur_file = new File(path, blur_path[blur_path.length - 1]);
+
+        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+        int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
+        int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
+
+        if (!bg_file.exists()) {
+            DownloadSingleFile(splash_bg_vertical);
+        } else if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(splash_bg_vertical);
+        }
+
+        if (!fg_file.exists()) {
+            DownloadSingleFile(splash_fg_vertical);
+        } else if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(splash_fg_vertical);
+        }
+
+        if (!blur_file.exists()) {
+            DownloadSingleFile(splash_blur_vertical);
+        } else if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(splash_blur_vertical);
+        }
+
+        // add to JSONObject
+        file.put("mode_id", mode_id);
+        file.put("name", name);
+        file.put("name_en", name_en);
+        file.put("introduction", introduction);
+        file.put("introduction_en", introduction_en);
+        file.put("guide_voice", guide_voice);
+        file.put("guide_voice_en", guide_voice_en);
+        file.put("video", video);
+        file.put("splash_bg_vertical", splash_bg_vertical);
+        file.put("splash_fg_vertical", splash_fg_vertical);
+        file.put("splash_blur_vertical", splash_blur_vertical);
+        file.put("like_count", like_count);
+        file.put("read_count", read_count);
+        file.put("time_total", time_total);
+        file.put("zone_id", zone_id);
         file.put("did_read", did_read);
         cursor.close();
         return file;
@@ -1217,8 +1338,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String guide_voice_en;
         String video;
         String splash_bg_vertical;
+        int splash_bg_size;
         String splash_fg_vertical;
+        int splash_fg_size;
         String splash_blur_vertical;
+        int splash_blur_size;
         int like_count = 0;
         int read_count = 0;
         int time_total = 0;
@@ -1234,12 +1358,55 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             video = cursor.getString(cursor.getColumnIndex("video"));
             splash_bg_vertical = cursor.getString(cursor.getColumnIndex("splash_bg_vertical"));
+            splash_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_BG_SIZE));
             splash_fg_vertical = cursor.getString(cursor.getColumnIndex("splash_fg_vertical"));
+            splash_fg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_FG_SIZE));
             splash_blur_vertical = cursor.getString(cursor.getColumnIndex("splash_blur_vertical"));
+            splash_blur_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.SPLASH_BLUR_SIZE));
             like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
             time_total = cursor.getInt(cursor.getColumnIndex("time_total"));
             did_read = cursor.getInt(cursor.getColumnIndex("did_read"));
+
+            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            File rootDir = this.context.getFilesDir();
+            File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
+
+            String[] bg_path = splash_bg_vertical.split("/");
+            String[] fg_path = splash_fg_vertical.split("/");
+            String[] blur_path = splash_blur_vertical.split("/");
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            File fg_file = new File(path, fg_path[fg_path.length - 1]);
+            File blur_file = new File(path, blur_path[blur_path.length - 1]);
+
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+            int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
+            int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
+
+            if (!bg_file.exists()) {
+                DownloadSingleFile(splash_bg_vertical);
+            } else if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_bg_vertical);
+            }
+
+            if (!fg_file.exists()) {
+                DownloadSingleFile(splash_fg_vertical);
+            } else if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_fg_vertical);
+            }
+
+            if (!blur_file.exists()) {
+                DownloadSingleFile(splash_blur_vertical);
+            } else if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_blur_vertical);
+            }
+
             // add to JSONObject
             file.put("mode_id", mode_id);
             file.put("name", name);
@@ -1268,7 +1435,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         JSONObject file = new JSONObject();
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, photo, photo_vertical, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, photo, photo_size, photo_vertical, photo_vertical_size, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         String device_id;
         String name;
@@ -1276,7 +1443,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String introduction;
         String introduction_en;
         String photo;
+        int photo_size;
         String photo_vertical;
+        int photo_vertical_size;
         String hint;
         int company_id;
         int read_count;
@@ -1289,11 +1458,41 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             introduction = cursor.getString(cursor.getColumnIndex("introduction"));
             introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
             hint = cursor.getString(cursor.getColumnIndex("hint"));
             company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
             like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+
+            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            File rootDir = this.context.getFilesDir();
+            File path = new File(rootDir.getAbsolutePath() + "/itri");
+            if ( !path.exists() ) {
+                path.mkdirs();
+            }
+
+            String[] photo_path = photo.split("/");
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_file = new File(path, photo_path[photo_path.length -1]);
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+            if (!photo_file.exists()) {
+                DownloadSingleFile(photo);
+            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
+
+            if (!photo_vertical_file.exists()) {
+                DownloadSingleFile(photo_vertical);
+            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
 
             // add to JSONObject
             file.put("device_id", device_id);
@@ -1349,82 +1548,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return true;
     }
 
-
-    // **************  survey ************
-    // survey table query and insert
-    public boolean insertSurvey(int survey_id,
-                                String name,
-                                String email,
-                                String gender,
-                                String age,
-                                String education,
-                                String career,
-                                String experience,
-                                String salary,
-                                String location,
-                                int house_type,
-                                int family_type,
-                                int family_member,
-                                int know_way) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("survey_id", survey_id);
-        values.put("name", name);
-        values.put("email", email);
-        values.put("gender", gender);
-        values.put("age", age);
-        values.put("education", education);
-        values.put("career", career);
-        values.put("experience", experience);
-        values.put("salary", salary);
-        values.put("location", location);
-        values.put("house_type", house_type);
-        values.put("family_type", family_type);
-        values.put("family_member", family_member);
-        values.put("know_way", know_way);
-        long rowId = db.insertWithOnConflict("survey", null, values, 4);
-        if (rowId != -1) {
-            Log.i("survey", "insert survey_id=" + survey_id + " success.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Cursor getSurvey(int survey_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from survey where survey_id=" + survey_id + "", null);
-        return cursor;
-    }
-
-
-    // survey result table query and insert
-    public boolean insertSurveyResult(int id,
-                                      int question,
-                                      int answer,
-                                      int total) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("id", id);
-        values.put("question", question);
-        values.put("answer", answer);
-        values.put("total", total);
-        long rowId = db.insertWithOnConflict("survey_result", null, values, 4);
-        if (rowId != -1) {
-            Log.i("survey_result", "insert id=" + id + " success.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Cursor getSurveyResult(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from survey_result where id=" + id + "", null);
-        return cursor;
-    }
-
-
     // zone table query and insert
     public boolean insertZone(int zone_id,
                                 String name,
@@ -1432,9 +1555,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                                 String introduction,
                                 String introduction_en,
                                 String guide_voice,
-                                String guide_voice_size,
                                 String guide_voice_en,
-                                String guide_voice_en_size,
                                 String hint,
                                 String photo,
                                 String photo_size,
@@ -1450,11 +1571,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         values.put("introduction", introduction);
         values.put("introduction_en", introduction_en);
         values.put("guide_voice", guide_voice);
-        int guide_voice_size_int = Integer.parseInt(guide_voice_size);
-        values.put("guide_voice_size", guide_voice_size_int);
         values.put("guide_voice_en", guide_voice_en);
-        int guide_voice_en_size_int = Integer.parseInt(guide_voice_en_size);
-        values.put("guide_voice_en_size", guide_voice_en_size_int);
         values.put("hint", hint);
         values.put("photo", photo);
         int photo_size_int = Integer.parseInt(photo_size);
@@ -1487,10 +1604,41 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         String hint = cursor.getString(cursor.getColumnIndex("hint"));
         String photo = cursor.getString(cursor.getColumnIndex("photo"));
+        int photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
         String photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+        int photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
         int field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         int like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if ( !path.exists() ) {
+            path.mkdirs();
+        }
+
+        String[] photo_path = photo.split("/");
+        String[] photo_vertical_path = photo_vertical.split("/");
+        File photo_file = new File(path, photo_path[photo_path.length -1]);
+        File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+        int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+        int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+        if (!photo_file.exists()) {
+            DownloadSingleFile(photo);
+        } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+            // re-download
+            DownloadSingleFile(photo);
+        }
+
+        if (!photo_vertical_file.exists()) {
+            DownloadSingleFile(photo_vertical);
+        } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(photo_vertical);
+        }
+
+        // add to json obj
         file.put("name", name);
         file.put("name_en", name_en);
         file.put("introduction", introduction);
@@ -1532,46 +1680,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-    }
-
-    public Cursor getPath(int path_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from path where choose_path_id=" + path_id + "", null);
-        return cursor;
-    }
-
-    // get zone files
-    public JSONArray queryPaths() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from path", null);
-        cursor.moveToFirst();
-        int choose_path_id;
-        int order;
-        String svg_id;
-        int start;
-        int Sn;
-        int End;
-        int En;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            choose_path_id = cursor.getInt(cursor.getColumnIndex("choose_path_id"));
-            svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
-            start = cursor.getInt(cursor.getColumnIndex("start"));
-            End = cursor.getInt(cursor.getColumnIndex("end"));
-            // add to JSONObject
-            file.put("choose_path_id", choose_path_id);
-            file.put("svg_id", svg_id);
-            file.put("start", start);
-            file.put("end", End);
-            Log.e("pathhhhhhhh", String.valueOf(file));
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
     }
 
     /*
@@ -1777,61 +1885,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return zoneFiles;
     }
 
-    /*
-        ----> get videos from Mode table
-     */
-    public List<String> getVideoFiles() {
-        List<String> videoFiles = new ArrayList<String>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select video from mode", null);
-        cursor.moveToFirst();
-        String video = null;
-        // fetch all guide_voice, video, bg, fg, blur img
-        while (cursor.isAfterLast() == false) {
-            video = cursor.getString(cursor.getColumnIndex("video"));
-            if (video.length() != 0 && video != null && video != "null") {
-                // add to List
-                videoFiles.add(video);
-            }
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return videoFiles;
-    }
-
-
-    // ********************** 文青樣板、罐頭文字、區域顯示  給定資料部分 **********************
-    // 文青樣板：用 queryHipsterTemplateFiles()
-    // 罐頭文字：用 queryHipsterTextFiles()
-    // 區域清單顯示：
-    public JSONArray queryListOfZones() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select zone_id, name, name_en from zone", null);
-        cursor.moveToFirst();
-        String zone_id;
-        String name;
-        String name_en;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            zone_id = cursor.getString(cursor.getColumnIndex("zone_id"));
-            name = cursor.getString(cursor.getColumnIndex("name"));
-            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
-
-            // add to JSONObject
-            file.put("zone_id", zone_id);
-            file.put("name", name);
-            file.put("name_en", name_en);
-
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
-    }
-
     // ********************** 裝置  給定資料部分 **********************
 
     // 用給定的mode_id取出所有裝置
@@ -1952,33 +2005,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         db.execSQL("UPDATE mode SET did_read=0");
         db.close();
     }
-
-    // only device table
-    public JSONObject getAllLikeCounts() throws JSONException {
-        JSONArray array = new JSONArray();
-        JSONObject obj = new JSONObject();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // query device like count and read count
-        Cursor deviceCursor = db.rawQuery("select device_id, read_count, like_count from device", null);
-        deviceCursor.moveToFirst();
-        int device_id;
-        int read_count;
-        int like_count;
-        while (deviceCursor.isAfterLast() == false) {
-            device_id = deviceCursor.getInt(deviceCursor.getColumnIndex("device_id"));
-            read_count = deviceCursor.getInt(deviceCursor.getColumnIndex("read_count"));
-            like_count = deviceCursor.getInt(deviceCursor.getColumnIndex("like_count"));
-            obj.put("device_id", device_id);
-            obj.put("read_count", read_count);
-            obj.put("like_count", like_count);
-            array.put(obj);
-            obj = new JSONObject();
-            deviceCursor.moveToNext();
-        }
-        deviceCursor.close();
-        return obj;
-    }
-
 
     public void DownloadSingleFile(String dfile) {
         new DownloadSingleFileTask(dfile).execute();

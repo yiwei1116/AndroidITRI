@@ -232,7 +232,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.DEVICE_MODE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.DEVICE_COMPANY_ID + " INT DEFAULT NULL, "
             + DatabaseUtilizer.READ_COUNT + " INT DEFAULT 0, "
-            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0, "
+            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0"
             + ")";
     // project
     public static final String DB_CREATE_TABLE_PROJECT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PROJECT_TABLE + " ("
@@ -284,16 +284,6 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.MAP_BG + " TEXT NOT NULL, "
             + DatabaseUtilizer.MAP_BG_SIZE + " INT NOT NULL DEFAULT 0"
             + ")";
-    // hipster content
-    public static final String DB_CREATE_TABLE_HIPSTER_CONTENT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_CONTENT_TABLE + " ("
-            + DatabaseUtilizer.HIPSTER_CONTENT_ID + " INT NOT NULL UNIQUE, "
-            + DatabaseUtilizer.CONTENT + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.PICTURE + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.COMBINE_PICTURE + " TEXT NOT NULL, "
-            + DatabaseUtilizer.HIPSTER_TEMPLATE_ID + " INT DEFAULT NULL, "
-            + DatabaseUtilizer.HIPSTER_TEXT_ID + " INT DEFAULT NULL, "
-            + DatabaseUtilizer.ZONE_ID + " INT DEFAULT NULL"
-            + ")";
     // hipster template
     public static final String DB_CREATE_TABLE_HIPSTER_TEMPLATE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.HIPSTER_TEMPLATE_TABLE + " ("
             + DatabaseUtilizer.HIPSTER_TEMPLATE_ID + " INT NOT NULL UNIQUE, "
@@ -306,15 +296,6 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.HIPSTER_TEXT_ID + " INT NOT NULL UNIQUE, "
             + DatabaseUtilizer.CONTENT + " TEXT NOT NULL, "
             + DatabaseUtilizer.CONTENT_EN + " TEXT NOT NULL"
-            + ")";
-    // lease
-    public static final String DB_CREATE_TABLE_LEASE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.LEASE_TABLE + " ("
-            + DatabaseUtilizer.LEASE_ID + " INT NOT NULL UNIQUE, "
-            + DatabaseUtilizer.PAD_ID + " TEXT NOT NULL, "
-            + DatabaseUtilizer.BORROWER + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.BORROWER_TEL + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.LEASE_DATE + " datetime DEFAULT NULL, "
-            + DatabaseUtilizer.RETURN_DATE + " datetime DEFAULT NULL"
             + ")";
     // mode
     public static final String DB_CREATE_TABLE_MODE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.MODE_TABLE + " ("
