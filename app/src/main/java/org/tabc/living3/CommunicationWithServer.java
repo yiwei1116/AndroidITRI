@@ -69,15 +69,15 @@ public class CommunicationWithServer {
     // ********************** download all tables start **********************
     // Starting point: call this method to download all tables
     public void downloadAllTables() {
+        downloadProjectData("field_map");
+        downloadProjectData("zone");
+        downloadProjectData("mode");
         downloadProjectData("device");
+        downloadProjectData("path");
         downloadProjectData("beacon");
         downloadProjectData("company");
-        downloadProjectData("field_map");
         downloadProjectData("hipster_template");
         downloadProjectData("hipster_text");
-        downloadProjectData("mode");
-        downloadProjectData("zone");
-        downloadProjectData("path");
     }
     /*
         **** DOWNLOAD CLASS : download all table data
@@ -421,9 +421,7 @@ public class CommunicationWithServer {
             String filename = null;
             String filepath = null;
             // using external storage space
-//            File rootDir = Environment.getExternalStorageDirectory();
             File rootDir = loadingActivity.getFilesDir();
-//            rootDir = loadingActivity.getApplicationInfo().da
             final File path = new File(rootDir.getAbsolutePath() + "/itri");
             if ( !path.exists() ) {
                 path.mkdirs();
@@ -458,15 +456,12 @@ public class CommunicationWithServer {
                                 // write in file
                                 outputStream.write(buffer, 0, len);
                             }
-                            // close fileoutputstream
+                            // close file outputstream
                             Log.i("f-outputstream", "download " + filename + " done.");
                             bufferedInputStream.close();
                             inputStream.close();
                             outputStream.close();
                         } else {
-                            // delete and create new one
-//                            outputFile.delete();
-//                            outputFile.createNewFile();
                             Log.i("exists", filename + " skip download - already exists");
                         }
 

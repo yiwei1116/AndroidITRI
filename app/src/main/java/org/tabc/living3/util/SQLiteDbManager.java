@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -12,7 +13,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.tabc.living3.CommunicationWithServer;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,15 +71,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_BEACON);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_COMPANY);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_FIELD_MAP);
-
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEMPLATE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_HIPSTER_TEXT);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_MODE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_ZONE);
         db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_PATH);
-
-        // upload survey
-        db.execSQL(DatabaseUtilizer.DB_CREATE_TABLE_SURVEY);
     }
 
     public void onOpen(SQLiteDatabase db) {
@@ -140,7 +145,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONArray queryDeviceFilesWithModeId(int mode_id) throws JSONException {
         JSONArray filePaths = new JSONArray();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, guide_voice, guide_voice_size, guide_voice_en, guide_voice_en_size, photo, photo_size, photo_vertical, photo_vertical_size, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
+        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_size, photo_vertical, photo_vertical_size, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
         cursor.moveToFirst();
         int device_id;
         String name;
@@ -148,9 +153,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String introduction;
         String introduction_en;
         String guide_voice;
-        int guide_voice_size;
         String guide_voice_en;
-        int guide_voice_en_size;
         String photo;
         int photo_size;
         String photo_vertical;
@@ -171,29 +174,41 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
             guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
             photo = cursor.getString(cursor.getColumnIndex("photo"));
+            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
             photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
             hint = cursor.getString(cursor.getColumnIndex("hint"));
             company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
             read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
             like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
 
-            guide_voice_size = cursor.getInt(cursor.getColumnIndex("guide_voice_size"));
-            guide_voice_en_size = cursor.getInt(cursor.getColumnIndex("guide_voice_en_size"));
-            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
-            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
-
-            // 實際掃 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
             File rootDir = this.context.getFilesDir();
             File path = new File(rootDir.getAbsolutePath() + "/itri");
             if ( !path.exists() ) {
                 path.mkdirs();
             }
-            String[] guide_voice_paths = guide_voice.split("/");
-            String[] guide_voice_en_paths = guide_voice_en.split("/");
+
             String[] photo_path = photo.split("/");
             String[] photo_vertical_path = photo_vertical.split("/");
-            File guide_voice_file = new File(path, guide_voice_paths[guide_voice_paths.length -1]);
-            File guide_voice_en_file = new File(path, guide_voice_en_paths[guide_voice_en_paths.length -1]);
+            File photo_file = new File(path, photo_path[photo_path.length -1]);
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+            if (!photo_file.exists()) {
+                DownloadSingleFile(photo);
+            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
+
+            if (!photo_vertical_file.exists()) {
+                DownloadSingleFile(photo_vertical);
+            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
 
             // add to JSONObject
             file.put("device_id", device_id);
@@ -215,8 +230,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
         cursor.close();
 
-        // 實際去下載檔案
-
         return filePaths;
     }
 
@@ -224,7 +237,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONObject queryDeviceAndCompanyData(int device_id) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_vertical, hint, mode_id, company_id, read_count, like_count from device where device_id=" + device_id, null);
+        Cursor cursor = db.rawQuery("select name, name_en, introduction, introduction_en, guide_voice, guide_voice_en, photo, photo_size, photo_vertical, photo_vertical_size, hint, mode_id, company_id, read_count, like_count from device where device_id=" + device_id, null);
         cursor.moveToFirst();
         String name;
         String name_en;
@@ -233,7 +246,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String guide_voice;
         String guide_voice_en;
         String photo;
+        int photo_size;
         String photo_vertical;
+        int photo_vertical_size;
         String hint;
         int mode_id;
         int company_id;
@@ -248,12 +263,43 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         guide_voice = cursor.getString(cursor.getColumnIndex("guide_voice"));
         guide_voice_en = cursor.getString(cursor.getColumnIndex("guide_voice_en"));
         photo = cursor.getString(cursor.getColumnIndex("photo"));
+        photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
         photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+        photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
         hint = cursor.getString(cursor.getColumnIndex("hint"));
         mode_id = cursor.getInt(cursor.getColumnIndex("mode_id"));
         company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
         read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
         like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+
+
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if ( !path.exists() ) {
+            path.mkdirs();
+        }
+
+        String[] photo_path = photo.split("/");
+        String[] photo_vertical_path = photo_vertical.split("/");
+        File photo_file = new File(path, photo_path[photo_path.length -1]);
+        File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
+        int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+        int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+
+        if (!photo_file.exists()) {
+            DownloadSingleFile(photo);
+        } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+            // re-download
+            DownloadSingleFile(photo);
+        }
+
+        if (!photo_vertical_file.exists()) {
+            DownloadSingleFile(photo_vertical);
+        } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(photo_vertical);
+        }
 
         // add to JSONObject
         file.put("device_id", device_id);
@@ -275,35 +321,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.moveToNext();
         cursor.close();
         return file;
-    }
-
-
-    // project table query and insert
-    public boolean insertProject(int project_id,
-                                String version,
-                                String name,
-                                String introduction,
-                                int active) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("project_id", project_id);
-        values.put("version", version);
-        values.put("name", name);
-        values.put("introduction", introduction);
-        values.put("active", active);
-        long rowId = db.insertWithOnConflict("project", null, values, 4);
-        if (rowId != -1) {
-            Log.i("project", "insert project_id=" + project_id + " success.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Cursor getProject(int project_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from project where project_id=" + project_id + "", null);
-        return cursor;
     }
 
     // beacon table query and insert
@@ -411,6 +428,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String map_svg;
         String map_svg_en;
         String map_bg;
+        int map_svg_size;
+        int map_bg_size;
+        int map_svg_en_size;
         int start;
         int end;
         String svg_id;
@@ -431,6 +451,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
         map_bg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_bg"));
+
+        map_svg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
+        map_svg_en_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
+        map_bg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
+
         // parse file name
         String[] paths = map_svg.split("/");
         String svgName = paths[paths.length-1];
@@ -440,6 +465,46 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
         String[] pathsBg = map_bg.split("/");
         String svgNameBg = pathsBg[pathsBg.length-1];
+
+
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if ( !path.exists() ) {
+            path.mkdirs();
+        }
+
+        String[] svg_path = map_svg.split("/");
+        String[] svg_en_path = map_svg_en.split("/");
+        String[] bg_path = map_bg.split("/");
+        File svg_file = new File(path, svg_path[svg_path.length - 1]);
+        File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+        File bg_file = new File(path, bg_path[bg_path.length - 1]);
+
+        int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+        int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+
+        if (!svg_file.exists()) {
+            DownloadSingleFile(map_svg);
+        } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_svg);
+        }
+
+        if (!svg_en_file.exists()) {
+            DownloadSingleFile(map_svg_en);
+        } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_svg_en);
+        }
+
+        if (!bg_file.exists()) {
+            DownloadSingleFile(map_bg);
+        } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_bg);
+        }
 
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
@@ -496,6 +561,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String map_svg;
         String map_svg_en;
         String map_bg;
+        int map_svg_size;
+        int map_bg_size;
+        int map_svg_en_size;
         int start;
         int end;
         String svg_id;
@@ -516,6 +584,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
         map_bg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_bg"));
+
+        map_svg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
+        map_svg_en_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
+        map_bg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
+
         // parse file name
         String[] paths = map_svg.split("/");
         String svgName = paths[paths.length-1];
@@ -526,6 +599,44 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String[] pathsBg = map_bg.split("/");
         String svgNameBg = pathsBg[pathsBg.length-1];
 
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if ( !path.exists() ) {
+            path.mkdirs();
+        }
+
+        String[] svg_path = map_svg.split("/");
+        String[] svg_en_path = map_svg_en.split("/");
+        String[] bg_path = map_bg.split("/");
+        File svg_file = new File(path, svg_path[svg_path.length - 1]);
+        File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+        File bg_file = new File(path, bg_path[bg_path.length - 1]);
+
+        int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+        int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+
+        if (!svg_file.exists()) {
+            DownloadSingleFile(map_svg);
+        } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_svg);
+        }
+
+        if (!svg_en_file.exists()) {
+            DownloadSingleFile(map_svg_en);
+        } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_svg_en);
+        }
+
+        if (!bg_file.exists()) {
+            DownloadSingleFile(map_bg);
+        } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+            // re-download
+            DownloadSingleFile(map_bg);
+        }
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
         start = pathCursor.getInt(pathCursor.getColumnIndex("start"));
@@ -564,15 +675,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.moveToFirst();
         ArrayList<String> pths = new ArrayList<String>();
         String svg_id = "";
-        // int i = 1;
         while(cursor.isAfterLast() == false) {
             svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
             pths.add(svg_id);
             cursor.moveToNext();
-            //Log.e("pths", svg_id);
         }
         cursor.close();
-        //Log.e("pthssssssss", String.valueOf(pths));
         return pths;
     }
 
@@ -1869,6 +1977,86 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
         deviceCursor.close();
         return obj;
+    }
+
+
+    public void DownloadSingleFile(String dfile) {
+        new DownloadSingleFileTask(dfile).execute();
+    }
+
+    public class DownloadSingleFileTask extends AsyncTask<String, Integer, Void> {
+
+        private String dfile;
+
+        public DownloadSingleFileTask(String dfile) {
+            this.dfile = dfile;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.i("start", "Download tasks start");
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            try {
+                downloadFile();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.i("end", "Download tasks end");
+        }
+
+        private void downloadFile() throws MalformedURLException {
+
+            File rootDir = context.getFilesDir();
+            final File path = new File(rootDir.getAbsolutePath() + "/itri");
+            String filepath;
+            try {
+                String[] all = dfile.split("/");
+                // 解析路徑
+                String pathSuffix = dfile.substring(3);
+                filepath = DatabaseUtilizer.filePathURLPrefix + pathSuffix;
+                String filename = all[all.length - 1];
+                URL url = new URL(filepath);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                File outputFile = new File(path, filename);
+                // delete first
+                if (outputFile.exists()) outputFile.delete();
+
+                if (!outputFile.exists()) {
+                    outputFile.createNewFile();
+                    FileOutputStream outputStream = new FileOutputStream(outputFile);
+                    InputStream inputStream = urlConnection.getInputStream();
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024 * 50);
+                    byte[] buffer = new byte[4096];
+                    int len = 0;
+                    while ((len = bufferedInputStream.read(buffer)) != -1) {
+                        // write in file
+                        outputStream.write(buffer, 0, len);
+                    }
+                    // close fileoutputstream
+                    Log.i("f-outputstream", "download " + filename + " done.");
+                    bufferedInputStream.close();
+                    inputStream.close();
+                    outputStream.close();
+                } else {
+                    Log.i("exists", filename + " skip download - already exists");
+                }
+
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
 }

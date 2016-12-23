@@ -64,7 +64,6 @@ public class DatabaseUtilizer {
     public static final String LIKE_COUNT = "like_count";
     public static final String TIME_TOTAL = "time_total";
     public static final String CREATE_DATE = "create_date";
-    public static final String LASTUPDATE_DATE = "lastupdate_date";
     public static final String X = "x";
     public static final String Y = "y";
     public static final String EMAIL = "email";
@@ -213,6 +212,9 @@ public class DatabaseUtilizer {
     public static final String VOICE = "voice";
     public static final String VIP_DEVICE = "vip_device";
 
+    // last update time & isDelete
+    public static final String LASTUPDATE_DATE = "lastupdate_date";
+
     // device
     public static final String DB_CREATE_TABLE_DEVICE = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.DEVICE_TABLE + " ("
             + DatabaseUtilizer.DEVICE_ID + " INT NOT NULL UNIQUE, "
@@ -223,14 +225,14 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.PHOTO_SIZE + " INT NOT NULL DEFAULT 0, "
+            + DatabaseUtilizer.PHOTO_SIZE + " INT DEFAULT 0, "
             + DatabaseUtilizer.DEVICE_PHOTO_VER + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.PHOTO_VERTICAL_SIZE + " INT NOT NULL DEFAULT 0, "
+            + DatabaseUtilizer.PHOTO_VERTICAL_SIZE + " INT DEFAULT 0, "
             + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_MODE_ID + " INT NOT NULL, "
             + DatabaseUtilizer.DEVICE_COMPANY_ID + " INT DEFAULT NULL, "
             + DatabaseUtilizer.READ_COUNT + " INT DEFAULT 0, "
-            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0"
+            + DatabaseUtilizer.LIKE_COUNT + " INT DEFAULT 0, "
             + ")";
     // project
     public static final String DB_CREATE_TABLE_PROJECT = "CREATE TABLE IF NOT EXISTS " + DatabaseUtilizer.PROJECT_TABLE + " ("
@@ -322,9 +324,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.INTRODUCTION + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.INTRODUCTION_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.GUIDE_VOICE_SIZE + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT DEFAULT NULL, "
-            + DatabaseUtilizer.GUIDE_VOICE_EN_SIZE + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.VIDEO + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.MODE_SPLASH_BG + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.SPLASH_BG_SIZE + " INT NOT NULL DEFAULT 0, "
@@ -407,9 +407,7 @@ public class DatabaseUtilizer {
             + DatabaseUtilizer.INTRODUCTION + " TEXT, "
             + DatabaseUtilizer.INTRODUCTION_EN + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.GUIDE_VOICE + " TEXT, "
-            + DatabaseUtilizer.GUIDE_VOICE_SIZE + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.GUIDE_VOICE_EN + " TEXT, "
-            + DatabaseUtilizer.GUIDE_VOICE_EN_SIZE + " INT NOT NULL DEFAULT 0, "
             + DatabaseUtilizer.DEVICE_HINT + " TEXT DEFAULT NULL, "
             + DatabaseUtilizer.DEVICE_PHOTO + " TEXT NOT NULL, "
             + DatabaseUtilizer.PHOTO_SIZE + " INT NOT NULL DEFAULT 0, "
