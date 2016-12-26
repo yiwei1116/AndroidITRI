@@ -187,21 +187,25 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             String[] photo_vertical_path = photo_vertical.split("/");
             File photo_file = new File(path, photo_path[photo_path.length -1]);
             File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
 
             if (!photo_file.exists()) {
                 DownloadSingleFile(photo);
-            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo);
+            } else {
+                int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+                if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                    // re-download
+                    DownloadSingleFile(photo);
+                }
             }
 
             if (!photo_vertical_file.exists()) {
                 DownloadSingleFile(photo_vertical);
-            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo_vertical);
+            } else {
+                int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+                if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                    // re-download
+                    DownloadSingleFile(photo_vertical);
+                }
             }
 
             // add to JSONObject
@@ -277,21 +281,25 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String[] photo_vertical_path = photo_vertical.split("/");
         File photo_file = new File(path, photo_path[photo_path.length -1]);
         File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-        int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-        int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
 
         if (!photo_file.exists()) {
             DownloadSingleFile(photo);
-        } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-            // re-download
-            DownloadSingleFile(photo);
+        } else {
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
         }
 
         if (!photo_vertical_file.exists()) {
             DownloadSingleFile(photo_vertical);
-        } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(photo_vertical);
+        } else {
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+            if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
         }
 
         // add to JSONObject
@@ -310,8 +318,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("read_count", read_count);
         file.put("like_count", like_count);
         file.put("company_data", getCompanyJSONObject(company_id));
-
-        cursor.moveToNext();
+        // close cursor
         cursor.close();
         return file;
     }
@@ -439,7 +446,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
-        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
@@ -448,17 +455,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         map_svg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
         map_svg_en_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
         map_bg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
-
-        // parse file name
-        String[] paths = map_svg.split("/");
-        String svgName = paths[paths.length-1];
-
-        String[] paths_en = map_svg_en.split("/");
-        String svgNameEn = paths_en[paths_en.length - 1];
-
-        String[] pathsBg = map_bg.split("/");
-        String svgNameBg = pathsBg[pathsBg.length-1];
-
 
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
@@ -474,29 +470,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
         File bg_file = new File(path, bg_path[bg_path.length - 1]);
 
-        int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-        int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-
         if (!svg_file.exists()) {
             DownloadSingleFile(map_svg);
-        } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_svg);
+        } else {
+            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+            if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg);
+            }
         }
 
         if (!svg_en_file.exists()) {
             DownloadSingleFile(map_svg_en);
-        } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_svg_en);
+        } else {
+            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+            if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg_en);
+            }
         }
 
         if (!bg_file.exists()) {
             DownloadSingleFile(map_bg);
-        } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_bg);
+        } else {
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+            if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_bg);
+            }
         }
 
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
@@ -516,9 +517,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("y", y);
         file.put("field_id", field_id);
         file.put("field_name", field_name);
-        file.put("map_svg", svgName);
-        file.put("map_svg_en", svgNameEn);
-        file.put("map_bg", svgNameBg);
+        file.put("map_svg", map_svg);
+        file.put("map_svg_en", map_svg_en);
+        file.put("map_bg", map_bg);
         file.put("start", start);
         file.put("end", end);
         file.put("svg_id", svg_id);
@@ -572,7 +573,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         field_id = cursor.getInt(cursor.getColumnIndex("field_id"));
         field_name = cursor.getString(cursor.getColumnIndex("field_name"));
 
-        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
+        Cursor fieldMapCursor = db.rawQuery("select map_svg, map_svg_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map where field_map_id=" + field_id, null);
         fieldMapCursor.moveToFirst();
         map_svg = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg"));
         map_svg_en = fieldMapCursor.getString(fieldMapCursor.getColumnIndex("map_svg_en"));
@@ -581,16 +582,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         map_svg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
         map_svg_en_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
         map_bg_size = fieldMapCursor.getInt(fieldMapCursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
-
-        // parse file name
-        String[] paths = map_svg.split("/");
-        String svgName = paths[paths.length-1];
-
-        String[] paths_en = map_svg_en.split("/");
-        String svgNameEn = paths_en[paths_en.length - 1];
-
-        String[] pathsBg = map_bg.split("/");
-        String svgNameBg = pathsBg[pathsBg.length-1];
 
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
@@ -606,29 +597,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
         File bg_file = new File(path, bg_path[bg_path.length - 1]);
 
-        int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-        int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-
         if (!svg_file.exists()) {
             DownloadSingleFile(map_svg);
-        } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_svg);
+        } else {
+            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
+            if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg);
+            }
         }
 
         if (!svg_en_file.exists()) {
             DownloadSingleFile(map_svg_en);
-        } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_svg_en);
+        } else {
+            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
+            if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_svg_en);
+            }
         }
 
         if (!bg_file.exists()) {
             DownloadSingleFile(map_bg);
-        } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(map_bg);
+        } else {
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+            if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(map_bg);
+            }
         }
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
@@ -647,9 +643,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         file.put("y", y);
         file.put("field_id", field_id);
         file.put("field_name", field_name);
-        file.put("map_svg", svgName);
-        file.put("map_svg_en", svgNameEn);
-        file.put("map_bg", svgNameBg);
+        file.put("map_svg", map_svg);
+        file.put("map_svg_en", map_svg_en);
+        file.put("map_bg", map_bg);
         file.put("start", start);
         file.put("end", end);
         file.put("svg_id", svg_id);
@@ -741,30 +737,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return obj;
     }
 
-    // query company files
-    public JSONArray queryCompanyFiles() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select company_id, qrcode from company", null);
-        cursor.moveToFirst();
-        String company_id;
-        String qrcode;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            company_id = cursor.getString(cursor.getColumnIndex("company_id"));
-            qrcode = cursor.getString(cursor.getColumnIndex("qrcode"));
-            // add to JSONObject
-            file.put("company_id", company_id);
-            file.put("qrcode", qrcode);
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
-    }
-
     // field map table query and insert
     public boolean insertFieldMap(int field_map_id,
                                   String name,
@@ -818,118 +790,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from field_map where field_map_id=" + field_map_id + "", null);
         return cursor;
-    }
-
-    // get field_map columns
-    public JSONArray queryFieldMapFiles() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select field_map_id, photo, photo_size, photo_vertical, photo_vertical_size, map_svg, map_svg_size, map_svg_en, map_svg_en_size, map_bg, map_bg_size from field_map", null);
-        cursor.moveToFirst();
-        String field_map_id;
-        String guide_voice;
-        String guide_voice_en;
-        String photo;
-        int photo_size;
-        int photo_vertical_size;
-
-        String photo_vertical;
-        String map_svg;
-        String map_svg_en;
-        String map_bg;
-        int map_svg_size;
-        int map_bg_size;
-        int map_svg_en_size;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            field_map_id = cursor.getString(cursor.getColumnIndex("field_map_id"));
-            photo = cursor.getString(cursor.getColumnIndex("photo"));
-            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-            map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
-            map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
-            map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
-            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
-            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
-            map_svg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
-            map_svg_en_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
-            map_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
-
-            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
-            File rootDir = this.context.getFilesDir();
-            File path = new File(rootDir.getAbsolutePath() + "/itri");
-            if ( !path.exists() ) {
-                path.mkdirs();
-            }
-
-            String[] svg_path = map_svg.split("/");
-            String[] svg_en_path = map_svg_en.split("/");
-            String[] bg_path = map_bg.split("/");
-            File svg_file = new File(path, svg_path[svg_path.length - 1]);
-            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
-            File bg_file = new File(path, bg_path[bg_path.length - 1]);
-
-            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-
-            String[] photo_path = photo.split("/");
-            String[] photo_vertical_path = photo_vertical.split("/");
-            File photo_file = new File(path, photo_path[photo_path.length -1]);
-            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-
-            if (!photo_file.exists()) {
-                DownloadSingleFile(photo);
-            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo);
-            }
-
-            if (!photo_vertical_file.exists()) {
-                DownloadSingleFile(photo_vertical);
-            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo_vertical);
-            }
-
-
-            if (!svg_file.exists()) {
-                DownloadSingleFile(map_svg);
-            } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(map_svg);
-            }
-
-            if (!svg_en_file.exists()) {
-                DownloadSingleFile(map_svg_en);
-            } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(map_svg_en);
-            }
-
-            if (!bg_file.exists()) {
-                DownloadSingleFile(map_bg);
-            } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(map_bg);
-            }
-
-            // add to JSONObject
-            file.put("field_map_id", field_map_id);
-            file.put("photo", photo);
-            file.put("photo_vertical", photo_vertical);
-            file.put("map_svg", map_svg);
-            file.put("map_svg_en", map_svg_en);
-            file.put("map_bg", map_bg);
-
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
     }
 
     // give jiang
@@ -1033,33 +893,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         return file;
     }
 
-
-    // hipster content table query and insert
-    public boolean insertHipsterContent(int hipster_content_id,
-                                        String content,
-                                        String picture,
-                                        String combine_picture,
-                                        int hipster_template_id,
-                                        int hipster_text_id,
-                                        int zone_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("hipster_content_id", hipster_content_id);
-        values.put("content", content);
-        values.put("picture", picture);
-        values.put("combine_picture", combine_picture);
-        values.put("hipster_template_id", hipster_template_id);
-        values.put("hipster_text_id", hipster_text_id);
-        values.put("zone_id", zone_id);
-        long rowId = db.insertWithOnConflict("hipster_content", null, values, 4);
-        if (rowId != -1) {
-            Log.i("hipster_content", "insert hipster_content_id=" + hipster_content_id + " success.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // hipster template table query and insert
     public boolean insertHipsterTemplate(int hipster_template_id,
                                          String name,
@@ -1082,30 +915,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         }
     }
 
-    // get hipster template columns
-    public JSONArray queryHipsterTemplateFiles() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select hipster_template_id, template from hipster_template", null);
-        cursor.moveToFirst();
-        String hipster_template_id;
-        String template;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            hipster_template_id = cursor.getString(cursor.getColumnIndex("hipster_template_id"));
-            template = cursor.getString(cursor.getColumnIndex("template"));
-            // add to JSONObject
-            file.put("hipster_template_id", hipster_template_id);
-            file.put("template", template);
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
-    }
-
     // hipster text table query and insert
     public boolean insertHipsterText(int hipster_text_id,
                                      String content,
@@ -1122,33 +931,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         } else {
             return false;
         }
-    }
-
-    // get hipster text files in an JSONArray
-    public JSONArray queryHipsterTextFiles() throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select hipster_text_id, content, content_en from hipster_text", null);
-        cursor.moveToFirst();
-        String hipster_text_id;
-        String content;
-        String content_en;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            hipster_text_id = cursor.getString(cursor.getColumnIndex("hipster_text_id"));
-            content = cursor.getString(cursor.getColumnIndex("content"));
-            content_en = cursor.getString(cursor.getColumnIndex("content_en"));
-            // add to JSONObject
-            file.put("hipster_text_id", hipster_text_id);
-            file.put("content", content);
-            file.put("content_en", content_en);
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
     }
 
     // mode table query and insert
@@ -1264,29 +1046,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         File fg_file = new File(path, fg_path[fg_path.length - 1]);
         File blur_file = new File(path, blur_path[blur_path.length - 1]);
 
-        int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-        int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
-        int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
-
         if (!bg_file.exists()) {
             DownloadSingleFile(splash_bg_vertical);
-        } else if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(splash_bg_vertical);
+        } else {
+            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+            if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_bg_vertical);
+            }
         }
 
         if (!fg_file.exists()) {
             DownloadSingleFile(splash_fg_vertical);
-        } else if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(splash_fg_vertical);
+        } else {
+            int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
+            if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_fg_vertical);
+            }
         }
 
         if (!blur_file.exists()) {
             DownloadSingleFile(splash_blur_vertical);
-        } else if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(splash_blur_vertical);
+        } else {
+            int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
+            if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(splash_blur_vertical);
+            }
         }
 
         // add to JSONObject
@@ -1382,29 +1169,34 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             File fg_file = new File(path, fg_path[fg_path.length - 1]);
             File blur_file = new File(path, blur_path[blur_path.length - 1]);
 
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-            int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
-            int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
-
             if (!bg_file.exists()) {
                 DownloadSingleFile(splash_bg_vertical);
-            } else if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(splash_bg_vertical);
+            } else {
+                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
+                if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+                    // re-download
+                    DownloadSingleFile(splash_bg_vertical);
+                }
             }
 
             if (!fg_file.exists()) {
                 DownloadSingleFile(splash_fg_vertical);
-            } else if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(splash_fg_vertical);
+            } else {
+                int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
+                if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+                    // re-download
+                    DownloadSingleFile(splash_fg_vertical);
+                }
             }
 
             if (!blur_file.exists()) {
                 DownloadSingleFile(splash_blur_vertical);
-            } else if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(splash_blur_vertical);
+            } else {
+                int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
+                if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+                    // re-download
+                    DownloadSingleFile(splash_blur_vertical);
+                }
             }
 
             // add to JSONObject
@@ -1423,89 +1215,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             file.put("read_count", read_count);
             file.put("time_total", time_total);
             file.put("did_read", did_read);
-            filePaths.put(file);
-            file = new JSONObject();
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return filePaths;
-    }
-
-    public JSONArray customizedDeviceDataWithCounts(int mode_id) throws JSONException {
-        JSONObject file = new JSONObject();
-        JSONArray filePaths = new JSONArray();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select device_id, name, name_en, introduction, introduction_en, photo, photo_size, photo_vertical, photo_vertical_size, hint, company_id, read_count, like_count from device where mode_id=" + mode_id, null);
-        cursor.moveToFirst();
-        String device_id;
-        String name;
-        String name_en;
-        String introduction;
-        String introduction_en;
-        String photo;
-        int photo_size;
-        String photo_vertical;
-        int photo_vertical_size;
-        String hint;
-        int company_id;
-        int read_count;
-        int like_count;
-        // fetch all company_id & qrcode
-        while (cursor.isAfterLast() == false) {
-            device_id = cursor.getString(cursor.getColumnIndex("device_id"));
-            name = cursor.getString(cursor.getColumnIndex("name"));
-            name_en = cursor.getString(cursor.getColumnIndex("name_en"));
-            introduction = cursor.getString(cursor.getColumnIndex("introduction"));
-            introduction_en = cursor.getString(cursor.getColumnIndex("introduction_en"));
-            photo = cursor.getString(cursor.getColumnIndex("photo"));
-            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
-            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
-            hint = cursor.getString(cursor.getColumnIndex("hint"));
-            company_id = cursor.getInt(cursor.getColumnIndex("company_id"));
-            read_count = cursor.getInt(cursor.getColumnIndex("read_count"));
-            like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
-
-            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
-            File rootDir = this.context.getFilesDir();
-            File path = new File(rootDir.getAbsolutePath() + "/itri");
-            if ( !path.exists() ) {
-                path.mkdirs();
-            }
-
-            String[] photo_path = photo.split("/");
-            String[] photo_vertical_path = photo_vertical.split("/");
-            File photo_file = new File(path, photo_path[photo_path.length -1]);
-            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-
-            if (!photo_file.exists()) {
-                DownloadSingleFile(photo);
-            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo);
-            }
-
-            if (!photo_vertical_file.exists()) {
-                DownloadSingleFile(photo_vertical);
-            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                DownloadSingleFile(photo_vertical);
-            }
-
-            // add to JSONObject
-            file.put("device_id", device_id);
-            file.put("name", name);
-            file.put("name_en", name_en);
-            file.put("introduction", introduction);
-            file.put("introduction_en", introduction_en);
-            file.put("photo", photo);
-            file.put("photo_vertical", photo_vertical);
-            file.put("hint", hint);
-            file.put("company_id", company_id);
-            file.put("read_count", read_count);
-            file.put("like_count", like_count);
             filePaths.put(file);
             file = new JSONObject();
             cursor.moveToNext();
@@ -1621,21 +1330,25 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String[] photo_vertical_path = photo_vertical.split("/");
         File photo_file = new File(path, photo_path[photo_path.length -1]);
         File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-        int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-        int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
 
         if (!photo_file.exists()) {
             DownloadSingleFile(photo);
-        } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-            // re-download
-            DownloadSingleFile(photo);
+        } else {
+            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
+            if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo);
+            }
         }
 
         if (!photo_vertical_file.exists()) {
             DownloadSingleFile(photo_vertical);
-        } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-            // re-download
-            DownloadSingleFile(photo_vertical);
+        } else {
+            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
+            if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                // re-download
+                DownloadSingleFile(photo_vertical);
+            }
         }
 
         // add to json obj
@@ -1921,6 +1634,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // ******************** counter part ********************
+
 
     // 每次經過一個device，揪呼叫此函數進行拜訪次數的+1
     public void addDeviceReadCount(int device_id) {
