@@ -70,8 +70,12 @@ public class CommunicationWithServer {
     // Starting point: call this method to download all tables
     public void downloadAllTables() {
         downloadProjectData("field_map");
+        downloadProjectData("field_map");
+        downloadProjectData("zone");
         downloadProjectData("zone");
         downloadProjectData("mode");
+        downloadProjectData("mode");
+        downloadProjectData("device");
         downloadProjectData("device");
         downloadProjectData("path");
         downloadProjectData("beacon");
@@ -358,7 +362,7 @@ public class CommunicationWithServer {
     public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
 
         private static final int PROGRESS_FULL_LEVEL = 10000;
-        private static final int LOADING_SPEEDUP_SCALE = 4;
+        private static final int LOADING_SPEEDUP_SCALE = 3;
         private List<String> files;
         private Handler handler;
         private int progressLevel;

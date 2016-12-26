@@ -882,6 +882,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 DownloadSingleFile(map_bg);
             }
 
+            map_svg = svg_path[svg_path.length - 1];
+            map_svg_en = svg_en_path[svg_en_path.length - 1];
+            map_bg = bg_path[bg_path.length - 1];
+
             // add to JSONObject
             file.put("field_map_id", field_map_id);
             file.put("photo", photo);
