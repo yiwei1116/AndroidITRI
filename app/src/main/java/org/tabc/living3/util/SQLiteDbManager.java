@@ -1406,12 +1406,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         List<String> paths = new ArrayList<String>();
         // get files needed to be download in company, device, field_map
         // hipster_template, mode, zone
-        paths.addAll(getCompanyDownloadFiles());
-        paths.addAll(getDeviceDownloadFiles());
         paths.addAll(getFieldMapDownloadFiles());
-        paths.addAll(getHipsterTemplateDownloadFiles());
-        paths.addAll(getModeDownloadFiles());
         paths.addAll(getZoneDownloadFiles());
+        paths.addAll(getModeDownloadFiles());
+        paths.addAll(getDeviceDownloadFiles());
+        paths.addAll(getHipsterTemplateDownloadFiles());
+        paths.addAll(getCompanyDownloadFiles());
         return paths;
     }
 
