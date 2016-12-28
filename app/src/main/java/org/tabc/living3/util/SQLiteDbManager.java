@@ -1765,10 +1765,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             try {
                 String[] all = dfile.split("/");
                 // 解析路徑
+                Log.e("all", String.valueOf(all.length));
                 String pathSuffix = dfile.substring(3);
                 filepath = DatabaseUtilizer.filePathURLPrefix + pathSuffix;
                 String filename = all[all.length - 1];
                 URL url = new URL(filepath);
+                Log.e("url", String.valueOf(url));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
                 File outputFile = new File(path, filename);
