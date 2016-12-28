@@ -70,17 +70,9 @@ public class CommunicationWithServer {
     // Starting point: call this method to download all tables
     public void downloadAllTables() {
         downloadProjectData("field_map");
-        downloadProjectData("field_map");
-
         downloadProjectData("zone");
-        downloadProjectData("zone");
-
         downloadProjectData("mode");
-        downloadProjectData("mode");
-
         downloadProjectData("device");
-        downloadProjectData("device");
-
         downloadProjectData("path");
         downloadProjectData("beacon");
         downloadProjectData("company");
