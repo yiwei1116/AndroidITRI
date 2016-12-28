@@ -70,9 +70,17 @@ public class CommunicationWithServer {
     // Starting point: call this method to download all tables
     public void downloadAllTables() {
         downloadProjectData("field_map");
+        downloadProjectData("field_map");
+
         downloadProjectData("zone");
+        downloadProjectData("zone");
+
         downloadProjectData("mode");
+        downloadProjectData("mode");
+
         downloadProjectData("device");
+        downloadProjectData("device");
+
         downloadProjectData("path");
         downloadProjectData("beacon");
         downloadProjectData("company");
@@ -358,7 +366,7 @@ public class CommunicationWithServer {
     public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
 
         private static final int PROGRESS_FULL_LEVEL = 10000;
-        private static final int LOADING_SPEEDUP_SCALE = 4;
+        private static final int LOADING_SPEEDUP_SCALE = 3;
         private List<String> files;
         private Handler handler;
         private int progressLevel;
@@ -436,8 +444,9 @@ public class CommunicationWithServer {
                         // 解析路徑
                         String pathSuffix = eachFile.substring(3);
                         filepath = DatabaseUtilizer.filePathURLPrefix + pathSuffix;
-                        Log.i("each file", eachFile);
+                        Log.e("each file", eachFile);
                         URL url = new URL(filepath);
+                        Log.e("url", String.valueOf(url));
                         HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                         urlConnection.setDoOutput(true);
                         File outputFile = new File(path, filename);
