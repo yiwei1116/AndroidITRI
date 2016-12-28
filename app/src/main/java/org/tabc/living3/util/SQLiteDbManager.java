@@ -28,15 +28,12 @@ import java.util.List;
 /**
  * Created by Oslo on 10/6/16.
  */
-public class SQLiteDbManager extends SQLiteOpenHelper{
+public class SQLiteDbManager extends SQLiteOpenHelper {
 
     // database name
     public static final String DATABASE_NAME = "living_3_0_ITRI.db";
     public Context context;
     public CommunicationWithServer communicationWithServer;
-
-    // TODO: 需要根據資料庫欄位的“最後更新時間”，去決定需要下載哪些欄位
-    /// TODO: 若檔案大小介於可以容忍的範圍內則不下載, 若否則不下載
 
     /*
            ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
@@ -179,38 +176,43 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
             File rootDir = this.context.getFilesDir();
             File path = new File(rootDir.getAbsolutePath() + "/itri");
-            if ( !path.exists() ) {
+            if (!path.exists()) {
                 path.mkdirs();
             }
 
-            String[] photo_path = photo.split("/");
-            String[] photo_vertical_path = photo_vertical.split("/");
-            File photo_file = new File(path, photo_path[photo_path.length -1]);
-            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-
-            if (!photo_file.exists()) {
-                Log.d("GGG", "mode photo");
-                //DownloadSingleFile(photo);
-                new DownloadSingleFileTask(photo).execute();
-            } else {
-                int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-                if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                    // re-download
+            // if there is indeed file
+            if (photo_size != 0) {
+                String[] photo_path = photo.split("/");
+                File photo_file = new File(path, photo_path[photo_path.length - 1]);
+                if (!photo_file.exists()) {
                     Log.d("GGG", "mode photo");
+                    //DownloadSingleFile(photo);
                     new DownloadSingleFileTask(photo).execute();
+                } else {
+                    int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length() / 1024));
+                    if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                        // re-download
+                        Log.d("GGG", "mode photo");
+                        new DownloadSingleFileTask(photo).execute();
+                    }
                 }
             }
 
-            if (!photo_vertical_file.exists()) {
-                Log.d("GGG", "mode photo_v");
-                // DownloadSingleFile(photo_vertical);
-                new DownloadSingleFileTask(photo_vertical).execute();
-            } else {
-                int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-                if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                    // re-download
+            // if there is indeed file
+            if (photo_vertical_size != 0) {
+                String[] photo_vertical_path = photo_vertical.split("/");
+                File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length - 1]);
+                if (!photo_vertical_file.exists()) {
                     Log.d("GGG", "mode photo_v");
+                    // DownloadSingleFile(photo_vertical);
                     new DownloadSingleFileTask(photo_vertical).execute();
+                } else {
+                    int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length() / 1024));
+                    if ((photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                        // re-download
+                        Log.d("GGG", "mode photo_v");
+                        new DownloadSingleFileTask(photo_vertical).execute();
+                    }
                 }
             }
 
@@ -279,36 +281,43 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
         File path = new File(rootDir.getAbsolutePath() + "/itri");
-        if ( !path.exists() ) {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        String[] photo_path = photo.split("/");
-        String[] photo_vertical_path = photo_vertical.split("/");
-        File photo_file = new File(path, photo_path[photo_path.length -1]);
-        File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-
-        if (!photo_file.exists()) {
-            Log.d("GGG", "comp photo");
-            new DownloadSingleFileTask(photo).execute();
-        } else {
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                Log.d("GGG", "s comp photo");
+        // if there is indeed file
+        if (photo_size != 0) {
+            String[] photo_path = photo.split("/");
+            File photo_file = new File(path, photo_path[photo_path.length - 1]);
+            if (!photo_file.exists()) {
+                Log.d("GGG", "mode photo");
+                //DownloadSingleFile(photo);
                 new DownloadSingleFileTask(photo).execute();
+            } else {
+                int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length() / 1024));
+                if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo");
+                    new DownloadSingleFileTask(photo).execute();
+                }
             }
         }
 
-        if (!photo_vertical_file.exists()) {
-            Log.d("GGG", "comp photo_v");
-            new DownloadSingleFileTask(photo_vertical).execute();
-        } else {
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-            if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s comp photo");
+        // if there is indeed file
+        if (photo_vertical_size != 0) {
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length - 1]);
+            if (!photo_vertical_file.exists()) {
+                Log.d("GGG", "mode photo_v");
+                // DownloadSingleFile(photo_vertical);
                 new DownloadSingleFileTask(photo_vertical).execute();
+            } else {
+                int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length() / 1024));
+                if ((photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo_v");
+                    new DownloadSingleFileTask(photo_vertical).execute();
+                }
             }
         }
 
@@ -469,50 +478,55 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
         File path = new File(rootDir.getAbsolutePath() + "/itri");
-        if ( !path.exists() ) {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        String[] svg_path = map_svg.split("/");
-        String[] svg_en_path = map_svg_en.split("/");
-        String[] bg_path = map_bg.split("/");
-        File svg_file = new File(path, svg_path[svg_path.length - 1]);
-        File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
-        File bg_file = new File(path, bg_path[bg_path.length - 1]);
-
-        if (!svg_file.exists()) {
-            Log.d("GGG", "mac map svg");
-            new DownloadSingleFileTask(map_svg).execute();
-        } else {
-            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-            if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "mac s map svg");
+        if (map_svg_size != 0) {
+            String[] svg_path = map_svg.split("/");
+            File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            if (!svg_file.exists()) {
+                Log.d("GGG", "mac map svg");
                 new DownloadSingleFileTask(map_svg).execute();
+            } else {
+                int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length() / 1024));
+                if ((map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg");
+                    new DownloadSingleFileTask(map_svg).execute();
+                }
             }
         }
 
-        if (!svg_en_file.exists()) {
-            Log.d("GGG", "map svg en");
-            new DownloadSingleFileTask(map_svg_en).execute();
-        } else {
-            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-            if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "mac s map svg en");
+        if (map_svg_en_size != 0) {
+            String[] svg_en_path = map_svg_en.split("/");
+            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            if (!svg_en_file.exists()) {
+                Log.d("GGG", "map svg en");
                 new DownloadSingleFileTask(map_svg_en).execute();
+            } else {
+                int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length() / 1024));
+                if ((map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg en");
+                    new DownloadSingleFileTask(map_svg_en).execute();
+                }
             }
         }
 
-        if (!bg_file.exists()) {
-            Log.d("GGG", "mac map bg");
-            new DownloadSingleFileTask(map_bg).execute();
-        } else {
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-            if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "mac s map bg");
+        if (map_bg_size != 0) {
+            String[] bg_path = map_bg.split("/");
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            if (!bg_file.exists()) {
+                Log.d("GGG", "mac map bg");
                 new DownloadSingleFileTask(map_bg).execute();
+            } else {
+                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length() / 1024));
+                if ((map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map bg");
+                    new DownloadSingleFileTask(map_bg).execute();
+                }
             }
         }
 
@@ -549,7 +563,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     // same function as above, ** query with ZoneId **
-    public JSONObject queryBeaconFileWithZoneId(int zoneId) throws JSONException{
+    public JSONObject queryBeaconFileWithZoneId(int zoneId) throws JSONException {
         JSONObject file = new JSONObject();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from beacon where zone=" + zoneId, null);
@@ -598,52 +612,57 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
         File path = new File(rootDir.getAbsolutePath() + "/itri");
-        if ( !path.exists() ) {
+        if (!path.exists()) {
             path.mkdirs();
         }
-
-        String[] svg_path = map_svg.split("/");
-        String[] svg_en_path = map_svg_en.split("/");
-        String[] bg_path = map_bg.split("/");
-        File svg_file = new File(path, svg_path[svg_path.length - 1]);
-        File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
-        File bg_file = new File(path, bg_path[bg_path.length - 1]);
-
-        if (!svg_file.exists()) {
-            Log.d("GGG", "zone map svg");
-            new DownloadSingleFileTask(map_svg).execute();
-        } else {
-            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-            if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "zone s map svg");
+        if (map_svg_size != 0) {
+            String[] svg_path = map_svg.split("/");
+            File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            if (!svg_file.exists()) {
+                Log.d("GGG", "mac map svg");
                 new DownloadSingleFileTask(map_svg).execute();
+            } else {
+                int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length() / 1024));
+                if ((map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg");
+                    new DownloadSingleFileTask(map_svg).execute();
+                }
             }
         }
 
-        if (!svg_en_file.exists()) {
-            Log.d("GGG", "zone map svg en");
-            new DownloadSingleFileTask(map_svg_en).execute();
-        } else {
-            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-            if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s zone map svg en");
+        if (map_svg_en_size != 0) {
+            String[] svg_en_path = map_svg_en.split("/");
+            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            if (!svg_en_file.exists()) {
+                Log.d("GGG", "map svg en");
                 new DownloadSingleFileTask(map_svg_en).execute();
+            } else {
+                int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length() / 1024));
+                if ((map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg en");
+                    new DownloadSingleFileTask(map_svg_en).execute();
+                }
             }
         }
 
-        if (!bg_file.exists()) {
-            Log.d("GGG", "zone map bg");
-            new DownloadSingleFileTask(map_bg).execute();
-        } else {
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-            if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s zone map bg");
+        if (map_bg_size != 0) {
+            String[] bg_path = map_bg.split("/");
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            if (!bg_file.exists()) {
+                Log.d("GGG", "mac map bg");
                 new DownloadSingleFileTask(map_bg).execute();
+            } else {
+                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length() / 1024));
+                if ((map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map bg");
+                    new DownloadSingleFileTask(map_bg).execute();
+                }
             }
         }
+
         Cursor pathCursor = db.rawQuery("select start, end, svg_id from path where start=" + beacon_id, null);
         pathCursor.moveToFirst();
         start = pathCursor.getInt(pathCursor.getColumnIndex("start"));
@@ -682,7 +701,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         cursor.moveToFirst();
         ArrayList<String> pths = new ArrayList<String>();
         String svg_id = "";
-        while(cursor.isAfterLast() == false) {
+        while (cursor.isAfterLast() == false) {
             svg_id = cursor.getString(cursor.getColumnIndex("svg_id"));
             pths.add(svg_id);
             cursor.moveToNext();
@@ -728,10 +747,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     public JSONObject getCompanyJSONObject(int company_id) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select name, name_en, tel, fax, addr, web, qrcode from company where company_id=" + company_id, null);
-        String name ;
-        String name_en ;
-        String tel ;
-        String fax ;
+        String name;
+        String name_en;
+        String tel;
+        String fax;
         String addr;
         String web;
         String qrcode;
@@ -819,7 +838,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         String photo;
         int photo_size;
         int photo_vertical_size;
-
         String photo_vertical;
         String map_svg;
         String map_svg_en;
@@ -828,99 +846,122 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         int map_bg_size;
         int map_svg_en_size;
         // fetch all company_id & qrcode
-            photo = cursor.getString(cursor.getColumnIndex("photo"));
-            photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
-            map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
-            map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
-            map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
-            photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
-            photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
-            map_svg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
-            map_svg_en_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
-            map_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
+        photo = cursor.getString(cursor.getColumnIndex("photo"));
+        photo_vertical = cursor.getString(cursor.getColumnIndex("photo_vertical"));
+        map_svg = cursor.getString(cursor.getColumnIndex("map_svg"));
+        map_svg_en = cursor.getString(cursor.getColumnIndex("map_svg_en"));
+        map_bg = cursor.getString(cursor.getColumnIndex("map_bg"));
+        photo_size = cursor.getInt(cursor.getColumnIndex("photo_size"));
+        photo_vertical_size = cursor.getInt(cursor.getColumnIndex("photo_vertical_size"));
+        map_svg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_SIZE));
+        map_svg_en_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_SVG_EN_SIZE));
+        map_bg_size = cursor.getInt(cursor.getColumnIndex(DatabaseUtilizer.MAP_BG_SIZE));
 
-            // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
-            File rootDir = this.context.getFilesDir();
-            File path = new File(rootDir.getAbsolutePath() + "/itri");
-            if ( !path.exists() ) {
-                path.mkdirs();
-            }
+        // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
+        File rootDir = this.context.getFilesDir();
+        File path = new File(rootDir.getAbsolutePath() + "/itri");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
 
-            String[] svg_path = map_svg.split("/");
-            String[] svg_en_path = map_svg_en.split("/");
-            String[] bg_path = map_bg.split("/");
-            File svg_file = new File(path, svg_path[svg_path.length - 1]);
-            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
-            File bg_file = new File(path, bg_path[bg_path.length - 1]);
-
-            int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length()/1024));
-            int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length()/1024));
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-
+        // if there is indeed file
+        if (photo_size != 0) {
             String[] photo_path = photo.split("/");
-            String[] photo_vertical_path = photo_vertical.split("/");
-            File photo_file = new File(path, photo_path[photo_path.length -1]);
-            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-
+            File photo_file = new File(path, photo_path[photo_path.length - 1]);
             if (!photo_file.exists()) {
-                Log.d("GGG", "field photo");
+                Log.d("GGG", "mode photo");
+                //DownloadSingleFile(photo);
                 new DownloadSingleFileTask(photo).execute();
-            } else if ( (photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                Log.d("GGG", "s field photo");
-                new DownloadSingleFileTask(photo).execute();
+            } else {
+                int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length() / 1024));
+                if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo");
+                    new DownloadSingleFileTask(photo).execute();
+                }
             }
+        }
 
+        // if there is indeed file
+        if (photo_vertical_size != 0) {
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length - 1]);
             if (!photo_vertical_file.exists()) {
-                Log.d("GGG", "field photo v");
+                Log.d("GGG", "mode photo_v");
+                // DownloadSingleFile(photo_vertical);
                 new DownloadSingleFileTask(photo_vertical).execute();
-            } else if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s field photo v");
-                new DownloadSingleFileTask(photo_vertical).execute();
+            } else {
+                int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length() / 1024));
+                if ((photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo_v");
+                    new DownloadSingleFileTask(photo_vertical).execute();
+                }
             }
+        }
 
+        if (map_svg_size != 0) {
+            String[] svg_path = map_svg.split("/");
+            File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            map_svg = svg_path[svg_path.length - 1];
 
             if (!svg_file.exists()) {
-                Log.d("GGG", "field map svg");
+                Log.d("GGG", "mac map svg");
                 new DownloadSingleFileTask(map_svg).execute();
-            } else if ( (map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s field map svg");
-                new DownloadSingleFileTask(map_svg).execute();
+            } else {
+                int svg_file_size = Integer.parseInt(String.valueOf(svg_file.length() / 1024));
+                if ((map_svg_size - svg_file_size) > 10 || (map_svg_size - svg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg");
+                    new DownloadSingleFileTask(map_svg).execute();
+                }
             }
+        }
+
+        if (map_svg_en_size != 0) {
+            String[] svg_en_path = map_svg_en.split("/");
+            File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            map_svg_en = svg_en_path[svg_en_path.length - 1];
 
             if (!svg_en_file.exists()) {
-                Log.d("GGG", "field map svg en");
+                Log.d("GGG", "map svg en");
                 new DownloadSingleFileTask(map_svg_en).execute();
-            } else if ( (map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s field map svg en");
-                new DownloadSingleFileTask(map_svg_en).execute();
+            } else {
+                int svg_en_file_size = Integer.parseInt(String.valueOf(svg_en_file.length() / 1024));
+                if ((map_svg_en_size - svg_en_file_size) > 10 || (map_svg_en_size - svg_en_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map svg en");
+                    new DownloadSingleFileTask(map_svg_en).execute();
+                }
             }
 
-            if (!bg_file.exists()) {
-                Log.d("GGG", "field map bg");
-                new DownloadSingleFileTask(map_bg).execute();
-            } else if ( (map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s field map bg");
-                new DownloadSingleFileTask(map_bg).execute();
-            }
+        }
 
-            map_svg = svg_path[svg_path.length - 1];
-            map_svg_en = svg_en_path[svg_en_path.length - 1];
+        if (map_bg_size != 0) {
+            String[] bg_path = map_bg.split("/");
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
             map_bg = bg_path[bg_path.length - 1];
 
-            // add to JSONObject
-            file.put("field_map_id", field_map_id);
-            file.put("photo", photo);
-            file.put("photo_vertical", photo_vertical);
-            file.put("map_svg", map_svg);
-            file.put("map_svg_en", map_svg_en);
-            file.put("map_bg", map_bg);
+            if (!bg_file.exists()) {
+                Log.d("GGG", "mac map bg");
+                new DownloadSingleFileTask(map_bg).execute();
+            } else {
+                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length() / 1024));
+                if ((map_bg_size - bg_file_size) > 10 || (map_bg_size - bg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mac s map bg");
+                    new DownloadSingleFileTask(map_bg).execute();
+                }
+            }
+        }
+
+        // add to JSONObject
+        file.put("field_map_id", field_map_id);
+        file.put("photo", photo);
+        file.put("photo_vertical", photo_vertical);
+        file.put("map_svg", map_svg);
+        file.put("map_svg_en", map_svg_en);
+        file.put("map_bg", map_bg);
         cursor.close();
         return file;
     }
@@ -1067,50 +1108,55 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
         File path = new File(rootDir.getAbsolutePath() + "/itri");
-        if ( !path.exists() ) {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        String[] bg_path = splash_bg_vertical.split("/");
-        String[] fg_path = splash_fg_vertical.split("/");
-        String[] blur_path = splash_blur_vertical.split("/");
-        File bg_file = new File(path, bg_path[bg_path.length - 1]);
-        File fg_file = new File(path, fg_path[fg_path.length - 1]);
-        File blur_file = new File(path, blur_path[blur_path.length - 1]);
-
-        if (!bg_file.exists()) {
-            Log.d("GGG", "mode s bg v");
-            new DownloadSingleFileTask(splash_bg_vertical).execute();
-        } else {
-            int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-            if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s mode s bg v");
+        if (splash_bg_size != 0) {
+            String[] bg_path = splash_bg_vertical.split("/");
+            File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            if (!bg_file.exists()) {
+                Log.d("GGG", "mode s bg v");
                 new DownloadSingleFileTask(splash_bg_vertical).execute();
+            } else {
+                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length() / 1024));
+                if ((splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "s mode s bg v");
+                    new DownloadSingleFileTask(splash_bg_vertical).execute();
+                }
             }
         }
 
-        if (!fg_file.exists()) {
-            Log.d("GGG", "mode s fg v");
-            new DownloadSingleFileTask(splash_fg_vertical).execute();
-        } else {
-            int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
-            if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s mode s fg v");
+        if (splash_fg_size != 0) {
+            String[] fg_path = splash_fg_vertical.split("/");
+            File fg_file = new File(path, fg_path[fg_path.length - 1]);
+            if (!fg_file.exists()) {
+                Log.d("GGG", "mode s fg v");
                 new DownloadSingleFileTask(splash_fg_vertical).execute();
+            } else {
+                int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length() / 1024));
+                if ((splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "s mode s fg v");
+                    new DownloadSingleFileTask(splash_fg_vertical).execute();
+                }
             }
         }
 
-        if (!blur_file.exists()) {
-            Log.d("GGG", "mode s bl v");
-            new DownloadSingleFileTask(splash_blur_vertical).execute();
-        } else {
-            int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
-            if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s mode s bl v");
+        if (splash_blur_size != 0) {
+            String[] blur_path = splash_blur_vertical.split("/");
+            File blur_file = new File(path, blur_path[blur_path.length - 1]);
+            if (!blur_file.exists()) {
+                Log.d("GGG", "mode s bl v");
                 new DownloadSingleFileTask(splash_blur_vertical).execute();
+            } else {
+                int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length() / 1024));
+                if ((splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "s mode s bl v");
+                    new DownloadSingleFileTask(splash_blur_vertical).execute();
+                }
             }
         }
 
@@ -1196,53 +1242,57 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
             // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
             File rootDir = this.context.getFilesDir();
             File path = new File(rootDir.getAbsolutePath() + "/itri");
-            if ( !path.exists() ) {
+            if (!path.exists()) {
                 path.mkdirs();
             }
 
-            String[] bg_path = splash_bg_vertical.split("/");
-            String[] fg_path = splash_fg_vertical.split("/");
-            String[] blur_path = splash_blur_vertical.split("/");
-            File bg_file = new File(path, bg_path[bg_path.length - 1]);
-            File fg_file = new File(path, fg_path[fg_path.length - 1]);
-            File blur_file = new File(path, blur_path[blur_path.length - 1]);
-
-            if (!bg_file.exists()) {
-                Log.d("GGG", "zone s bg v");
-                new DownloadSingleFileTask(splash_bg_vertical).execute();
-            } else {
-                int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length()/1024));
-                if ( (splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
-                    // re-download
-                    Log.d("GGG", "s zone s bg v");
+            if (splash_bg_size != 0) {
+                String[] bg_path = splash_bg_vertical.split("/");
+                File bg_file = new File(path, bg_path[bg_path.length - 1]);
+                if (!bg_file.exists()) {
+                    Log.d("GGG", "mode s bg v");
                     new DownloadSingleFileTask(splash_bg_vertical).execute();
+                } else {
+                    int bg_file_size = Integer.parseInt(String.valueOf(bg_file.length() / 1024));
+                    if ((splash_bg_size - bg_file_size) > 10 || (splash_bg_size - bg_file_size) < -10) {
+                        // re-download
+                        Log.d("GGG", "s mode s bg v");
+                        new DownloadSingleFileTask(splash_bg_vertical).execute();
+                    }
                 }
             }
 
-            if (!fg_file.exists()) {
-                Log.d("GGG", "zone s fg v");
-                new DownloadSingleFileTask(splash_fg_vertical).execute();
-            } else {
-                int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length()/1024));
-                if ( (splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
-                    // re-download
-                    Log.d("GGG", "s zone s fg v");
+            if (splash_fg_size != 0) {
+                String[] fg_path = splash_fg_vertical.split("/");
+                File fg_file = new File(path, fg_path[fg_path.length - 1]);
+                if (!fg_file.exists()) {
+                    Log.d("GGG", "mode s fg v");
                     new DownloadSingleFileTask(splash_fg_vertical).execute();
+                } else {
+                    int fg_file_size = Integer.parseInt(String.valueOf(fg_file.length() / 1024));
+                    if ((splash_fg_size - fg_file_size) > 10 || (splash_fg_size - fg_file_size) < -10) {
+                        // re-download
+                        Log.d("GGG", "s mode s fg v");
+                        new DownloadSingleFileTask(splash_fg_vertical).execute();
+                    }
                 }
             }
 
-            if (!blur_file.exists()) {
-                Log.d("GGG", "zone s bl v");
-                new DownloadSingleFileTask(splash_blur_vertical).execute();
-            } else {
-                int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length()/1024));
-                if ( (splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
-                    // re-download
-                    Log.d("GGG", "s zone s bl v");
+            if (splash_blur_size != 0) {
+                String[] blur_path = splash_blur_vertical.split("/");
+                File blur_file = new File(path, blur_path[blur_path.length - 1]);
+                if (!blur_file.exists()) {
+                    Log.d("GGG", "mode s bl v");
                     new DownloadSingleFileTask(splash_blur_vertical).execute();
+                } else {
+                    int blur_file_size = Integer.parseInt(String.valueOf(blur_file.length() / 1024));
+                    if ((splash_blur_size - blur_file_size) > 10 || (splash_blur_size - blur_file_size) < -10) {
+                        // re-download
+                        Log.d("GGG", "s mode s bl v");
+                        new DownloadSingleFileTask(splash_blur_vertical).execute();
+                    }
                 }
             }
-
             // add to JSONObject
             file.put("mode_id", mode_id);
             file.put("name", name);
@@ -1293,8 +1343,9 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("did_read", 1);
-        long correctUpdateId = db.update("mode", values, "mode_id=" +modeId, null);
-        if (correctUpdateId != -1) {} else {
+        long correctUpdateId = db.update("mode", values, "mode_id=" + modeId, null);
+        if (correctUpdateId != -1) {
+        } else {
             Log.e("更新已讀失敗", "mode_id=" + modeId);
             return false;
         }
@@ -1303,19 +1354,19 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // zone table query and insert
     public boolean insertZone(int zone_id,
-                                String name,
-                                String name_en,
-                                String introduction,
-                                String introduction_en,
-                                String guide_voice,
-                                String guide_voice_en,
-                                String hint,
-                                String photo,
-                                String photo_size,
-                                String photo_vertical,
-                                String photo_vertical_size,
-                                int field_id,
-                                int like_count) {
+                              String name,
+                              String name_en,
+                              String introduction,
+                              String introduction_en,
+                              String guide_voice,
+                              String guide_voice_en,
+                              String hint,
+                              String photo,
+                              String photo_size,
+                              String photo_vertical,
+                              String photo_vertical_size,
+                              int field_id,
+                              int like_count) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("zone_id", zone_id);
@@ -1366,36 +1417,42 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         // 掃過 FILE，看是不是沒有這個檔案，或者檔案沒有載完全
         File rootDir = this.context.getFilesDir();
         File path = new File(rootDir.getAbsolutePath() + "/itri");
-        if ( !path.exists() ) {
+        if (!path.exists()) {
             path.mkdirs();
         }
-
-        String[] photo_path = photo.split("/");
-        String[] photo_vertical_path = photo_vertical.split("/");
-        File photo_file = new File(path, photo_path[photo_path.length -1]);
-        File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length -1]);
-
-        if (!photo_file.exists()) {
-            Log.d("GGG", "zone p");
-            new DownloadSingleFileTask(photo).execute();
-        } else {
-            int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length()/1024));
-            if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
-                // re-download
-                Log.d("GGG", "s zone p");
+        // if there is indeed file
+        if (photo_size != 0) {
+            String[] photo_path = photo.split("/");
+            File photo_file = new File(path, photo_path[photo_path.length - 1]);
+            if (!photo_file.exists()) {
+                Log.d("GGG", "mode photo");
+                //DownloadSingleFile(photo);
                 new DownloadSingleFileTask(photo).execute();
+            } else {
+                int photo_f_size = Integer.parseInt(String.valueOf(photo_file.length() / 1024));
+                if ((photo_size - photo_f_size) > 10 || (photo_size - photo_f_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo");
+                    new DownloadSingleFileTask(photo).execute();
+                }
             }
         }
 
-        if (!photo_vertical_file.exists()) {
-            Log.d("GGG", "zone p v");
-            new DownloadSingleFileTask(photo_vertical).execute();
-        } else {
-            int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length()/1024));
-            if ( (photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
-                // re-download
-                Log.d("GGG", "s zone p v");
+        // if there is indeed file
+        if (photo_vertical_size != 0) {
+            String[] photo_vertical_path = photo_vertical.split("/");
+            File photo_vertical_file = new File(path, photo_vertical_path[photo_vertical_path.length - 1]);
+            if (!photo_vertical_file.exists()) {
+                Log.d("GGG", "mode photo_v");
+                // DownloadSingleFile(photo_vertical);
                 new DownloadSingleFileTask(photo_vertical).execute();
+            } else {
+                int photo_vertical_file_size = Integer.parseInt(String.valueOf(photo_vertical_file.length() / 1024));
+                if ((photo_vertical_size - photo_vertical_file_size) > 10 || (photo_vertical_size - photo_vertical_file_size) < -10) {
+                    // re-download
+                    Log.d("GGG", "mode photo_v");
+                    new DownloadSingleFileTask(photo_vertical).execute();
+                }
             }
         }
 
@@ -1481,7 +1538,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     public List<String> getDeviceDownloadFiles() {
-        List<String> deviceFiles = new ArrayList<String>();;
+        List<String> deviceFiles = new ArrayList<String>();
+        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, photo, photo_vertical from device", null);
 
@@ -1515,7 +1573,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
 
     // jiang
     public List<String> getFieldMapDownloadFiles() {
-        List<String> fieldMapFiles = new ArrayList<String>();;
+        List<String> fieldMapFiles = new ArrayList<String>();
+        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select photo, photo_vertical, map_svg, map_svg_en, map_bg from field_map", null);
 
@@ -1554,7 +1613,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     public List<String> getHipsterTemplateDownloadFiles() {
-        List<String> templateFiles = new ArrayList<String>();;
+        List<String> templateFiles = new ArrayList<String>();
+        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select template from hipster_template", null);
 
@@ -1572,7 +1632,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
     }
 
     public List<String> getModeDownloadFiles() {
-        List<String> modeFiles = new ArrayList<String>();;
+        List<String> modeFiles = new ArrayList<String>();
+        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select guide_voice, guide_voice_en, splash_bg_vertical, splash_fg_vertical, splash_blur_vertical from mode", null);
 
@@ -1694,7 +1755,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         read_count++;
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("read_count",read_count);
+        cv.put("read_count", read_count);
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
@@ -1709,7 +1770,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         read_count++;
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("read_count",read_count);
+        cv.put("read_count", read_count);
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.MODE_TABLE, cv, "mode_id=" + mode_id, null);
@@ -1725,7 +1786,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         like_count++;
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("like_count",like_count);
+        cv.put("like_count", like_count);
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.DEVICE_TABLE, cv, "device_id=" + device_id, null);
@@ -1740,7 +1801,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         like_count++;
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("like_count",like_count);
+        cv.put("like_count", like_count);
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.MODE_TABLE, cv, "mode_id=" + mode_id, null);
@@ -1755,7 +1816,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         like_count++;
         SQLiteDatabase writeDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("like_count",like_count);
+        cv.put("like_count", like_count);
         cursor.close();
         // update to the same field
         writeDB.update(DatabaseUtilizer.ZONE_TABLE, cv, "zone_id=" + zone_id, null);
