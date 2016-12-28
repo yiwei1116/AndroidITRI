@@ -882,6 +882,10 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
                 DownloadSingleFile(map_bg);
             }
 
+            map_svg = svg_path[svg_path.length - 1];
+            map_svg_en = svg_en_path[svg_en_path.length - 1];
+            map_bg = bg_path[bg_path.length - 1];
+
             // add to JSONObject
             file.put("field_map_id", field_map_id);
             file.put("photo", photo);
@@ -1402,12 +1406,12 @@ public class SQLiteDbManager extends SQLiteOpenHelper{
         List<String> paths = new ArrayList<String>();
         // get files needed to be download in company, device, field_map
         // hipster_template, mode, zone
-        paths.addAll(getCompanyDownloadFiles());
-        paths.addAll(getDeviceDownloadFiles());
         paths.addAll(getFieldMapDownloadFiles());
-        paths.addAll(getHipsterTemplateDownloadFiles());
-        paths.addAll(getModeDownloadFiles());
         paths.addAll(getZoneDownloadFiles());
+        paths.addAll(getModeDownloadFiles());
+        paths.addAll(getDeviceDownloadFiles());
+        paths.addAll(getHipsterTemplateDownloadFiles());
+        paths.addAll(getCompanyDownloadFiles());
         return paths;
     }
 
