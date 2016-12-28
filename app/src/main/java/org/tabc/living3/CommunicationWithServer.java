@@ -470,7 +470,7 @@ public class CommunicationWithServer {
                             Log.i("exists", filename + " skip download - already exists");
                         }
 
-                        if (progress <= PROGRESS_FULL_LEVEL) {
+                        if (progress < PROGRESS_FULL_LEVEL) {
                             progress += progressLevel;
                             onProgressUpdate(progress);
                         }
