@@ -198,7 +198,7 @@ public class CustomCameras extends Fragment implements SurfaceHolder.Callback,Vi
                             }
                         }
                     }
-
+                    boolean bo = realImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                     //rotateImage(setReducedImageSize());
                     CameraDisplay CD = new CameraDisplay();
                     Bundle bundle = new Bundle();
