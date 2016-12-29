@@ -35,19 +35,18 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/big_title_font_size" />
 
-    <TextView
+    <WebView
         android:id="@+id/content_area_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/title_area_fragment"
+        android:layout_above="@+id/btn_next_area_fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:paddingBottom="16dp"
-        android:paddingLeft="@dimen/content_padding_rl"
-        android:paddingRight="@dimen/content_padding_rl"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/edtxt_hint_font_size"
-        android:layout_above="@+id/btn_next_area_fragment" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/content_padding_rl"
+        android:layout_marginRight="@dimen/content_padding_rl"
+        android:background="@color/trans"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
          */
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
         if (currentFragment instanceof EquipmentTabFragment) {
-            // if youtube is full screen than close it
+            // if youtube is full screen than close it and return
             final IYoutube iYoutube =
                     (IYoutube) getFragmentManager().findFragmentById(R.id.flayout_fragment_continer);
             if (iYoutube.getFullScreenStatus()) {
@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                 return;
             }
 
-            // if company information is active than close it
+            // if company information is active than close it and return
             if (infoBtn.isBackgroundEqual(R.drawable.btn_main_info_active)) {
                 setInfoNormal();
 
@@ -517,6 +517,13 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             }
         }
 
+        // if font button active, close it and return
+        if (fontBtn.isBackgroundEqual(R.drawable.btn_main_font_active)) {
+            setFontNormal();
+            return;
+        }
+
+        // if it is feedback fragment, close it ant return
         if (currentFragment instanceof FeedbackFragment) {
             replaceFragment(mapFragment);
             return;
@@ -768,7 +775,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
             double screenInches = Math.sqrt(x+y);
             int style = R.style.dialog_coach_normal;
-            Log.d("GGG", String.valueOf(screenInches));
             if (screenInches <= 5.0)
                 style = R.style.dialog_coach_small;
 

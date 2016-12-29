@@ -87,19 +87,17 @@
 
     </RadioGroup>
 
-    <TextView
+    <WebView
         android:id="@+id/txt_equip_intro_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/equip_item_radio_group"
         android:maxLines="7"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:scrollbars="vertical"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
 
         />
 

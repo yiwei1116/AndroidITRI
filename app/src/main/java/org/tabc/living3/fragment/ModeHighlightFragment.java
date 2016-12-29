@@ -8,8 +8,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +17,8 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -51,6 +51,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     private static final String ZONE_NAME = "ZONE_NAME";
 
     private int modeId;
+    private int webview_font_size = 16;
     private String zoneName;
     private SQLiteDbManager dbManager;
     private HelperFunctions helperFunctions;
@@ -167,9 +168,10 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         TextView modeIntroTitle = (TextView) view.findViewById(R.id.txt_title_mode_intro);
         modeIntroTitle.setText(modeName);
 
-        TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
-        modeIntroContent.setText(modeIntroduction);
-        modeIntroContent.setMovementMethod(new ScrollingMovementMethod());
+        WebView modeIntroContent = (WebView) view.findViewById(R.id.txt_content_mode_intro);
+        modeIntroContent.setBackgroundColor(0);
+        String content = getString(R.string.text_justify_start_white) + modeIntroduction + getString(R.string.text_justify_end);
+        modeIntroContent.loadData(content, "text/html; charset=utf-8", "utf-8");
 
         Button nextIntro = (Button) view.findViewById(R.id.btn_next_mode_intro);
         nextIntro.setOnClickListener(new View.OnClickListener() {
@@ -275,14 +277,15 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
     @Override
     public void setFontSize(int size) {
-        TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
-        modeIntroContent.setTextSize(size);
+        webview_font_size = size;
+        WebView areaContent = (WebView) view.findViewById(R.id.txt_content_mode_intro);
+        WebSettings settings = areaContent.getSettings();
+        settings.setDefaultFontSize(webview_font_size);
     }
 
     @Override
     public int getFontSize() {
-        TextView modeIntroContent = (TextView) view.findViewById(R.id.txt_content_mode_intro);
-        return (int) modeIntroContent.getTextSize() / 3;
+        return webview_font_size;
     }
 
     @Override

@@ -231,5 +231,8 @@
     <string name="please_select_zone">請選擇所在區域</string>
     <string name="please_write_content">請寫下內文</string>
     <string name="template_content">內文(30字已內)</string>
+    <string name="text_justify_start_white" translatable="false"><![CDATA[<p style=\'text-align:justify;color:white;\'>]]></string>
+    <string name="text_justify_start_black" translatable="false"><![CDATA[<p style=\'text-align:justify;color:black;\'>]]></string>
+    <string name="text_justify_end" translatable="false"><![CDATA[</p>]]></string>
 
 </resources>

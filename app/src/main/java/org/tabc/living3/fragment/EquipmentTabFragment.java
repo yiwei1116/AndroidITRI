@@ -3,7 +3,6 @@ package org.tabc.living3.fragment;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,7 +53,6 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *  equipment number can not be over 20,
@@ -592,12 +591,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         // set equipment content text
         String txtContentTag = TXT_TAG + String.valueOf(position);
-        TextView txtContent = (TextView) v.findViewById(R.id.txt_equip_intro_content);
+        WebView txtContent = (WebView) v.findViewById(R.id.txt_equip_intro_content);
         // set text content tag for font size later
         txtContent.setTag(txtContentTag);
-        txtContent.setText(currTab.getTextContent());
-        txtContent.setTextSize(currTab.getFontSize());
-        txtContent.setMovementMethod(new ScrollingMovementMethod());
+        String content = getString(R.string.text_justify_start_black) + currTab.getTextContent() + getString(R.string.text_justify_end);
+        txtContent.loadData(content, "text/html; charset=utf-8", "utf-8");
 
         // set each youtube frame layout a specific ID in tabs.
         String idName = YOUTUBE_LAYOUT_ID_ + String.valueOf(position);
@@ -708,8 +706,9 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     @Override
     public void setFontSize(int size) {
         String tag = TXT_TAG + String.valueOf(mViewPager.getCurrentItem());
-        TextView tvRecord = (TextView) mViewPager.findViewWithTag(tag);
-        tvRecord.setTextSize(size);
+        WebView tvRecord = (WebView) mViewPager.findViewWithTag(tag);
+        WebSettings settings = tvRecord.getSettings();
+        settings.setDefaultFontSize(size);
         equipTabs.get(mViewPager.getCurrentItem()).setFontSize(size);
     }
 

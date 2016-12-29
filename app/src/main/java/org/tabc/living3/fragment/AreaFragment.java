@@ -8,13 +8,13 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -64,6 +64,7 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
     private String guide_voice;
 
     private boolean isEnglish;
+    private int webview_font_size = 16;
 
 
     public AreaFragment() {
@@ -165,9 +166,10 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
         TextView areaTitle = (TextView) view.findViewById(R.id.title_area_fragment);
         areaTitle.setText(isEnglish ? title_en : title);
 
-        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
-        areaContent.setText(introduction);
-        areaContent.setMovementMethod(new ScrollingMovementMethod());
+        WebView areaContent = (WebView) view.findViewById(R.id.content_area_fragment);
+        areaContent.setBackgroundColor(0);
+        String content = getString(R.string.text_justify_start_white) + introduction + getString(R.string.text_justify_end);
+        areaContent.loadData(content, "text/html; charset=utf-8", "utf-8");
 
         ImageView tourGuide = (ImageView) view.findViewById(R.id.tour_guide_area);
         tourGuide.setBackgroundResource(TOUR_GUIDE[tourIndex]);
@@ -209,14 +211,15 @@ public class AreaFragment extends Fragment implements ISoundInterface, IFontSize
 
     @Override
     public void setFontSize(int size) {
-        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
-        areaContent.setTextSize(size);
+        webview_font_size = size;
+        WebView areaContent = (WebView) view.findViewById(R.id.content_area_fragment);
+        WebSettings settings = areaContent.getSettings();
+        settings.setDefaultFontSize(webview_font_size);
     }
 
     @Override
     public int getFontSize() {
-        TextView areaContent = (TextView) view.findViewById(R.id.content_area_fragment);
-        return (int) areaContent.getTextSize() / 3;
+        return webview_font_size;
     }
 
     @Override

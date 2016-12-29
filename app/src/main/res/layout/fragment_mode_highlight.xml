@@ -68,18 +68,16 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="26dp" />
 
-        <TextView
+        <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_content_mode_intro"
-            android:textColor="@android:color/white"
             android:layout_below="@+id/txt_title_mode_intro"
             android:layout_above="@+id/btn_next_mode_intro"
             android:layout_centerHorizontal="true"
-            android:textSize="@dimen/edtxt_hint_font_size"
-            android:paddingBottom="16dp"
-            android:paddingLeft="@dimen/content_padding_rl"
-            android:paddingRight="@dimen/content_padding_rl"/>
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="@dimen/content_padding_rl"
+            android:layout_marginRight="@dimen/content_padding_rl"/>
 
         <Button
             android:layout_width="wrap_content"
