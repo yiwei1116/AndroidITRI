@@ -38,6 +38,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.util.ButtonSound;
+import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
@@ -79,9 +80,10 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     public String table_name_hipster_template = "hipster_template";
     private Cursor cursor_template;
     private HelperFunctions helperFunctions;
+    private DatabaseUtilizer databaseUtilizer;
     int width,length;
     Bundle bundle1;
-    private String combinePicToServer = "http://140.116.82.48/web/media/combine_picture/";
+
     private List<String> imageList = new ArrayList<>();
 
     public MergeTemplatePic() {
@@ -145,6 +147,8 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         btnShowSucess.setOnClickListener(this);
         dbManager = new SQLiteDbManager(getActivity(), db_name);
         helperFunctions = new HelperFunctions(getActivity().getApplicationContext());
+        databaseUtilizer = new DatabaseUtilizer();
+        Log.e("IP",databaseUtilizer.getIP());
         imageList = dbManager.getHipsterTemplateDownloadFiles();
         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
         for(int i=0;i<imageList.size();i++){
@@ -236,6 +240,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
     private void generateQRcode(){
+        String combinePicToServer = "http://" + databaseUtilizer.getIP() + "/web/media/combine_picture/";
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(combinePicToServer + getPicName(mPath), BarcodeFormat.QR_CODE,80,80);
