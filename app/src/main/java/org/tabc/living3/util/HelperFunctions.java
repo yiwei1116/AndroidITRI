@@ -738,9 +738,11 @@ public class HelperFunctions extends Application{
             Bitmap combineBmp=null;
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = 3;   //width，hight設為原來的五分之一
             try {
                 pictureBmp = BitmapFactory.decodeStream(new FileInputStream(pictureFile), null, options);
-                //combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile), null, options);
+                combineBmp = BitmapFactory.decodeStream(new FileInputStream(combineFile), null, options);
             } catch (FileNotFoundException e) {
 
                 e.printStackTrace();
@@ -754,7 +756,7 @@ public class HelperFunctions extends Application{
             //combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
 
             pictureBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            //combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
+            combineBmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream1);
             byte[] pictureBytes = outputStream.toByteArray();
             byte[] combineBytes = outputStream1.toByteArray();
             pictureByteImage = Base64.encodeToString(pictureBytes, Base64.DEFAULT);

@@ -102,7 +102,6 @@
             android:layout_width="149dp"
             android:layout_height="126dp"
             android:id="@+id/QRcode"
-            android:background="@drawable/test_qrcode"
             android:layout_gravity="center_vertical|center"
             android:layout_weight="0.15"
             />

@@ -41,11 +41,13 @@ import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +68,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private Button icDownload,savePhone,sendMail,backTour;
     private ImageButton btnShowSucess;
     private Toolbar toolbar;
-    private Bitmap mBitmap;
+    private Bitmap mBitmap, qrCode;
     private LinearLayout mask,function,showSuccess;
     private File imageFile;
     private  int minX,minY,picWidth,picHeight;
@@ -79,6 +81,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private HelperFunctions helperFunctions;
     int width,length;
     Bundle bundle1;
+    private String combinePicToServer = "http://140.116.82.48/web/media/combine_picture/";
     private List<String> imageList = new ArrayList<>();
 
     public MergeTemplatePic() {
@@ -185,8 +188,10 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         ((MainActivity) getActivity()).showDefaultToolbar();
     }
     private void takeScreenshot() {
-        Date now = new Date();
-        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+     /*   Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);*/
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss");
+        String now = formatter.format(new Date());
         icDownload.setVisibility(View.INVISIBLE);
         toolbar.setVisibility(View.INVISIBLE);
 
@@ -196,7 +201,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
             //藉由View來Cache全螢幕畫面後放入Bitmap
 
             addImageToGallery(mPath,getActivity());
-            displayPic();
+            //displayPic();
             View mView = getActivity().getWindow().getDecorView();
             mView.setDrawingCacheEnabled(true);
             mView.buildDrawingCache();
@@ -233,10 +238,10 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private void generateQRcode(){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(mPath, BarcodeFormat.QR_CODE,70,70);
+            BitMatrix bitMatrix = multiFormatWriter.encode(combinePicToServer + getPicName(mPath), BarcodeFormat.QR_CODE,80,80);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            qrcodeImage.setImageBitmap(bitmap);
+            qrCode = barcodeEncoder.createBitmap(bitMatrix);
+            qrcodeImage.setImageBitmap(qrCode);
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -262,8 +267,9 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
 
     }
     private void sendEmail() {
+
         boolean found = false;
-        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
         share.setType("image/jpeg");
         // gets the list of intents that can be loaded.
         List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(share, 0);
@@ -273,9 +279,21 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                         info.activityInfo.name.toLowerCase().contains("com.google.android.gm")
                         )
                 {
+                    ArrayList<Uri> uris = new ArrayList<Uri>();
+                    //convert from paths to Android friendly Parcelable Uri's
+
+               /*     for (String file : filePaths)
+                    {
+                        File fileIn = new File(file);
+                        Uri u = Uri.fromFile(fileIn);
+                        uris.add(u);
+                    }*/
+                    uris.add(Uri.fromFile(new File(mPath)));
+                    uris.add(getImageUri(getActivity(),qrCode));
                     share.putExtra(Intent.EXTRA_SUBJECT,  "");
                     share.putExtra(Intent.EXTRA_TEXT,    "");
-                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mPath)) ); // Optional, just if you wanna share an image.
+                    //share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(mPath)) );
+                    share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);// Optional, just if you wanna share an image.
                     share.setPackage(info.activityInfo.packageName);
                     found = true;
                     break;
@@ -298,6 +316,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 Log.e("picPath",picPath);
                 Log.e("mPath",mPath);
                 String templateID = getTemplateID(templateIndex);
+                savetoPhone();
                 try {
                     helperFunctions.uploadHipster(toUtf8(StringContext),getPicName(picPath),getPicName(mPath),getPicDirPath(picPath),getPicDirPath(mPath),Integer.parseInt(templateID),Integer.parseInt(templateTextID),Integer.parseInt(zoneID));
                 } catch (UnsupportedEncodingException e) {
@@ -305,7 +324,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.savetoPhone:
-                savetoPhone();
+
                 showSuccess.setVisibility(View.VISIBLE);
                 //openScreenshot(imageFile);
                     //showStoreSuccess();
@@ -423,11 +442,16 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
         TT.setImageBitmap(bitmap);
 
     }
-    public static String toUtf8(String str) throws UnsupportedEncodingException {
+    private static String toUtf8(String str) throws UnsupportedEncodingException {
         return new String(str.getBytes("UTF-8"),"UTF-8");
     }
 
-
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
 
 
 }
