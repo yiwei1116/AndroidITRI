@@ -1507,11 +1507,11 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         List<String> paths = new ArrayList<String>();
         // get files needed to be download in company, device, field_map
         // hipster_template, mode, zone
+        paths.addAll(getHipsterTemplateDownloadFiles());
         paths.addAll(getFieldMapDownloadFiles());
         paths.addAll(getZoneDownloadFiles());
         paths.addAll(getModeDownloadFiles());
         paths.addAll(getDeviceDownloadFiles());
-        paths.addAll(getHipsterTemplateDownloadFiles());
         paths.addAll(getCompanyDownloadFiles());
         return paths;
     }
@@ -1614,7 +1614,6 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
 
     public List<String> getHipsterTemplateDownloadFiles() {
         List<String> templateFiles = new ArrayList<String>();
-        ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select template from hipster_template", null);
 

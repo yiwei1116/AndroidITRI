@@ -5,8 +5,8 @@ package org.tabc.living3.util;
  */
 public class DatabaseUtilizer {
     // base IP address
-    public static final String IP = "140.116.82.48";
-  //  public static final String IP = "60.251.33.54:98";
+//    public static final String IP = "140.116.82.48";
+    public static final String IP = "60.251.33.54:98";
 
     public static final String serverURL = "http://" + IP + "/interface/jsondecode.php";
     public static final String downloadURL = "http://" + IP + "/interface/getfile.php";
