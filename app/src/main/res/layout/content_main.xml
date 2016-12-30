@@ -136,6 +136,7 @@
                 android:id="@+id/textBar"
                 android:maxHeight="2dp"
                 android:progress="15"
+                android:splitTrack="false"
                 android:progressDrawable="@drawable/btn_font_bar"
                 android:thumb="@drawable/btn_font_circle"
                 android:layout_toRightOf="@+id/small_font_img"

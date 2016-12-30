@@ -194,7 +194,7 @@ public class MergeTemplatePic extends Fragment implements View.OnClickListener {
     private void takeScreenshot() {
      /*   Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);*/
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  hh:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
         String now = formatter.format(new Date());
         icDownload.setVisibility(View.INVISIBLE);
         toolbar.setVisibility(View.INVISIBLE);

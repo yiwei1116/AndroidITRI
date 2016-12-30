@@ -592,6 +592,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         // set equipment content text
         String txtContentTag = TXT_TAG + String.valueOf(position);
         WebView txtContent = (WebView) v.findViewById(R.id.txt_equip_intro_content);
+        txtContent.setBackgroundColor(0);
         // set text content tag for font size later
         txtContent.setTag(txtContentTag);
         String content = getString(R.string.text_justify_start_black) + currTab.getTextContent() + getString(R.string.text_justify_end);
