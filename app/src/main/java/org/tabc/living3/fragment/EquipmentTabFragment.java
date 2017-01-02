@@ -308,7 +308,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
         ((MainActivity) getActivity()).setInfoDisabled();
         ((MainActivity) getActivity()).stopTexttoSpeech();
 
-        youtubePlayer.release();
+        if (youtubePlayer != null)
+            youtubePlayer.release();
 
         ArrayList<Integer> deviceds_id = new ArrayList<>();
         int i = 0;
@@ -501,6 +502,15 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     //cursor
     private void addTabs() throws JSONException {
         JSONArray devicesArray = dbManager.queryDeviceFilesByMode(modeId);
+        JSONObject mode = dbManager.queryModeFiles(modeId);
+
+        boolean isVideo = false;
+        String[] youtube = mode.getString(DatabaseUtilizer.VIDEO).split("=");
+        String youtubeID = "";
+        if (youtube.length == 2) {
+            youtubeID = youtube[youtube.length - 1];
+            isVideo = true;
+        }
 
         for (int i = 0; i < equipNumber; i++) {
             JSONObject d = devicesArray.getJSONObject(i);
@@ -520,7 +530,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             // insert second photo to photo array list
 //            tab.insertEquipPhoto(equip.getString(DatabaseUtilizer.DEVICE_PHOTO_VER));
 
-            tab.setVideo(true);
+            tab.setVideo(isVideo);
             tab.setPhoto(true);
             String introduction = equip.getString(DatabaseUtilizer.INTRODUCTION);
             if (isEnglish) {
@@ -536,8 +546,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.setMediaPlayer(MediaPlayer.create(getActivity(), tab.getPlayList()));
 
             // youtube
-            String VIDEO_ID = "tYA6TSTBjQ0";
-            tab.setVideoID(VIDEO_ID);
+            tab.setVideoID(youtubeID);
             YouTubePlayerFragment youTubePlayerFragment = YouTubePlayerFragment.newInstance();
             tab.setYouTubePlayerFragment(youTubePlayerFragment);
 
