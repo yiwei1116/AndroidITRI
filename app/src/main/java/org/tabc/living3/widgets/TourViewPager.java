@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.tabc.living3.util;
+package org.tabc.living3.widgets;
 
 /**
  * Created by kai on 2016/9/5.

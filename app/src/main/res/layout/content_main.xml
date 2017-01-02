@@ -138,7 +138,7 @@
                 android:progress="15"
                 android:splitTrack="false"
                 android:progressDrawable="@drawable/btn_font_bar"
-                android:thumb="@drawable/btn_font_circle"
+                android:thumb="@drawable/progress_bar_circle"
                 android:layout_toRightOf="@+id/small_font_img"
                 android:layout_toLeftOf="@+id/big_font_img"
                 android:layout_centerVertical="true" />
@@ -175,7 +175,7 @@
         android:gravity="center_horizontal"
         android:layout_marginBottom="5dp">
 
-        <org.tabc.living3.util.MainButton
+        <org.tabc.living3.widgets.MainButton
             android:layout_width="@dimen/main_btn_width"
             android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_info_disabled"
@@ -186,7 +186,7 @@
             android:gravity="bottom|center_horizontal"
             android:paddingBottom="10dp" />
 
-        <org.tabc.living3.util.MainButton
+        <org.tabc.living3.widgets.MainButton
             android:layout_width="@dimen/main_btn_width"
             android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_diary_disabled"
@@ -198,7 +198,7 @@
             android:gravity="bottom|center_horizontal"
             android:paddingBottom="10dp" />
 
-        <org.tabc.living3.util.MainButton
+        <org.tabc.living3.widgets.MainButton
             android:layout_width="@dimen/main_btn_circle"
             android:layout_height="@dimen/main_btn_circle"
             android:background="@drawable/btn_main_map_disabled"
@@ -210,7 +210,7 @@
             android:paddingTop="35dp"
             android:textAlignment="gravity" />
 
-        <org.tabc.living3.util.MainButton
+        <org.tabc.living3.widgets.MainButton
             android:layout_width="@dimen/main_btn_width"
             android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_sound_disabled"
@@ -222,7 +222,7 @@
             android:gravity="bottom|center_horizontal"
             android:paddingBottom="10dp" />
 
-        <org.tabc.living3.util.MainButton
+        <org.tabc.living3.widgets.MainButton
             android:layout_width="@dimen/main_btn_width"
             android:layout_height="@dimen/main_btn_height"
             android:background="@drawable/btn_main_font_disabled"

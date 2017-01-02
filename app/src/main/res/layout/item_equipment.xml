@@ -11,7 +11,8 @@
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/btn_font_color_blue"
-        android:textSize="@dimen/title_font_size" />
+        android:textSize="@dimen/title_font_size"
+        android:textAlignment="center" />
 
     <FrameLayout
         android:id="@+id/flayout_equip_intro"

@@ -9,13 +9,13 @@
     tools:showIn="@layout/activity_tour_select"
     android:orientation="vertical">
 
-    <org.tabc.living3.util.TourViewPager
+    <org.tabc.living3.widgets.TourViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/viewpager_tour_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="99">
-    </org.tabc.living3.util.TourViewPager>
+    </org.tabc.living3.widgets.TourViewPager>
 
     <Button
         android:layout_width="wrap_content"

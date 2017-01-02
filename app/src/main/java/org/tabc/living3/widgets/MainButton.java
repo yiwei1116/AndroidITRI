@@ -1,4 +1,4 @@
-package org.tabc.living3.util;
+package org.tabc.living3.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

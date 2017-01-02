@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txt_title_mode_intro"
             android:textColor="@android:color/white"
+            android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/big_title_font_size"
             android:layout_marginTop="30dp"

@@ -33,7 +33,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/big_title_font_size" />
+        android:textSize="@dimen/big_title_font_size"
+        android:textAlignment="center" />
 
     <WebView
         android:id="@+id/content_area_fragment"

@@ -25,10 +25,12 @@
         android:paddingTop="@dimen/toolbar_paddingTop"
         android:theme="@style/ToolbarTheme" >
 
-        <TextView
+        <org.tabc.living3.widgets.AutoResizeTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_toolbar_main"
+            android:maxLines="2"
+            android:ellipsize="none"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@android:color/white"

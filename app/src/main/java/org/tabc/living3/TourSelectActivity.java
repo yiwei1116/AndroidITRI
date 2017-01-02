@@ -10,7 +10,7 @@ import android.support.v4.view.PagerAdapter;
 
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.ICoachProtocol;
-import org.tabc.living3.util.TourViewPager;
+import org.tabc.living3.widgets.TourViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
