@@ -503,6 +503,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_svg_en_size != 0) {
             String[] svg_en_path = map_svg_en.split("/");
             File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            map_svg_en = svg_en_path[svg_en_path.length - 1];
+
             if (!svg_en_file.exists()) {
                 Log.d("GGG", "map svg en");
                 new DownloadSingleFileTask(map_svg_en).execute();
@@ -519,6 +521,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_bg_size != 0) {
             String[] bg_path = map_bg.split("/");
             File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            map_bg = bg_path[bg_path.length - 1];
+
             if (!bg_file.exists()) {
                 Log.d("GGG", "mac map bg");
                 new DownloadSingleFileTask(map_bg).execute();
@@ -620,6 +624,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_svg_size != 0) {
             String[] svg_path = map_svg.split("/");
             File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            map_svg = svg_path[svg_path.length - 1];
+
             if (!svg_file.exists()) {
                 Log.d("GGG", "mac map svg");
                 new DownloadSingleFileTask(map_svg).execute();
@@ -636,6 +642,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_svg_en_size != 0) {
             String[] svg_en_path = map_svg_en.split("/");
             File svg_en_file = new File(path, svg_en_path[svg_en_path.length - 1]);
+            map_svg_en = svg_en_path[svg_en_path.length - 1];
+
             if (!svg_en_file.exists()) {
                 Log.d("GGG", "map svg en");
                 new DownloadSingleFileTask(map_svg_en).execute();
@@ -652,6 +660,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_bg_size != 0) {
             String[] bg_path = map_bg.split("/");
             File bg_file = new File(path, bg_path[bg_path.length - 1]);
+            map_bg = bg_path[bg_path.length - 1];
+
             if (!bg_file.exists()) {
                 Log.d("GGG", "mac map bg");
                 new DownloadSingleFileTask(map_bg).execute();
