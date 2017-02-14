@@ -17,6 +17,7 @@ public class DatabaseUtilizer {
     public static final String modeaddURL = "http://" + IP + "/interface/modeadd.php"; // counter
     public static final String zoneaddURL = "http://" + IP + "/interface/zoneadd.php"; // counter
     public static final String filePathURLPrefix = "http://" + IP + "/web/";
+    // 2/13/2017
     public static final String counttypeURL = "http://" + IP + "/interface/count_type.php";
 
     /*

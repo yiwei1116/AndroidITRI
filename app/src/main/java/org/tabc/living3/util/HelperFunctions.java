@@ -66,16 +66,19 @@ public class HelperFunctions extends Application{
     public static final String uploadUrlForHipsterContentSuffix = "http://";
     private String uploadString;
     private String pictureByteImage,combineByteImage;
+
     public HelperFunctions(Activity activity) {
         this.context = activity.getApplicationContext();
         this.manager = new SQLiteDbManager(this.context);
         this.uploadString = new String();
+        // 2/13/2017
         Foreground.init(this);
     }
 
     public HelperFunctions(SQLiteDbManager manager) {
         this.manager = manager;
         this.uploadString = new String();
+        // 2/13/2017
         Foreground.init(this);
     }
 
@@ -83,11 +86,13 @@ public class HelperFunctions extends Application{
         this.context = context;
         this.uploadString = new String();
         this.manager = new SQLiteDbManager(this.context);
+        // 2/13/2017
         Foreground.init(this);
     }
 
     public HelperFunctions() {
         // this.uploadString = new String();
+        // 2/13/2017
         Foreground.init(this);
     }
 
@@ -994,6 +999,9 @@ public class HelperFunctions extends Application{
         Log.e("simply", "testing");
     }
 
+    /*
+        2/13/2017
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void uploadCounts() throws JSONException {
         Calendar c = Calendar.getInstance();
