@@ -319,12 +319,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             deviceds_id.add(tab.getDeviceId());
         }
 
+
         // upload read count and like count
-        try {
-            helperFunctions.uploadDeviceLikeAndReadCount(deviceds_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        // 2/13/2017
+//        try {
+//            helperFunctions.uploadDeviceLikeAndReadCount(deviceds_id);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         // remove current tab's youtube fragment immediately
         String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());

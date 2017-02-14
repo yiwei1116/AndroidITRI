@@ -46,7 +46,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,21 +67,25 @@ public class HelperFunctions extends Application{
         this.context = activity.getApplicationContext();
         this.manager = new SQLiteDbManager(this.context);
         this.uploadString = new String();
+        Foreground.init(this);
     }
 
     public HelperFunctions(SQLiteDbManager manager) {
         this.manager = manager;
         this.uploadString = new String();
+        Foreground.init(this);
     }
 
     public HelperFunctions(Context context) {
         this.context = context;
         this.uploadString = new String();
         this.manager = new SQLiteDbManager(this.context);
+        Foreground.init(this);
     }
 
     public HelperFunctions() {
         // this.uploadString = new String();
+        Foreground.init(this);
     }
 
     public static Bitmap readImageBitmap(String internalImagePath) throws FileNotFoundException {
@@ -981,4 +987,150 @@ public class HelperFunctions extends Application{
         }
     }
 
+    public void testNothing() {
+        Log.e("simply", "testing");
+    }
+
+    public void uploadCounts() throws JSONException {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // pack data from sqlite and upload all counts from device, mode, zone
+        SQLiteDatabase db = manager.getReadableDatabase();
+        // device
+        JSONObject jsonObject = new JSONObject();
+        JSONObject device_count = new JSONObject();
+        JSONObject device_object = new JSONObject();
+        Cursor device_cursor = db.rawQuery("select device_id, read_count, like_count from device", null);
+        device_cursor.moveToFirst();
+        int device_id;
+        int device_read;
+        int device_like;
+        JSONObject read_obj = new JSONObject();
+        JSONObject like_obj = new JSONObject();
+        while (device_cursor.isAfterLast() == false) {
+            device_id = device_cursor.getInt(device_cursor.getColumnIndex("device_id"));
+            device_read = device_cursor.getInt(device_cursor.getColumnIndex("read_count"));
+            device_like = device_cursor.getInt(device_cursor.getColumnIndex("like_count"));
+            read_obj.put("count_number", device_read);
+            read_obj.put("create_date", dateFormat.format(c.getTime()));
+            like_obj.put("count_number", device_like);
+            like_obj.put("create_date", dateFormat.format(c.getTime()));
+            device_object.put("1", read_obj);
+            device_object.put("2", like_obj);
+            device_count.put(String.valueOf(device_id), device_object);
+            // clear temporary json objs - reset
+            read_obj = new JSONObject();
+            like_obj = new JSONObject();
+            device_object = new JSONObject();
+            device_cursor.moveToNext();
+        }
+        Log.e("simply", "testing");
+        jsonObject.put("device_count", device_count);
+        Log.e("count1", device_count.toString());
+
+        // mode
+        JSONObject mode_count = new JSONObject();
+        JSONObject mode_object = new JSONObject();
+        Cursor mode_cursor = db.rawQuery("select mode_id, read_count, like_count from mode", null);
+        mode_cursor.moveToFirst();
+        int mode_id;
+        int mode_read;
+        int mode_like;
+        read_obj = new JSONObject();
+        like_obj = new JSONObject();
+        while (mode_cursor.isAfterLast() == false) {
+            mode_id = mode_cursor.getInt(mode_cursor.getColumnIndex("mode_id"));
+            mode_read = mode_cursor.getInt(mode_cursor.getColumnIndex("read_count"));
+            mode_like = mode_cursor.getInt(mode_cursor.getColumnIndex("like_count"));
+            read_obj.put("count_number", mode_read);
+            read_obj.put("create_date", dateFormat.format(c.getTime()));
+            like_obj.put("count_number", mode_like);
+            like_obj.put("create_date", dateFormat.format(c.getTime()));
+            mode_object.put("1", read_obj);
+            mode_object.put("2", like_obj);
+            mode_count.put(String.valueOf(mode_id), mode_object);
+            // clear temporary json objs - reset
+            read_obj = new JSONObject();
+            like_obj = new JSONObject();
+            mode_object = new JSONObject();
+            mode_cursor.moveToNext();
+        }
+        jsonObject.put("mode_count", mode_count);
+        Log.e("count2", String.valueOf(mode_count));
+
+        // zone
+        JSONObject zone_count = new JSONObject();
+        JSONObject zone_object = new JSONObject();
+        Cursor zone_cursor = db.rawQuery("select zone_id, like_count from zone", null);
+        zone_cursor.moveToFirst();
+        int zone_id;
+        int zone_like;
+        like_obj = new JSONObject();
+        while (zone_cursor.isAfterLast() == false) {
+            zone_id = zone_cursor.getInt(zone_cursor.getColumnIndex("zone_id"));
+            zone_like = zone_cursor.getInt(zone_cursor.getColumnIndex("like_count"));
+            like_obj.put("count_number", zone_like);
+            like_obj.put("create_date", dateFormat.format(c.getTime()));
+            zone_object.put("1", like_obj);
+            zone_count.put(String.valueOf(zone_id), zone_object);
+            // clear temporary json objs - reset
+            like_obj = new JSONObject();
+            zone_object = new JSONObject();
+            zone_cursor.moveToNext();
+        }
+        jsonObject.put("zone_count", zone_count);
+        Log.e("count3", String.valueOf(zone_count));
+
+        JSONObject count_type = new JSONObject();
+        count_type.put("count_table", jsonObject);
+        final String upload = count_type.toString();
+
+        StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counttypeURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.e("response", s);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        NetworkResponse networkResponse = volleyError.networkResponse;
+                        if (networkResponse != null) {
+                            Log.e("Volley", "Error. HTTP Status Code:"+networkResponse.statusCode);
+                        }
+                        if (volleyError instanceof TimeoutError) {
+                            Log.e("Volley", "TimeoutError");
+                        }else if(volleyError instanceof NoConnectionError){
+                            Log.e("Volley", "NoConnectionError");
+                        } else if (volleyError instanceof AuthFailureError) {
+                            Log.e("Volley", "AuthFailureError");
+                        } else if (volleyError instanceof ServerError) {
+                            Log.e("Volley", "ServerError");
+                        } else if (volleyError instanceof NetworkError) {
+                            Log.e("Volley", "NetworkError");
+                        } else if (volleyError instanceof ParseError) {
+                            Log.e("Volley", "ParseError");
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                //Creating parameters
+                HashMap<String,String> params = new HashMap<String, String>();
+                //Adding parameters
+                params.put("count_type", upload);
+                Log.e("count_type", upload);
+                //returning parameters
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
+        requestQueue.add(hipsterUploadRequest);
+
+
+    }
 }

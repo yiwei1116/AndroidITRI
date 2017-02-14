@@ -15,6 +15,7 @@ import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -29,19 +30,22 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
 import org.tabc.living3.util.ButtonSound;
+import org.tabc.living3.util.Foreground;
+import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.ICoachProtocol;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.ITRIObject;
 import org.tabc.living3.util.IYoutube;
-import org.tabc.living3.widgets.MainButton;
 import org.tabc.living3.util.SQLiteDbManager;
 import org.tabc.living3.util.TimeUtilities;
+import org.tabc.living3.widgets.MainButton;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,12 +58,13 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
     private int tourIndex;
     private boolean isEnglish;
-
+//    public
     private MainButton infoBtn;
     private MainButton diaryBtn;
     private MainButton mapBtn;
     private MainButton soundBtn;
     private MainButton fontBtn;
+    private HelperFunctions helper;
     private Toolbar toolbar;
     private TextView toolbarTitle;
     private ImageView mainBtnNavBg;
@@ -154,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         // set all mode did_read false at the first time
         SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
         dbManager.setModeDidReadZero();
+        helper = new HelperFunctions(getApplicationContext());
 
 
         infoBtn = (MainButton) findViewById(R.id.btn_info_main);
@@ -184,6 +190,40 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     protected void onPause() {
 
         super.onPause();
+
+        Log.e("error", "dsfdaadsfads");
+        uploadingCount();
+    }
+
+    public void uploadingCount() {
+        final Handler handler = new Handler();
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                if (Foreground.get().isBackground()) {
+                    try {
+                        Log.e("happy", "das");
+                        helper.uploadCounts();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("sad", "fsgdrg");
+                }
+//                helper.testNothing();
+            }
+        };
+
+        thread.start();
+//        if (Foreground.get().isBackground()) {
+//            try {
+//                Log.e("happy", "das");
+//                helper.uploadCounts();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e("sad", "fsgdrg");
+//        }
+
     }
 
     @Override
@@ -948,4 +988,5 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             );
         }
     }
+
 }

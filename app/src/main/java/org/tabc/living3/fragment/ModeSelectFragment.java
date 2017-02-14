@@ -1,13 +1,12 @@
 package org.tabc.living3.fragment;
 
 
+import android.app.Fragment;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.support.v7.widget.Toolbar;
-import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +18,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.SQLiteDbManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -159,11 +157,12 @@ public class ModeSelectFragment extends Fragment {
         super.onDestroyView();
         // upload zone like count
 
-        try {
-            helperFunctions.uploadZoneLikeAndReadCount(currentZone);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        // 2/13/2017
+//        try {
+//            helperFunctions.uploadZoneLikeAndReadCount(currentZone);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void addModeItem() throws JSONException {
