@@ -1,13 +1,14 @@
 package org.tabc.living3.fragment;
 
 
+import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.util.ButtonSound;
@@ -32,9 +35,6 @@ import org.tabc.living3.util.HelperFunctions;
 import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.SQLiteDbManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 
@@ -132,6 +132,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 dbManager.addModeLikeCount(modeId);
+                Log.e("current", String.valueOf(modeId));
                 return true;
             }
         });

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -117,6 +118,7 @@ public class ModeSelectFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 dbManager.addZoneLikeCount(currentZone);
+//                Log.e("current", String.valueOf(currentZone));
                 return true;
             }
         });

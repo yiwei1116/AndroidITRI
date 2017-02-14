@@ -485,6 +485,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         if (map_svg_size != 0) {
             String[] svg_path = map_svg.split("/");
             File svg_file = new File(path, svg_path[svg_path.length - 1]);
+            map_svg = svg_path[svg_path.length - 1];
+
             if (!svg_file.exists()) {
                 Log.d("GGG", "mac map svg");
                 new DownloadSingleFileTask(map_svg).execute();
@@ -1818,6 +1820,7 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         cv.put("like_count", like_count);
         cursor.close();
         // update to the same field
+        Log.e("zone_count", "add: " + like_count);
         writeDB.update(DatabaseUtilizer.ZONE_TABLE, cv, "zone_id=" + zone_id, null);
     }
 

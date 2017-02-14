@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Foreground implements Application.ActivityLifecycleCallbacks{
 
     private static Foreground instance;
-    private boolean foreground = false, paused = true;
+    private boolean foreground = true, paused = false;
     private Handler handler = new Handler();
     private Runnable check;
     public static final String TAG = Foreground.class.getName();

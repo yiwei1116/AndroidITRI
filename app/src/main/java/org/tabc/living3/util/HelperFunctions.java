@@ -1,5 +1,6 @@
 package org.tabc.living3.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -39,6 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -991,6 +994,7 @@ public class HelperFunctions extends Application{
         Log.e("simply", "testing");
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void uploadCounts() throws JSONException {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1084,6 +1088,18 @@ public class HelperFunctions extends Application{
         JSONObject count_type = new JSONObject();
         count_type.put("count_table", jsonObject);
         final String upload = count_type.toString();
+        // try-with-resources statement based on post comment below :)
+        try  {
+            File rootDir = context.getFilesDir();
+            FileWriter file = new FileWriter(rootDir + "/test.txt");
+            file.write(upload);
+            Log.e("fds", "Successfully Copied JSON Object to File...");
+            Log.e("sgfd", "\nJSON Object: " + upload);
+            file.flush();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         StringRequest hipsterUploadRequest = new StringRequest(Request.Method.POST, DatabaseUtilizer.counttypeURL,
                 new Response.Listener<String>() {
