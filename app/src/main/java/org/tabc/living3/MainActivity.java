@@ -236,11 +236,18 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
     @Override
     protected void onPause() {
-
+        setSoundNormal();
+        stopTexttoSpeech();
         super.onPause();
-
         Log.e("error", "dsfdaadsfads");
         uploadingCount();
+    }
+
+    @Override
+    protected void onStop() {
+        setSoundNormal();
+        stopTexttoSpeech();
+        super.onStop();
     }
 
     public void uploadingCount() {
@@ -276,8 +283,8 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         shutTexttoSpeech();
+        super.onDestroy();
     }
     class ButtonListener implements View.OnClickListener {
 
@@ -1029,7 +1036,7 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
                             }
                         });
                     } else {
-                        Toast.makeText(MainActivity.this, "語音導覽不支援此機型", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.not_support_audio_tour, Toast.LENGTH_SHORT).show();
                     }
                 }
             }

@@ -234,5 +234,6 @@
     <string name="text_justify_start_white" translatable="false"><![CDATA[<p style=\'text-align:justify;color:white;\'>]]></string>
     <string name="text_justify_start_black" translatable="false"><![CDATA[<p style=\'text-align:justify;color:black;\'>]]></string>
     <string name="text_justify_end" translatable="false"><![CDATA[</p>]]></string>
+    <string name="not_support_audio_tour">語音導覽不支援此機型</string>
 
 </resources>

@@ -195,4 +195,5 @@
     <string name="please_select_zone">Please select your location</string>
     <string name="template_content">content within thirty words</string>
     <string name="feedback_feature_energy">Conserves energy</string>
+    <string name="not_support_audio_tour">Audio tour is not supported</string>
 </resources>

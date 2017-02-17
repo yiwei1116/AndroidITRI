@@ -352,7 +352,7 @@ public class CommunicationWithServer {
      */
     public void DownloadFiles(List<String> pathList, LoadingActivity loadingActivity, Handler handler) {
         this.loadingActivity = loadingActivity;
-        new DownloadFilesTask(pathList, handler).execute();
+        new DownloadFilesTask(pathList, handler).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public class DownloadFilesTask extends AsyncTask<String, Integer, Void> {
