@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,10 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.util.ButtonSound;
@@ -46,10 +51,6 @@ import org.tabc.living3.util.IFontSize;
 import org.tabc.living3.util.ISoundInterface;
 import org.tabc.living3.util.IYoutube;
 import org.tabc.living3.util.SQLiteDbManager;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -104,6 +105,8 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     private SQLiteDbManager dbManager;
     private HelperFunctions helperFunctions;
 
+    private boolean main_thumbup_orange = false;
+
     public EquipmentTabFragment() {
     }
 
@@ -134,6 +137,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             equipNumber = getArguments().getInt(EQUIP_NUMBER);
             if (equipNumber > 20)
@@ -160,9 +164,13 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.main_thumbup, menu);
+        if(main_thumbup_orange) {
+            inflater.inflate(R.menu.main_thumbup_orange, menu);
+        } else {
+            inflater.inflate(R.menu.main_thumbup, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -174,7 +182,7 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
 
         ((MainActivity) getActivity()).setInfoNormal();
 
-        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
+        final Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         setHasOptionsMenu(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +196,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int curr = mViewPager.getCurrentItem();
-                dbManager.addDeviceLikeCount(equipTabs.get(curr).getDeviceId());
+                if (!helperFunctions.isDeviceLikeCountAdded(equipTabs.get(curr).getDeviceId())) {
+                    dbManager.addDeviceLikeCount(equipTabs.get(curr).getDeviceId());
+                    main_thumbup_orange = true;
+                    ActivityCompat.invalidateOptionsMenu(getActivity());
+                }
                 return true;
             }
         });
@@ -259,6 +271,11 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
                 // add current equipment read count
                 dbManager.addDeviceReadCount(equipTabs.get(position).getDeviceId());
 
+                // check if current tab's like count is been added
+                main_thumbup_orange =
+                        helperFunctions.isDeviceLikeCountAdded(equipTabs.get(position).getDeviceId());
+                ActivityCompat.invalidateOptionsMenu(getActivity());
+
                 // set current position to last position
                 mLastViewPage = position;
             }
@@ -318,15 +335,6 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             tab.getMediaPlayer().release();
             deviceds_id.add(tab.getDeviceId());
         }
-
-
-        // upload read count and like count
-        // 2/13/2017
-//        try {
-//            helperFunctions.uploadDeviceLikeAndReadCount(deviceds_id);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         // remove current tab's youtube fragment immediately
         String preYoutubeId = YOUTUBE_LAYOUT_ID_ + String.valueOf(mViewPager.getCurrentItem());
@@ -632,6 +640,14 @@ public class EquipmentTabFragment extends Fragment implements ISoundInterface, I
             transaction.add(youtubeLayout.getId(), youTubePlayerFragment);
             transaction.commit();
         }
+
+        // check if current tab's like count is been added
+        if (helperFunctions.isDeviceLikeCountAdded(currTab.getDeviceId())
+                && position == mViewPager.getCurrentItem()) {
+            main_thumbup_orange = true;
+            ActivityCompat.invalidateOptionsMenu(getActivity());
+        }
+
     }
 
     private void setCompanyInfo(View v, int position) throws FileNotFoundException {

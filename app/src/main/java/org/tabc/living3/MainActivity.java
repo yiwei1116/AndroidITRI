@@ -13,9 +13,11 @@ import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -35,6 +37,7 @@ import org.tabc.living3.fragment.DiaryFragment;
 import org.tabc.living3.fragment.EquipmentTabFragment;
 import org.tabc.living3.fragment.FeedbackFragment;
 import org.tabc.living3.fragment.MapFragment;
+import org.tabc.living3.model.FieldMap;
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.Foreground;
 import org.tabc.living3.util.HelperFunctions;
@@ -56,8 +59,13 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     public static final String GET_TOUR_INDEX = "GET_TOUR_INDEX";
     public static final String GET_IS_ENGLISH = "GET_IS_ENGLISH";
 
+    private SQLiteDbManager dbManager;
+
     private int tourIndex;
     private boolean isEnglish;
+
+    private PopupMenu popupMenu;
+
 //    public
     private MainButton infoBtn;
     private MainButton diaryBtn;
@@ -101,9 +109,26 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // get bundle values
+        Bundle bundle = this.getIntent().getExtras();
+        tourIndex = bundle.getInt(GET_TOUR_INDEX);
+        isEnglish = bundle.getBoolean(GET_IS_ENGLISH);
+
+        // set GUI
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         toolbarTitle = (TextView) findViewById(R.id.txt_toolbar_main);
+        toolbarTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupMenu.show();
+            }
+        });
+        // set database first
+        dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
+        // build popup menu from database
+        this.buildPopupMenu(toolbarTitle);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(R.drawable.btn_back);
@@ -111,14 +136,9 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
             @Override
             public void onClick(View v) {
                 ButtonSound.play(getApplication());
-
                 onBackPressed();
             }
         });
-
-        Bundle bundle = this.getIntent().getExtras();
-        tourIndex = bundle.getInt(GET_TOUR_INDEX);
-        isEnglish = bundle.getBoolean(GET_IS_ENGLISH);
 
         // call function to get current projectId
         myObject = new ITRIObject();
@@ -157,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         setupListeners();
 
         // set all mode did_read false at the first time
-        SQLiteDbManager dbManager = new SQLiteDbManager(this, SQLiteDbManager.DATABASE_NAME);
         dbManager.setModeDidReadZero();
         helper = new HelperFunctions(getApplicationContext());
 
@@ -184,8 +203,37 @@ public class MainActivity extends AppCompatActivity implements ICoachProtocol {
         communicationWithServer = LoadingActivity.getCommunicationWithServer();
         createLanguageTTS();
         initFragment();
-
     }
+
+    private void buildPopupMenu(View view) {
+        popupMenu = new PopupMenu(MainActivity.this, view);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.d(TAG, "item id: " + item.getItemId());
+                mapFragment.enterField(item.getItemId());
+
+                return false;
+            }
+        });
+
+        HashMap<Integer, FieldMap> fieldMapHashMap = dbManager.getAllFieldMap();
+
+        if (fieldMapHashMap != null) {
+            int count = 0;
+            for (FieldMap fieldMap: fieldMapHashMap.values()) {
+                // add(int groupId, int itemId, int order, int titleRes)
+                if (isEnglish) {
+                    popupMenu.getMenu().add(1, fieldMap.getFieldMapId(), count, fieldMap.getNameEn());
+                } else {
+                    popupMenu.getMenu().add(1, fieldMap.getFieldMapId(), count, fieldMap.getName());
+                }
+                count ++;
+            }
+        }
+    }
+
     @Override
     protected void onPause() {
 

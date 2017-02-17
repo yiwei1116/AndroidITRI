@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.tabc.living3.CommunicationWithServer;
+import org.tabc.living3.model.FieldMap;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -23,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +36,8 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "living_3_0_ITRI.db";
     public Context context;
     public CommunicationWithServer communicationWithServer;
+
+    private HashMap<Integer, FieldMap> fieldMapHashMap;
 
     /*
            ----> beacon, company, device, field_map, hipster_template, hipster_text, mode, zone
@@ -841,11 +845,13 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
         }
     }
 
+    /*
     public Cursor getFieldMap(int field_map_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from field_map where field_map_id=" + field_map_id + "", null);
         return cursor;
     }
+    */
 
     // give jiang
     public JSONObject queryFieldMapWithFieldMapId(int field_map_id) throws JSONException {
@@ -1725,6 +1731,43 @@ public class SQLiteDbManager extends SQLiteOpenHelper {
     }
 
     // ********************** 裝置  給定資料部分 **********************
+    public FieldMap getFieldMap(int field_id) {
+        if (fieldMapHashMap == null) {
+            this.getAllFieldMap();
+        }
+
+        FieldMap aFieldMap = fieldMapHashMap.get(field_id);
+        return aFieldMap;
+    }
+
+    public HashMap<Integer, FieldMap> getAllFieldMap() {
+        if (fieldMapHashMap != null) {
+            return fieldMapHashMap;
+        }
+        fieldMapHashMap = new HashMap<Integer, FieldMap>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from field_map", null);
+
+        while (cursor.moveToNext()) {
+            FieldMap aFieldMap = new FieldMap();
+            aFieldMap.setFieldMapId(cursor.getInt(cursor.getColumnIndex(FieldMap.FIELD_MAP_ID)));
+            aFieldMap.setName(cursor.getString(cursor.getColumnIndex(FieldMap.NAME)));
+            aFieldMap.setNameEn(cursor.getString(cursor.getColumnIndex(FieldMap.NAME_EN)));
+            aFieldMap.setProjectId(cursor.getInt(cursor.getColumnIndex(FieldMap.PROJECT_ID)));
+            aFieldMap.setIntroduction(cursor.getString(cursor.getColumnIndex(FieldMap.INTRODUCTION)));
+            aFieldMap.setPhoto(cursor.getString(cursor.getColumnIndex(FieldMap.PHOTO)));
+            aFieldMap.setPhotoVertical(cursor.getString(cursor.getColumnIndex(FieldMap.PHOTO_VERTICAL)));
+            aFieldMap.setMapSvg(cursor.getString(cursor.getColumnIndex(FieldMap.MAP_SVG)));
+            aFieldMap.setMapSvgEn(cursor.getString(cursor.getColumnIndex(FieldMap.MAP_SVG_EN)));
+            aFieldMap.setMapBg(cursor.getString(cursor.getColumnIndex(FieldMap.MAP_BG)));
+            fieldMapHashMap.put(aFieldMap.getFieldMapId(), aFieldMap);
+        }
+        cursor.close();
+        db.close();
+
+        return fieldMapHashMap;
+    }
 
     // 用給定的mode_id取出所有裝置
     public JSONArray queryDeviceFilesByMode(int mode_id) throws JSONException {

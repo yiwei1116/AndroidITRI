@@ -1157,4 +1157,34 @@ public class HelperFunctions extends Application{
 
 
     }
+
+    public boolean isDeviceLikeCountAdded(int did) {
+        SQLiteDatabase db = manager.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from device where device_id=" + did, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        Log.d("GGGG:device", String.valueOf(like_count));
+        return like_count != 0;
+    }
+
+    public boolean isModeLikeCountAdded(int mode_id) {
+        SQLiteDatabase db = manager.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from mode where mode_id=" + mode_id, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        Log.d("GGGG:mode", String.valueOf(like_count));
+        return like_count != 0;
+    }
+
+    public boolean isZoneLikeCountAdded(int zone_id) {
+        SQLiteDatabase db = manager.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select like_count from zone where zone_id=" + zone_id, null);
+        int like_count = 0;
+        cursor.moveToFirst();
+        like_count = cursor.getInt(cursor.getColumnIndex("like_count"));
+        Log.d("GGGG:zone", String.valueOf(like_count));
+        return like_count != 0;
+    }
 }

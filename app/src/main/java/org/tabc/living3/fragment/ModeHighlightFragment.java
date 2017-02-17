@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +64,8 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
     private View view;
 
+    private boolean main_thumbup_orange = false;
+
     public ModeHighlightFragment() {
     }
 
@@ -84,6 +87,7 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             modeId = getArguments().getInt(MODE_ID);
             zoneName = getArguments().getString(ZONE_NAME);
@@ -131,7 +135,11 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                dbManager.addModeLikeCount(modeId);
+                if(!helperFunctions.isModeLikeCountAdded(modeId)) {
+                    dbManager.addModeLikeCount(modeId);
+                    main_thumbup_orange = true;
+                    ActivityCompat.invalidateOptionsMenu(getActivity());
+                }
                 Log.e("current", String.valueOf(modeId));
                 return true;
             }
@@ -142,14 +150,20 @@ public class ModeHighlightFragment extends Fragment implements ISoundInterface, 
 
         ((MainActivity) getActivity()).setToolbarTitle(zoneName);
 
+        main_thumbup_orange = helperFunctions.isModeLikeCountAdded(modeId);
+
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.main_thumbup, menu);
+        if(main_thumbup_orange) {
+            inflater.inflate(R.menu.main_thumbup_orange, menu);
+        } else {
+            inflater.inflate(R.menu.main_thumbup, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

@@ -5,11 +5,11 @@ package org.tabc.living3.util;
  */
 public class DatabaseUtilizer {
     // base IP address
-    public static final String IP = "140.116.82.48";
-//    public static final String IP = "60.251.33.54:98";
+//    public static final String IP = "140.116.82.48";
+    public static final String IP = "60.251.33.54:98";
 
     public static final String serverURL = "http://" + IP + "/interface/jsondecode.php";
-    public static final String downloadURL = "http://" + IP + "/interface/getfile.php";
+    public static final String downloadURL  = "http://" + IP + "/interface/getfile.php";
     public static final String hipsterContentURL = "http://" + IP + "/interface/hipster.php"; // hipster content
     public static final String surveyOneURL = "http://" + IP + "/interface/survey.php"; // first survey
     public static final String feedbackURL = "http://" + IP + "/interface/survey2.php";

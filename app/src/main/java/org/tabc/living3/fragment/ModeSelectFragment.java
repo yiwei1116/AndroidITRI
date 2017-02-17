@@ -6,8 +6,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,6 +54,8 @@ public class ModeSelectFragment extends Fragment {
     private SQLiteDbManager dbManager;
     private HelperFunctions helperFunctions;
 
+    private boolean main_thumbup_orange = false;
+
     public ModeSelectFragment() {
     }
 
@@ -77,6 +79,7 @@ public class ModeSelectFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             modeNumber = getArguments().getInt(MODE_NUMBER);
             currentZone = getArguments().getInt(CURRENT_ZONE);
@@ -117,8 +120,11 @@ public class ModeSelectFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                dbManager.addZoneLikeCount(currentZone);
-//                Log.e("current", String.valueOf(currentZone));
+                if (!helperFunctions.isZoneLikeCountAdded(currentZone)) {
+                    dbManager.addZoneLikeCount(currentZone);
+                    main_thumbup_orange = true;
+                    ActivityCompat.invalidateOptionsMenu(getActivity());
+                }
                 return true;
             }
         });
@@ -126,14 +132,20 @@ public class ModeSelectFragment extends Fragment {
         ((MainActivity) getActivity()).setToolbarTitle(zoneName);
         ((MainActivity) getActivity()).showModeCoachSwapUp();
 
+        main_thumbup_orange = helperFunctions.isZoneLikeCountAdded(currentZone);
+
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.main_thumbup, menu);
+        if (main_thumbup_orange) {
+            inflater.inflate(R.menu.main_thumbup_orange, menu);
+        } else {
+            inflater.inflate(R.menu.main_thumbup, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -157,14 +169,6 @@ public class ModeSelectFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // upload zone like count
-
-        // 2/13/2017
-//        try {
-//            helperFunctions.uploadZoneLikeAndReadCount(currentZone);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void addModeItem() throws JSONException {

@@ -34,12 +34,12 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.tabc.living3.BuildConfig;
 import org.tabc.living3.JavaScriptInterface;
 import org.tabc.living3.MainActivity;
 import org.tabc.living3.R;
 import org.tabc.living3.ble.BLEModule;
 import org.tabc.living3.ble.BLEScannerWrapper;
+import org.tabc.living3.model.FieldMap;
 import org.tabc.living3.util.ButtonSound;
 import org.tabc.living3.util.DatabaseUtilizer;
 import org.tabc.living3.util.SQLiteDbManager;
@@ -235,9 +235,12 @@ public class MapFragment extends Fragment {
     }
 
     private String getFieldName(int field_id) {
-        Cursor cursor = dbManager.getFieldMap(field_id);
-        cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex(DatabaseUtilizer.NAME_EN));
+        FieldMap fieldMap = dbManager.getFieldMap(field_id);
+        if (isEnglish) {
+            return fieldMap.getNameEn();
+        } else {
+            return fieldMap.getName();
+        }
     }
 
     private String getZoneName(int zone_id) {
@@ -437,6 +440,23 @@ public class MapFragment extends Fragment {
         mLastSacnBeacon = beacon;
         //Log.e("start,end","start: "+mLastSacnBeacon.optInt("start")+"   end:"+mLastSacnBeacon.optInt("end"));
     }
+
+    public void enterField(int fieldMapId) {
+        try {
+            JSONObject beacon;
+            if (fieldMapId == 1) {
+                currentZoneOrder = 0;
+                beacon = dbManager.queryBeaconFileWithZoneId(1);
+            } else {
+                currentZoneOrder = 11;
+                beacon = dbManager.queryBeaconFileWithZoneId(12);
+            }
+            enterNextZone(beacon);
+        } catch (JSONException e) {
+
+        }
+    }
+
     public Handler getJsHandler() {
         return jsHandler;
     }
