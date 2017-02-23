@@ -303,7 +303,7 @@ public class MapFragment extends Fragment {
         mWebViewMap.setVerticalScrollBarEnabled(false);
         mWebViewMap.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mWebViewMap.setBackgroundColor(Color.TRANSPARENT);
-        mWebViewMap.setInitialScale(180);
+        mWebViewMap.setInitialScale(280);
 
         if (Build.VERSION.SDK_INT >= 19) {
             // chromium, enable hardware acceleration
@@ -403,37 +403,37 @@ public class MapFragment extends Fragment {
 
     public void enterNextZone(JSONObject beacon) throws JSONException
     {
-        mCurrentZone = beacon.optInt("zone");
+        if(mCurrentZone != 19)
+            mCurrentZone = beacon.optInt("zone");
         currentZoneOrder++;     //更新下一個該到的順序
-        //Log.e(TAG,"scaleLevel: "+scaleLevel);
+
 
         mWebViewMap.loadUrl("javascript: setScreenFocus("+mCurrentZone+","+metrics.widthPixels+","+metrics.widthPixels+","+scaleLevel+")");
 
-        String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
-        String nextPath = pathOrder.get(currentZoneOrder-1);
+        String currentPath = (currentZoneOrder<=1 || currentZoneOrder>=20)?"0":pathOrder.get(currentZoneOrder-2);
+        String nextPath = (currentZoneOrder>=19)?"0":pathOrder.get(currentZoneOrder-1);
         notice.setVisibility(View.VISIBLE);
         txtMapArea.setText(getZoneName(mCurrentZone));     //"進入導覽"顯示名稱
 
-        if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id")) {
+        if (mLastSacnBeacon != null && mLastSacnBeacon.optInt("field_id") != beacon.optInt("field_id") && mCurrentZone != 19) {
             //Change field
             mCurrentField = beacon.optInt("field_id");
             mSvgFile = beacon.getString("map_svg");
             String loadfile = mFileDirPath + mSvgFile;
-
             // set toolbar title
             String field_name = getFieldName(mCurrentField);
             ((MainActivity) getActivity()).setToolbarTitle(field_name);
 
             //Log.e(TAG, "javascript: setSVGLoad('" + loadfile + "'," + currentZone + "," + zoneOrder[currentZoneOrder] + ")");
             //svg,currentZone,nextZone,currentPath(to hide),nextPath(to appear)
-            String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + zoneOrder2.get(currentZoneOrder) + ",'"+currentPath+"','"+nextPath+"')";
+            String url = "javascript: setSVGLoad('" + loadfile + "'," + mCurrentZone + "," + ((currentZoneOrder>=20)?"-1":zoneOrder2.get(currentZoneOrder)) + ",'"+currentPath+"','"+nextPath+"')";
             mWebViewMap.loadUrl(url);
             isSVGLOADED = false;
 
 
         } else {
             if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
-                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + mCurrentZone + "," + zoneOrder2.get(currentZoneOrder) + ",'"+currentPath+"','"+nextPath+ "')";
+                String url = "javascript: " + mJavaScriptInterface.getOnRegionChanged() + "(" + mCurrentZone + "," + ((currentZoneOrder>=19)?"1":zoneOrder2.get(currentZoneOrder)) + ",'"+currentPath+"','"+nextPath+ "')";
                 mWebViewMap.loadUrl(url);
             }
         }
@@ -489,8 +489,8 @@ public class MapFragment extends Fragment {
                             isSVGLOADED = true;
                             mWebViewMap.loadUrl("javascript: setTestClick()");
                             mWebViewMap.loadUrl("javascript: setScreenFocus("+ (mCurrentZone==0?1:mCurrentZone) + ","+metrics.widthPixels+","+metrics.widthPixels+","+mWebViewMap.getScale()+")");
-                            String currentPath = (currentZoneOrder<=1)?"":pathOrder.get(currentZoneOrder-2);
-                            String nextPath = (currentZoneOrder<=0)?"":pathOrder.get(currentZoneOrder-1);
+                            String currentPath = (currentZoneOrder<=1 || currentZoneOrder>=20)?"":pathOrder.get(currentZoneOrder-2);
+                            String nextPath = (currentZoneOrder<=0 || currentZoneOrder>=19)?"":pathOrder.get(currentZoneOrder-1);
                             for(int i = 0; i<currentZoneOrder;i++)
                             {
                                 if (mJavaScriptInterface.getOnRegionChanged() != null && !mJavaScriptInterface.getOnRegionChanged().equals("")) {
@@ -502,16 +502,25 @@ public class MapFragment extends Fragment {
                             break;
                         case JavaScriptInterface.MNREGION_CLICKED:
                             try {
-                                //Log.e("aaaaa",msg.arg1+"");
+                                //Log.e(TAG,msg.arg1+"");
                                 JSONObject beacon;
-                                if(msg.arg1 == 11)      //for click demo
+                                if(msg.arg1 == -1)      //for click demo
                                 {
-                                    currentZoneOrder++;
+                                    mCurrentZone = 12;
+                                    currentZoneOrder = 11;
+                                    mLastSacnBeacon = dbManager.queryBeaconFileWithZoneId(11);
                                     beacon = dbManager.queryBeaconFileWithZoneId(12);
-                                }else if(msg.arg1 == 19)      //for click demo
+                                }else if(msg.arg1 == -2)      //for click demo
                                 {
+                                    mCurrentZone = 1;
                                     currentZoneOrder = 0;
                                     beacon = dbManager.queryBeaconFileWithZoneId(1);
+
+                                }else if(msg.arg1 == 19)      //for click demo
+                                {
+                                    mCurrentZone = 19;
+                                    beacon = dbManager.queryBeaconFileWithZoneId(18);   //beacuse of no path started by 19th beacon
+
                                 }else
                                     beacon = dbManager.queryBeaconFileWithZoneId(msg.arg1);
                                 enterNextZone(beacon);
