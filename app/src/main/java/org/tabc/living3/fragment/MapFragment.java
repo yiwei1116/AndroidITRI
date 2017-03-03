@@ -530,7 +530,9 @@ public class MapFragment extends Fragment {
                             break;
                         case JavaScriptInterface.MAREGION_CLICKED:
                             mCurrentZone = msg.arg1;
-                            enterZone();
+                            notice.setVisibility(View.VISIBLE);
+                            txtMapArea.setText(getZoneName(mCurrentZone));     //"進入導覽"顯示名稱
+                            //enterZone();
                             break;
                     }
                 }
